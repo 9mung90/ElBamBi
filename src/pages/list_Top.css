@@ -508,9 +508,11 @@
   color: #8ee6a8;
 }
 
-.option-id {
-  color: #8e8e8e;
-  font-size: 12px;
+.option-header-icon {
+  width: 24px;
+  height: 24px;
+  flex: 0 0 auto;
+  object-fit: contain;
 }
 
 .weapon-affinity-icon {
@@ -578,6 +580,397 @@
   font-size: 12px;
 }
 
+.vessel-card {
+  min-height: 190px;
+  padding: 10px;
+}
+
+.vessel-card-main {
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr) 42px;
+  gap: 10px;
+  align-items: start;
+}
+
+.vessel-image,
+.vessel-character-image {
+  border: 1px solid rgba(245, 194, 93, 0.22);
+  border-radius: 8px;
+  background: #0f0f0f;
+  object-fit: cover;
+}
+
+.vessel-image {
+  width: 54px;
+  height: 54px;
+}
+
+.vessel-character-image {
+  width: 42px;
+  height: 42px;
+}
+
+.vessel-card-title {
+  min-width: 0;
+}
+
+.vessel-default-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 22px;
+  padding: 0 7px;
+  border-radius: 6px;
+  background: rgba(73, 166, 111, 0.18);
+  color: #8ee6a8;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.vessel-color-section {
+  display: grid;
+  gap: 3px;
+  margin-top: auto;
+}
+
+.vessel-color-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.vessel-color-label {
+  color: #b7b7b7;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.vessel-color-slots {
+  display: flex;
+  gap: 2px;
+}
+
+.vessel-color-slot {
+  width: 22px;
+  height: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+}
+
+.vessel-color-slot-image {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 auto;
+  object-fit: contain;
+}
+
+.vessel-color-red {
+  background: #d64b40;
+}
+
+.vessel-color-blue {
+  background: #4683d6;
+}
+
+.vessel-color-yellow {
+  background: #f5c25d;
+}
+
+.vessel-color-green {
+  background: #49a66f;
+}
+
+.vessel-color-white {
+  background: #f2f2f2;
+}
+
+.calc-page {
+  min-width: 0;
+}
+
+.calc-layout {
+  display: grid;
+  grid-template-columns: minmax(300px, 360px) minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.calc-main {
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+}
+
+.calc-panel {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  border-radius: 8px;
+  background: #181818;
+  box-sizing: border-box;
+}
+
+.calc-control-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 96px;
+  gap: 10px;
+}
+
+.calc-control-grid label,
+.calc-section-heading label {
+  display: grid;
+  gap: 6px;
+  color: #d6d6d6;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.calc-control-grid select,
+.calc-control-grid input,
+.calc-section-heading input,
+.calc-stat-row input {
+  width: 100%;
+  min-height: 36px;
+  padding: 0 10px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 7px;
+  background: #101010;
+  color: #f2f2f2;
+  box-sizing: border-box;
+}
+
+.calc-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.calc-toggle-row label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #d6d6d6;
+  font-size: 13px;
+}
+
+.calc-toggle-row button,
+.calc-active-effects button,
+.calc-effect-results button {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 7px;
+  background: #202020;
+  color: #f2f2f2;
+  cursor: pointer;
+  font: inherit;
+}
+
+.calc-toggle-row button {
+  min-height: 32px;
+  padding: 0 10px;
+}
+
+.calc-status-section {
+  display: grid;
+  gap: 10px;
+}
+
+.calc-status-bar {
+  display: grid;
+  gap: 5px;
+}
+
+.calc-status-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  color: #cfcfcf;
+  font-size: 12px;
+}
+
+.calc-status-row strong {
+  color: #fff;
+}
+
+.calc-status-row em {
+  margin-left: 6px;
+  color: #8ee6a8;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.calc-bar-track {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #333;
+}
+
+.calc-bar-track span {
+  display: block;
+  height: 100%;
+}
+
+.calc-stat-table {
+  display: grid;
+  gap: 6px;
+}
+
+.calc-stat-head,
+.calc-stat-row {
+  display: grid;
+  grid-template-columns: 44px 52px 52px minmax(58px, 1fr) 48px;
+  gap: 7px;
+  align-items: center;
+}
+
+.calc-stat-head {
+  color: #9ca3af;
+  font-size: 11px;
+}
+
+.calc-stat-row {
+  color: #f2f2f2;
+  font-size: 13px;
+}
+
+.calc-stat-row span,
+.calc-stat-row strong {
+  min-width: 0;
+  text-align: right;
+}
+
+.calc-stat-row span:first-child {
+  text-align: left;
+  color: #d6d6d6;
+  font-weight: 700;
+}
+
+.calc-stat-row input {
+  min-height: 30px;
+  padding: 0 7px;
+}
+
+.calc-section-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 320px);
+  gap: 12px;
+  align-items: center;
+}
+
+.calc-section-heading h3 {
+  margin: 0;
+  color: #fff;
+  font-size: 17px;
+}
+
+.calc-active-effects,
+.calc-effect-results {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.calc-active-effects p {
+  margin: 0;
+  color: #8e8e8e;
+  font-size: 13px;
+}
+
+.calc-active-effects button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  padding: 0 9px;
+  background: rgba(73, 166, 111, 0.16);
+  color: #8ee6a8;
+}
+
+.calc-active-effects button span {
+  color: #cfcfcf;
+  font-size: 11px;
+}
+
+.calc-effect-results {
+  max-height: 220px;
+  overflow: auto;
+  padding-right: 4px;
+}
+
+.calc-effect-results button {
+  display: grid;
+  gap: 3px;
+  width: calc(50% - 4px);
+  min-height: 58px;
+  padding: 8px 10px;
+  text-align: left;
+}
+
+.calc-effect-results button strong {
+  color: #fff;
+  font-size: 13px;
+}
+
+.calc-effect-results button span {
+  display: -webkit-box;
+  overflow: hidden;
+  color: #a8a8a8;
+  font-size: 12px;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.calc-table-wrap {
+  overflow: auto;
+}
+
+.calc-weapon-table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+  color: #d6d6d6;
+  font-size: 13px;
+}
+
+.calc-weapon-table th,
+.calc-weapon-table td {
+  padding: 10px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.calc-weapon-table th {
+  color: #fff;
+  font-size: 12px;
+}
+
+.calc-weapon-table td:first-child {
+  color: #fff;
+  font-weight: 700;
+}
+
+.calc-weapon-table strong {
+  color: #9dbfff;
+}
+
+.calc-weapon-table .is-positive,
+.calc-weapon-table .is-negative {
+  margin-left: 7px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.calc-weapon-table .is-positive {
+  color: #8ee6a8;
+}
+
+.calc-weapon-table .is-negative {
+  color: #ff8f84;
+}
+
 @media (max-width: 520px) {
   .game-title-row {
     min-height: 52px;
@@ -613,6 +1006,15 @@
 
   .catalog-card-grid {
     grid-template-columns: 1fr;
+  }
+
+  .calc-layout,
+  .calc-section-heading {
+    grid-template-columns: 1fr;
+  }
+
+  .calc-effect-results button {
+    width: 100%;
   }
 
   .character-card-top {

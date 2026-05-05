@@ -7,7 +7,9 @@ import OptionsPage from './OptionsPage';
 import PlaceholderPage from './PlaceholderPage';
 import RelicsPage from './RelicsPage';
 import SpellsPage from './SpellsPage';
+import StatsCalculatorPage from './StatsCalculatorPage';
 import TalismansPage from './TalismansPage';
+import VesselsPage from './VesselsPage';
 import WeaponsPage from './WeaponsPage';
 import type { Category } from './pageTypes';
 import './list_Top.css';
@@ -32,6 +34,12 @@ const categories: Category[] = [
     description: '유물 옵션 목록입니다.',
   },
   {
+    id: 'stats-calculator',
+    label: '계산기',
+    icon: 'A',
+    description: '스탯과 공격력 계산기입니다.',
+  },
+  {
     id: 'ashes',
     label: '전회',
     icon: 'S',
@@ -54,6 +62,12 @@ const categories: Category[] = [
     label: '유물',
     icon: 'R',
     description: '유물 목록입니다.',
+  },
+  {
+    id: 'vessels',
+    label: '현기',
+    icon: 'V',
+    description: '현기 목록입니다.',
   },
   {
     id: 'items',
@@ -148,6 +162,8 @@ function ListTop() {
         />
       ) : selectedId === 'options' ? (
         <OptionsPage searchQuery={searchQuery} />
+      ) : selectedId === 'stats-calculator' ? (
+        <StatsCalculatorPage searchQuery={searchQuery} />
       ) : selectedId === 'ashes' ? (
         <AshesPage searchQuery={searchQuery} />
       ) : selectedId === 'spells' ? (
@@ -156,6 +172,8 @@ function ListTop() {
         <TalismansPage searchQuery={searchQuery} />
       ) : selectedId === 'relics' ? (
         <RelicsPage searchQuery={searchQuery} />
+      ) : selectedId === 'vessels' ? (
+        <VesselsPage searchQuery={searchQuery} />
       ) : selectedId === 'items' ? (
         <ItemsPage searchQuery={searchQuery} />
       ) : selectedId === 'gestures' ? (
