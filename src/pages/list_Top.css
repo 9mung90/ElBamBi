@@ -729,7 +729,8 @@
 .calc-control-grid select,
 .calc-control-grid input,
 .calc-section-heading input,
-.calc-stat-row input {
+.calc-stat-row input,
+.calc-active-effect-card select {
   width: 100%;
   min-height: 36px;
   padding: 0 10px;
@@ -872,15 +873,68 @@
   gap: 8px;
 }
 
+.calc-combat-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.calc-combat-summary > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  background: #121212;
+}
+
+.calc-combat-summary strong {
+  color: #fff;
+  font-size: 13px;
+}
+
+.calc-combat-summary span {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: #8ee6a8;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.calc-combat-summary em {
+  flex: 0 0 auto;
+  color: #9ca3af;
+  font-style: normal;
+  font-size: 11px;
+}
+
+.calc-combat-summary p {
+  margin: 0;
+  color: #8e8e8e;
+  font-size: 12px;
+}
+
 .calc-active-effects p {
   margin: 0;
   color: #8e8e8e;
   font-size: 13px;
 }
 
+.calc-active-effect-card {
+  display: grid;
+  gap: 6px;
+  min-width: min(100%, 260px);
+  max-width: 100%;
+}
+
 .calc-active-effects button {
   display: inline-flex;
   align-items: center;
+  justify-content: space-between;
   gap: 8px;
   min-height: 32px;
   padding: 0 9px;
@@ -891,6 +945,18 @@
 .calc-active-effects button span {
   color: #cfcfcf;
   font-size: 11px;
+}
+
+.calc-active-effect-card select {
+  min-height: 32px;
+  font-size: 12px;
+}
+
+.calc-active-effect-card small {
+  color: #f6dfae;
+  font-size: 11px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
 }
 
 .calc-effect-results {
@@ -920,6 +986,18 @@
   font-size: 12px;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+}
+
+.calc-effect-results button em {
+  color: #f6dfae;
+  font-style: normal;
+  font-size: 11px;
+  line-height: 1.3;
+}
+
+.calc-effect-results button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
 }
 
 .calc-table-wrap {
@@ -1009,7 +1087,8 @@
   }
 
   .calc-layout,
-  .calc-section-heading {
+  .calc-section-heading,
+  .calc-combat-summary {
     grid-template-columns: 1fr;
   }
 

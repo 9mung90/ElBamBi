@@ -1,496 +1,514 @@
 [
   {
-    "id": 1000,
+    "id": 0,
     "name": "섬세한, 불타는 풍경",
     "nameOrNull": "섬세한, 불타는 풍경",
     "color": "Red",
-    "location": "Can be purchased from the Small Jar Bazaar for 500 murk.",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"섬세한, 불타는 풍경\",\"color\":\"Red\",\"type\":\"shop\",\"location\":\"Can be purchased from the Small Jar Bazaar for 500 murk.\",\"effects\":[7121100]}"
+    "image": "/src/assets/images/relics/red/1.webp"
   },
   {
-    "id": 1010,
-    "name": "섬세한, 촉촉한 풍경",
-    "nameOrNull": "섬세한, 촉촉한 풍경",
-    "color": "Blue",
-    "location": "Can be purchased from the Small Jar Bazaar for 500 murk.",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"섬세한, 촉촉한 풍경\",\"color\":\"Blue\",\"type\":\"shop\",\"location\":\"Can be purchased from the Small Jar Bazaar for 500 murk.\",\"effects\":[7120000]}"
+    "id": 1,
+    "name": "섬세한, 불타는 풍경",
+    "nameOrNull": "섬세한, 불타는 풍경",
+    "color": "Red",
+    "image": "/src/assets/images/relics/red/4.webp"
   },
   {
-    "id": 1020,
+    "id": 2,
+    "name": "섬세한, 불타는 풍경",
+    "nameOrNull": "섬세한, 불타는 풍경",
+    "color": "Red",
+    "image": "/src/assets/images/relics/red/7.webp"
+  },
+  {
+    "id": 3,
+    "name": "단정한, 불타는 풍경",
+    "nameOrNull": "단정한, 불타는 풍경",
+    "color": "Red",
+    "image": "/src/assets/images/relics/red/2.webp"
+  },
+  {
+    "id": 4,
+    "name": "단정한, 불타는 풍경",
+    "nameOrNull": "단정한, 불타는 풍경",
+    "color": "Red",
+    "image": "/src/assets/images/relics/red/5.webp"
+  },
+  {
+    "id": 5,
+    "name": "단정한, 불타는 풍경",
+    "nameOrNull": "단정한, 불타는 풍경",
+    "color": "Red",
+    "image": "/src/assets/images/relics/red/8.webp"
+  },
+  {
+    "id": 6,
+    "name": "웅장한, 불타는 풍경",
+    "nameOrNull": "웅장한, 불타는 풍경",
+    "color": "Red",
+    "image": "/src/assets/images/relics/red/3.webp"
+  },
+  {
+    "id": 7,
+    "name": "웅장한, 불타는 풍경",
+    "nameOrNull": "웅장한, 불타는 풍경",
+    "color": "Red",
+    "image": "/src/assets/images/relics/red/6.webp"
+  },
+  {
+    "id": 8,
+    "name": "웅장한, 불타는 풍경",
+    "nameOrNull": "웅장한, 불타는 풍경",
+    "color": "Red",
+    "image": "/src/assets/images/relics/red/9.webp"
+  },
+
+  {
+    "id": 9,
     "name": "섬세한, 빛나는 풍경",
     "nameOrNull": "섬세한, 빛나는 풍경",
     "color": "Yellow",
-    "location": "Can be purchased from the Small Jar Bazaar for 500 murk.",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"섬세한, 빛나는 풍경\",\"color\":\"Yellow\",\"type\":\"shop\",\"location\":\"Can be purchased from the Small Jar Bazaar for 500 murk.\",\"effects\":[7122400]}"
+    "image": "/src/assets/images/relics/yellow/1.webp"
   },
   {
-    "id": 1030,
+    "id": 10,
+    "name": "섬세한, 빛나는 풍경",
+    "nameOrNull": "섬세한, 빛나는 풍경",
+    "color": "Yellow",
+    "image": "/src/assets/images/relics/yellow/4.webp"
+  },
+  {
+    "id": 11,
+    "name": "섬세한, 빛나는 풍경",
+    "nameOrNull": "섬세한, 빛나는 풍경",
+    "color": "Yellow",
+    "image": "/src/assets/images/relics/yellow/7.webp"
+  },
+  {
+    "id": 12,
+    "name": "단정한, 빛나는 풍경",
+    "nameOrNull": "단정한, 빛나는 풍경",
+    "color": "Yellow",
+    "image": "/src/assets/images/relics/yellow/2.webp"
+  },
+  {
+    "id": 13,
+    "name": "단정한, 빛나는 풍경",
+    "nameOrNull": "단정한, 빛나는 풍경",
+    "color": "Yellow",
+    "image": "/src/assets/images/relics/yellow/5.webp"
+  },
+  {
+    "id": 14,
+    "name": "단정한, 빛나는 풍경",
+    "nameOrNull": "단정한, 빛나는 풍경",
+    "color": "Yellow",
+    "image": "/src/assets/images/relics/yellow/8.webp"
+  },
+  {
+    "id": 15,
+    "name": "웅장한, 빛나는 풍경",
+    "nameOrNull": "웅장한, 빛나는 풍경",
+    "color": "Yellow",
+    "image": "/src/assets/images/relics/yellow/3.webp"
+  },
+  {
+    "id": 16,
+    "name": "웅장한, 빛나는 풍경",
+    "nameOrNull": "웅장한, 빛나는 풍경",
+    "color": "Yellow",
+    "image": "/src/assets/images/relics/yellow/6.webp"
+  },
+  {
+    "id": 17,
+    "name": "웅장한, 빛나는 풍경",
+    "nameOrNull": "웅장한, 빛나는 풍경",
+    "color": "Yellow",
+    "image": "/src/assets/images/relics/yellow/9.webp"
+  },
+
+  {
+    "id": 18,
     "name": "섬세한, 고요한 풍경",
     "nameOrNull": "섬세한, 고요한 풍경",
     "color": "Green",
-    "location": "Can be purchased from the Small Jar Bazaar for 500 murk.",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"섬세한, 고요한 풍경\",\"color\":\"Green\",\"type\":\"shop\",\"location\":\"Can be purchased from the Small Jar Bazaar for 500 murk.\",\"effects\":[7123300]}"
+    "image": "/src/assets/images/relics/green/1.webp"
   },
   {
-    "id": 1040,
-    "name": "단정한, 불타는 풍경",
-    "nameOrNull": "단정한, 불타는 풍경",
-    "color": "Red",
-    "location": "Can be purchased from the Small Jar Bazaar for 500 murk.",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"단정한, 불타는 풍경\",\"color\":\"Red\",\"type\":\"shop\",\"location\":\"Can be purchased from the Small Jar Bazaar for 500 murk.\",\"effects\":[7040300,7040400]}"
+    "id": 19,
+    "name": "섬세한, 고요한 풍경",
+    "nameOrNull": "섬세한, 고요한 풍경",
+    "color": "Green",
+    "image": "/src/assets/images/relics/green/4.webp"
   },
   {
-    "id": 1050,
-    "name": "섬세한, 빛나는 풍경",
-    "nameOrNull": "섬세한, 빛나는 풍경",
-    "color": "Yellow",
-    "location": "Can be purchased from the Small Jar Bazaar for 500 murk.",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"섬세한, 빛나는 풍경\",\"color\":\"Yellow\",\"type\":\"shop\",\"location\":\"Can be purchased from the Small Jar Bazaar for 500 murk.\",\"effects\":[7040200]}"
+    "id": 20,
+    "name": "섬세한, 고요한 풍경",
+    "nameOrNull": "섬세한, 고요한 풍경",
+    "color": "Green",
+    "image": "/src/assets/images/relics/green/7.webp"
   },
   {
-    "id": 1060,
+    "id": 21,
     "name": "단정한, 고요한 풍경",
     "nameOrNull": "단정한, 고요한 풍경",
     "color": "Green",
-    "location": "Can be purchased from the Small Jar Bazaar for 700 murk.",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"단정한, 고요한 풍경\",\"color\":\"Green\",\"type\":\"shop\",\"location\":\"Can be purchased from the Small Jar Bazaar for 700 murk.\",\"effects\":[7030900,7000202]}"
+    "image": "/src/assets/images/relics/green/2.webp"
   },
   {
-    "id": 1070,
+    "id": 22,
+    "name": "단정한, 고요한 풍경",
+    "nameOrNull": "단정한, 고요한 풍경",
+    "color": "Green",
+    "image": "/src/assets/images/relics/green/5.webp"
+  },
+  {
+    "id": 23,
+    "name": "단정한, 고요한 풍경",
+    "nameOrNull": "단정한, 고요한 풍경",
+    "color": "Green",
+    "image": "/src/assets/images/relics/green/8.webp"
+  },
+  {
+    "id": 24,
+    "name": "웅장한, 고요한 풍경",
+    "nameOrNull": "웅장한, 고요한 풍경",
+    "color": "Green",
+    "image": "/src/assets/images/relics/green/3.webp"
+  },
+  {
+    "id": 25,
+    "name": "웅장한, 고요한 풍경",
+    "nameOrNull": "웅장한, 고요한 풍경",
+    "color": "Green",
+    "image": "/src/assets/images/relics/green/6.webp"
+  },
+  {
+    "id": 26,
+    "name": "웅장한, 고요한 풍경",
+    "nameOrNull": "웅장한, 고요한 풍경",
+    "color": "Green",
+    "image": "/src/assets/images/relics/green/9.webp"
+  },
+
+  {
+    "id": 27,
+    "name": "섬세한, 촉촉한 풍경",
+    "nameOrNull": "섬세한, 촉촉한 풍경",
+    "color": "Blue",
+    "image": "/src/assets/images/relics/blue/1.webp"
+  },
+  {
+    "id": 28,
+    "name": "섬세한, 촉촉한 풍경",
+    "nameOrNull": "섬세한, 촉촉한 풍경",
+    "color": "Blue",
+    "image": "/src/assets/images/relics/blue/4.webp"
+  },
+  {
+    "id": 29,
+    "name": "섬세한, 촉촉한 풍경",
+    "nameOrNull": "섬세한, 촉촉한 풍경",
+    "color": "Blue",
+    "image": "/src/assets/images/relics/blue/7.webp"
+  },
+  {
+    "id": 30,
     "name": "단정한, 촉촉한 풍경",
     "nameOrNull": "단정한, 촉촉한 풍경",
     "color": "Blue",
-    "location": "Can be purchased from the Small Jar Bazaar for 700 murk.",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"단정한, 촉촉한 풍경\",\"color\":\"Blue\",\"type\":\"shop\",\"location\":\"Can be purchased from the Small Jar Bazaar for 700 murk.\",\"effects\":[7030700,7000002]}"
+    "image": "/src/assets/images/relics/blue/2.webp"
   },
   {
-    "id": 1080,
-    "name": "단정한, 불타는 풍경",
-    "nameOrNull": "단정한, 불타는 풍경",
-    "color": "Red",
-    "location": "Can be purchased from the Small Jar Bazaar for 700 murk.",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"단정한, 불타는 풍경\",\"color\":\"Red\",\"type\":\"shop\",\"location\":\"Can be purchased from the Small Jar Bazaar for 700 murk.\",\"effects\":[7000901,7002600]}"
-  },
-  {
-    "id": 1090,
-    "name": "단정한, 고요한 풍경",
-    "nameOrNull": "단정한, 고요한 풍경",
-    "color": "Green",
-    "location": "Can be purchased from the Small Jar Bazaar for 700 murk.",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"단정한, 고요한 풍경\",\"color\":\"Green\",\"type\":\"shop\",\"location\":\"Can be purchased from the Small Jar Bazaar for 700 murk.\",\"effects\":[7000801,7002700]}"
-  },
-  {
-    "id": 1100,
-    "name": "단정한, 고요한 풍경",
-    "nameOrNull": "단정한, 고요한 풍경",
-    "color": "Green",
-    "location": "Can be purchased from the Small Jar Bazaar for 700 murk.",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"단정한, 고요한 풍경\",\"color\":\"Green\",\"type\":\"shop\",\"location\":\"Can be purchased from the Small Jar Bazaar for 700 murk.\",\"effects\":[7000801,7002800]}"
-  },
-  {
-    "id": 1110,
-    "name": "단정한, 불타는 풍경",
-    "nameOrNull": "단정한, 불타는 풍경",
-    "color": "Red",
-    "location": "Can be purchased from the Small Jar Bazaar for 700 murk.",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"단정한, 불타는 풍경\",\"color\":\"Red\",\"type\":\"shop\",\"location\":\"Can be purchased from the Small Jar Bazaar for 700 murk.\",\"effects\":[7000901,7002900]}"
-  },
-  {
-    "id": 1120,
-    "name": "단정한, 불타는 풍경",
-    "nameOrNull": "단정한, 불타는 풍경",
-    "color": "Red",
-    "location": "Can be purchased from the Small Jar Bazaar for 700 murk.",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"단정한, 불타는 풍경\",\"color\":\"Red\",\"type\":\"shop\",\"location\":\"Can be purchased from the Small Jar Bazaar for 700 murk.\",\"effects\":[7040500,7121000]}"
-  },
-  {
-    "id": 1130,
-    "name": "단정한, 고요한 풍경",
-    "nameOrNull": "단정한, 고요한 풍경",
-    "color": "Green",
-    "location": "Can be purchased from the Small Jar Bazaar for 700 murk.",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"단정한, 고요한 풍경\",\"color\":\"Green\",\"type\":\"shop\",\"location\":\"Can be purchased from the Small Jar Bazaar for 700 murk.\",\"effects\":[7010200,7090100]}"
-  },
-  {
-    "id": 1140,
-    "name": "단정한, 빛나는 풍경",
-    "nameOrNull": "단정한, 빛나는 풍경",
-    "color": "Yellow",
-    "location": "Can be purchased from the Small Jar Bazaar for 700 murk.",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"단정한, 빛나는 풍경\",\"color\":\"Yellow\",\"type\":\"shop\",\"location\":\"Can be purchased from the Small Jar Bazaar for 700 murk.\",\"effects\":[7003000,7003400]}"
-  },
-  {
-    "id": 1150,
-    "name": "단정한, 빛나는 풍경",
-    "nameOrNull": "단정한, 빛나는 풍경",
-    "color": "Yellow",
-    "location": "Can be purchased from the Small Jar Bazaar for 700 murk.",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"단정한, 빛나는 풍경\",\"color\":\"Yellow\",\"type\":\"shop\",\"location\":\"Can be purchased from the Small Jar Bazaar for 700 murk.\",\"effects\":[7003100,7003500]}"
-  },
-  {
-    "id": 1160,
+    "id": 31,
     "name": "단정한, 촉촉한 풍경",
     "nameOrNull": "단정한, 촉촉한 풍경",
     "color": "Blue",
-    "location": "Can be purchased from the Small Jar Bazaar for 700 murk.",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"단정한, 촉촉한 풍경\",\"color\":\"Blue\",\"type\":\"shop\",\"location\":\"Can be purchased from the Small Jar Bazaar for 700 murk.\",\"effects\":[7003200,7003600]}"
+    "image": "/src/assets/images/relics/blue/5.webp"
   },
   {
-    "id": 1170,
+    "id": 32,
     "name": "단정한, 촉촉한 풍경",
     "nameOrNull": "단정한, 촉촉한 풍경",
     "color": "Blue",
-    "location": "Can be purchased from the Small Jar Bazaar for 700 murk.",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"단정한, 촉촉한 풍경\",\"color\":\"Blue\",\"type\":\"shop\",\"location\":\"Can be purchased from the Small Jar Bazaar for 700 murk.\",\"effects\":[7000102,7003300]}"
+    "image": "/src/assets/images/relics/blue/8.webp"
   },
   {
-    "id": 1180,
-    "name": "웅장한, 불타는 풍경",
-    "nameOrNull": "웅장한, 불타는 풍경",
-    "color": "Red",
-    "location": "Can be purchased from the Small Jar Bazaar for 1000 murk.",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"웅장한, 불타는 풍경\",\"color\":\"Red\",\"type\":\"shop\",\"location\":\"Can be purchased from the Small Jar Bazaar for 1000 murk.\",\"effects\":[7010500,7000301,7000401]}"
-  },
-  {
-    "id": 1190,
+    "id": 33,
     "name": "웅장한, 촉촉한 풍경",
     "nameOrNull": "웅장한, 촉촉한 풍경",
     "color": "Blue",
-    "location": "Can be purchased from the Small Jar Bazaar for 1000 murk.",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"웅장한, 촉촉한 풍경\",\"color\":\"Blue\",\"type\":\"shop\",\"location\":\"Can be purchased from the Small Jar Bazaar for 1000 murk.\",\"effects\":[7033400,7000001,7000201]}"
+    "image": "/src/assets/images/relics/blue/3.webp"
   },
   {
-    "id": 1200,
-    "name": "웅장한, 고요한 풍경",
-    "nameOrNull": "웅장한, 고요한 풍경",
-    "color": "Green",
-    "location": "Can be purchased from the Small Jar Bazaar for 1000 murk.",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"웅장한, 고요한 풍경\",\"color\":\"Green\",\"type\":\"shop\",\"location\":\"Can be purchased from the Small Jar Bazaar for 1000 murk.\",\"effects\":[7290000,7000401,7000501]}"
-  },
-  {
-    "id": 1210,
-    "name": "웅장한, 고요한 풍경",
-    "nameOrNull": "웅장한, 고요한 풍경",
-    "color": "Yellow",
-    "location": "Can be purchased from the Small Jar Bazaar for 1000 murk.",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"웅장한, 고요한 풍경\",\"color\":\"Yellow\",\"type\":\"shop\",\"location\":\"Can be purchased from the Small Jar Bazaar for 1000 murk.\",\"effects\":[7032900,7000101,7000501]}"
-  },
-  {
-    "id": 1220,
-    "name": "웅장한, 빛나는 풍경",
-    "nameOrNull": "웅장한, 빛나는 풍경",
-    "color": "Yellow",
-    "location": "Can be purchased from the Small Jar Bazaar for 1000 murk.",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"웅장한, 빛나는 풍경\",\"color\":\"Yellow\",\"type\":\"shop\",\"location\":\"Can be purchased from the Small Jar Bazaar for 1000 murk.\",\"effects\":[7280000,7000201,7000401]}"
-  },
-  {
-    "id": 1230,
+    "id": 34,
     "name": "웅장한, 촉촉한 풍경",
     "nameOrNull": "웅장한, 촉촉한 풍경",
     "color": "Blue",
-    "location": "Can be purchased from the Small Jar Bazaar for 1000 murk.",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"웅장한, 촉촉한 풍경\",\"color\":\"Blue\",\"type\":\"shop\",\"location\":\"Can be purchased from the Small Jar Bazaar for 1000 murk.\",\"effects\":[7030000,7000001,7000301]}"
+    "image": "/src/assets/images/relics/blue/6.webp"
   },
   {
-    "id": 1240,
+    "id": 35,
     "name": "웅장한, 촉촉한 풍경",
     "nameOrNull": "웅장한, 촉촉한 풍경",
     "color": "Blue",
-    "location": "Can be purchased from the Small Jar Bazaar for 1000 murk.",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"웅장한, 촉촉한 풍경\",\"color\":\"Blue\",\"type\":\"shop\",\"location\":\"Can be purchased from the Small Jar Bazaar for 1000 murk.\",\"effects\":[7011200,7000601,7000701]}"
+    "image": "/src/assets/images/relics/blue/9.webp"
   },
   {
-    "id": 1250,
-    "name": "웅장한, 불타는 풍경",
-    "nameOrNull": "웅장한, 불타는 풍경",
-    "color": "Red",
-    "location": "Can be purchased from the Small Jar Bazaar for 1000 murk.",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"웅장한, 불타는 풍경\",\"color\":\"Red\",\"type\":\"shop\",\"location\":\"Can be purchased from the Small Jar Bazaar for 1000 murk.\",\"effects\":[7011700,7000401,7000701]}"
-  },
-  {
-    "id": 1260,
-    "name": "웅장한, 불타는 풍경",
-    "nameOrNull": "웅장한, 불타는 풍경",
-    "color": "Red",
-    "location": "Can be purchased from the Small Jar Bazaar for 1000 murk.",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"웅장한, 불타는 풍경\",\"color\":\"Red\",\"type\":\"shop\",\"location\":\"Can be purchased from the Small Jar Bazaar for 1000 murk.\",\"effects\":[7110000,7120900,7230000]}"
-  },
-  {
-    "id": 1270,
-    "name": "웅장한, 고요한 풍경",
-    "nameOrNull": "웅장한, 고요한 풍경",
-    "color": "Green",
-    "location": "Can be purchased from the Small Jar Bazaar for 1000 murk.",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"웅장한, 고요한 풍경\",\"color\":\"Green\",\"type\":\"shop\",\"location\":\"Can be purchased from the Small Jar Bazaar for 1000 murk.\",\"effects\":[7005600,7000001,7001001]}"
-  },
-  {
-    "id": 1400,
-    "name": "웅장한, 촉촉한 풍경",
-    "nameOrNull": "웅장한, 촉촉한 풍경",
-    "color": "Blue",
-    "location": "Can be purchased at the Collector Signboard for 3 sovereign sigil.",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"웅장한, 촉촉한 풍경\",\"color\":\"Blue\",\"type\":\"shop\",\"location\":\"Can be purchased at the Collector Signboard for 3 sovereign sigil.\",\"effects\":[7010500,7122900,7001602]}"
-  },
-  {
-    "id": 1410,
-    "name": "웅장한, 불타는 풍경",
-    "nameOrNull": "웅장한, 불타는 풍경",
-    "color": "Red",
-    "location": "Can be purchased at the Collector Signboard for 3 sovereign sigil.",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"웅장한, 불타는 풍경\",\"color\":\"Red\",\"type\":\"shop\",\"location\":\"Can be purchased at the Collector Signboard for 3 sovereign sigil.\",\"effects\":[7033400,7030600,7000202]}"
-  },
-  {
-    "id": 1420,
-    "name": "웅장한, 고요한 풍경",
-    "nameOrNull": "웅장한, 고요한 풍경",
-    "color": "Green",
-    "location": "Can be purchased at the Collector Signboard for 3 sovereign sigil.",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"웅장한, 고요한 풍경\",\"color\":\"Green\",\"type\":\"shop\",\"location\":\"Can be purchased at the Collector Signboard for 3 sovereign sigil.\",\"effects\":[7031800,7040200,7000801]}"
-  },
-  {
-    "id": 1430,
-    "name": "웅장한, 고요한 풍경",
-    "nameOrNull": "웅장한, 고요한 풍경",
-    "color": "Green",
-    "location": "Can be purchased at the Collector Signboard for 3 sovereign sigil.",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"웅장한, 고요한 풍경\",\"color\":\"Green\",\"type\":\"shop\",\"location\":\"Can be purchased at the Collector Signboard for 3 sovereign sigil.\",\"effects\":[7082500,7060100,7001500]}"
-  },
-  {
-    "id": 1440,
-    "name": "웅장한, 불타는 풍경",
-    "nameOrNull": "웅장한, 불타는 풍경",
-    "color": "Red",
-    "location": "Can be purchased at the Collector Signboard for 3 sovereign sigil.",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"웅장한, 불타는 풍경\",\"color\":\"Red\",\"type\":\"shop\",\"location\":\"Can be purchased at the Collector Signboard for 3 sovereign sigil.\",\"effects\":[7034600,7260000,7000902]}"
-  },
-  {
-    "id": 1450,
-    "name": "웅장한, 빛나는 풍경",
-    "nameOrNull": "웅장한, 빛나는 풍경",
-    "color": "Yellow",
-    "location": "Can be purchased at the Collector Signboard for 3 sovereign sigil.",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"웅장한, 빛나는 풍경\",\"color\":\"Yellow\",\"type\":\"shop\",\"location\":\"Can be purchased at the Collector Signboard for 3 sovereign sigil.\",\"effects\":[7310000,7332300,7000202]}"
-  },
-  {
-    "id": 1460,
-    "name": "웅장한, 촉촉한 풍경",
-    "nameOrNull": "웅장한, 촉촉한 풍경",
-    "color": "Blue",
-    "location": "Can be purchased at the Collector Signboard for 3 sovereign sigil.",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"웅장한, 촉촉한 풍경\",\"color\":\"Blue\",\"type\":\"shop\",\"location\":\"Can be purchased at the Collector Signboard for 3 sovereign sigil.\",\"effects\":[7031200,7050100,7126000]}"
-  },
-  {
-    "id": 1470,
-    "name": "웅장한, 빛나는 풍경",
-    "nameOrNull": "웅장한, 빛나는 풍경",
-    "color": "Yellow",
-    "location": "Can be purchased at the Collector Signboard for 3 sovereign sigil.",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"웅장한, 빛나는 풍경\",\"color\":\"Yellow\",\"type\":\"shop\",\"location\":\"Can be purchased at the Collector Signboard for 3 sovereign sigil.\",\"effects\":[7034400,7036100,7030600]}"
-  },
-  {
-    "id": 1480,
-    "name": "웅장한, 불타는 풍경",
-    "nameOrNull": "웅장한, 불타는 풍경",
-    "color": "Red",
-    "location": "Can be purchased at the Collector Signboard for 3 sovereign sigil.",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"웅장한, 불타는 풍경\",\"color\":\"Red\",\"type\":\"shop\",\"location\":\"Can be purchased at the Collector Signboard for 3 sovereign sigil.\",\"effects\":[7012200,7012300,7000002]}"
-  },
-  {
-    "id": 1490,
-    "name": "웅장한, 고요한 풍경",
-    "nameOrNull": "웅장한, 고요한 풍경",
-    "color": "Green",
-    "location": "Can be purchased at the Collector Signboard for 3 sovereign sigil.",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"웅장한, 고요한 풍경\",\"color\":\"Green\",\"type\":\"shop\",\"location\":\"Can be purchased at the Collector Signboard for 3 sovereign sigil.\",\"effects\":[7006000,7040000,7001002]}"
-  },
-  {
-    "id": 1500,
-    "name": "웅장한, 불타는 풍경",
-    "nameOrNull": "웅장한, 불타는 풍경",
-    "color": "Red",
-    "location": "Can be purchased at the Collector Signboard for 3 sovereign sigil.",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"웅장한, 불타는 풍경\",\"color\":\"Red\",\"type\":\"shop\",\"location\":\"Can be purchased at the Collector Signboard for 3 sovereign sigil.\",\"effects\":[7006100,7100100,7000202]}"
-  },
-  {
-    "id": 1510,
-    "name": "웅장한, 빛나는 풍경",
-    "nameOrNull": "웅장한, 빛나는 풍경",
-    "color": "Yellow",
-    "location": "Can be purchased at the Collector Signboard for 3 sovereign sigil.",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"웅장한, 빛나는 풍경\",\"color\":\"Yellow\",\"type\":\"shop\",\"location\":\"Can be purchased at the Collector Signboard for 3 sovereign sigil.\",\"effects\":[7060000,7070000,7120900]}"
-  },
-  {
-    "id": 1520,
-    "name": "웅장한, 촉촉한 풍경",
-    "nameOrNull": "웅장한, 촉촉한 풍경",
-    "color": "Blue",
-    "location": "Can be purchased at the Collector Signboard for 3 sovereign sigil.",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"웅장한, 촉촉한 풍경\",\"color\":\"Blue\",\"type\":\"shop\",\"location\":\"Can be purchased at the Collector Signboard for 3 sovereign sigil.\",\"effects\":[7126000,7126000,7126000]}"
-  },
+  "id": 36,
+  "name": "섬세한, 불타는 혼경",
+  "nameOrNull": "섬세한, 불타는 혼경",
+  "color": "Red",
+  "image": "/src/assets/images/relics/red/10.webp"
+},
+{
+  "id": 37,
+  "name": "섬세한, 불타는 혼경",
+  "nameOrNull": "섬세한, 불타는 혼경",
+  "color": "Red",
+  "image": "/src/assets/images/relics/red/13.webp"
+},
+{
+  "id": 38,
+  "name": "섬세한, 불타는 혼경",
+  "nameOrNull": "섬세한, 불타는 혼경",
+  "color": "Red",
+  "image": "/src/assets/images/relics/red/16.webp"
+},
+{
+  "id": 39,
+  "name": "단정한, 불타는 혼경",
+  "nameOrNull": "단정한, 불타는 혼경",
+  "color": "Red",
+  "image": "/src/assets/images/relics/red/11.webp"
+},
+{
+  "id": 40,
+  "name": "단정한, 불타는 혼경",
+  "nameOrNull": "단정한, 불타는 혼경",
+  "color": "Red",
+  "image": "/src/assets/images/relics/red/14.webp"
+},
+{
+  "id": 41,
+  "name": "단정한, 불타는 혼경",
+  "nameOrNull": "단정한, 불타는 혼경",
+  "color": "Red",
+  "image": "/src/assets/images/relics/red/17.webp"
+},
+{
+  "id": 42,
+  "name": "웅장한, 불타는 혼경",
+  "nameOrNull": "웅장한, 불타는 혼경",
+  "color": "Red",
+  "image": "/src/assets/images/relics/red/12.webp"
+},
+{
+  "id": 43,
+  "name": "웅장한, 불타는 혼경",
+  "nameOrNull": "웅장한, 불타는 혼경",
+  "color": "Red",
+  "image": "/src/assets/images/relics/red/15.webp"
+},
+{
+  "id": 44,
+  "name": "웅장한, 불타는 혼경",
+  "nameOrNull": "웅장한, 불타는 혼경",
+  "color": "Red",
+  "image": "/src/assets/images/relics/red/18.webp"
+},
+
+{
+  "id": 45,
+  "name": "섬세한, 빛나는 혼경",
+  "nameOrNull": "섬세한, 빛나는 혼경",
+  "color": "Yellow",
+  "image": "/src/assets/images/relics/yellow/10.webp"
+},
+{
+  "id": 46,
+  "name": "섬세한, 빛나는 혼경",
+  "nameOrNull": "섬세한, 빛나는 혼경",
+  "color": "Yellow",
+  "image": "/src/assets/images/relics/yellow/13.webp"
+},
+{
+  "id": 47,
+  "name": "섬세한, 빛나는 혼경",
+  "nameOrNull": "섬세한, 빛나는 혼경",
+  "color": "Yellow",
+  "image": "/src/assets/images/relics/yellow/16.webp"
+},
+{
+  "id": 48,
+  "name": "단정한, 빛나는 혼경",
+  "nameOrNull": "단정한, 빛나는 혼경",
+  "color": "Yellow",
+  "image": "/src/assets/images/relics/yellow/11.webp"
+},
+{
+  "id": 49,
+  "name": "단정한, 빛나는 혼경",
+  "nameOrNull": "단정한, 빛나는 혼경",
+  "color": "Yellow",
+  "image": "/src/assets/images/relics/yellow/14.webp"
+},
+{
+  "id": 50,
+  "name": "단정한, 빛나는 혼경",
+  "nameOrNull": "단정한, 빛나는 혼경",
+  "color": "Yellow",
+  "image": "/src/assets/images/relics/yellow/17.webp"
+},
+{
+  "id": 51,
+  "name": "웅장한, 빛나는 혼경",
+  "nameOrNull": "웅장한, 빛나는 혼경",
+  "color": "Yellow",
+  "image": "/src/assets/images/relics/yellow/12.webp"
+},
+{
+  "id": 52,
+  "name": "웅장한, 빛나는 혼경",
+  "nameOrNull": "웅장한, 빛나는 혼경",
+  "color": "Yellow",
+  "image": "/src/assets/images/relics/yellow/15.webp"
+},
+{
+  "id": 53,
+  "name": "웅장한, 빛나는 혼경",
+  "nameOrNull": "웅장한, 빛나는 혼경",
+  "color": "Yellow",
+  "image": "/src/assets/images/relics/yellow/18.webp"
+},
+
+{
+  "id": 54,
+  "name": "섬세한, 고요한 혼경",
+  "nameOrNull": "섬세한, 고요한 혼경",
+  "color": "Green",
+  "image": "/src/assets/images/relics/green/10.webp"
+},
+{
+  "id": 55,
+  "name": "섬세한, 고요한 혼경",
+  "nameOrNull": "섬세한, 고요한 혼경",
+  "color": "Green",
+  "image": "/src/assets/images/relics/green/13.webp"
+},
+{
+  "id": 56,
+  "name": "섬세한, 고요한 혼경",
+  "nameOrNull": "섬세한, 고요한 혼경",
+  "color": "Green",
+  "image": "/src/assets/images/relics/green/16.webp"
+},
+{
+  "id": 57,
+  "name": "단정한, 고요한 혼경",
+  "nameOrNull": "단정한, 고요한 혼경",
+  "color": "Green",
+  "image": "/src/assets/images/relics/green/11.webp"
+},
+{
+  "id": 58,
+  "name": "단정한, 고요한 혼경",
+  "nameOrNull": "단정한, 고요한 혼경",
+  "color": "Green",
+  "image": "/src/assets/images/relics/green/14.webp"
+},
+{
+  "id": 59,
+  "name": "단정한, 고요한 혼경",
+  "nameOrNull": "단정한, 고요한 혼경",
+  "color": "Green",
+  "image": "/src/assets/images/relics/green/17.webp"
+},
+{
+  "id": 60,
+  "name": "웅장한, 고요한 혼경",
+  "nameOrNull": "웅장한, 고요한 혼경",
+  "color": "Green",
+  "image": "/src/assets/images/relics/green/12.webp"
+},
+{
+  "id": 61,
+  "name": "웅장한, 고요한 혼경",
+  "nameOrNull": "웅장한, 고요한 혼경",
+  "color": "Green",
+  "image": "/src/assets/images/relics/green/15.webp"
+},
+{
+  "id": 62,
+  "name": "웅장한, 고요한 혼경",
+  "nameOrNull": "웅장한, 고요한 혼경",
+  "color": "Green",
+  "image": "/src/assets/images/relics/green/18.webp"
+},
+
+{
+  "id": 63,
+  "name": "섬세한, 촉촉한 혼경",
+  "nameOrNull": "섬세한, 촉촉한 혼경",
+  "color": "Blue",
+  "image": "/src/assets/images/relics/blue/10.webp"
+},
+{
+  "id": 64,
+  "name": "섬세한, 촉촉한 혼경",
+  "nameOrNull": "섬세한, 촉촉한 혼경",
+  "color": "Blue",
+  "image": "/src/assets/images/relics/blue/13.webp"
+},
+{
+  "id": 65,
+  "name": "섬세한, 촉촉한 혼경",
+  "nameOrNull": "섬세한, 촉촉한 혼경",
+  "color": "Blue",
+  "image": "/src/assets/images/relics/blue/16.webp"
+},
+{
+  "id": 66,
+  "name": "단정한, 촉촉한 혼경",
+  "nameOrNull": "단정한, 촉촉한 혼경",
+  "color": "Blue",
+  "image": "/src/assets/images/relics/blue/11.webp"
+},
+{
+  "id": 67,
+  "name": "단정한, 촉촉한 혼경",
+  "nameOrNull": "단정한, 촉촉한 혼경",
+  "color": "Blue",
+  "image": "/src/assets/images/relics/blue/14.webp"
+},
+{
+  "id": 68,
+  "name": "단정한, 촉촉한 혼경",
+  "nameOrNull": "단정한, 촉촉한 혼경",
+  "color": "Blue",
+  "image": "/src/assets/images/relics/blue/17.webp"
+},
+{
+  "id": 69,
+  "name": "웅장한, 촉촉한 혼경",
+  "nameOrNull": "웅장한, 촉촉한 혼경",
+  "color": "Blue",
+  "image": "/src/assets/images/relics/blue/12.webp"
+},
+{
+  "id": 70,
+  "name": "웅장한, 촉촉한 혼경",
+  "nameOrNull": "웅장한, 촉촉한 혼경",
+  "color": "Blue",
+  "image": "/src/assets/images/relics/blue/15.webp"
+},
+{
+  "id": 71,
+  "name": "웅장한, 촉촉한 혼경",
+  "nameOrNull": "웅장한, 촉촉한 혼경",
+  "color": "Blue",
+  "image": "/src/assets/images/relics/blue/18.webp"
+},
   {
     "id": 2000,
     "name": "짐승의 밤",

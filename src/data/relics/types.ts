@@ -5,6 +5,7 @@ export type Relic = {
   name: string;
   nameOrNull?: string;
   color: RelicColor;
+  image?: string;
   location?: string;
   type?: string;
   effects?: number[];

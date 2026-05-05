@@ -6,9 +6,24 @@ import { relicEffectsKo, relicWeapons, type RelicEffect, type RelicWeapon } from
 type StatKey = 'STR' | 'DEX' | 'INT' | 'FAI' | 'ARC' | 'VIG' | 'MND' | 'END';
 type DamageKey = 'Phys' | 'Magic' | 'Fire' | 'Lightning' | 'Holy';
 type ResourceKey = 'HP' | 'FP' | 'Stamina';
+type CombatMetric = 'attack' | 'reduction';
 
 type StatMap = Record<StatKey, number>;
 type ResourceAdjustment = Record<ResourceKey, { flat: number; percent: number }>;
+type SelectedEffect = { id: string | number; valueIndex: number };
+type CombatModifier = {
+  metric: CombatMetric;
+  targets: string[];
+  rates: number[];
+  direction: 1 | -1;
+};
+type CombatSummaryRow = {
+  target: string;
+  metric: CombatMetric;
+  factor: number;
+  percent: number;
+  count: number;
+};
 
 const statKeys: StatKey[] = ['STR', 'DEX', 'INT', 'FAI', 'ARC', 'VIG', 'MND', 'END'];
 const attackStats: StatKey[] = ['STR', 'DEX', 'INT', 'FAI', 'ARC'];
@@ -32,6 +47,7 @@ const damageLabels: Record<DamageKey, string> = {
   Lightning: '벼락',
   Holy: '신성',
 };
+const elementalDamageLabels = ['마력', '화염', '벼락', '신성'];
 
 const statusLabels: Record<string, string> = {
   Poison: '독',
@@ -267,6 +283,249 @@ function getEffectSearchText(effect: RelicEffect) {
   return `${effect.name} ${effect.desc ?? ''} ${effect.category ?? ''}`.toLowerCase();
 }
 
+function formatPercent(value: number) {
+  const rounded = Math.round(value * 10) / 10;
+  return Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(1);
+}
+
+function formatMultiplier(value: number) {
+  const rounded = Math.round(value * 1000) / 1000;
+  return Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(3).replace(/0+$/g, '').replace(/\.$/g, '');
+}
+
+function getEffectStackGroup(effect: RelicEffect) {
+  return effect.name
+    .replace(/\+\d+$/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function isSameOptionStackBlocked(effect: RelicEffect) {
+  return effect.stackable === false || /같은 효과끼리는 중첩되지 않습니다/.test(effect.desc ?? '');
+}
+
+function extractPercentRates(value: string) {
+  return [...value.matchAll(/(\d+(?:\.\d+)?)\s*%/g)].map((match) => Number(match[1]));
+}
+
+function normalizeCombatTargets(rawTarget: string, metric: CombatMetric) {
+  const cleaned = rawTarget
+    .replace(/\[[^\]]+\]/g, ' ')
+    .replace(/.*동안\s*/g, '')
+    .replace(/.*후\s*/g, '')
+    .replace(/.*시\s*/g, '')
+    .replace(/.*때\s*/g, '')
+    .replace(/[,\s]+$/g, '')
+    .trim();
+  const suffix = metric === 'attack' ? '공격력' : '경감률';
+
+  if (!cleaned || cleaned === '자신과 주위 아군의' || cleaned === '주위 아군의') {
+    return [`전체 ${suffix}`];
+  }
+
+  if (cleaned.includes('물리/마력/화염/벼락/신성')) {
+    return ['물리', ...elementalDamageLabels].map((label) => `${label} ${suffix}`);
+  }
+
+  if (cleaned.includes('마력/화염/벼락/신성') || cleaned.includes('속성')) {
+    return elementalDamageLabels.map((label) => `${label} ${suffix}`);
+  }
+
+  for (const label of ['물리', '마력', '화염', '벼락', '신성']) {
+    if (cleaned.includes(label)) return [`${label} ${suffix}`];
+  }
+
+  const knownTargets = [
+    '근접',
+    '양손 잡기',
+    '이도류',
+    '전투 기술',
+    '캐릭터 스킬',
+    '마술/기도',
+    '마술',
+    '기도',
+    '차지 강공격',
+    '차지 공격',
+    '점프 공격',
+    '대시 공격',
+    '구르기 공격',
+    '가드 카운터',
+    '관통 카운터',
+    '치명적인 일격',
+    '사격',
+    '화살/볼트',
+    '투척 항아리',
+    '투척 나이프',
+    '휘석/중력석 아이템',
+    '포효와 브레스',
+    '조향술',
+  ];
+  const known = knownTargets.find((target) => cleaned.includes(target));
+  if (!known && /(받으면|발생하면|있을|미만|최대|쓰러뜨릴|쓰러뜨리|명중하면|사용하면)/.test(cleaned)) {
+    return [`전체 ${suffix}`];
+  }
+
+  return [`${known ?? cleaned} ${suffix}`];
+}
+
+function parseCombatModifiers(effect: RelicEffect): CombatModifier[] {
+  const text = `${effect.name}. ${effect.desc ?? ''}`;
+  const modifiers: CombatModifier[] = [];
+  const sentences = text.split(/[.。]/g).map((sentence) => sentence.trim()).filter(Boolean);
+
+  for (const sentence of sentences) {
+    const pattern =
+      /([가-힣A-Za-z0-9/·,\s\[\]]{0,52}?)(공격력|경감률)(?:이|가|을|를)?\s*((?:\d+(?:\.\d+)?\s*%\s*(?:\/\s*)?)+)\s*(상승|저하|감소|증가|낮춥니다?)/g;
+    const inheritedAction = /(상승|저하|감소|증가|낮춥니다?)/.exec(sentence)?.[1];
+    const candidateSentences = [
+      sentence,
+      ...(inheritedAction
+        ? sentence
+            .split(',')
+            .map((part) => part.trim())
+            .filter((part) => part && !/(상승|저하|감소|증가|낮춥니다?)/.test(part))
+            .map((part) => `${part} ${inheritedAction}`)
+        : []),
+    ];
+    const seenSegments = new Set<string>();
+
+    for (const candidate of candidateSentences) {
+      for (const match of candidate.matchAll(pattern)) {
+        const rates = extractPercentRates(match[3]);
+        if (!rates.length) continue;
+
+        const metric: CombatMetric = match[2] === '공격력' ? 'attack' : 'reduction';
+        const action = match[4];
+        const direction: 1 | -1 = action.includes('상승') || action.includes('증가') ? 1 : -1;
+        const targets = normalizeCombatTargets(match[1], metric);
+        const segmentKey = `${metric}:${targets.join('/')}:${rates.join('/')}:${direction}`;
+        if (seenSegments.has(segmentKey)) continue;
+
+        seenSegments.add(segmentKey);
+        modifiers.push({
+          metric,
+          targets,
+          rates,
+          direction,
+        });
+      }
+    }
+
+    if (!sentence.includes('경감률') && /받는 피해|피해를/.test(sentence)) {
+      const rates = extractPercentRates(sentence);
+      if (!rates.length) continue;
+
+      const direction: 1 | -1 = /증가|더 받/.test(sentence) ? -1 : 1;
+      let target = '';
+      for (const label of ['물리', '마력', '화염', '벼락', '신성']) {
+        if (sentence.includes(label)) target = label;
+      }
+
+      modifiers.push({
+        metric: 'reduction',
+        targets: target ? [`${target} 경감률`] : ['전체 경감률'],
+        rates,
+        direction,
+      });
+    }
+  }
+
+  return modifiers;
+}
+
+function getCombatModifierValueCount(effect: RelicEffect) {
+  return Math.max(1, ...parseCombatModifiers(effect).map((modifier) => modifier.rates.length));
+}
+
+function getModifierRate(modifier: CombatModifier, valueIndex: number) {
+  return modifier.rates[Math.min(valueIndex, modifier.rates.length - 1)] ?? 0;
+}
+
+function getEffectImpactSummary(effect: RelicEffect, valueIndex: number) {
+  const parts = parseCombatModifiers(effect).map((modifier) => {
+    const rate = getModifierRate(modifier, valueIndex);
+    const sign = modifier.direction > 0 ? '+' : '-';
+    return `${modifier.targets.join('/')} ${sign}${formatPercent(rate)}%`;
+  });
+
+  return parts.join(' · ');
+}
+
+function mergeCombatSummary(selectedEffects: Array<{ effect: RelicEffect; valueIndex: number }>) {
+  const attack = new Map<string, { factor: number; count: number }>();
+  const reduction = new Map<string, { damageTakenFactor: number; count: number }>();
+
+  for (const { effect, valueIndex } of selectedEffects) {
+    for (const modifier of parseCombatModifiers(effect)) {
+      const rate = getModifierRate(modifier, valueIndex) / 100;
+
+      for (const target of modifier.targets) {
+        if (modifier.metric === 'attack') {
+          const current = attack.get(target) ?? { factor: 1, count: 0 };
+          current.factor *= Math.max(0, 1 + modifier.direction * rate);
+          current.count += 1;
+          attack.set(target, current);
+        } else {
+          const current = reduction.get(target) ?? { damageTakenFactor: 1, count: 0 };
+          current.damageTakenFactor *= Math.max(0, modifier.direction > 0 ? 1 - rate : 1 + rate);
+          current.count += 1;
+          reduction.set(target, current);
+        }
+      }
+    }
+  }
+
+  const attackRows: CombatSummaryRow[] = [...attack.entries()].map(([target, value]) => ({
+    target,
+    metric: 'attack',
+    factor: value.factor,
+    percent: (value.factor - 1) * 100,
+    count: value.count,
+  }));
+  const reductionRows: CombatSummaryRow[] = [...reduction.entries()].map(([target, value]) => ({
+    target,
+    metric: 'reduction',
+    factor: value.damageTakenFactor,
+    percent: (1 - value.damageTakenFactor) * 100,
+    count: value.count,
+  }));
+
+  return {
+    attackRows: attackRows.sort((a, b) => a.target.localeCompare(b.target, 'ko')),
+    reductionRows: reductionRows.sort((a, b) => a.target.localeCompare(b.target, 'ko')),
+  };
+}
+
+function getWeaponDamageAttackFactor(summaryRows: CombatSummaryRow[], damageKey: DamageKey) {
+  const damageTarget = `${damageLabels[damageKey]} 공격력`;
+  return summaryRows.reduce((factor, row) => {
+    if (row.target === '전체 공격력' || row.target === '근접 공격력' || row.target === damageTarget) {
+      return factor * row.factor;
+    }
+
+    return factor;
+  }, 1);
+}
+
+function applyAttackSummaryToWeapon(
+  attack: ReturnType<typeof calculateWeaponAttack>,
+  attackRows: CombatSummaryRow[],
+) {
+  const breakdown: Partial<Record<DamageKey, number>> = {};
+  let total = 0;
+
+  for (const key of damageKeys) {
+    const value = attack.breakdown[key];
+    if (!value) continue;
+
+    const adjusted = Math.trunc(value * getWeaponDamageAttackFactor(attackRows, key));
+    breakdown[key] = adjusted;
+    total += adjusted;
+  }
+
+  return { breakdown, total };
+}
+
 function StatusBar({
   label,
   base,
@@ -301,7 +560,7 @@ function StatsCalculatorPage({ searchQuery }: { searchQuery: string }) {
   const [selectedCharacter, setSelectedCharacter] = useState(characterNames[0]);
   const [selectedLevel, setSelectedLevel] = useState(1);
   const [effectQuery, setEffectQuery] = useState('');
-  const [selectedEffectIds, setSelectedEffectIds] = useState<Array<string | number>>([]);
+  const [selectedEffectEntries, setSelectedEffectEntries] = useState<SelectedEffect[]>([]);
   const [weaponQuery, setWeaponQuery] = useState('');
   const [manualStats, setManualStats] = useState<StatMap>(emptyStats);
   const [twoHanding, setTwoHanding] = useState(false);
@@ -310,10 +569,25 @@ function StatsCalculatorPage({ searchQuery }: { searchQuery: string }) {
   const baseStats = statMapFromStats(baseStatsEntry);
 
   const selectedEffects = useMemo(
-    () => relicEffectsKo.filter((effect) => selectedEffectIds.includes(effect.id)),
-    [selectedEffectIds],
+    () =>
+      selectedEffectEntries
+        .map((entry) => ({
+          effect: relicEffectsKo.find((effect) => effect.id === entry.id),
+          valueIndex: entry.valueIndex,
+        }))
+        .filter((entry): entry is { effect: RelicEffect; valueIndex: number } => Boolean(entry.effect)),
+    [selectedEffectEntries],
   );
-  const effectAdjustment = useMemo(() => mergeEffectAdjustments(selectedEffects), [selectedEffects]);
+  const selectedRelicEffects = useMemo(
+    () => selectedEffects.map((entry) => entry.effect),
+    [selectedEffects],
+  );
+  const effectAdjustment = useMemo(() => mergeEffectAdjustments(selectedRelicEffects), [selectedRelicEffects]);
+  const combatSummary = useMemo(() => mergeCombatSummary(selectedEffects), [selectedEffects]);
+  const combatOptionEffects = useMemo(
+    () => relicEffectsKo.filter((effect) => parseCombatModifiers(effect).length > 0),
+    [],
+  );
 
   const finalStats = useMemo(() => {
     const next = emptyStats();
@@ -333,12 +607,12 @@ function StatsCalculatorPage({ searchQuery }: { searchQuery: string }) {
 
   const effectMatches = useMemo(() => {
     const normalized = effectQuery.trim().toLowerCase();
-    if (!normalized) return relicEffectsKo.slice(0, 12);
+    if (!normalized) return combatOptionEffects.slice(0, 12);
 
-    return relicEffectsKo
+    return combatOptionEffects
       .filter((effect) => getEffectSearchText(effect).includes(normalized))
       .slice(0, 12);
-  }, [effectQuery]);
+  }, [combatOptionEffects, effectQuery]);
 
   const weapons = useMemo(() => {
     const normalized = (weaponQuery || searchQuery).trim().toLowerCase();
@@ -351,7 +625,8 @@ function StatsCalculatorPage({ searchQuery }: { searchQuery: string }) {
 
   const weaponRows = weapons.map((weapon) => {
     const baseAttack = calculateWeaponAttack(weapon, baseStats, twoHanding);
-    const finalAttack = calculateWeaponAttack(weapon, finalStats, twoHanding);
+    const statAttack = calculateWeaponAttack(weapon, finalStats, twoHanding);
+    const finalAttack = applyAttackSummaryToWeapon(statAttack, combatSummary.attackRows);
     return {
       weapon,
       baseAttack,
@@ -361,13 +636,45 @@ function StatsCalculatorPage({ searchQuery }: { searchQuery: string }) {
   });
 
   const addEffect = (effect: RelicEffect) => {
-    setSelectedEffectIds((current) =>
-      current.includes(effect.id) ? current : [...current, effect.id],
-    );
+    setSelectedEffectEntries((current) => {
+      if (current.some((entry) => entry.id === effect.id)) return current;
+
+      const stackGroup = getEffectStackGroup(effect);
+      if (
+        isSameOptionStackBlocked(effect) &&
+        current.some((entry) => {
+          const selected = relicEffectsKo.find((candidate) => candidate.id === entry.id);
+          return selected && isSameOptionStackBlocked(selected) && getEffectStackGroup(selected) === stackGroup;
+        })
+      ) {
+        return current;
+      }
+
+      return [...current, { id: effect.id, valueIndex: 0 }];
+    });
   };
 
   const removeEffect = (effectId: string | number) => {
-    setSelectedEffectIds((current) => current.filter((id) => id !== effectId));
+    setSelectedEffectEntries((current) => current.filter((entry) => entry.id !== effectId));
+  };
+
+  const updateEffectValue = (effectId: string | number, valueIndex: number) => {
+    setSelectedEffectEntries((current) =>
+      current.map((entry) => (entry.id === effectId ? { ...entry, valueIndex } : entry)),
+    );
+  };
+
+  const getDisabledReason = (effect: RelicEffect) => {
+    if (selectedEffectEntries.some((entry) => entry.id === effect.id)) return '선택됨';
+    if (!isSameOptionStackBlocked(effect)) return '';
+
+    const stackGroup = getEffectStackGroup(effect);
+    const blocked = selectedEffectEntries.some((entry) => {
+      const selected = relicEffectsKo.find((candidate) => candidate.id === entry.id);
+      return selected && isSameOptionStackBlocked(selected) && getEffectStackGroup(selected) === stackGroup;
+    });
+
+    return blocked ? '중첩 불가' : '';
   };
 
   return (
@@ -423,7 +730,7 @@ function StatsCalculatorPage({ searchQuery }: { searchQuery: string }) {
             <button
               type="button"
               onClick={() => {
-                setSelectedEffectIds([]);
+                setSelectedEffectEntries([]);
                 setManualStats(emptyStats());
               }}
             >
@@ -474,35 +781,95 @@ function StatsCalculatorPage({ searchQuery }: { searchQuery: string }) {
         <div className="calc-main">
           <section className="calc-panel">
             <div className="calc-section-heading">
-              <h3>활성 옵션</h3>
+              <h3>공격/경감 옵션</h3>
               <input
                 type="search"
                 value={effectQuery}
                 onChange={(event) => setEffectQuery(event.target.value)}
-                placeholder="옵션 검색..."
+                placeholder="공격력, 경감률 옵션 검색..."
               />
+            </div>
+
+            <div className="calc-combat-summary">
+              <div>
+                <strong>공격력</strong>
+                {combatSummary.attackRows.length ? (
+                  combatSummary.attackRows.map((row) => (
+                    <span key={`${row.metric}-${row.target}`}>
+                      {row.target} {row.percent >= 0 ? '+' : ''}
+                      {formatPercent(row.percent)}%
+                      <em>{row.count}개 곱연산</em>
+                    </span>
+                  ))
+                ) : (
+                  <p>적용된 공격력 옵션 없음</p>
+                )}
+              </div>
+              <div>
+                <strong>경감률</strong>
+                {combatSummary.reductionRows.length ? (
+                  combatSummary.reductionRows.map((row) => (
+                    <span key={`${row.metric}-${row.target}`}>
+                      {row.target} {row.percent >= 0 ? '+' : ''}
+                      {formatPercent(row.percent)}%
+                      <em>받는 피해 x{formatMultiplier(row.factor)}</em>
+                    </span>
+                  ))
+                ) : (
+                  <p>적용된 경감률 옵션 없음</p>
+                )}
+              </div>
             </div>
 
             <div className="calc-active-effects">
               {selectedEffects.length ? (
-                selectedEffects.map((effect) => (
-                  <button key={effect.id} type="button" onClick={() => removeEffect(effect.id)}>
-                    {effect.name}
-                    <span>삭제</span>
-                  </button>
-                ))
+                selectedEffects.map(({ effect, valueIndex }) => {
+                  const valueCount = getCombatModifierValueCount(effect);
+
+                  return (
+                    <div className="calc-active-effect-card" key={effect.id}>
+                      <button type="button" onClick={() => removeEffect(effect.id)}>
+                        {effect.name}
+                        <span>삭제</span>
+                      </button>
+                      {valueCount > 1 ? (
+                        <select
+                          value={valueIndex}
+                          onChange={(event) => updateEffectValue(effect.id, Number(event.target.value))}
+                        >
+                          {Array.from({ length: valueCount }, (_, index) => (
+                            <option key={index} value={index}>
+                              {getEffectImpactSummary(effect, index)}
+                            </option>
+                          ))}
+                        </select>
+                      ) : null}
+                      <small>{getEffectImpactSummary(effect, valueIndex)}</small>
+                    </div>
+                  );
+                })
               ) : (
                 <p>선택된 옵션 없음</p>
               )}
             </div>
 
             <div className="calc-effect-results">
-              {effectMatches.map((effect) => (
-                <button key={effect.id} type="button" onClick={() => addEffect(effect)}>
-                  <strong>{effect.name}</strong>
-                  <span>{effect.desc ?? ''}</span>
-                </button>
-              ))}
+              {effectMatches.map((effect) => {
+                const disabledReason = getDisabledReason(effect);
+
+                return (
+                  <button
+                    key={effect.id}
+                    type="button"
+                    onClick={() => addEffect(effect)}
+                    disabled={Boolean(disabledReason)}
+                  >
+                    <strong>{effect.name}</strong>
+                    <span>{effect.desc ?? ''}</span>
+                    <em>{disabledReason || getEffectImpactSummary(effect, 0)}</em>
+                  </button>
+                );
+              })}
             </div>
           </section>
 
@@ -539,9 +906,22 @@ function StatsCalculatorPage({ searchQuery }: { searchQuery: string }) {
                           <strong>{finalAttack.total}</strong>
                           {delta ? <span className={delta > 0 ? 'is-positive' : 'is-negative'}>{delta > 0 ? `+${delta}` : delta}</span> : null}
                         </td>
-                        {damageKeys.map((key) => (
-                          <td key={key}>{finalAttack.breakdown[key] ?? '-'}</td>
-                        ))}
+                        {damageKeys.map((key) => {
+                          const finalValue = finalAttack.breakdown[key];
+                          const baseValue = baseAttack.breakdown[key] ?? 0;
+                          const damageDelta = (finalValue ?? 0) - baseValue;
+
+                          return (
+                            <td key={key}>
+                              {finalValue ?? '-'}
+                              {damageDelta ? (
+                                <span className={damageDelta > 0 ? 'is-positive' : 'is-negative'}>
+                                  {damageDelta > 0 ? `+${damageDelta}` : damageDelta}
+                                </span>
+                              ) : null}
+                            </td>
+                          );
+                        })}
                         <td>
                           {Object.keys(status).length
                             ? Object.entries(status)
