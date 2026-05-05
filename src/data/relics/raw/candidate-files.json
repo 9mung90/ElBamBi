@@ -1,0 +1,162 @@
+[
+  {
+    "url": "https://relics.pro/assets/styles-T8TXN1p-.js",
+    "size": 319068,
+    "preview": "const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=[\"assets/buffs-CEK0YfGs.js\",\"assets/types-4NLhqcYa.js\",\"assets/effects-BO6LtXIt.js\",\"assets/items-D3sJ2TLC.js\",\"assets/weapons-dSd6emJz.js\",\"assets/skills-DVu0w78a.js\",\"assets/sorceries-KPp3wsrp.js\",\"assets/talismans-D3X9SMqQ.js\",\"assets/bosses"
+  },
+  {
+    "url": "https://relics.pro/assets/items-D3sJ2TLC.js",
+    "size": 57656,
+    "preview": "import{r}from\"./types-4NLhqcYa.js\";const l={1:{name:\"Antique\",color:\"Red\"},2:{name:\"Antique\",color:\"Red\"},3:{name:\"Antique\",color:\"Red\"},4:{name:\"Antique\",color:\"Red\"},5:{name:\"Antique\",color:\"Red\"},6:{name:\"Antique\",color:\"Red\"},10:{name:\"Murk\",color:\"Red\"},11:{name:\"Sovereign Sigil\",color:\"Red\"},2"
+  },
+  {
+    "url": "https://relics.pro/assets/types-4NLhqcYa.js",
+    "size": 2795,
+    "preview": "function i(a,n){typeof window<\"u\"&&(window.__loadedUtils||(window.__loadedUtils=new Set),window.__loadedUtils.add(a),window.__i18n&&window.__i18n(a,n))}const d={0:\"Any\",1:\"Wylder\",2:\"Guardian\",3:\"Ironeye\",4:\"Duchess\",5:\"Raider\",6:\"Revenant\",7:\"Recluse\",8:\"Executor\",9:\"Scholar\",10:\"Undertaker\"},l={0:"
+  },
+  {
+    "url": "https://relics.pro/assets/effects-BO6LtXIt.js",
+    "size": 151866,
+    "preview": "import{r as i}from\"./types-4NLhqcYa.js\";const o={1e4:{name:\"FP Restoration upon Successive Attacks\",category:\"Utility\",stackable:!0,desc:\"Restores 5% of max FP after continuous attacks. Only affects melee attacks.\"},10001:{name:\"Taking attacks improves attack power\",category:\"Offensive\",stackable:!1"
+  },
+  {
+    "url": "https://relics.pro/assets/builds-BJD8AWSH.js",
+    "size": 19754,
+    "preview": "import{d as G}from\"./pinia-CKNFHaXZ.js\";import{b as u,k as h}from\"./styles-T8TXN1p-.js\";const H=JSON.parse('[{\"id\":\"default-allround\",\"name\":\"General Build\",\"type\":\"preset\",\"author\":\"Relics.pro\",\"reference\":null,\"description\":\"A comprehensive baseline build that evaluates the most universally valuab"
+  },
+  {
+    "url": "https://relics.pro/assets/CharacterSelect-CwjuR1VG.js",
+    "size": 1720,
+    "preview": "import{s as m}from\"./index-BCjyUrgg.js\";import{_ as c}from\"./CharacterIcon.vue_vue_type_script_setup_true_lang-CzAbEpeo.js\";import{j as _,k as v,c as b,l as o,n as f,u as x,o as r,m as k,p as C,q as a,s as n,t as d,_ as y}from\"./styles-T8TXN1p-.js\";const V={class:\"flex items-center gap-3\"},B={class:"
+  },
+  {
+    "url": "https://relics.pro/assets/CharacterIcon.vue_vue_type_script_setup_true_lang-CzAbEpeo.js",
+    "size": 18945,
+    "preview": "import{j as g,k as l,m,o as n,ap as L,av as d}from\"./styles-T8TXN1p-.js\";const f=\"data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20width='96'%20height='96'%3e%3cpath%20fill='%23fff'%20d='m47.625%2020.438%203.602.308L54%2021v3h5l1%203a167%20167%200%200%200%204%202c4.34%203.809%208.336"
+  },
+  {
+    "url": "https://relics.pro/assets/BuildDetailsPage-vUtNpMpR.js",
+    "size": 136713,
+    "preview": "const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=[\"assets/RelicFinder-m4I3xijy.js\",\"assets/index-CWzymo-M.js\",\"assets/styles-T8TXN1p-.js\",\"assets/styles-CCaDhSbU.css\",\"assets/pinia-CKNFHaXZ.js\",\"assets/types-4NLhqcYa.js\",\"assets/CharacterSelect-CwjuR1VG.js\",\"assets/index-BCjyUrgg.js\",\"assets/"
+  },
+  {
+    "url": "https://relics.pro/assets/CompendiumPage-CcsKEnDC.js",
+    "size": 46328,
+    "preview": "const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=[\"assets/EffectsTab-B69iB_3r.js\",\"assets/styles-T8TXN1p-.js\",\"assets/styles-CCaDhSbU.css\",\"assets/rolls-y3yFs7RC.js\",\"assets/pinia-CKNFHaXZ.js\",\"assets/items-D3sJ2TLC.js\",\"assets/types-4NLhqcYa.js\",\"assets/effects-BO6LtXIt.js\",\"assets/buffs-CEK"
+  },
+  {
+    "url": "https://relics.pro/assets/bosses-BHJM77Lm.js",
+    "size": 82368,
+    "preview": "import{I as s,W as i,B as r,r as c}from\"./types-4NLhqcYa.js\";const l={902100600:{id:902100600,name:\"Black Knife Assassin\",npcs:[{id:21000020,type:2,threat:1,hp:[1699,2208,2718],dnScaling:{hp:[1.3,1.378,1.461,1.636,1.718],attackPower:[1.3,1.547,1.841,2.54,2.947]},runes:[22500,19500,15e3],mutationScal"
+  },
+  {
+    "url": "https://relics.pro/assets/weapons-dSd6emJz.js",
+    "size": 874120,
+    "preview": "import{r as t}from\"./types-4NLhqcYa.js\";const r={11e4:{id:11e4,name:\"Unarmed\",requiredLevel:0,weaponType:33,rarity:0,attackType:0,reinforceTypeId:0,attackElementCorrectId:1e4,scaling:{STR:50,DEX:50},baseDamage:{Phys:20},statusDamage:{},correctType:{Poison:10,Bloodloss:10,Sleep:0,Madness:0},physGuard"
+  },
+  {
+    "url": "https://relics.pro/assets/buffs-CEK0YfGs.js",
+    "size": 12898,
+    "preview": "import{r as n}from\"./types-4NLhqcYa.js\";const r={8e6:{id:8e6,name:\"Increased Maximum HP\",category:\"Attributes\",desc:\"Maximum HP raised by 10% / 15%.\",values:[10,15],stackable:!0,variants:[8000001]},801e4:{id:801e4,name:\"Increased Maximum FP\",category:\"Attributes\",desc:\"Maximum FP raised by 10% / 15%"
+  },
+  {
+    "url": "https://relics.pro/assets/talismans-D3X9SMqQ.js",
+    "size": 21849,
+    "preview": "import{T as t,R as s,r}from\"./types-4NLhqcYa.js\";const i={1e3:{id:1e3,name:\"Crimson Amber Medallion\",sortGroup:10,rarity:1,effects:[31e4],desc:\"A medallion with crimson amber inlaid. Boosts maximum HP.  The Erdtree's old sap becomes amber, treasured as the most precious of jewels in the age of Godfr"
+  },
+  {
+    "url": "https://relics.pro/assets/skills-DVu0w78a.js",
+    "size": 38559,
+    "preview": "import{S as n,A as a,r as i}from\"./types-4NLhqcYa.js\";const o={10:{id:10,name:\"No Skill\",type:255,affinity:0,desc:\"This armament has no skill. If the armament in the other hand has a skill, that skill will be used instead.\"},100:{id:100,name:\"Lion's Claw\",type:10,affinity:0,fpConsumptionL2:20,desc:\""
+  },
+  {
+    "url": "https://relics.pro/assets/AttackPowerTab-C00lmv-K.js",
+    "size": 80815,
+    "preview": "import{j as Y,k as M,m as n,o as s,q as e,p as y,n as O,t as R,u as F,s as d,F as z,G as U,b as x,K as ue,E as Q,A as Re,as as de,c as te,L as ae,l as h,D as C,O as oe}from\"./styles-T8TXN1p-.js\";import{weapons as X}from\"./weapons-dSd6emJz.js\";import{s as _,a as Ie}from\"./index-BlQsYr2U.js\";import{s "
+  },
+  {
+    "url": "https://relics.pro/assets/DownloadPage-DsUXJRHP.js",
+    "size": 44452,
+    "preview": "import{ay as E,m as u,o as d,q as n,a1 as f,B as R,r as K,p as h,a2 as p,c as w,l as x,W as N,F as v,E as g,D as _,t as m,Z as H,L as W,$ as z,aL as q,aM as Y,aN as X,aO as y,aa as B,aP as Z,aQ as Q,aR as G,j,k as J,n as M,b as S,s as k,R as P,u as I,O as D,_ as ee}from\"./styles-T8TXN1p-.js\";import{"
+  },
+  {
+    "url": "https://relics.pro/assets/styles-T8TXN1p-.js",
+    "size": 319068,
+    "preview": "const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=[\"assets/buffs-CEK0YfGs.js\",\"assets/types-4NLhqcYa.js\",\"assets/effects-BO6LtXIt.js\",\"assets/items-D3sJ2TLC.js\",\"assets/weapons-dSd6emJz.js\",\"assets/skills-DVu0w78a.js\",\"assets/sorceries-KPp3wsrp.js\",\"assets/talismans-D3X9SMqQ.js\",\"assets/bosses"
+  },
+  {
+    "url": "https://relics.pro/assets/items-D3sJ2TLC.js",
+    "size": 57656,
+    "preview": "import{r}from\"./types-4NLhqcYa.js\";const l={1:{name:\"Antique\",color:\"Red\"},2:{name:\"Antique\",color:\"Red\"},3:{name:\"Antique\",color:\"Red\"},4:{name:\"Antique\",color:\"Red\"},5:{name:\"Antique\",color:\"Red\"},6:{name:\"Antique\",color:\"Red\"},10:{name:\"Murk\",color:\"Red\"},11:{name:\"Sovereign Sigil\",color:\"Red\"},2"
+  },
+  {
+    "url": "https://relics.pro/assets/types-4NLhqcYa.js",
+    "size": 2795,
+    "preview": "function i(a,n){typeof window<\"u\"&&(window.__loadedUtils||(window.__loadedUtils=new Set),window.__loadedUtils.add(a),window.__i18n&&window.__i18n(a,n))}const d={0:\"Any\",1:\"Wylder\",2:\"Guardian\",3:\"Ironeye\",4:\"Duchess\",5:\"Raider\",6:\"Revenant\",7:\"Recluse\",8:\"Executor\",9:\"Scholar\",10:\"Undertaker\"},l={0:"
+  },
+  {
+    "url": "https://relics.pro/assets/effects-BO6LtXIt.js",
+    "size": 151866,
+    "preview": "import{r as i}from\"./types-4NLhqcYa.js\";const o={1e4:{name:\"FP Restoration upon Successive Attacks\",category:\"Utility\",stackable:!0,desc:\"Restores 5% of max FP after continuous attacks. Only affects melee attacks.\"},10001:{name:\"Taking attacks improves attack power\",category:\"Offensive\",stackable:!1"
+  },
+  {
+    "url": "https://relics.pro/assets/builds-BJD8AWSH.js",
+    "size": 19754,
+    "preview": "import{d as G}from\"./pinia-CKNFHaXZ.js\";import{b as u,k as h}from\"./styles-T8TXN1p-.js\";const H=JSON.parse('[{\"id\":\"default-allround\",\"name\":\"General Build\",\"type\":\"preset\",\"author\":\"Relics.pro\",\"reference\":null,\"description\":\"A comprehensive baseline build that evaluates the most universally valuab"
+  },
+  {
+    "url": "https://relics.pro/assets/CharacterSelect-CwjuR1VG.js",
+    "size": 1720,
+    "preview": "import{s as m}from\"./index-BCjyUrgg.js\";import{_ as c}from\"./CharacterIcon.vue_vue_type_script_setup_true_lang-CzAbEpeo.js\";import{j as _,k as v,c as b,l as o,n as f,u as x,o as r,m as k,p as C,q as a,s as n,t as d,_ as y}from\"./styles-T8TXN1p-.js\";const V={class:\"flex items-center gap-3\"},B={class:"
+  },
+  {
+    "url": "https://relics.pro/assets/CharacterIcon.vue_vue_type_script_setup_true_lang-CzAbEpeo.js",
+    "size": 18945,
+    "preview": "import{j as g,k as l,m,o as n,ap as L,av as d}from\"./styles-T8TXN1p-.js\";const f=\"data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20width='96'%20height='96'%3e%3cpath%20fill='%23fff'%20d='m47.625%2020.438%203.602.308L54%2021v3h5l1%203a167%20167%200%200%200%204%202c4.34%203.809%208.336"
+  },
+  {
+    "url": "https://relics.pro/assets/BuildDetailsPage-vUtNpMpR.js",
+    "size": 136713,
+    "preview": "const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=[\"assets/RelicFinder-m4I3xijy.js\",\"assets/index-CWzymo-M.js\",\"assets/styles-T8TXN1p-.js\",\"assets/styles-CCaDhSbU.css\",\"assets/pinia-CKNFHaXZ.js\",\"assets/types-4NLhqcYa.js\",\"assets/CharacterSelect-CwjuR1VG.js\",\"assets/index-BCjyUrgg.js\",\"assets/"
+  },
+  {
+    "url": "https://relics.pro/assets/CompendiumPage-CcsKEnDC.js",
+    "size": 46328,
+    "preview": "const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=[\"assets/EffectsTab-B69iB_3r.js\",\"assets/styles-T8TXN1p-.js\",\"assets/styles-CCaDhSbU.css\",\"assets/rolls-y3yFs7RC.js\",\"assets/pinia-CKNFHaXZ.js\",\"assets/items-D3sJ2TLC.js\",\"assets/types-4NLhqcYa.js\",\"assets/effects-BO6LtXIt.js\",\"assets/buffs-CEK"
+  },
+  {
+    "url": "https://relics.pro/assets/bosses-BHJM77Lm.js",
+    "size": 82368,
+    "preview": "import{I as s,W as i,B as r,r as c}from\"./types-4NLhqcYa.js\";const l={902100600:{id:902100600,name:\"Black Knife Assassin\",npcs:[{id:21000020,type:2,threat:1,hp:[1699,2208,2718],dnScaling:{hp:[1.3,1.378,1.461,1.636,1.718],attackPower:[1.3,1.547,1.841,2.54,2.947]},runes:[22500,19500,15e3],mutationScal"
+  },
+  {
+    "url": "https://relics.pro/assets/weapons-dSd6emJz.js",
+    "size": 874120,
+    "preview": "import{r as t}from\"./types-4NLhqcYa.js\";const r={11e4:{id:11e4,name:\"Unarmed\",requiredLevel:0,weaponType:33,rarity:0,attackType:0,reinforceTypeId:0,attackElementCorrectId:1e4,scaling:{STR:50,DEX:50},baseDamage:{Phys:20},statusDamage:{},correctType:{Poison:10,Bloodloss:10,Sleep:0,Madness:0},physGuard"
+  },
+  {
+    "url": "https://relics.pro/assets/buffs-CEK0YfGs.js",
+    "size": 12898,
+    "preview": "import{r as n}from\"./types-4NLhqcYa.js\";const r={8e6:{id:8e6,name:\"Increased Maximum HP\",category:\"Attributes\",desc:\"Maximum HP raised by 10% / 15%.\",values:[10,15],stackable:!0,variants:[8000001]},801e4:{id:801e4,name:\"Increased Maximum FP\",category:\"Attributes\",desc:\"Maximum FP raised by 10% / 15%"
+  },
+  {
+    "url": "https://relics.pro/assets/talismans-D3X9SMqQ.js",
+    "size": 21849,
+    "preview": "import{T as t,R as s,r}from\"./types-4NLhqcYa.js\";const i={1e3:{id:1e3,name:\"Crimson Amber Medallion\",sortGroup:10,rarity:1,effects:[31e4],desc:\"A medallion with crimson amber inlaid. Boosts maximum HP.  The Erdtree's old sap becomes amber, treasured as the most precious of jewels in the age of Godfr"
+  },
+  {
+    "url": "https://relics.pro/assets/skills-DVu0w78a.js",
+    "size": 38559,
+    "preview": "import{S as n,A as a,r as i}from\"./types-4NLhqcYa.js\";const o={10:{id:10,name:\"No Skill\",type:255,affinity:0,desc:\"This armament has no skill. If the armament in the other hand has a skill, that skill will be used instead.\"},100:{id:100,name:\"Lion's Claw\",type:10,affinity:0,fpConsumptionL2:20,desc:\""
+  },
+  {
+    "url": "https://relics.pro/assets/AttackPowerTab-C00lmv-K.js",
+    "size": 80815,
+    "preview": "import{j as Y,k as M,m as n,o as s,q as e,p as y,n as O,t as R,u as F,s as d,F as z,G as U,b as x,K as ue,E as Q,A as Re,as as de,c as te,L as ae,l as h,D as C,O as oe}from\"./styles-T8TXN1p-.js\";import{weapons as X}from\"./weapons-dSd6emJz.js\";import{s as _,a as Ie}from\"./index-BlQsYr2U.js\";import{s "
+  },
+  {
+    "url": "https://relics.pro/assets/DownloadPage-DsUXJRHP.js",
+    "size": 44452,
+    "preview": "import{ay as E,m as u,o as d,q as n,a1 as f,B as R,r as K,p as h,a2 as p,c as w,l as x,W as N,F as v,E as g,D as _,t as m,Z as H,L as W,$ as z,aL as q,aM as Y,aN as X,aO as y,aa as B,aP as Z,aQ as Q,aR as G,j,k as J,n as M,b as S,s as k,R as P,u as I,O as D,_ as ee}from\"./styles-T8TXN1p-.js\";import{"
+  }
+]

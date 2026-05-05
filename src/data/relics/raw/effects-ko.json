@@ -1,0 +1,7910 @@
+[
+  {
+    "id": "10000",
+    "type": "relic",
+    "name": "공격 연속 시 FP 회복",
+    "category": "Utility",
+    "stackable": true,
+    "desc": "연속 공격 시 최대 FP의 5%를 회복합니다. 근접 공격에만 적용됩니다."
+  },
+  {
+    "id": "10001",
+    "type": "relic",
+    "name": "공격을 받으면 공격력 상승",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "공격을 받으면 10초 동안 공격력이 15% 상승합니다. 다시 피격되면 지속 시간이 갱신됩니다. 가드로 막은 공격에는 발동하지 않습니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "6000800",
+    "type": "relic",
+    "name": "스킬 쿨 타임 경감+4",
+    "category": "Attributes",
+    "dn": true,
+    "unobtainable": true
+  },
+  {
+    "id": "6000801",
+    "type": "relic",
+    "name": "스킬 쿨 타임 경감+5",
+    "category": "Attributes",
+    "dn": true,
+    "unobtainable": true
+  },
+  {
+    "id": "6000900",
+    "type": "relic",
+    "name": "아츠 게이지 자연 축적 +4",
+    "category": "Attributes",
+    "dn": true,
+    "unobtainable": true
+  },
+  {
+    "id": "6000901",
+    "type": "relic",
+    "name": "아츠 게이지 자연 축적 +5",
+    "category": "Attributes",
+    "dn": true,
+    "unobtainable": true
+  },
+  {
+    "id": "6001000",
+    "type": "relic",
+    "name": "강인도+4",
+    "category": "Defensive",
+    "dn": true,
+    "unobtainable": true
+  },
+  {
+    "id": "6001001",
+    "type": "relic",
+    "name": "강인도+5",
+    "category": "Defensive",
+    "dn": true,
+    "unobtainable": true
+  },
+  {
+    "id": "6001400",
+    "type": "relic",
+    "name": "물리 공격력 상승+3",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "물리 공격력이 10.5% 상승합니다."
+  },
+  {
+    "id": "6001401",
+    "type": "relic",
+    "name": "물리 공격력 상승+4",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "물리 공격력이 12% 상승합니다."
+  },
+  {
+    "id": "6001500",
+    "type": "relic",
+    "name": "마력 공격력 상승+3",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "마력 공격력이 10.5% 상승합니다."
+  },
+  {
+    "id": "6001501",
+    "type": "relic",
+    "name": "마력 공격력 상승+4",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "마력 공격력이 12% 상승합니다."
+  },
+  {
+    "id": "6001600",
+    "type": "relic",
+    "name": "화염 공격력 상승+3",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "화염 공격력이 10.5% 상승합니다."
+  },
+  {
+    "id": "6001601",
+    "type": "relic",
+    "name": "화염 공격력 상승+4",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "화염 공격력이 12% 상승합니다."
+  },
+  {
+    "id": "6001700",
+    "type": "relic",
+    "name": "벼락 공격력 상승+3",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "벼락 공격력이 10.5% 상승합니다."
+  },
+  {
+    "id": "6001701",
+    "type": "relic",
+    "name": "벼락 공격력 상승+4",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "벼락 공격력이 12% 상승합니다."
+  },
+  {
+    "id": "6001800",
+    "type": "relic",
+    "name": "신성 공격력 상승+3",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "신성 공격력이 10.5% 상승합니다."
+  },
+  {
+    "id": "6001801",
+    "type": "relic",
+    "name": "신성 공격력 상승+4",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "신성 공격력이 12% 상승합니다."
+  },
+  {
+    "id": "6002600",
+    "type": "relic",
+    "name": "마력 경감률 상승+1",
+    "category": "Defensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "마력 경감률이 15% 상승합니다."
+  },
+  {
+    "id": "6002601",
+    "type": "relic",
+    "name": "마력 경감률 상승+2",
+    "category": "Defensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "마력 경감률이 16% 상승합니다."
+  },
+  {
+    "id": "6002700",
+    "type": "relic",
+    "name": "화염 경감률 상승+1",
+    "category": "Defensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "화염 경감률이 15% 상승합니다."
+  },
+  {
+    "id": "6002701",
+    "type": "relic",
+    "name": "화염 경감률 상승+2",
+    "category": "Defensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "화염 경감률이 16% 상승합니다."
+  },
+  {
+    "id": "6002800",
+    "type": "relic",
+    "name": "벼락 경감률 상승+1",
+    "category": "Defensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "벼락 경감률이 15% 상승합니다."
+  },
+  {
+    "id": "6002801",
+    "type": "relic",
+    "name": "벼락 경감률 상승+2",
+    "category": "Defensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "벼락 경감률이 16% 상승합니다."
+  },
+  {
+    "id": "6002900",
+    "type": "relic",
+    "name": "신성 경감률 상승+1",
+    "category": "Defensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "신성 경감률이 15% 상승합니다."
+  },
+  {
+    "id": "6002901",
+    "type": "relic",
+    "name": "신성 경감률 상승+2",
+    "category": "Defensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "신성 경감률이 16% 상승합니다."
+  },
+  {
+    "id": "6003000",
+    "type": "relic",
+    "name": "독 내성 상승+1",
+    "category": "Defensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "독 내성이 110 상승합니다."
+  },
+  {
+    "id": "6003001",
+    "type": "relic",
+    "name": "독 내성 상승+2",
+    "category": "Defensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "독 내성이 130 상승합니다."
+  },
+  {
+    "id": "6003100",
+    "type": "relic",
+    "name": "출혈 내성 상승+1",
+    "category": "Defensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "출혈 내성이 110 상승합니다."
+  },
+  {
+    "id": "6003101",
+    "type": "relic",
+    "name": "출혈 내성 상승+2",
+    "category": "Defensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "출혈 내성이 130 상승합니다."
+  },
+  {
+    "id": "6003200",
+    "type": "relic",
+    "name": "수면 내성 상승+1",
+    "category": "Defensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "수면 내성이 110 상승합니다."
+  },
+  {
+    "id": "6003201",
+    "type": "relic",
+    "name": "수면 내성 상승+2",
+    "category": "Defensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "수면 내성이 130 상승합니다."
+  },
+  {
+    "id": "6003300",
+    "type": "relic",
+    "name": "항사 내성 상승+1",
+    "category": "Defensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "죽음 내성이 110 상승합니다."
+  },
+  {
+    "id": "6003301",
+    "type": "relic",
+    "name": "항사 내성 상승+2",
+    "category": "Defensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "죽음 내성이 130 상승합니다."
+  },
+  {
+    "id": "6003400",
+    "type": "relic",
+    "name": "부패 내성 상승+1",
+    "category": "Defensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "부패 내성이 110 상승합니다."
+  },
+  {
+    "id": "6003401",
+    "type": "relic",
+    "name": "부패 내성 상승+2",
+    "category": "Defensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "부패 내성이 130 상승합니다."
+  },
+  {
+    "id": "6003500",
+    "type": "relic",
+    "name": "동상 내성 상승+1",
+    "category": "Defensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "동상 내성이 110 상승합니다."
+  },
+  {
+    "id": "6003501",
+    "type": "relic",
+    "name": "동상 내성 상승+2",
+    "category": "Defensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "동상 내성이 130 상승합니다."
+  },
+  {
+    "id": "6003600",
+    "type": "relic",
+    "name": "발광 내성 상승+1",
+    "category": "Defensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "발광 내성이 110 상승합니다."
+  },
+  {
+    "id": "6003601",
+    "type": "relic",
+    "name": "발광 내성 상승+2",
+    "category": "Defensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "발광 내성이 130 상승합니다."
+  },
+  {
+    "id": "6005600",
+    "type": "relic",
+    "name": "대미지를 받은 직후 공격으로 HP 일부 회복+1",
+    "category": "Defensive",
+    "dn": true,
+    "stackable": false,
+    "stackOther": "custom",
+    "desc": "대미지를 받은 직후 약 4초 안에 공격을 명중시키면 HP의 흰색 잔여 구간까지 HP를 회복합니다. +0보다 공격 1회당 회복량이 25% 증가합니다. +1과 +2는 서로 중첩되지만, 유사 효과와는 중첩되지 않습니다."
+  },
+  {
+    "id": "6005601",
+    "type": "relic",
+    "name": "대미지를 받은 직후 공격으로 HP 일부 회복+2",
+    "category": "Defensive",
+    "dn": true,
+    "stackable": false,
+    "stackOther": "custom",
+    "desc": "대미지를 받은 직후 약 4초 안에 공격을 명중시키면 HP의 흰색 잔여 구간까지 HP를 회복합니다. +0보다 공격 1회당 회복량이 35% 증가합니다. +1과 +2는 서로 중첩되지만, 유사 효과와는 중첩되지 않습니다."
+  },
+  {
+    "id": "6030200",
+    "type": "relic",
+    "name": "이끼약 등 아이템 사용 시 HP 회복+1",
+    "category": "Defensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "이끼약 등 일부 소비 아이템 사용 시 HP를 33 회복합니다."
+  },
+  {
+    "id": "6030201",
+    "type": "relic",
+    "name": "이끼약 등 아이템 사용 시 HP 회복+2",
+    "category": "Defensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "이끼약 등 일부 소비 아이템 사용 시 HP를 40 회복합니다."
+  },
+  {
+    "id": "6030600",
+    "type": "relic",
+    "name": "가드 성공 시 아츠 게이지 증가+1",
+    "category": "Utility",
+    "dn": true,
+    "stackable": false,
+    "desc": "가드 성공 시 아츠 게이지가 1.5% 증가합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "6030601",
+    "type": "relic",
+    "name": "가드 성공 시 아츠 게이지 증가+2",
+    "category": "Utility",
+    "dn": true,
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "withAll"
+  },
+  {
+    "id": "6030800",
+    "type": "relic",
+    "name": "치명적인 일격으로 아츠 게이지 증가+1",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": false,
+    "desc": "치명적인 일격 성공 시 아츠 게이지가 6.5% 증가합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "6030801",
+    "type": "relic",
+    "name": "치명적인 일격으로 아츠 게이지 증가+2",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "withAll"
+  },
+  {
+    "id": "6030900",
+    "type": "relic",
+    "name": "기름 아이템 사용 시 추가로 물리 공격력 상승+1",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": false,
+    "desc": "기름 아이템 사용 후 30초 동안 물리 공격력이 17% 상승합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "6030901",
+    "type": "relic",
+    "name": "기름 아이템 사용 시 추가로 물리 공격력 상승+2",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": false,
+    "desc": "기름 아이템 사용 후 30초 동안 물리 공격력이 20% 상승합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "6035100",
+    "type": "relic",
+    "name": "치명적인 일격으로 스태미나 회복 속도 상승+1",
+    "category": "Utility",
+    "dn": true
+  },
+  {
+    "id": "6040100",
+    "type": "relic",
+    "name": "가드 카운터 강화+1",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "가드 카운터 공격력이 25% 상승합니다."
+  },
+  {
+    "id": "6040101",
+    "type": "relic",
+    "name": "가드 카운터 강화+2",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "가드 카운터 공격력이 29% 상승합니다."
+  },
+  {
+    "id": "6040300",
+    "type": "relic",
+    "name": "투척 항아리 공격력 상승+1",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "투척 항아리 공격력이 30% 상승합니다."
+  },
+  {
+    "id": "6040301",
+    "type": "relic",
+    "name": "투척 항아리 공격력 상승+2",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "투척 항아리 공격력이 35% 상승합니다."
+  },
+  {
+    "id": "6040400",
+    "type": "relic",
+    "name": "투척 나이프 공격력 상승+1",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "투척 나이프 공격력이 30% 상승합니다."
+  },
+  {
+    "id": "6040401",
+    "type": "relic",
+    "name": "투척 나이프 공격력 상승+2",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "투척 나이프 공격력이 35% 상승합니다."
+  },
+  {
+    "id": "6040500",
+    "type": "relic",
+    "name": "휘석, 중력석 아이템의 공격력 상승+1",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "휘석/중력석 아이템 공격력이 30% 상승합니다."
+  },
+  {
+    "id": "6040501",
+    "type": "relic",
+    "name": "휘석, 중력석 아이템의 공격력 상승+2",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "휘석/중력석 아이템 공격력이 35% 상승합니다."
+  },
+  {
+    "id": "6043000",
+    "type": "relic",
+    "name": "포효와 브레스 강화+1",
+    "category": "Sorceries",
+    "dn": true,
+    "unobtainable": true,
+    "desc": "포효와 브레스 공격력이 18% 상승합니다."
+  },
+  {
+    "id": "6043001",
+    "type": "relic",
+    "name": "포효와 브레스 강화+2",
+    "category": "Sorceries",
+    "dn": true,
+    "unobtainable": true
+  },
+  {
+    "id": "6043100",
+    "type": "relic",
+    "name": "조향술 강화+1",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "조향술 공격력이 18% 상승합니다."
+  },
+  {
+    "id": "6043101",
+    "type": "relic",
+    "name": "조향술 강화+2",
+    "category": "Offensive",
+    "dn": true,
+    "unobtainable": true
+  },
+  {
+    "id": "6060300",
+    "type": "relic",
+    "name": "대교회의 강적을 쓰러뜨릴 때마다 최대 HP 상승",
+    "category": "Attributes",
+    "dn": true,
+    "stackable": false,
+    "desc": "대교회의 강적을 쓰러뜨릴 때마다 최대 HP가 5% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "6060400",
+    "type": "relic",
+    "name": "작은 성채의 강적을 쓰러뜨릴 때마다 획득 룬 증가, 발견력 상승",
+    "category": "Utility",
+    "dn": true,
+    "stackable": false,
+    "desc": "작은 성채의 강적을 쓰러뜨릴 때마다 발견력이 16, 획득 룬이 5.5% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "6060500",
+    "type": "relic",
+    "name": "유적의 강적을 쓰러뜨릴 때마다 신비 상승",
+    "category": "Attributes",
+    "dn": true,
+    "stackable": false,
+    "desc": "유적의 강적을 쓰러뜨릴 때마다 신비가 4 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "6060600",
+    "type": "relic",
+    "name": "대야영지의 강적을 쓰러뜨릴 때마다 최대 스태미나 상승",
+    "category": "Attributes",
+    "dn": true,
+    "stackable": false,
+    "desc": "대야영지의 강적을 쓰러뜨릴 때마다 최대 스태미나가 7.5% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "6090000",
+    "type": "relic",
+    "name": "적을 쓰러뜨릴 시 아츠 게이지 증가+1",
+    "category": "Utility",
+    "dn": true,
+    "stackable": false,
+    "desc": "적을 쓰러뜨릴 때마다 아츠 게이지가 6.5% 증가합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "6090001",
+    "type": "relic",
+    "name": "적을 쓰러뜨릴 시 아츠 게이지 증가+2",
+    "category": "Utility",
+    "dn": true,
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "withAll"
+  },
+  {
+    "id": "6160000",
+    "type": "relic",
+    "name": "관통 카운터 발생 시 HP 회복+1",
+    "category": "Defensive",
+    "dn": true,
+    "stackable": false,
+    "desc": "관통 카운터 발생 시 최대 HP의 3.3%를 회복합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "6160001",
+    "type": "relic",
+    "name": "관통 카운터 발생 시 HP 회복+2",
+    "category": "Defensive",
+    "dn": true,
+    "unobtainable": true
+  },
+  {
+    "id": "6260000",
+    "type": "relic",
+    "name": "독 상태인 적에 대한 공격 강화+1",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": false,
+    "desc": "독 상태인 적에 대한 공격력이 16% 상승합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "6260001",
+    "type": "relic",
+    "name": "독 상태인 적에 대한 공격 강화+2",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": false,
+    "desc": "독 상태인 적에 대한 공격력이 20% 상승합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "6260300",
+    "type": "relic",
+    "name": "부패 상태인 적에 대한 공격 강화+1",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": false,
+    "desc": "부패 상태인 적에 대한 공격력이 16% 상승합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "6260301",
+    "type": "relic",
+    "name": "부패 상태인 적에 대한 공격 강화+2",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": false,
+    "desc": "부패 상태인 적에 대한 공격력이 20% 상승합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "6260400",
+    "type": "relic",
+    "name": "동상 상태인 적에 대한 공격 강화+1",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": false,
+    "desc": "동상 상태인 적에 대한 공격력이 16% 상승합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "6260401",
+    "type": "relic",
+    "name": "동상 상태인 적에 대한 공격 강화+2",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": false,
+    "desc": "동상 상태인 적에 대한 공격력이 20% 상승합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "6500000",
+    "type": "relic",
+    "name": "[추적자]스킬에 출혈 상태 이상 부여",
+    "category": "Character Specific",
+    "dn": true,
+    "stackable": false,
+    "desc": "스킬 명중 시 출혈 축적치를 부여합니다. 충돌 시 60, 끌어당김 시 55를 축적합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "6500100",
+    "type": "relic",
+    "name": "[수호자]스킬 사용 시 주위 아군의 경감률 상승",
+    "category": "Character Specific",
+    "dn": true,
+    "stackable": false,
+    "desc": "스킬 사용 후 30초 동안 자신과 주위 아군의 경감률이 12% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "6500200",
+    "type": "relic",
+    "name": "[철의 눈]스킬에 독 상태 이상을 부여하고 독 상태인 적에 큰 대미지",
+    "category": "Character Specific",
+    "dn": true,
+    "stackable": false,
+    "desc": "스킬이 독 상태의 적에게 최대 HP의 0.25% + 250 피해를 줍니다. 추가로 독 축적치 70을 부여합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "6500300",
+    "type": "relic",
+    "name": "[레이디]스킬 사용 시 잠시 무적",
+    "category": "Character Specific",
+    "dn": true,
+    "stackable": false,
+    "desc": "캐릭터 스킬 사용 후 0.4초 동안 대미지를 받지 않습니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "6500400",
+    "type": "relic",
+    "name": "[무뢰한]스킬 명중 시 적의 공격력 저하",
+    "category": "Character Specific",
+    "dn": true,
+    "stackable": false,
+    "desc": "스킬 명중 후 13초 동안 적의 공격력이 13% 저하됩니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "6500500",
+    "type": "relic",
+    "name": "[복수자]어빌리티 발동 시 최대 FP 상승",
+    "category": "Character Specific",
+    "dn": true,
+    "stackable": false,
+    "desc": "어빌리티가 발동할 때마다 최대 FP가 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "6500600",
+    "type": "relic",
+    "name": "[은둔자]속성흔을 모으면 대응하는 속성 경감률 상승",
+    "category": "Character Specific",
+    "dn": true,
+    "stackable": false,
+    "desc": "속성흔을 흡수하면 해당 속성의 경감률이 20% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "6500700",
+    "type": "relic",
+    "name": "[집행자]어빌리티 발동 시 HP를 서서히 회복",
+    "category": "Character Specific",
+    "dn": true,
+    "stackable": false,
+    "desc": "어빌리티 발동 후 30초 동안 HP를 서서히 회복합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "6500800",
+    "type": "relic",
+    "name": "[학자]자신에게 스킬 사용 시 FP 소비 경감",
+    "category": "Character Specific",
+    "dn": true,
+    "stackable": false,
+    "desc": "캐릭터 스킬 사용 후 40초 동안 FP 소비량이 15% 감소합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "6500900",
+    "type": "relic",
+    "name": "[장의사]아츠 발동 후 스킬 재사용 가능",
+    "category": "Character Specific",
+    "dn": true,
+    "stackable": false,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "6600000",
+    "type": "relic",
+    "name": "주위에서 수면 발생 시 공격력 상승",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": false,
+    "desc": "주위의 적 또는 아군에게 수면이 발생하면 20초 동안 공격력이 12% 상승합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "6600001",
+    "type": "relic",
+    "name": "주위에서 수면 발생 시 공격력 상승+1",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": false,
+    "desc": "주위의 적 또는 아군에게 수면이 발생하면 20초 동안 공격력이 22% 상승합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "6600002",
+    "type": "relic",
+    "name": "주위에서 수면 발생 시 공격력 상승+2",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "withAll"
+  },
+  {
+    "id": "6600100",
+    "type": "relic",
+    "name": "주위에서 발광 발생 시 공격력 상승",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": false,
+    "desc": "주위의 적 또는 아군에게 발광이 발생하면 20초 동안 공격력이 12% 상승합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "6600101",
+    "type": "relic",
+    "name": "주위에서 발광 발생 시 공격력 상승+1",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": false,
+    "desc": "주위의 적 또는 아군에게 발광이 발생하면 20초 동안 공격력이 22% 상승합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "6600102",
+    "type": "relic",
+    "name": "주위에서 발광 발생 시 공격력 상승+2",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "withAll"
+  },
+  {
+    "id": "6610400",
+    "type": "relic",
+    "name": "최대 HP 상승",
+    "category": "Attributes",
+    "dn": true,
+    "stackable": true,
+    "desc": "최대 HP가 10% 상승합니다."
+  },
+  {
+    "id": "6610500",
+    "type": "relic",
+    "name": "최대 FP 상승",
+    "category": "Attributes",
+    "dn": true,
+    "stackable": true,
+    "desc": "최대 FP가 15% 상승합니다."
+  },
+  {
+    "id": "6610600",
+    "type": "relic",
+    "name": "최대 스태미나 상승",
+    "category": "Attributes",
+    "dn": true,
+    "stackable": true,
+    "desc": "최대 스태미나가 12% 상승합니다."
+  },
+  {
+    "id": "6610700",
+    "type": "relic",
+    "name": "소비 FP 경감",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "FP 소비량이 8% 감소합니다."
+  },
+  {
+    "id": "6610701",
+    "type": "relic",
+    "name": "소비 FP 경감+1",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": true,
+    "unobtainable": true,
+    "desc": "FP 소비량이 13% 감소합니다."
+  },
+  {
+    "id": "6610702",
+    "type": "relic",
+    "name": "소비 FP 경감+2",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": true,
+    "unobtainable": true,
+    "desc": "FP 소비량이 16% 감소합니다."
+  },
+  {
+    "id": "6610800",
+    "type": "relic",
+    "name": "속성 공격력 상승",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "마력/화염/벼락/신성 공격력이 5% 상승합니다."
+  },
+  {
+    "id": "6610801",
+    "type": "relic",
+    "name": "속성 공격력 상승+1",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "마력/화염/벼락/신성 공격력이 8% 상승합니다."
+  },
+  {
+    "id": "6610802",
+    "type": "relic",
+    "name": "속성 공격력 상승+2",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "마력/화염/벼락/신성 공격력이 10% 상승합니다."
+  },
+  {
+    "id": "6611001",
+    "type": "relic",
+    "name": "물리 경감률 상승+1",
+    "category": "Defensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "물리 경감률이 10.5% 상승합니다."
+  },
+  {
+    "id": "6611002",
+    "type": "relic",
+    "name": "물리 경감률 상승+2",
+    "category": "Defensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "물리 경감률이 12% 상승합니다."
+  },
+  {
+    "id": "6611100",
+    "type": "relic",
+    "name": "속성 경감률 상승",
+    "category": "Defensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "마력/화염/벼락/신성 경감률이 6% 상승합니다."
+  },
+  {
+    "id": "6611101",
+    "type": "relic",
+    "name": "속성 경감률 상승+1",
+    "category": "Defensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "마력/화염/벼락/신성 경감률이 10.5% 상승합니다."
+  },
+  {
+    "id": "6611102",
+    "type": "relic",
+    "name": "속성 경감률 상승+2",
+    "category": "Defensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "마력/화염/벼락/신성 경감률이 12% 상승합니다."
+  },
+  {
+    "id": "6611200",
+    "type": "relic",
+    "name": "마술 강화",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "마술 공격력이 5% 상승합니다."
+  },
+  {
+    "id": "6611201",
+    "type": "relic",
+    "name": "마술 강화+1",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "마술 공격력이 8.5% 상승합니다."
+  },
+  {
+    "id": "6611202",
+    "type": "relic",
+    "name": "마술 강화+2",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "마술 공격력이 10% 상승합니다."
+  },
+  {
+    "id": "6611300",
+    "type": "relic",
+    "name": "기도 강화",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "기도 공격력이 5% 상승합니다."
+  },
+  {
+    "id": "6611301",
+    "type": "relic",
+    "name": "기도 강화+1",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "기도 공격력이 8.5% 상승합니다."
+  },
+  {
+    "id": "6611302",
+    "type": "relic",
+    "name": "기도 강화+2",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "기도 공격력이 10% 상승합니다."
+  },
+  {
+    "id": "6611400",
+    "type": "relic",
+    "name": "성배병 회복량 상승",
+    "category": "Utility",
+    "dn": true,
+    "stackable": true,
+    "desc": "성배병으로 회복하는 HP가 10% 상승합니다."
+  },
+  {
+    "id": "6621000",
+    "type": "relic",
+    "name": "출격 시 「넘친 붉은 결정 물방울」 소지",
+    "category": "Starting Items",
+    "dn": true,
+    "stackable": true
+  },
+  {
+    "id": "6621100",
+    "type": "relic",
+    "name": "출격 시 「붉은 결정 물방울」 소지",
+    "category": "Starting Items",
+    "dn": true,
+    "stackable": true
+  },
+  {
+    "id": "6621200",
+    "type": "relic",
+    "name": "출격 시 「푸른 결정 물방울」 소지",
+    "category": "Starting Items",
+    "dn": true,
+    "stackable": true
+  },
+  {
+    "id": "6621300",
+    "type": "relic",
+    "name": "출격 시 「얼룩색 굳은 물방울」 소지",
+    "category": "Starting Items",
+    "dn": true,
+    "stackable": true
+  },
+  {
+    "id": "6621400",
+    "type": "relic",
+    "name": "출격 시 「붉은 거품 물방울」 소지",
+    "category": "Starting Items",
+    "dn": true,
+    "stackable": true
+  },
+  {
+    "id": "6621500",
+    "type": "relic",
+    "name": "출격 시 「진주색 거품 물방울」 소지",
+    "category": "Starting Items",
+    "dn": true,
+    "stackable": true
+  },
+  {
+    "id": "6621600",
+    "type": "relic",
+    "name": "출격 시 「샘솟는 붉은 결정 물방울」 소지",
+    "category": "Starting Items",
+    "dn": true,
+    "stackable": true
+  },
+  {
+    "id": "6621700",
+    "type": "relic",
+    "name": "출격 시 「샘솟는 초록 결정 물방울」 소지",
+    "category": "Starting Items",
+    "dn": true,
+    "stackable": true
+  },
+  {
+    "id": "6621800",
+    "type": "relic",
+    "name": "출격 시 「진주색 굳은 물방울」 소지",
+    "category": "Starting Items",
+    "dn": true,
+    "stackable": true
+  },
+  {
+    "id": "6621900",
+    "type": "relic",
+    "name": "출격 시 「가시 깨진 물방울」 소지",
+    "category": "Starting Items",
+    "dn": true,
+    "stackable": true
+  },
+  {
+    "id": "6622000",
+    "type": "relic",
+    "name": "출격 시 「큰 가시 깨진 물방울」 소지",
+    "category": "Starting Items",
+    "dn": true,
+    "stackable": true
+  },
+  {
+    "id": "6622100",
+    "type": "relic",
+    "name": "출격 시 「바람 결정 물방울」 소지",
+    "category": "Starting Items",
+    "dn": true,
+    "stackable": true
+  },
+  {
+    "id": "6622200",
+    "type": "relic",
+    "name": "출격 시 「파열된 결정 물방울」 소지",
+    "category": "Starting Items",
+    "dn": true,
+    "stackable": true
+  },
+  {
+    "id": "6622300",
+    "type": "relic",
+    "name": "출격 시 「납빛 굳은 물방울」 소지",
+    "category": "Starting Items",
+    "dn": true,
+    "stackable": true
+  },
+  {
+    "id": "6622400",
+    "type": "relic",
+    "name": "출격 시 「가는 가지 깨진 물방울」 소지",
+    "category": "Starting Items",
+    "dn": true,
+    "stackable": true
+  },
+  {
+    "id": "6622500",
+    "type": "relic",
+    "name": "출격 시 「붉은 소용돌이 거품 물방울」 소지",
+    "category": "Starting Items",
+    "dn": true,
+    "stackable": true
+  },
+  {
+    "id": "6622600",
+    "type": "relic",
+    "name": "출격 시 「푸른 숨겨진 물방울」 소지",
+    "category": "Starting Items",
+    "dn": true,
+    "stackable": true
+  },
+  {
+    "id": "6622700",
+    "type": "relic",
+    "name": "출격 시 「바위 가시 깨진 물방울」 소지",
+    "category": "Starting Items",
+    "dn": true,
+    "stackable": true
+  },
+  {
+    "id": "6622800",
+    "type": "relic",
+    "name": "출격 시 「불꽃 두른 깨진 물방울」 소지",
+    "category": "Starting Items",
+    "dn": true,
+    "stackable": true
+  },
+  {
+    "id": "6622900",
+    "type": "relic",
+    "name": "출격 시 「마력 두른 깨진 물방울」 소지",
+    "category": "Starting Items",
+    "dn": true,
+    "stackable": true
+  },
+  {
+    "id": "6623000",
+    "type": "relic",
+    "name": "출격 시 「벼락 두른 깨진 물방울」 소지",
+    "category": "Starting Items",
+    "dn": true,
+    "stackable": true
+  },
+  {
+    "id": "6623100",
+    "type": "relic",
+    "name": "출격 시 「신성 두른 깨진 물방울」 소지",
+    "category": "Starting Items",
+    "dn": true,
+    "stackable": true
+  },
+  {
+    "id": "6623200",
+    "type": "relic",
+    "name": "출격 시 「넘친 초록 결정 물방울」 소지",
+    "category": "Starting Items",
+    "dn": true,
+    "stackable": true
+  },
+  {
+    "id": "6624000",
+    "type": "relic",
+    "name": "출격 시 「고양의 향기」 소지",
+    "category": "Starting Items",
+    "dn": true,
+    "stackable": true
+  },
+  {
+    "id": "6624100",
+    "type": "relic",
+    "name": "출격 시 「불꽃의 향기」 소지",
+    "category": "Starting Items",
+    "dn": true,
+    "stackable": true
+  },
+  {
+    "id": "6624200",
+    "type": "relic",
+    "name": "출격 시 「철 항아리 향약」 소지",
+    "category": "Starting Items",
+    "dn": true,
+    "stackable": true
+  },
+  {
+    "id": "6624300",
+    "type": "relic",
+    "name": "출격 시 「광열의 향약」 소지",
+    "category": "Starting Items",
+    "dn": true,
+    "stackable": true
+  },
+  {
+    "id": "6624400",
+    "type": "relic",
+    "name": "출격 시 「독 분무」 소지",
+    "category": "Starting Items",
+    "dn": true,
+    "stackable": true
+  },
+  {
+    "id": "6624500",
+    "type": "relic",
+    "name": "출격 시 「산 분무」 소지",
+    "category": "Starting Items",
+    "dn": true,
+    "stackable": true
+  },
+  {
+    "id": "6630000",
+    "type": "relic",
+    "name": "잠재한 힘으로 단검을 찾기 쉬워진다",
+    "category": "Utility",
+    "dn": true,
+    "stackable": false,
+    "stackOther": "first",
+    "group": "power",
+    "desc": "잠재한 힘으로  단검의 발견력이 상승합니다. 이 계열 효과는 첫 번째 효과만 적용됩니다."
+  },
+  {
+    "id": "6630100",
+    "type": "relic",
+    "name": "잠재한 힘으로 직검을 찾기 쉬워진다",
+    "category": "Utility",
+    "dn": true,
+    "stackable": false,
+    "stackOther": "first",
+    "group": "power",
+    "desc": "잠재한 힘으로  직검의 발견력이 상승합니다. 이 계열 효과는 첫 번째 효과만 적용됩니다."
+  },
+  {
+    "id": "6630200",
+    "type": "relic",
+    "name": "잠재한 힘으로 대검을 찾기 쉬워진다",
+    "category": "Utility",
+    "dn": true,
+    "stackable": false,
+    "stackOther": "first",
+    "group": "power",
+    "desc": "잠재한 힘으로  대검의 발견력이 상승합니다. 이 계열 효과는 첫 번째 효과만 적용됩니다."
+  },
+  {
+    "id": "6630300",
+    "type": "relic",
+    "name": "잠재한 힘으로 특대검을 찾기 쉬워진다",
+    "category": "Utility",
+    "dn": true,
+    "stackable": false,
+    "stackOther": "first",
+    "group": "power",
+    "desc": "잠재한 힘으로  특대검의 발견력이 상승합니다. 이 계열 효과는 첫 번째 효과만 적용됩니다."
+  },
+  {
+    "id": "6630400",
+    "type": "relic",
+    "name": "잠재한 힘으로 곡검을 찾기 쉬워진다",
+    "category": "Utility",
+    "dn": true,
+    "stackable": false,
+    "stackOther": "first",
+    "group": "power",
+    "desc": "잠재한 힘으로  곡검의 발견력이 상승합니다. 이 계열 효과는 첫 번째 효과만 적용됩니다."
+  },
+  {
+    "id": "6630500",
+    "type": "relic",
+    "name": "잠재한 힘으로 대곡검을 찾기 쉬워진다",
+    "category": "Utility",
+    "dn": true,
+    "stackable": false,
+    "stackOther": "first",
+    "group": "power",
+    "desc": "잠재한 힘으로  대곡검의 발견력이 상승합니다. 이 계열 효과는 첫 번째 효과만 적용됩니다."
+  },
+  {
+    "id": "6630600",
+    "type": "relic",
+    "name": "잠재한 힘으로 도를 찾기 쉬워진다",
+    "category": "Utility",
+    "dn": true,
+    "stackable": false,
+    "stackOther": "first",
+    "group": "power",
+    "desc": "잠재한 힘으로  도의 발견력이 상승합니다. 이 계열 효과는 첫 번째 효과만 적용됩니다."
+  },
+  {
+    "id": "6630700",
+    "type": "relic",
+    "name": "잠재한 힘으로 쌍날검을 찾기 쉬워진다",
+    "category": "Utility",
+    "dn": true,
+    "stackable": false,
+    "stackOther": "first",
+    "group": "power",
+    "desc": "잠재한 힘으로  쌍날검의 발견력이 상승합니다. 이 계열 효과는 첫 번째 효과만 적용됩니다."
+  },
+  {
+    "id": "6630800",
+    "type": "relic",
+    "name": "잠재한 힘으로 자검을 찾기 쉬워진다",
+    "category": "Utility",
+    "dn": true,
+    "stackable": false,
+    "stackOther": "first",
+    "group": "power",
+    "desc": "잠재한 힘으로  자검의 발견력이 상승합니다. 이 계열 효과는 첫 번째 효과만 적용됩니다."
+  },
+  {
+    "id": "6630900",
+    "type": "relic",
+    "name": "잠재한 힘으로 대자검을 찾기 쉬워진다",
+    "category": "Utility",
+    "dn": true,
+    "stackable": false,
+    "stackOther": "first",
+    "group": "power",
+    "desc": "잠재한 힘으로  대자검의 발견력이 상승합니다. 이 계열 효과는 첫 번째 효과만 적용됩니다."
+  },
+  {
+    "id": "6631000",
+    "type": "relic",
+    "name": "잠재한 힘으로 도끼를 찾기 쉬워진다",
+    "category": "Utility",
+    "dn": true,
+    "stackable": false,
+    "stackOther": "first",
+    "group": "power",
+    "desc": "잠재한 힘으로  도끼의 발견력이 상승합니다. 이 계열 효과는 첫 번째 효과만 적용됩니다."
+  },
+  {
+    "id": "6631100",
+    "type": "relic",
+    "name": "잠재한 힘으로 대형 도끼를 찾기 쉬워진다",
+    "category": "Utility",
+    "dn": true,
+    "stackable": false,
+    "stackOther": "first",
+    "group": "power",
+    "desc": "잠재한 힘으로  대형 도끼의 발견력이 상승합니다. 이 계열 효과는 첫 번째 효과만 적용됩니다."
+  },
+  {
+    "id": "6631200",
+    "type": "relic",
+    "name": "잠재한 힘으로 망치를 찾기 쉬워진다",
+    "category": "Utility",
+    "dn": true,
+    "stackable": false,
+    "stackOther": "first",
+    "group": "power",
+    "desc": "잠재한 힘으로  망치의 발견력이 상승합니다. 이 계열 효과는 첫 번째 효과만 적용됩니다."
+  },
+  {
+    "id": "6631300",
+    "type": "relic",
+    "name": "잠재한 힘으로 대형 망치를 찾기 쉬워진다",
+    "category": "Utility",
+    "dn": true,
+    "stackable": false,
+    "stackOther": "first",
+    "group": "power",
+    "desc": "잠재한 힘으로  대형 망치의 발견력이 상승합니다. 이 계열 효과는 첫 번째 효과만 적용됩니다."
+  },
+  {
+    "id": "6631400",
+    "type": "relic",
+    "name": "잠재한 힘으로 철퇴를 찾기 쉬워진다",
+    "category": "Utility",
+    "dn": true,
+    "stackable": false,
+    "stackOther": "first",
+    "group": "power",
+    "desc": "잠재한 힘으로  철퇴의 발견력이 상승합니다. 이 계열 효과는 첫 번째 효과만 적용됩니다."
+  },
+  {
+    "id": "6631500",
+    "type": "relic",
+    "name": "잠재한 힘으로 창을 찾기 쉬워진다",
+    "category": "Utility",
+    "dn": true,
+    "stackable": false,
+    "stackOther": "first",
+    "group": "power",
+    "desc": "잠재한 힘으로  창의 발견력이 상승합니다. 이 계열 효과는 첫 번째 효과만 적용됩니다."
+  },
+  {
+    "id": "6631600",
+    "type": "relic",
+    "name": "잠재한 힘으로 대형 창을 찾기 쉬워진다",
+    "category": "Utility",
+    "dn": true,
+    "stackable": false,
+    "stackOther": "first",
+    "group": "power",
+    "desc": "잠재한 힘으로  대형 창의 발견력이 상승합니다. 이 계열 효과는 첫 번째 효과만 적용됩니다."
+  },
+  {
+    "id": "6631700",
+    "type": "relic",
+    "name": "잠재한 힘으로 도끼창을 찾기 쉬워진다",
+    "category": "Utility",
+    "dn": true,
+    "stackable": false,
+    "stackOther": "first",
+    "group": "power",
+    "desc": "잠재한 힘으로  도끼창의 발견력이 상승합니다. 이 계열 효과는 첫 번째 효과만 적용됩니다."
+  },
+  {
+    "id": "6631800",
+    "type": "relic",
+    "name": "잠재한 힘으로 낫을 찾기 쉬워진다",
+    "category": "Utility",
+    "dn": true,
+    "stackable": false,
+    "stackOther": "first",
+    "group": "power",
+    "desc": "잠재한 힘으로  낫의 발견력이 상승합니다. 이 계열 효과는 첫 번째 효과만 적용됩니다."
+  },
+  {
+    "id": "6631900",
+    "type": "relic",
+    "name": "잠재한 힘으로 주먹을 찾기 쉬워진다",
+    "category": "Utility",
+    "dn": true,
+    "stackable": false,
+    "stackOther": "first",
+    "group": "power",
+    "desc": "잠재한 힘으로  주먹의 발견력이 상승합니다. 이 계열 효과는 첫 번째 효과만 적용됩니다."
+  },
+  {
+    "id": "6632000",
+    "type": "relic",
+    "name": "잠재한 힘으로 손톱을 찾기 쉬워진다",
+    "category": "Utility",
+    "dn": true,
+    "stackable": false,
+    "stackOther": "first",
+    "group": "power",
+    "desc": "잠재한 힘으로  손톱의 발견력이 상승합니다. 이 계열 효과는 첫 번째 효과만 적용됩니다."
+  },
+  {
+    "id": "6632100",
+    "type": "relic",
+    "name": "잠재한 힘으로 채찍을 찾기 쉬워진다",
+    "category": "Utility",
+    "dn": true,
+    "stackable": false,
+    "stackOther": "first",
+    "group": "power",
+    "desc": "잠재한 힘으로  채찍의 발견력이 상승합니다. 이 계열 효과는 첫 번째 효과만 적용됩니다."
+  },
+  {
+    "id": "6632200",
+    "type": "relic",
+    "name": "잠재한 힘으로 특대형 무기를 찾기 쉬워진다",
+    "category": "Utility",
+    "dn": true,
+    "stackable": false,
+    "stackOther": "first",
+    "group": "power",
+    "desc": "잠재한 힘으로  특대형 무기의 발견력이 상승합니다. 이 계열 효과는 첫 번째 효과만 적용됩니다."
+  },
+  {
+    "id": "6632300",
+    "type": "relic",
+    "name": "잠재한 힘으로 활을 찾기 쉬워진다",
+    "category": "Utility",
+    "dn": true,
+    "stackable": false,
+    "stackOther": "first",
+    "group": "power",
+    "desc": "잠재한 힘으로  활의 발견력이 상승합니다. 이 계열 효과는 첫 번째 효과만 적용됩니다."
+  },
+  {
+    "id": "6632400",
+    "type": "relic",
+    "name": "잠재한 힘으로 대궁을 찾기 쉬워진다",
+    "category": "Utility",
+    "dn": true,
+    "stackable": false,
+    "stackOther": "first",
+    "group": "power",
+    "desc": "잠재한 힘으로  대궁의 발견력이 상승합니다. 이 계열 효과는 첫 번째 효과만 적용됩니다."
+  },
+  {
+    "id": "6632500",
+    "type": "relic",
+    "name": "잠재한 힘으로 석궁을 찾기 쉬워진다",
+    "category": "Utility",
+    "dn": true,
+    "stackable": false,
+    "stackOther": "first",
+    "group": "power",
+    "desc": "잠재한 힘으로  석궁의 발견력이 상승합니다. 이 계열 효과는 첫 번째 효과만 적용됩니다."
+  },
+  {
+    "id": "6632600",
+    "type": "relic",
+    "name": "잠재한 힘으로 발리스타를 찾기 쉬워진다",
+    "category": "Utility",
+    "dn": true,
+    "stackable": false,
+    "stackOther": "first",
+    "group": "power",
+    "desc": "잠재한 힘으로  발리스타의 발견력이 상승합니다. 이 계열 효과는 첫 번째 효과만 적용됩니다."
+  },
+  {
+    "id": "6632700",
+    "type": "relic",
+    "name": "잠재한 힘으로 소형 방패를 찾기 쉬워진다",
+    "category": "Utility",
+    "dn": true,
+    "stackable": false,
+    "stackOther": "first",
+    "group": "power",
+    "desc": "잠재한 힘으로  소형 방패의 발견력이 상승합니다. 이 계열 효과는 첫 번째 효과만 적용됩니다."
+  },
+  {
+    "id": "6632800",
+    "type": "relic",
+    "name": "잠재한 힘으로 중형 방패를 찾기 쉬워진다",
+    "category": "Utility",
+    "dn": true,
+    "stackable": false,
+    "stackOther": "first",
+    "group": "power",
+    "desc": "잠재한 힘으로  중형 방패의 발견력이 상승합니다. 이 계열 효과는 첫 번째 효과만 적용됩니다."
+  },
+  {
+    "id": "6632900",
+    "type": "relic",
+    "name": "잠재한 힘으로 대형 방패를 찾기 쉬워진다",
+    "category": "Utility",
+    "dn": true,
+    "stackable": false,
+    "stackOther": "first",
+    "group": "power",
+    "desc": "잠재한 힘으로  대형 방패의 발견력이 상승합니다. 이 계열 효과는 첫 번째 효과만 적용됩니다."
+  },
+  {
+    "id": "6633000",
+    "type": "relic",
+    "name": "잠재한 힘으로 지팡이를 찾기 쉬워진다",
+    "category": "Utility",
+    "dn": true,
+    "stackable": false,
+    "stackOther": "first",
+    "group": "power",
+    "desc": "잠재한 힘으로  지팡이의 발견력이 상승합니다. 이 계열 효과는 첫 번째 효과만 적용됩니다."
+  },
+  {
+    "id": "6633100",
+    "type": "relic",
+    "name": "잠재한 힘으로 성인을 찾기 쉬워진다",
+    "category": "Utility",
+    "dn": true,
+    "stackable": false,
+    "stackOther": "first",
+    "group": "power",
+    "desc": "잠재한 힘으로  성인의 발견력이 상승합니다. 이 계열 효과는 첫 번째 효과만 적용됩니다."
+  },
+  {
+    "id": "6633200",
+    "type": "relic",
+    "name": "잠재한 힘으로 횃불을 찾기 쉬워진다",
+    "category": "Utility",
+    "dn": true,
+    "stackable": false,
+    "stackOther": "first",
+    "group": "power",
+    "desc": "잠재한 힘으로  횃불의 발견력이 상승합니다. 이 계열 효과는 첫 번째 효과만 적용됩니다."
+  },
+  {
+    "id": "6640000",
+    "type": "relic",
+    "name": "[추적자]정신력 상승, 생명력 저하",
+    "category": "Character Specific",
+    "dn": true,
+    "stackable": false,
+    "desc": "정신력이 10 상승합니다, 생명력이 5 상승합니다. 레벨 12 이상 기준이며, 레벨에 따라 수치가 변동될 수 있습니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "6640100",
+    "type": "relic",
+    "name": "[추적자]지력/신앙 상승, 근력/기량 저하",
+    "category": "Character Specific",
+    "dn": true,
+    "stackable": false,
+    "desc": "지력/신앙이 15 상승합니다. 근력이 7 저하합니다, 기량이 5 저하합니다. 레벨 12 이상 기준이며, 레벨에 따라 수치가 변동될 수 있습니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "6641000",
+    "type": "relic",
+    "name": "[수호자]근력/기량 상승, 생명력 저하",
+    "category": "Character Specific",
+    "dn": true,
+    "stackable": false,
+    "desc": "근력이 9 상승합니다, 기량이 19 상승합니다. 생명력이 8 저하합니다. 레벨 12 이상 기준이며, 레벨에 따라 수치가 변동될 수 있습니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "6641100",
+    "type": "relic",
+    "name": "[수호자]정신력/신앙 상승, 생명력 저하",
+    "category": "Character Specific",
+    "dn": true,
+    "stackable": false,
+    "desc": "정신력이 8 상승합니다, 신앙이 17 상승합니다. 생명력이 6 저하합니다. 레벨 12 이상 기준이며, 레벨에 따라 수치가 변동될 수 있습니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "6642000",
+    "type": "relic",
+    "name": "[철의 눈]신비 상승, 기량 저하",
+    "category": "Character Specific",
+    "dn": true,
+    "stackable": false,
+    "desc": "신비이 15 상승합니다, 기량이 9 상승합니다. 레벨 12 이상 기준이며, 레벨에 따라 수치가 변동될 수 있습니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "6642100",
+    "type": "relic",
+    "name": "[철의 눈]생명력/근력 상승, 기량 저하",
+    "category": "Character Specific",
+    "dn": true,
+    "stackable": false,
+    "desc": "생명력이 5 상승합니다, 근력이 20 상승합니다. 기량이 13 저하합니다. 레벨 12 이상 기준이며, 레벨에 따라 수치가 변동될 수 있습니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "6643000",
+    "type": "relic",
+    "name": "[레이디]생명력/근력 상승, 정신력 저하",
+    "category": "Character Specific",
+    "dn": true,
+    "stackable": false,
+    "desc": "생명력이 3 상승합니다, 근력이 24 상승합니다. 정신력이 14 저하합니다. 레벨 12 이상 기준이며, 레벨에 따라 수치가 변동될 수 있습니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "6643100",
+    "type": "relic",
+    "name": "[레이디]정신력/신앙 상승, 지력 저하",
+    "category": "Character Specific",
+    "dn": true,
+    "stackable": false,
+    "desc": "정신력이 3 상승합니다, 신앙이 13 상승합니다. 지력이 5 저하합니다. 레벨 12 이상 기준이며, 레벨에 따라 수치가 변동될 수 있습니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "6644000",
+    "type": "relic",
+    "name": "[무뢰한]정신력/지력 상승, 생명력/지구력 저하",
+    "category": "Character Specific",
+    "dn": true,
+    "stackable": false,
+    "desc": "정신력이 9 상승합니다, 지력이 35 상승합니다. 생명력이 8 저하합니다, 지구력이 4 저하합니다. 레벨 12 이상 기준이며, 레벨에 따라 수치가 변동될 수 있습니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "6644100",
+    "type": "relic",
+    "name": "[무뢰한]신비 상승, 생명력 저하",
+    "category": "Character Specific",
+    "dn": true,
+    "stackable": false,
+    "desc": "신비이 17 상승합니다, 생명력이 4 상승합니다. 레벨 12 이상 기준이며, 레벨에 따라 수치가 변동될 수 있습니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "6645000",
+    "type": "relic",
+    "name": "[복수자]생명력/지구력 상승, 정신력 저하",
+    "category": "Character Specific",
+    "dn": true,
+    "stackable": false,
+    "desc": "생명력이 5 상승합니다, 지구력이 5 상승합니다. 정신력이 11 저하합니다. 레벨 12 이상 기준이며, 레벨에 따라 수치가 변동될 수 있습니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "6645100",
+    "type": "relic",
+    "name": "[복수자]근력 상승, 신앙 저하",
+    "category": "Character Specific",
+    "dn": true,
+    "stackable": false,
+    "desc": "근력이 25 상승합니다. 신앙이 6 저하합니다. 레벨 12 이상 기준이며, 레벨에 따라 수치가 변동될 수 있습니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "6646000",
+    "type": "relic",
+    "name": "[은둔자]생명력/지구력/기량 상승, 지력/신앙 저하",
+    "category": "Character Specific",
+    "dn": true,
+    "stackable": false,
+    "desc": "생명력이 4 상승합니다, 지구력이 5 상승합니다, 기량이 20 상승합니다. 지력/신앙이 10 저하합니다. 레벨 12 이상 기준이며, 레벨에 따라 수치가 변동될 수 있습니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "6646100",
+    "type": "relic",
+    "name": "[은둔자]지력/신앙 상승, 정신력 저하",
+    "category": "Character Specific",
+    "dn": true,
+    "stackable": false,
+    "desc": "지력/신앙이 12 상승합니다. 정신력이 13 저하합니다. 레벨 12 이상 기준이며, 레벨에 따라 수치가 변동될 수 있습니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "6647000",
+    "type": "relic",
+    "name": "[집행자]생명력/지구력 상승, 신비 저하",
+    "category": "Character Specific",
+    "dn": true,
+    "stackable": false,
+    "desc": "생명력이 5 상승합니다, 지구력이 6 상승합니다. 신비이 13 저하합니다. 레벨 12 이상 기준이며, 레벨에 따라 수치가 변동될 수 있습니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "6647100",
+    "type": "relic",
+    "name": "[집행자]기량/신비 상승, 생명력 저하",
+    "category": "Character Specific",
+    "dn": true,
+    "stackable": false,
+    "desc": "기량이 9 상승합니다, 신비이 12 상승합니다. 생명력이 7 저하합니다. 레벨 12 이상 기준이며, 레벨에 따라 수치가 변동될 수 있습니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "6647200",
+    "type": "relic",
+    "name": "[학자]정신력 상승, 생명력 저하",
+    "category": "Character Specific",
+    "dn": true,
+    "stackable": false,
+    "desc": "정신력이 9 상승합니다. 생명력이 3 저하합니다. 레벨 12 이상 기준이며, 레벨에 따라 수치가 변동될 수 있습니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "6647300",
+    "type": "relic",
+    "name": "[학자]지구력/기량 상승, 지력/신비 저하",
+    "category": "Character Specific",
+    "dn": true,
+    "stackable": false,
+    "desc": "지구력이 6 상승합니다, 기량이 40 상승합니다. 지력이 4 저하합니다, 신비이 20 저하합니다. 레벨 12 이상 기준이며, 레벨에 따라 수치가 변동될 수 있습니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "6647400",
+    "type": "relic",
+    "name": "[장의사]기량 상승, 생명력/신앙 저하",
+    "category": "Character Specific",
+    "dn": true,
+    "stackable": false,
+    "desc": "기량이 19 상승합니다. 생명력이 5 저하합니다, 신앙이 13 저하합니다. 레벨 12 이상 기준이며, 레벨에 따라 수치가 변동될 수 있습니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "6647500",
+    "type": "relic",
+    "name": "[장의사]정신력/신앙 상승, 근력 저하",
+    "category": "Character Specific",
+    "dn": true,
+    "stackable": false,
+    "desc": "정신력이 9 상승합니다, 신앙이 12 상승합니다. 근력이 15 저하합니다. 레벨 12 이상 기준이며, 레벨에 따라 수치가 변동될 수 있습니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "6800000",
+    "type": "relic",
+    "name": "생명력 저하",
+    "category": "Impairment",
+    "dn": true,
+    "unobtainable": true
+  },
+  {
+    "id": "6800200",
+    "type": "relic",
+    "name": "지구력 저하",
+    "category": "Impairment",
+    "dn": true,
+    "unobtainable": true
+  },
+  {
+    "id": "6810100",
+    "type": "relic",
+    "name": "경감률 저하",
+    "category": "Impairment",
+    "dn": true,
+    "unobtainable": true
+  },
+  {
+    "id": "6820000",
+    "type": "relic",
+    "name": "대미지를 받을 시 독 축적",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "대미지를 받을 때 독 축적치가 65 쌓입니다."
+  },
+  {
+    "id": "6820100",
+    "type": "relic",
+    "name": "대미지를 받을 시 부패 축적",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "대미지를 받을 때 부패 축적치가 55 쌓입니다."
+  },
+  {
+    "id": "6820200",
+    "type": "relic",
+    "name": "대미지를 받을 시 동상 축적",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "대미지를 받을 때 동상 축적치가 55 쌓입니다."
+  },
+  {
+    "id": "6820300",
+    "type": "relic",
+    "name": "대미지를 받을 시 출혈 축적",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "대미지를 받을 때 출혈 축적치가 55 쌓입니다."
+  },
+  {
+    "id": "6820400",
+    "type": "relic",
+    "name": "대미지를 받을 시 발광 축적",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "대미지를 받을 때 발광 축적치가 50 쌓입니다."
+  },
+  {
+    "id": "6820500",
+    "type": "relic",
+    "name": "대미지를 받을 시 수면 축적",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "대미지를 받을 때 수면 축적치가 50 쌓입니다."
+  },
+  {
+    "id": "6820600",
+    "type": "relic",
+    "name": "대미지를 받을 시 죽음 축적",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "대미지를 받을 때 죽음 축적치가 40 쌓입니다."
+  },
+  {
+    "id": "6830000",
+    "type": "relic",
+    "name": "근력과 지력 저하",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "근력과 지력이 3 저하됩니다."
+  },
+  {
+    "id": "6830100",
+    "type": "relic",
+    "name": "기량과 신앙 저하",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "기량과 신앙이 3 저하됩니다."
+  },
+  {
+    "id": "6830200",
+    "type": "relic",
+    "name": "지력과 기량 저하",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "지력과 기량이 3 저하됩니다."
+  },
+  {
+    "id": "6830300",
+    "type": "relic",
+    "name": "신앙과 근력 저하",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "신앙과 근력이 3 저하됩니다."
+  },
+  {
+    "id": "6830400",
+    "type": "relic",
+    "name": "생명력과 신비 저하",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "생명력과 신비가 3 저하됩니다."
+  },
+  {
+    "id": "6840000",
+    "type": "relic",
+    "name": "획득 룬 감소",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "획득 룬이 10% 감소합니다."
+  },
+  {
+    "id": "6840100",
+    "type": "relic",
+    "name": "성배병 회복량 저하",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "성배병 회복량이 15% 감소합니다."
+  },
+  {
+    "id": "6840200",
+    "type": "relic",
+    "name": "아츠 게이지 축적 둔화",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "전투 중 아츠 게이지 축적량이 15% 감소합니다."
+  },
+  {
+    "id": "6850000",
+    "type": "relic",
+    "name": "물리 경감률 저하",
+    "category": "Impairment",
+    "dn": true,
+    "unobtainable": true
+  },
+  {
+    "id": "6850100",
+    "type": "relic",
+    "name": "속성 경감률 저하",
+    "category": "Impairment",
+    "dn": true,
+    "unobtainable": true
+  },
+  {
+    "id": "6850200",
+    "type": "relic",
+    "name": "모든 상태 이상 내성 저하",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "모든 상태 이상 내성이 80 저하됩니다."
+  },
+  {
+    "id": "6850300",
+    "type": "relic",
+    "name": "성배병 회복량 저하",
+    "category": "Impairment",
+    "dn": true,
+    "unobtainable": true
+  },
+  {
+    "id": "6850400",
+    "type": "relic",
+    "name": "질주의 스태미나 소비 증가",
+    "category": "Impairment",
+    "dn": true,
+    "unobtainable": true
+  },
+  {
+    "id": "6850500",
+    "type": "relic",
+    "name": "HP 지속 감소",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "초당 HP가 2 감소합니다."
+  },
+  {
+    "id": "6850600",
+    "type": "relic",
+    "name": "회피의 스태미나 소비 증가",
+    "category": "Impairment",
+    "dn": true,
+    "unobtainable": true
+  },
+  {
+    "id": "6850700",
+    "type": "relic",
+    "name": "회피 직후 경감률 저하",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "회피 직후 경감률이 45% 저하됩니다."
+  },
+  {
+    "id": "6850800",
+    "type": "relic",
+    "name": "회피 연속 시 경감률 저하",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "회피를 연속으로 하면 15초 동안 경감률이 35% 저하됩니다."
+  },
+  {
+    "id": "6850900",
+    "type": "relic",
+    "name": "성배병 사용 시 경감률 저하",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "성배병 사용 중 경감률이 45% 저하됩니다."
+  },
+  {
+    "id": "6851000",
+    "type": "relic",
+    "name": "성배병 사용 시 수면 축적",
+    "category": "Impairment",
+    "dn": true,
+    "unobtainable": true
+  },
+  {
+    "id": "6851100",
+    "type": "relic",
+    "name": "성배병 사용 시 발광 축적",
+    "category": "Impairment",
+    "dn": true,
+    "unobtainable": true
+  },
+  {
+    "id": "6851200",
+    "type": "relic",
+    "name": "HP 최대 미만 시 공격력 저하",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "HP가 최대 미만일 때 공격력이 8.5% 저하됩니다."
+  },
+  {
+    "id": "6851300",
+    "type": "relic",
+    "name": "HP 최대 미만 시 독 축적",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "HP가 최대 미만일 때 0.2초마다 독 축적치가 3 쌓입니다."
+  },
+  {
+    "id": "6851400",
+    "type": "relic",
+    "name": "HP 최대 미만 시 부패 축적",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "HP가 최대 미만일 때 0.2초마다 부패 축적치가 2 쌓입니다."
+  },
+  {
+    "id": "6851500",
+    "type": "relic",
+    "name": "HP 최대 시 공격력 저하",
+    "category": "Impairment",
+    "dn": true,
+    "unobtainable": true
+  },
+  {
+    "id": "6851600",
+    "type": "relic",
+    "name": "빈사 시 성배병을 흘림",
+    "category": "Impairment",
+    "dn": true,
+    "unobtainable": true
+  },
+  {
+    "id": "6851700",
+    "type": "relic",
+    "name": "빈사 시 최대 HP 저하",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "빈사 상태가 된 뒤 60초 동안 최대 HP가 25% 감소합니다."
+  },
+  {
+    "id": "7000000",
+    "type": "relic",
+    "name": "생명력+1",
+    "category": "Attributes",
+    "stackable": true,
+    "desc": "최대 HP가 20 상승합니다."
+  },
+  {
+    "id": "7000001",
+    "type": "relic",
+    "name": "생명력+2",
+    "category": "Attributes",
+    "stackable": true,
+    "desc": "최대 HP가 40 상승합니다."
+  },
+  {
+    "id": "7000002",
+    "type": "relic",
+    "name": "생명력+3",
+    "category": "Attributes",
+    "stackable": true,
+    "desc": "최대 HP가 60 상승합니다."
+  },
+  {
+    "id": "7000090",
+    "type": "relic",
+    "name": "최대 HP 상승",
+    "category": "Attributes",
+    "stackable": false,
+    "desc": "최대 HP가 100 상승합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "7000100",
+    "type": "relic",
+    "name": "정신력+1",
+    "category": "Attributes",
+    "stackable": true,
+    "desc": "최대 FP가 5 상승합니다."
+  },
+  {
+    "id": "7000101",
+    "type": "relic",
+    "name": "정신력+2",
+    "category": "Attributes",
+    "stackable": true,
+    "desc": "최대 FP가 10 상승합니다."
+  },
+  {
+    "id": "7000102",
+    "type": "relic",
+    "name": "정신력+3",
+    "category": "Attributes",
+    "stackable": true,
+    "desc": "최대 FP가 15 상승합니다."
+  },
+  {
+    "id": "7000190",
+    "type": "relic",
+    "name": "최대 FP 상승",
+    "category": "Attributes",
+    "stackable": false,
+    "desc": "최대 FP가 25 상승합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "7000200",
+    "type": "relic",
+    "name": "지구력+1",
+    "category": "Attributes",
+    "stackable": true,
+    "desc": "최대 스태미나가 2 상승합니다."
+  },
+  {
+    "id": "7000201",
+    "type": "relic",
+    "name": "지구력+2",
+    "category": "Attributes",
+    "stackable": true,
+    "desc": "최대 스태미나가 4 상승합니다."
+  },
+  {
+    "id": "7000202",
+    "type": "relic",
+    "name": "지구력+3",
+    "category": "Attributes",
+    "stackable": true,
+    "desc": "최대 스태미나가 6 상승합니다."
+  },
+  {
+    "id": "7000290",
+    "type": "relic",
+    "name": "최대 스태미나 상승",
+    "category": "Attributes",
+    "stackable": false,
+    "desc": "최대 스태미나가 10 상승합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "7000300",
+    "type": "relic",
+    "name": "근력+1",
+    "category": "Attributes",
+    "stackable": true
+  },
+  {
+    "id": "7000301",
+    "type": "relic",
+    "name": "근력+2",
+    "category": "Attributes",
+    "stackable": true
+  },
+  {
+    "id": "7000302",
+    "type": "relic",
+    "name": "근력+3",
+    "category": "Attributes",
+    "stackable": true
+  },
+  {
+    "id": "7000400",
+    "type": "relic",
+    "name": "기량+1",
+    "category": "Attributes",
+    "stackable": true
+  },
+  {
+    "id": "7000401",
+    "type": "relic",
+    "name": "기량+2",
+    "category": "Attributes",
+    "stackable": true
+  },
+  {
+    "id": "7000402",
+    "type": "relic",
+    "name": "기량+3",
+    "category": "Attributes",
+    "stackable": true
+  },
+  {
+    "id": "7000500",
+    "type": "relic",
+    "name": "지력+1",
+    "category": "Attributes",
+    "stackable": true
+  },
+  {
+    "id": "7000501",
+    "type": "relic",
+    "name": "지력+2",
+    "category": "Attributes",
+    "stackable": true
+  },
+  {
+    "id": "7000502",
+    "type": "relic",
+    "name": "지력+3",
+    "category": "Attributes",
+    "stackable": true
+  },
+  {
+    "id": "7000600",
+    "type": "relic",
+    "name": "신앙+1",
+    "category": "Attributes",
+    "stackable": true
+  },
+  {
+    "id": "7000601",
+    "type": "relic",
+    "name": "신앙+2",
+    "category": "Attributes",
+    "stackable": true
+  },
+  {
+    "id": "7000602",
+    "type": "relic",
+    "name": "신앙+3",
+    "category": "Attributes",
+    "stackable": true
+  },
+  {
+    "id": "7000700",
+    "type": "relic",
+    "name": "신비+1",
+    "category": "Attributes",
+    "stackable": true
+  },
+  {
+    "id": "7000701",
+    "type": "relic",
+    "name": "신비+2",
+    "category": "Attributes",
+    "stackable": true
+  },
+  {
+    "id": "7000702",
+    "type": "relic",
+    "name": "신비+3",
+    "category": "Attributes",
+    "stackable": true
+  },
+  {
+    "id": "7000800",
+    "type": "relic",
+    "name": "스킬 쿨 타임 경감+1",
+    "category": "Attributes",
+    "stackable": true,
+    "desc": "스킬 쿨타임이 5% 감소합니다."
+  },
+  {
+    "id": "7000801",
+    "type": "relic",
+    "name": "스킬 쿨 타임 경감+2",
+    "category": "Attributes",
+    "stackable": true,
+    "desc": "스킬 쿨타임이 7.5% 감소합니다."
+  },
+  {
+    "id": "7000802",
+    "type": "relic",
+    "name": "스킬 쿨 타임 경감+3",
+    "category": "Attributes",
+    "stackable": true,
+    "desc": "스킬 쿨타임이 10% 감소합니다."
+  },
+  {
+    "id": "7000900",
+    "type": "relic",
+    "name": "아츠 게이지 자연 축적+1",
+    "category": "Attributes",
+    "stackable": true,
+    "desc": "아츠 게이지 자연 축적량이 5% 증가합니다."
+  },
+  {
+    "id": "7000901",
+    "type": "relic",
+    "name": "아츠 게이지 자연 축적+2",
+    "category": "Attributes",
+    "stackable": true,
+    "desc": "아츠 게이지 자연 축적량이 7.5% 증가합니다."
+  },
+  {
+    "id": "7000902",
+    "type": "relic",
+    "name": "아츠 게이지 자연 축적+3",
+    "category": "Attributes",
+    "stackable": true,
+    "desc": "아츠 게이지 자연 축적량이 10% 증가합니다."
+  },
+  {
+    "id": "7001000",
+    "type": "relic",
+    "name": "강인도+1",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "받는 자세 피해가 5% 감소합니다."
+  },
+  {
+    "id": "7001001",
+    "type": "relic",
+    "name": "강인도+2",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "받는 자세 피해가 10% 감소합니다."
+  },
+  {
+    "id": "7001002",
+    "type": "relic",
+    "name": "강인도+3",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "받는 자세 피해가 15% 감소합니다."
+  },
+  {
+    "id": "7001100",
+    "type": "relic",
+    "name": "HP 지속 회복",
+    "category": "Utility",
+    "stackable": true,
+    "stackOther": "withAll",
+    "desc": "초당 HP를 2 회복합니다."
+  },
+  {
+    "id": "7001400",
+    "type": "relic",
+    "name": "물리 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "물리 공격력이 4% 상승합니다."
+  },
+  {
+    "id": "7001401",
+    "type": "relic",
+    "name": "물리 공격력 상승+1",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "물리 공격력이 5% 상승합니다."
+  },
+  {
+    "id": "7001402",
+    "type": "relic",
+    "name": "물리 공격력 상승+2",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "물리 공격력이 6% 상승합니다."
+  },
+  {
+    "id": "7001403",
+    "type": "relic",
+    "name": "물리 공격력 상승+3",
+    "category": "Offensive",
+    "stackable": true,
+    "unobtainable": true
+  },
+  {
+    "id": "7001500",
+    "type": "relic",
+    "name": "마력 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "마력 공격력이 4.5% 상승합니다."
+  },
+  {
+    "id": "7001501",
+    "type": "relic",
+    "name": "마력 공격력 상승+1",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "마력 공격력이 5.5% 상승합니다."
+  },
+  {
+    "id": "7001502",
+    "type": "relic",
+    "name": "마력 공격력 상승+2",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "마력 공격력이 6.5% 상승합니다."
+  },
+  {
+    "id": "7001600",
+    "type": "relic",
+    "name": "화염 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "화염 공격력이 4.5% 상승합니다."
+  },
+  {
+    "id": "7001601",
+    "type": "relic",
+    "name": "화염 공격력 상승+1",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "화염 공격력이 5.5% 상승합니다."
+  },
+  {
+    "id": "7001602",
+    "type": "relic",
+    "name": "화염 공격력 상승+2",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "화염 공격력이 6.5% 상승합니다."
+  },
+  {
+    "id": "7001700",
+    "type": "relic",
+    "name": "벼락 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "벼락 공격력이 4.5% 상승합니다."
+  },
+  {
+    "id": "7001701",
+    "type": "relic",
+    "name": "벼락 공격력 상승+1",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "벼락 공격력이 5.5% 상승합니다."
+  },
+  {
+    "id": "7001702",
+    "type": "relic",
+    "name": "벼락 공격력 상승+2",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "벼락 공격력이 6.5% 상승합니다."
+  },
+  {
+    "id": "7001800",
+    "type": "relic",
+    "name": "신성 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "신성 공격력이 4.5% 상승합니다."
+  },
+  {
+    "id": "7001801",
+    "type": "relic",
+    "name": "신성 공격력 상승+1",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "신성 공격력이 5.5% 상승합니다."
+  },
+  {
+    "id": "7001802",
+    "type": "relic",
+    "name": "신성 공격력 상승+2",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "신성 공격력이 6.5% 상승합니다."
+  },
+  {
+    "id": "7002600",
+    "type": "relic",
+    "name": "마력 경감률 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "마력 경감률이 10% 상승합니다."
+  },
+  {
+    "id": "7002700",
+    "type": "relic",
+    "name": "화염 경감률 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "화염 경감률이 10% 상승합니다."
+  },
+  {
+    "id": "7002800",
+    "type": "relic",
+    "name": "벼락 경감률 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "벼락 경감률이 10% 상승합니다."
+  },
+  {
+    "id": "7002900",
+    "type": "relic",
+    "name": "신성 경감률 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "신성 경감률이 10% 상승합니다."
+  },
+  {
+    "id": "7003000",
+    "type": "relic",
+    "name": "독 내성 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "독 내성이 75 상승합니다."
+  },
+  {
+    "id": "7003100",
+    "type": "relic",
+    "name": "출혈 내성 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "출혈 내성이 75 상승합니다."
+  },
+  {
+    "id": "7003200",
+    "type": "relic",
+    "name": "수면 내성 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "수면 내성이 75 상승합니다."
+  },
+  {
+    "id": "7003300",
+    "type": "relic",
+    "name": "항사 내성 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "죽음 내성이 75 상승합니다."
+  },
+  {
+    "id": "7003400",
+    "type": "relic",
+    "name": "부패 내성 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "부패 내성이 75 상승합니다."
+  },
+  {
+    "id": "7003500",
+    "type": "relic",
+    "name": "동상 내성 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "동상 내성이 75 상승합니다."
+  },
+  {
+    "id": "7003600",
+    "type": "relic",
+    "name": "발광 내성 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "발광 내성이 75 상승합니다."
+  },
+  {
+    "id": "7005600",
+    "type": "relic",
+    "name": "대미지를 받은 직후 공격으로 HP 일부 회복",
+    "category": "Defensive",
+    "stackable": false,
+    "stackOther": "tbd",
+    "desc": "대미지를 받은 직후 약 4초 안에 공격을 명중시키면 HP의 흰색 잔여 구간까지 HP를 회복합니다. 말레니아의 의수, 부패한 숲의 총애와는 중첩되지 않습니다."
+  },
+  {
+    "id": "7006000",
+    "type": "relic",
+    "name": "양손 잡기의 자세를 무너뜨리는 힘 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "무기를 양손으로 잡고 있을 때 자세를 무너뜨리는 힘이 5% 상승합니다."
+  },
+  {
+    "id": "7006100",
+    "type": "relic",
+    "name": "이도류의 자세를 무너뜨리는 힘 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "같은 종류의 무기 2개를 이도류로 장비하면 자세를 무너뜨리는 힘이 5% 상승합니다."
+  },
+  {
+    "id": "7006200",
+    "type": "relic",
+    "name": "물리 경감률 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "물리 경감률이 10% 상승합니다."
+  },
+  {
+    "id": "7006300",
+    "type": "relic",
+    "name": "속성 경감률 상승",
+    "category": "Defensive",
+    "stackable": false,
+    "desc": "마력/화염/벼락/신성 경감률이 6% 상승합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "7006400",
+    "type": "relic",
+    "name": "마술/기도 효과 시간 연장",
+    "category": "Sorceries",
+    "desc": "마술/기도 보조 효과의 지속 시간이 50% 증가합니다."
+  },
+  {
+    "id": "7006500",
+    "type": "relic",
+    "name": "FP 지속 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "5초마다 FP를 1 회복합니다."
+  },
+  {
+    "id": "7006600",
+    "type": "relic",
+    "name": "근접 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "근접 공격력이 6% 상승합니다."
+  },
+  {
+    "id": "7006700",
+    "type": "relic",
+    "name": "전투 기술 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "전투 기술 공격력이 15% 상승합니다."
+  },
+  {
+    "id": "7010000",
+    "type": "relic",
+    "name": "[수호자]스킬 비거리 상승",
+    "category": "Character Specific",
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7010200",
+    "type": "relic",
+    "name": "성배병 회복을 주위 아군에 분배",
+    "category": "Utility",
+    "stackable": false,
+    "desc": "성배병 사용 시 회복량의 50%만큼 주위 아군을 회복합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "7010500",
+    "type": "relic",
+    "name": "[추적자]아츠 발동 시 주위 연소",
+    "category": "Character Specific",
+    "stackable": false,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7010700",
+    "type": "relic",
+    "name": "[레이디]단검 연속 공격의 최종 공격 명중 시 주위 적에게 직전에 일어난 일을 재현",
+    "category": "Character Specific",
+    "stackable": false,
+    "desc": "이 효과로 발동한 리스테이지는 기본 피해량의 36%(한손 R1)~39%(양손 R1 또는 쌍수 L1)를 줍니다. \"캐릭터 스킬 공격력 상승\"의 영향을 받지 않습니다. 리스테이지는 한 번에 하나만 적용됩니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7010800",
+    "type": "relic",
+    "name": "[무뢰한]스킬 대미지 상승, 스킬 중 경감률 저하",
+    "category": "Character Specific",
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7010900",
+    "type": "relic",
+    "name": "[복수자]아츠 발동 시 자신의 HP와 맞바꿔 주위 아군의 HP를 전부 회복",
+    "category": "Character Specific",
+    "stackable": false,
+    "desc": "아츠 사용 시 현재 HP가 50% 감소합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7011000",
+    "type": "relic",
+    "name": "[수호자]스킬 지속 시간 연장",
+    "category": "Character Specific",
+    "stackable": false,
+    "desc": "스킬을 짧게 모아 더 큰 범위와 더 오래 지속되는 회오리를 발생시킬 수 있습니다. 투사체 공격을 막을 수 있습니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7011100",
+    "type": "relic",
+    "name": "[수호자]아츠 사용 시 주위 아군의 경감률 상승",
+    "category": "Character Specific",
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7011200",
+    "type": "relic",
+    "name": "[복수자]아츠 발동 시 영혼 불꽃 폭발 발생",
+    "category": "Character Specific",
+    "stackable": false,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7011400",
+    "type": "relic",
+    "name": "[수호자]스킬 사용 시 주위 아군의 HP 회복",
+    "category": "Character Specific",
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7011600",
+    "type": "relic",
+    "name": "[수호자]도끼창 차지 공격 시 회오리 발생",
+    "category": "Character Specific",
+    "stackable": false,
+    "desc": "도끼창 차지 강공격 시 추가 피해와 작은 범위 효과를 가진 회오리가 발생합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7011700",
+    "type": "relic",
+    "name": "[집행자]아츠 발동 중 포효로 HP 회복",
+    "category": "Character Specific",
+    "stackable": false,
+    "desc": "변신 중 포효하면 자신과 주위 아군의 최대 HP 15%를 회복합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7011900",
+    "type": "relic",
+    "name": "[수호자]스킬에 신성 공격력 부여",
+    "category": "Character Specific",
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7012000",
+    "type": "relic",
+    "name": "[수호자]아츠 발동 시 주위 아군의 HP를 서서히 회복",
+    "category": "Character Specific",
+    "stackable": false,
+    "desc": "구원의 날개 착지 후 아츠 버튼을 계속 누르면 보호 오라 안의 아군을 0.5초마다 최대 HP의 10% + 12만큼 회복합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7012200",
+    "type": "relic",
+    "name": "HP 저하 시 주위 아군을 포함해 HP를 서서히 회복",
+    "category": "Utility",
+    "stackable": false,
+    "desc": "HP가 20% 미만으로 떨어지면 50초 동안 초당 최대 HP의 0.5% + 1만큼 HP를 회복합니다. 회복으로 HP가 20%를 넘어도 효과는 즉시 해제되지 않습니다. 이 기준 이하로 떨어지는 공격을 다시 받으면 지속 시간이 초기화됩니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7012300",
+    "type": "relic",
+    "name": "HP 저하 시 경감률 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "HP가 40% 미만일 때 경감률이 16% 상승합니다."
+  },
+  {
+    "id": "7012400",
+    "type": "relic",
+    "name": "강 공격 시 주위에 열파 발생",
+    "category": "Offensive",
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7012500",
+    "type": "relic",
+    "name": "점프 시 여러 개의 마법탄 발생",
+    "category": "Offensive",
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7012600",
+    "type": "relic",
+    "name": "주위에 아군이 있을 시 공격력 상승",
+    "category": "Offensive",
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7012700",
+    "type": "relic",
+    "name": "가드 카운터 시 빛기둥 발생",
+    "category": "Offensive",
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7020000",
+    "type": "relic",
+    "name": "[추적자]스킬 사용 시 일반 공격으로 불꽃을 두른 추가 공격(대검 한정)",
+    "category": "Character Specific",
+    "stackable": false,
+    "desc": "클로 샷 사용 직후 약한 공격을 하면 화염을 두른 추가 공격이 나가며, 20초 동안 대검에 화염 공격력 +12가 부여됩니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7030000",
+    "type": "relic",
+    "name": "토템 스텔라 주위에서 강인도 상승",
+    "category": "Defensive",
+    "stackable": false,
+    "desc": "토템 스텔라 주변에서 자세 피해를 90% 적게 받습니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7030200",
+    "type": "relic",
+    "name": "이끼약 등 아이템 사용 시 HP 회복",
+    "category": "Defensive",
+    "stackable": false,
+    "desc": "육포류와 이끼약류를 사용하면 HP를 30 회복합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "7030500",
+    "type": "relic",
+    "name": "[추적자]아츠 발동 후 공격력과 최대 스태미나 상승, 경감률 저하",
+    "category": "Character Specific",
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7030600",
+    "type": "relic",
+    "name": "가드 성공 시 아츠 게이지 증가",
+    "category": "Utility",
+    "stackable": false,
+    "desc": "가드 성공 시 아츠 게이지가 1% 증가합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "7030700",
+    "type": "relic",
+    "name": "가드 중 적에게 노려지기 쉬워짐",
+    "category": "Defensive",
+    "stackable": false,
+    "desc": "가드 자세를 유지하는 동안이 아니라, 적의 공격을 가드하는 데 성공한 뒤 적에게 노려지기 쉬워집니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7030800",
+    "type": "relic",
+    "name": "치명적인 일격으로 아츠 게이지 증가",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "치명적인 일격 성공 시 아츠 게이지가 5% 증가합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "7030900",
+    "type": "relic",
+    "name": "기름 아이템 사용 시 추가로 물리 공격력 상승",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "기름 아이템 사용 후 30초 동안 공격력이 10% 상승합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "7031200",
+    "type": "relic",
+    "name": "[복수자]아츠 발동 시 패밀리와 아군 강화",
+    "category": "Character Specific",
+    "stackable": false,
+    "desc": "불사의 행진 사용 후 30초 동안 모든 패밀리와 살아 있는 아군의 공격력이 25% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7031300",
+    "type": "relic",
+    "name": "[무뢰한]스킬 중 공격을 받으면 공격력과 최대 스태미나 상승",
+    "category": "Character Specific",
+    "stackable": false,
+    "desc": "보복 자세 중 대미지를 받으면 20초 동안 공격력이 10%, 최대 스태미나가 20% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7031400",
+    "type": "relic",
+    "name": "[추적자]스킬 쿨 타임 경감",
+    "category": "Character Specific",
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7031600",
+    "type": "relic",
+    "name": "가드 성공 연속 시 가드 강도 상승, 큰 공격을 튕겨냄",
+    "category": "Defensive",
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7031700",
+    "type": "relic",
+    "name": "가드 성공 시 충격파 발생",
+    "category": "Offensive",
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7031800",
+    "type": "relic",
+    "name": "[레이디]등 뒤에서 치명적인 일격 후 적에게 잘 안 보이게 되고 발소리를 지움",
+    "category": "Character Specific",
+    "stackable": false,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7031900",
+    "type": "relic",
+    "name": "치명적인 일격으로 룬 획득",
+    "category": "Utility",
+    "stackable": false,
+    "desc": "치명적인 일격 성공 시 룬을 600 획득합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7032300",
+    "type": "relic",
+    "name": "[추적자]스킬 사용 시 공격력 상승",
+    "category": "Character Specific",
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7032400",
+    "type": "relic",
+    "name": "[추적자]어빌리티 발동 시 아츠 게이지 증가",
+    "category": "Character Specific",
+    "stackable": false,
+    "desc": "식스 센스로 죽음을 회피한 뒤 아츠 게이지가 18% 증가합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7032700",
+    "type": "relic",
+    "name": "[레이디]아츠 발동 중 적 격파 시 공격력 상승",
+    "category": "Character Specific",
+    "stackable": false,
+    "desc": "피날레 사용 후 은신 중 팀원 중 누구든 적을 처치하면 30초 동안 공격력이 15% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7032800",
+    "type": "relic",
+    "name": "[은둔자]속성흔을 모으면 「마술의 땅」 발동",
+    "category": "Character Specific",
+    "stackable": false,
+    "desc": "속성흔을 모으면 30초 동안 마력 공격력이 15% 상승하는 마술의 땅이 발생합니다. 기존 마술의 땅이 유지 중이면 새로 발생하지 않습니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7032900",
+    "type": "relic",
+    "name": "[은둔자]아츠 발동 시 자신에게 출혈 발생, 공격력 상승",
+    "category": "Character Specific",
+    "stackable": false,
+    "desc": "소울블러드 송 발동 후 출혈로 최대 HP의 20%를 잃고, 30초 동안 공격력이 16% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7033000",
+    "type": "relic",
+    "name": "[추적자]어빌리티 발동 시 공격력 상승",
+    "category": "Character Specific",
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7033200",
+    "type": "relic",
+    "name": "[추적자]스킬 사용 횟수 +1",
+    "category": "Character Specific",
+    "stackable": false,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7033300",
+    "type": "relic",
+    "name": "[수호자]어빌리티 발동 중 적에게 노려지기 쉬워짐",
+    "category": "Character Specific",
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7033400",
+    "type": "relic",
+    "name": "[수호자]어빌리티 발동 중 가드 성공 시 충격파 발생",
+    "category": "Character Specific",
+    "stackable": false,
+    "desc": "강철 가드로 적의 공격을 막으면 작은 충격파가 발생해 근처 적에게 피해를 주고, 작은 적을 비틀거리게 할 수 있습니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7033600",
+    "type": "relic",
+    "name": "[레이디]아츠 효과 시간 연장",
+    "category": "Character Specific",
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7033700",
+    "type": "relic",
+    "name": "특대형 무기 차지 공격으로 무기에 암석을 두름",
+    "category": "Offensive",
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7033800",
+    "type": "relic",
+    "name": "[무뢰한]스킬 최종 공격 사용 시 영속으로 공격력 상승",
+    "category": "Character Specific",
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7033900",
+    "type": "relic",
+    "name": "[은둔자]피의 낙인 효과 시간 연장",
+    "category": "Character Specific",
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7034000",
+    "type": "relic",
+    "name": "[은둔자]속성흔 4종을 모았을 때 속성 공격력 상승",
+    "category": "Character Specific",
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7034100",
+    "type": "relic",
+    "name": "[은둔자]아츠 발동 시 최대 HP 상승",
+    "category": "Character Specific",
+    "stackable": false,
+    "desc": "소울블러드 송 발동 후 30초 동안 최대 HP가 50% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7034200",
+    "type": "relic",
+    "name": "[집행자]아츠 중 공격력 상승",
+    "category": "Character Specific",
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7034300",
+    "type": "relic",
+    "name": "[집행자]어빌리티 효과 강화, 상태 이상 내성 저하",
+    "category": "Character Specific",
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7034400",
+    "type": "relic",
+    "name": "[집행자]스킬 중 공격력 상승, 공격 시 경감률 감소",
+    "category": "Character Specific",
+    "stackable": false,
+    "desc": "스킬 중 6초 동안 공격력이 35% 상승하고, 공격 시 5초 동안 경감률이 6% 감소합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7034500",
+    "type": "relic",
+    "name": "[집행자]스킬 중 요도가 해방 상태가 되면 HP 회복",
+    "category": "Character Specific",
+    "stackable": false,
+    "desc": "충분히 패리해 요도가 빛나면 HP를 100 + 최대 HP의 5%만큼 회복합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7034600",
+    "type": "relic",
+    "name": "[철의 눈]아츠 차지 발동 시 독 상태 이상 부여",
+    "category": "Character Specific",
+    "stackable": false,
+    "desc": "싱글 샷을 완전히 차지하면 주 대상에게 독 축적치 300을 부여합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7034700",
+    "type": "relic",
+    "name": "[철의 눈]아츠 발동 후 관통 카운터 강화",
+    "category": "Character Specific",
+    "stackable": false,
+    "desc": "싱글 샷 사용 후 30초 동안 관통 카운터 공격력이 20% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7034800",
+    "type": "relic",
+    "name": "화염 속성 치명적인 일격으로 최대 스태미나 상승",
+    "category": "Offensive",
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7034900",
+    "type": "relic",
+    "name": "치명적인 일격으로 HP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7035000",
+    "type": "relic",
+    "name": "치명적인 일격으로 벼락 공격력 부여",
+    "category": "Offensive",
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7035100",
+    "type": "relic",
+    "name": "치명적인 일격으로 스태미나 회복 속도 상승",
+    "category": "Utility",
+    "stackable": false,
+    "desc": "치명적인 일격 성공 후 15초 동안 스태미나 회복 속도가 초당 10 상승합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "7035200",
+    "type": "relic",
+    "name": "가드 연속 성공 시 자신을 경질화",
+    "category": "Defensive",
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7035300",
+    "type": "relic",
+    "name": "치명적인 일격으로 수면 안개 발생",
+    "category": "Status Effect",
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7035400",
+    "type": "relic",
+    "name": "제스처 「책상다리」로 발광 축적",
+    "category": "Status Effect",
+    "stackable": false,
+    "desc": "제스처 「책상다리」를 유지하는 동안 2초마다 발광 축적치 10을 받습니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7035500",
+    "type": "relic",
+    "name": "발광 상태가 되면 FP 지속 회복",
+    "category": "Utility",
+    "stackable": true,
+    "desc": "발광 상태가 되면 25초 동안 초당 FP를 2 회복합니다."
+  },
+  {
+    "id": "7035600",
+    "type": "relic",
+    "name": "질주 중 착지 시 땅 갈라짐 발생",
+    "category": "Offensive",
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7035700",
+    "type": "relic",
+    "name": "무기 바꿔 들기 시 어느 한 속성 공격력 부여",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "무기를 바꿔 들면 바꾼 무기에 10초 동안 무작위 속성이 부여되고, 해당 속성 공격력 12가 추가됩니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7035800",
+    "type": "relic",
+    "name": "속성 공격력 부여 시 속성 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "속성 공격력 부여 여부와 관계없이 속성 공격력이 10% 상승합니다."
+  },
+  {
+    "id": "7035900",
+    "type": "relic",
+    "name": "무기 바꿔 들기 시 물리 공격력 상승",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "무기를 바꿔 든 뒤 10초 동안 물리 공격력이 10% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7036100",
+    "type": "relic",
+    "name": "가드 성공 시 HP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "desc": "가드 성공 시 HP를 15 회복합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "7036200",
+    "type": "relic",
+    "name": "[학자]스킬 진척률 저하를 억제",
+    "category": "Character Specific",
+    "stackable": false,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7036300",
+    "type": "relic",
+    "name": "[학자]스킬 사용 시 대상에 포함된 아군의 공격력 상승",
+    "category": "Character Specific",
+    "stackable": false,
+    "desc": "스킬 대상에 포함된 아군은 30초 동안 물리 공격력이 20%, 속성 공격력이 15% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7036400",
+    "type": "relic",
+    "name": "[학자]아츠로 링크한 적에게 지속 대미지",
+    "category": "Character Specific",
+    "stackable": false,
+    "desc": "아츠로 링크한 대상에게 20초 동안 초당 15 피해를 줍니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7036500",
+    "type": "relic",
+    "name": "[학자]스킬의 표본이 늘 때마다 룬 획득",
+    "category": "Character Specific",
+    "stackable": false,
+    "desc": "스킬의 표본을 획득할 때마다 룬을 1300 얻습니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7036800",
+    "type": "relic",
+    "name": "[장의사]아츠 발동 시 공격력 상승",
+    "category": "Character Specific",
+    "stackable": false,
+    "desc": "아츠 발동 시 40초 동안 공격력이 14% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7036900",
+    "type": "relic",
+    "name": "[장의사]연속 공격의 최종 공격 명중 시 공격력 상승",
+    "category": "Character Specific",
+    "stackable": false,
+    "desc": "연속 공격의 최종 공격이 명중하면 20초 동안 공격력이 15% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7037000",
+    "type": "relic",
+    "name": "[장의사]기도 사용으로 자신에게 보조 효과 발생 시 물리 공격력 상승",
+    "category": "Character Specific",
+    "stackable": false,
+    "desc": "기도 사용으로 자신에게 보조 효과가 발생하면 60초 동안 물리 공격력이 18% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7037300",
+    "type": "relic",
+    "name": "[장의사]아츠 발동 시 닿은 아군의 HP 회복",
+    "category": "Character Specific",
+    "stackable": false,
+    "desc": "아츠에 닿은 아군의 HP를 100 + 해당 아군 최대 HP의 30%만큼 회복합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7037600",
+    "type": "relic",
+    "name": "공격 연속 시 공격력 상승",
+    "category": "Offensive",
+    "stackable": false,
+    "stackOther": "withAll",
+    "desc": "연속 공격 시 공격력이 5% / 6.5% / 9% 상승합니다."
+  },
+  {
+    "id": "7037700",
+    "type": "relic",
+    "name": "상태 이상 게이지가 있을 때 서서히 공격력 상승",
+    "category": "Offensive"
+  },
+  {
+    "id": "7037800",
+    "type": "relic",
+    "name": "경감률 저하 시 드물게 적에게 받는 공격을 무효화",
+    "category": "Defensive"
+  },
+  {
+    "id": "7040000",
+    "type": "relic",
+    "name": "일반 공격의 첫 공격 강화",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "일반 공격의 첫 공격력이 15% 상승합니다."
+  },
+  {
+    "id": "7040100",
+    "type": "relic",
+    "name": "가드 카운터 강화",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "가드 카운터 공격력이 23% 상승합니다."
+  },
+  {
+    "id": "7040200",
+    "type": "relic",
+    "name": "치명적인 일격 강화",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "치명적인 일격 공격력이 18% 상승합니다."
+  },
+  {
+    "id": "7040201",
+    "type": "relic",
+    "name": "치명적인 일격 강화+1",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "치명적인 일격 공격력이 23% 상승합니다. 같은 효과끼리는 중첩되지 않습니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "7040300",
+    "type": "relic",
+    "name": "투척 항아리 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "투척 항아리 공격력이 15% 상승합니다."
+  },
+  {
+    "id": "7040400",
+    "type": "relic",
+    "name": "투척 나이프 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "투척 나이프 공격력이 15% 상승합니다."
+  },
+  {
+    "id": "7040500",
+    "type": "relic",
+    "name": "휘석, 중력석 아이템의 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "휘석/중력석 아이템 공격력이 15% 상승합니다."
+  },
+  {
+    "id": "7043000",
+    "type": "relic",
+    "name": "포효와 브레스 강화",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "포효와 브레스 공격력이 15% 상승합니다."
+  },
+  {
+    "id": "7043100",
+    "type": "relic",
+    "name": "조향술 강화",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "조향술 공격력이 15% 상승합니다."
+  },
+  {
+    "id": "7043200",
+    "type": "relic",
+    "name": "채굴 마술 강화",
+    "category": "Sorceries",
+    "stackable": true,
+    "desc": "채굴 마술 강화 효과로 공격력이 12% 상승합니다."
+  },
+  {
+    "id": "7043300",
+    "type": "relic",
+    "name": "카리아의 검 마술 강화",
+    "category": "Sorceries",
+    "stackable": true,
+    "desc": "카리아의 검 마술 강화 효과로 공격력이 12% 상승합니다."
+  },
+  {
+    "id": "7043400",
+    "type": "relic",
+    "name": "휘검 마술 강화",
+    "category": "Sorceries",
+    "stackable": true,
+    "desc": "휘검 마술 강화 효과로 공격력이 12% 상승합니다."
+  },
+  {
+    "id": "7043500",
+    "type": "relic",
+    "name": "보이지 않는 마술 강화",
+    "category": "Sorceries",
+    "stackable": true,
+    "desc": "보이지 않는 마술 강화 효과로 공격력이 12% 상승합니다."
+  },
+  {
+    "id": "7043600",
+    "type": "relic",
+    "name": "결정인의 마술 강화",
+    "category": "Sorceries",
+    "stackable": true,
+    "desc": "결정인의 마술 강화 효과로 공격력이 12% 상승합니다."
+  },
+  {
+    "id": "7043700",
+    "type": "relic",
+    "name": "중력 마술 강화",
+    "category": "Sorceries",
+    "stackable": true,
+    "desc": "중력 마술 강화 효과로 공격력이 12% 상승합니다."
+  },
+  {
+    "id": "7043800",
+    "type": "relic",
+    "name": "가시 마술 강화",
+    "category": "Sorceries",
+    "stackable": true,
+    "desc": "가시 마술 강화 효과로 공격력이 12% 상승합니다."
+  },
+  {
+    "id": "7043900",
+    "type": "relic",
+    "name": "밤의 마술 강화",
+    "category": "Sorceries",
+    "stackable": true,
+    "desc": "밤의 마술 강화 효과로 공격력이 12% 상승합니다."
+  },
+  {
+    "id": "7044000",
+    "type": "relic",
+    "name": "황금률 원리주의 기도 강화",
+    "category": "Sorceries",
+    "stackable": true,
+    "desc": "황금률 원리주의 기도 강화 효과로 공격력이 12% 상승합니다."
+  },
+  {
+    "id": "7044100",
+    "type": "relic",
+    "name": "도읍 고룡신앙 기도 강화",
+    "category": "Sorceries",
+    "stackable": true,
+    "desc": "도읍 고룡신앙 기도 강화 효과로 공격력이 12% 상승합니다."
+  },
+  {
+    "id": "7044200",
+    "type": "relic",
+    "name": "거인의 불 기도 강화",
+    "category": "Sorceries",
+    "stackable": true,
+    "desc": "거인의 불 기도 강화 효과로 공격력이 12% 상승합니다."
+  },
+  {
+    "id": "7044300",
+    "type": "relic",
+    "name": "신 사냥 기도 강화",
+    "category": "Sorceries",
+    "stackable": true,
+    "desc": "신 사냥 기도 강화 효과로 공격력이 12% 상승합니다."
+  },
+  {
+    "id": "7044400",
+    "type": "relic",
+    "name": "짐승 기도 강화",
+    "category": "Sorceries",
+    "stackable": true,
+    "desc": "짐승 기도 강화 효과로 공격력이 12% 상승합니다."
+  },
+  {
+    "id": "7044500",
+    "type": "relic",
+    "name": "미친 불 기도 강화",
+    "category": "Sorceries",
+    "stackable": true,
+    "desc": "미친 불 기도 강화 효과로 공격력이 12% 상승합니다."
+  },
+  {
+    "id": "7044600",
+    "type": "relic",
+    "name": "용찬 기도 강화",
+    "category": "Sorceries",
+    "stackable": true,
+    "desc": "용찬 기도 강화 효과로 공격력이 12% 상승합니다."
+  },
+  {
+    "id": "7050000",
+    "type": "relic",
+    "name": "자신을 제외한 주위 아군의 스태미나 회복 속도 상승",
+    "category": "Utility",
+    "desc": "자신을 제외한 주위 아군의 스태미나 회복 속도가 초당 4 상승합니다."
+  },
+  {
+    "id": "7050100",
+    "type": "relic",
+    "name": "아이템 효과가 주위 아군에게도 발동",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7060000",
+    "type": "relic",
+    "name": "봉인감옥의 죄수를 쓰러뜨릴 때마다 공격력 상승",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "봉인감옥의 죄수를 쓰러뜨릴 때마다 공격력이 5% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7060100",
+    "type": "relic",
+    "name": "마술사탑의 장치를 해제할 때마다 최대 FP 상승",
+    "category": "Attributes",
+    "stackable": false,
+    "desc": "마술사탑의 장치를 해제할 때마다 최대 FP가 18% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7060200",
+    "type": "relic",
+    "name": "밤의 침입자를 쓰러뜨릴 때마다 공격력 상승",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "밤의 침입자를 쓰러뜨릴 때마다 공격력이 7% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7070000",
+    "type": "relic",
+    "name": "묻힌 보물의 위치를 지도에 표시",
+    "category": "Utility",
+    "stackable": false,
+    "desc": "묻힌 보물의 위치를 지도에 표시합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7080000",
+    "type": "relic",
+    "name": "단검 무기를 3개 이상 장비 시 공격력 상승",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "단검 무기를 3개 이상 장비하면 공격력이 20% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7080100",
+    "type": "relic",
+    "name": "직검 무기를 3개 이상 장비 시 공격력 상승",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "직검 무기를 3개 이상 장비하면 공격력이 20% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7080200",
+    "type": "relic",
+    "name": "대검 무기를 3개 이상 장비 시 공격력 상승",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "대검 무기를 3개 이상 장비하면 공격력이 20% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7080300",
+    "type": "relic",
+    "name": "특대검 무기를 3개 이상 장비 시 공격력 상승",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "특대검 무기를 3개 이상 장비하면 공격력이 20% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7080400",
+    "type": "relic",
+    "name": "곡검 무기를 3개 이상 장비 시 공격력 상승",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "곡검 무기를 3개 이상 장비하면 공격력이 20% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7080500",
+    "type": "relic",
+    "name": "대곡검 무기를 3개 이상 장비 시 공격력 상승",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "대곡검 무기를 3개 이상 장비하면 공격력이 20% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7080600",
+    "type": "relic",
+    "name": "도 무기를 3개 이상 장비 시 공격력 상승",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "도 무기를 3개 이상 장비하면 공격력이 20% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7080700",
+    "type": "relic",
+    "name": "쌍날검 무기를 3개 이상 장비 시 공격력 상승",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "쌍날검 무기를 3개 이상 장비하면 공격력이 20% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7080800",
+    "type": "relic",
+    "name": "자검 무기를 3개 이상 장비 시 공격력 상승",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "자검 무기를 3개 이상 장비하면 공격력이 20% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7080900",
+    "type": "relic",
+    "name": "대자검 무기를 3개 이상 장비 시 공격력 상승",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "대자검 무기를 3개 이상 장비하면 공격력이 20% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7081000",
+    "type": "relic",
+    "name": "도끼 무기를 3개 이상 장비 시 공격력 상승",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "도끼 무기를 3개 이상 장비하면 공격력이 20% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7081100",
+    "type": "relic",
+    "name": "대형 도끼 무기를 3개 이상 장비 시 공격력 상승",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "대형 도끼 무기를 3개 이상 장비하면 공격력이 20% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7081200",
+    "type": "relic",
+    "name": "망치 무기를 3개 이상 장비 시 공격력 상승",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "망치 무기를 3개 이상 장비하면 공격력이 20% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7081300",
+    "type": "relic",
+    "name": "대형 망치 무기를 3개 이상 장비 시 공격력 상승",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "대형 망치 무기를 3개 이상 장비하면 공격력이 20% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7081400",
+    "type": "relic",
+    "name": "철퇴 무기를 3개 이상 장비 시 공격력 상승",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "철퇴 무기를 3개 이상 장비하면 공격력이 20% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7081500",
+    "type": "relic",
+    "name": "창 무기를 3개 이상 장비 시 공격력 상승",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "창 무기를 3개 이상 장비하면 공격력이 20% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7081700",
+    "type": "relic",
+    "name": "대형 창 무기를 3개 이상 장비 시 공격력 상승",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "대형 창 무기를 3개 이상 장비하면 공격력이 20% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7081800",
+    "type": "relic",
+    "name": "도끼창 무기를 3개 이상 장비 시 공격력 상승",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "도끼창 무기를 3개 이상 장비하면 공격력이 20% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7081900",
+    "type": "relic",
+    "name": "낫 무기를 3개 이상 장비 시 공격력 상승",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "낫 무기를 3개 이상 장비하면 공격력이 20% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7082000",
+    "type": "relic",
+    "name": "주먹 무기를 3개 이상 장비 시 공격력 상승",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "주먹 무기를 3개 이상 장비하면 공격력이 20% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7082100",
+    "type": "relic",
+    "name": "발톱 무기를 3개 이상 장비 시 공격력 상승",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "발톱 무기를 3개 이상 장비하면 공격력이 20% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7082200",
+    "type": "relic",
+    "name": "채찍 무기를 3개 이상 장비 시 공격력 상승",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "채찍 무기를 3개 이상 장비하면 공격력이 20% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7082300",
+    "type": "relic",
+    "name": "특대형 무기를 3개 이상 장비 시 공격력 상승",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "특대형 무기를 3개 이상 장비하면 공격력이 20% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7082400",
+    "type": "relic",
+    "name": "활 무기를 3개 이상 장비 시 공격력 상승",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "활 무기를 3개 이상 장비하면 공격력이 10% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7082500",
+    "type": "relic",
+    "name": "지팡이 무기를 3개 이상 장비 시 최대 FP 상승",
+    "category": "Defensive",
+    "stackable": false,
+    "desc": "지팡이 무기를 3개 이상 장비하면 최대 FP가 50 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7082600",
+    "type": "relic",
+    "name": "성인 무기를 3개 이상 장비 시 최대 FP 상승",
+    "category": "Defensive",
+    "stackable": false,
+    "desc": "성인 무기를 3개 이상 장비하면 최대 FP가 50 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7082700",
+    "type": "relic",
+    "name": "소형 방패를 3개 이상 장비 시 최대 HP 상승",
+    "category": "Defensive",
+    "stackable": false,
+    "desc": "소형 방패를 3개 이상 장비하면 최대 HP가 200 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7082800",
+    "type": "relic",
+    "name": "중형 방패를 3개 이상 장비 시 최대 HP 상승",
+    "category": "Defensive",
+    "stackable": false,
+    "desc": "중형 방패를 3개 이상 장비하면 최대 HP가 200 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7082900",
+    "type": "relic",
+    "name": "대형 방패를 3개 이상 장비 시 최대 HP 상승",
+    "category": "Defensive",
+    "stackable": false,
+    "desc": "대형 방패를 3개 이상 장비하면 최대 HP가 200 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7090000",
+    "type": "relic",
+    "name": "적을 쓰러뜨릴 시 아츠 게이지 증가",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "적을 쓰러뜨릴 때마다 아츠 게이지가 5% 증가합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "7090100",
+    "type": "relic",
+    "name": "적을 쓰러뜨릴 시, 자신을 제외한 주위 아군의 HP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "desc": "적을 쓰러뜨리면 자신을 제외한 주위 아군의 HP를 20 회복합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7090300",
+    "type": "relic",
+    "name": "토템 스텔라 주위에서 적을 쓰러뜨릴 시 HP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "desc": "활성화된 토템 스텔라 근처에서 적을 쓰러뜨리면 최대 HP의 50%를 회복합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7100000",
+    "type": "relic",
+    "name": "독 상태인 적에 치명적인 일격으로 큰 대미지",
+    "category": "Offensive",
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7100100",
+    "type": "relic",
+    "name": "공격 명중 시 스태미나 회복",
+    "category": "Utility",
+    "stackable": false,
+    "desc": "공격 명중 시 스태미나를 2 회복합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "7100110",
+    "type": "relic",
+    "name": "공격 명중 시 스태미나 회복+1",
+    "category": "Utility",
+    "stackable": false,
+    "desc": "공격 명중 시 스태미나를 3 회복합니다. 하위 효과와 중첩됩니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "7110000",
+    "type": "relic",
+    "name": "자신과 아군의 획득 룬 증가",
+    "category": "Utility",
+    "stackable": true,
+    "desc": "자신과 아군의 획득 룬이 3.5% 증가합니다."
+  },
+  {
+    "id": "7120000",
+    "type": "relic",
+    "name": "출격 시 무기에 마력 공격력 부여",
+    "category": "Starting Items",
+    "stackable": false,
+    "group": "st-arma",
+    "desc": "출격 시 무기의 물리 공격력이 30/40/50/60 감소하고 마력 공격력이 33/44/55/66 추가됩니다. 정확한 수치는 무기 종류에 따라 달라집니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7120100",
+    "type": "relic",
+    "name": "출격 시 무기에 화염 공격력 부여",
+    "category": "Starting Items",
+    "stackable": false,
+    "group": "st-arma",
+    "desc": "출격 시 무기의 물리 공격력이 30/40/50/60 감소하고 화염 공격력이 33/44/55/66 추가됩니다. 정확한 수치는 무기 종류에 따라 달라집니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7120101",
+    "type": "relic",
+    "name": "출격 시 무기에 화염 공격력+1 부여",
+    "category": "Starting Items",
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7120200",
+    "type": "relic",
+    "name": "출격 시 무기에 벼락 공격력 부여",
+    "category": "Starting Items",
+    "stackable": false,
+    "group": "st-arma",
+    "desc": "출격 시 무기의 물리 공격력이 30/40/50/60 감소하고 벼락 공격력이 33/44/55/66 추가됩니다. 정확한 수치는 무기 종류에 따라 달라집니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7120300",
+    "type": "relic",
+    "name": "출격 시 무기에 신성 공격력 부여",
+    "category": "Starting Items",
+    "stackable": false,
+    "group": "st-arma",
+    "desc": "출격 시 무기의 물리 공격력이 30/40/50/60 감소하고 신성 공격력이 33/44/55/66 추가됩니다. 정확한 수치는 무기 종류에 따라 달라집니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7120400",
+    "type": "relic",
+    "name": "출격 시 무기에 동상 상태 이상 부여",
+    "category": "Starting Items",
+    "stackable": false,
+    "group": "st-arma",
+    "desc": "출격 시 무기 공격력이 15% 감소하고 동상 축적치 35가 추가됩니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7120500",
+    "type": "relic",
+    "name": "출격 시 무기에 독 상태 이상 부여",
+    "category": "Starting Items",
+    "stackable": false,
+    "group": "st-arma",
+    "desc": "출격 시 무기 공격력이 15% 감소하고 독 축적치 35가 추가됩니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7120600",
+    "type": "relic",
+    "name": "출격 시 무기에 출혈 상태 이상 부여",
+    "category": "Starting Items",
+    "stackable": false,
+    "group": "st-arma",
+    "desc": "출격 시 무기 공격력이 15% 감소하고 출혈 축적치 25가 추가됩니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7120700",
+    "type": "relic",
+    "name": "출격 시 무기에 붉은 부패 상태 이상 부여",
+    "category": "Starting Items",
+    "stackable": false,
+    "unobtainable": true,
+    "group": "st-arma",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7120900",
+    "type": "relic",
+    "name": "출격 시 「석검 열쇠」 소지",
+    "category": "Starting Items",
+    "stackable": false,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7121000",
+    "type": "relic",
+    "name": "출격 시 「작은 파우치」 소지",
+    "category": "Starting Items",
+    "stackable": true,
+    "desc": "출격 중 인벤토리 슬롯이 1칸 증가합니다."
+  },
+  {
+    "id": "7121100",
+    "type": "relic",
+    "name": "출격 시 「화염 항아리」 소지",
+    "category": "Starting Items",
+    "stackable": true
+  },
+  {
+    "id": "7121200",
+    "type": "relic",
+    "name": "출격 시 「마력 항아리」 소지",
+    "category": "Starting Items",
+    "stackable": true
+  },
+  {
+    "id": "7121300",
+    "type": "relic",
+    "name": "출격 시 「벼락 항아리」 소지",
+    "category": "Starting Items",
+    "stackable": true
+  },
+  {
+    "id": "7121400",
+    "type": "relic",
+    "name": "출격 시 「성수 항아리」 소지",
+    "category": "Starting Items",
+    "stackable": true
+  },
+  {
+    "id": "7121500",
+    "type": "relic",
+    "name": "출격 시 「투척 독 뼈화살」 소지",
+    "category": "Starting Items",
+    "stackable": true
+  },
+  {
+    "id": "7121600",
+    "type": "relic",
+    "name": "출격 시 「결정 투척 화살」 소지",
+    "category": "Starting Items",
+    "stackable": true
+  },
+  {
+    "id": "7121700",
+    "type": "relic",
+    "name": "출격 시 「투척 단검」 소지",
+    "category": "Starting Items",
+    "stackable": true
+  },
+  {
+    "id": "7121800",
+    "type": "relic",
+    "name": "출격 시 「부스러기 휘석」 소지",
+    "category": "Starting Items",
+    "stackable": true
+  },
+  {
+    "id": "7121900",
+    "type": "relic",
+    "name": "출격 시 「중력석 덩어리」 소지",
+    "category": "Starting Items",
+    "stackable": true
+  },
+  {
+    "id": "7122000",
+    "type": "relic",
+    "name": "출격 시 「유혹의 나뭇가지」 소지",
+    "category": "Starting Items",
+    "stackable": true
+  },
+  {
+    "id": "7122100",
+    "type": "relic",
+    "name": "출격 시 「주령을 부르는 종」 소지",
+    "category": "Starting Items",
+    "desc": "효과는 중첩될 수 있으나, 한 번에 하나의 종만 사용할 수 있습니다."
+  },
+  {
+    "id": "7122200",
+    "type": "relic",
+    "name": "출격 시 「불기름」 소지",
+    "category": "Starting Items",
+    "stackable": true
+  },
+  {
+    "id": "7122300",
+    "type": "relic",
+    "name": "출격 시 「마력기름」 소지",
+    "category": "Starting Items",
+    "stackable": true
+  },
+  {
+    "id": "7122400",
+    "type": "relic",
+    "name": "출격 시 「벼락기름」 소지",
+    "category": "Starting Items",
+    "stackable": true
+  },
+  {
+    "id": "7122500",
+    "type": "relic",
+    "name": "출격 시 「신성기름」 소지",
+    "category": "Starting Items",
+    "stackable": true
+  },
+  {
+    "id": "7122600",
+    "type": "relic",
+    "name": "출격 시 「방패기름」 소지",
+    "category": "Starting Items",
+    "stackable": true
+  },
+  {
+    "id": "7122700",
+    "type": "relic",
+    "name": "출격 시 무기의 전투 기술 「휘검의 원진」 ※적용 가능한 무기종만",
+    "category": "Armament Skills",
+    "stackable": false,
+    "group": "st-skill",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7122800",
+    "type": "relic",
+    "name": "출격 시 무기의 전투 기술 「그라비타스」 ※적용 가능한 무기종만",
+    "category": "Armament Skills",
+    "stackable": false,
+    "group": "st-skill",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7122900",
+    "type": "relic",
+    "name": "출격 시 무기의 전투 기술 「염격」 ※적용 가능한 무기종만",
+    "category": "Armament Skills",
+    "stackable": false,
+    "group": "st-skill",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7123000",
+    "type": "relic",
+    "name": "출격 시 무기의 전투 기술 「용암 분화」 ※적용 가능한 무기종만",
+    "category": "Armament Skills",
+    "stackable": false,
+    "group": "st-skill",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7123100",
+    "type": "relic",
+    "name": "출격 시 무기의 전투 기술 「낙뢰」 ※적용 가능한 무기종만",
+    "category": "Armament Skills",
+    "stackable": false,
+    "group": "st-skill",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7123200",
+    "type": "relic",
+    "name": "출격 시 무기의 전투 기술 「뇌격참」 ※적용 가능한 무기종만",
+    "category": "Armament Skills",
+    "stackable": false,
+    "group": "st-skill",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7123300",
+    "type": "relic",
+    "name": "출격 시 무기의 전투 기술 「신성한 칼날」 ※적용 가능한 무기종만",
+    "category": "Armament Skills",
+    "stackable": false,
+    "group": "st-skill",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7123400",
+    "type": "relic",
+    "name": "출격 시 무기의 전투 기술 「기도의 일격」 ※적용 가능한 무기종만",
+    "category": "Armament Skills",
+    "stackable": false,
+    "group": "st-skill",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7123500",
+    "type": "relic",
+    "name": "출격 시 무기의 전투 기술 「독 안개」 ※적용 가능한 무기종만",
+    "category": "Armament Skills",
+    "stackable": false,
+    "group": "st-skill",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7123600",
+    "type": "relic",
+    "name": "출격 시 무기의 전투 기술 「독나방은 두 번 춤춘다」 ※적용 가능한 무기종만",
+    "category": "Armament Skills",
+    "stackable": false,
+    "group": "st-skill",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7123700",
+    "type": "relic",
+    "name": "출격 시 무기의 전투 기술 「피의 칼날」 ※적용 가능한 무기종만",
+    "category": "Armament Skills",
+    "stackable": false,
+    "group": "st-skill",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7123800",
+    "type": "relic",
+    "name": "출격 시 무기의 전투 기술 「할복」 ※적용 가능한 무기종만",
+    "category": "Armament Skills",
+    "stackable": false,
+    "group": "st-skill",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7123900",
+    "type": "relic",
+    "name": "출격 시 무기의 전투 기술 「냉기 안개」 ※적용 가능한 무기종만",
+    "category": "Armament Skills",
+    "stackable": false,
+    "group": "st-skill",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7124000",
+    "type": "relic",
+    "name": "출격 시 무기의 전투 기술 「서리 밟기」 ※적용 가능한 무기종만",
+    "category": "Armament Skills",
+    "stackable": false,
+    "group": "st-skill",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7124100",
+    "type": "relic",
+    "name": "출격 시 무기의 전투 기술 「흰 그림자의 유인」 ※적용 가능한 무기종만",
+    "category": "Armament Skills",
+    "stackable": false,
+    "group": "st-skill",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7124300",
+    "type": "relic",
+    "name": "출격 시 무기의 전투 기술 「참기」 ※적용 가능한 무기종만",
+    "category": "Armament Skills",
+    "stackable": false,
+    "group": "st-skill",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7124400",
+    "type": "relic",
+    "name": "출격 시 무기의 전투 기술 「퀵스텝」 ※적용 가능한 무기종만",
+    "category": "Armament Skills",
+    "stackable": false,
+    "group": "st-skill",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7124500",
+    "type": "relic",
+    "name": "출격 시 무기의 전투 기술 「남각」 ※적용 가능한 무기종만",
+    "category": "Armament Skills",
+    "stackable": false,
+    "group": "st-skill",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7124600",
+    "type": "relic",
+    "name": "출격 시 무기의 전투 기술 「디터미네이션」 ※적용 가능한 무기종만",
+    "category": "Armament Skills",
+    "stackable": false,
+    "group": "st-skill",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7124700",
+    "type": "relic",
+    "name": "출격 시 무기의 전투 기술 「애로우 레인」 ※적용 가능한 무기종만",
+    "category": "Armament Skills",
+    "stackable": false,
+    "group": "st-skill",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7126000",
+    "type": "relic",
+    "name": "출격 시 「별빛 조각」 소지",
+    "category": "Starting Items",
+    "stackable": true
+  },
+  {
+    "id": "7150000",
+    "type": "relic",
+    "name": "가드 카운터에 자신의 현재 HP의 일부를 추가",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "가드 카운터에 현재 HP 1당 0.045 / 0.050 / 0.055의 추가 피해가 더해집니다. 정확한 수치는 무기 종류에 따라 달라집니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7160000",
+    "type": "relic",
+    "name": "관통 카운터 발생 시 HP 회복",
+    "category": "Defensive",
+    "stackable": false,
+    "desc": "관통 카운터 발생 시 최대 HP의 2.5%를 회복합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "7170100",
+    "type": "relic",
+    "name": "대미지를 받을 시 부패 상태 이상 부여",
+    "category": "Status Effect"
+  },
+  {
+    "id": "7200000",
+    "type": "relic",
+    "name": "헤드 샷으로 HP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7200100",
+    "type": "relic",
+    "name": "헤드 샷으로 자세를 무너뜨리는 힘 상승",
+    "category": "Offensive",
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7220000",
+    "type": "relic",
+    "name": "[복수자]패밀리와 함께 싸우는 동안 자신을 강화",
+    "category": "Character Specific",
+    "stackable": false,
+    "desc": "패밀리와 함께 싸우는 동안 헬렌은 초당 HP 1 회복, 프레드릭은 공격력 10% 상승, 세바스찬은 속성 경감률 20% 상승 효과를 제공합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7230000",
+    "type": "relic",
+    "name": "출격 중 상점 구매에 필요한 룬 할인",
+    "category": "Utility",
+    "stackable": false,
+    "desc": "출격 중 상점 구매에 필요한 룬이 10% 할인됩니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7230001",
+    "type": "relic",
+    "name": "출격 중 상점 구매에 필요한 룬 대폭 할인",
+    "category": "Utility",
+    "stackable": false,
+    "desc": "출격 중 상점 구매에 필요한 룬이 20% 할인됩니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7240000",
+    "type": "relic",
+    "name": "대미지를 받아 날아갔을 때, 강인도와 경감률 상승",
+    "category": "Defensive",
+    "stackable": false,
+    "desc": "대미지를 받아 날아간 뒤 30초 동안 받는 피해와 자세 피해가 20% 감소합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7260000",
+    "type": "relic",
+    "name": "독 상태인 적에 대한 공격 강화",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "독 상태인 적에 대한 공격력이 10% 상승합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "7260200",
+    "type": "relic",
+    "name": "수면 상태인 적에 대한 공격 강화",
+    "category": "Offensive",
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7260300",
+    "type": "relic",
+    "name": "부패 상태인 적에 대한 공격 강화",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "부패 상태인 적에 대한 공격력이 10% 상승합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "7260400",
+    "type": "relic",
+    "name": "동상 상태인 적에 대한 공격 강화",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "동상 상태인 적에 대한 공격력이 10% 상승합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "7260600",
+    "type": "relic",
+    "name": "수면 상태인 적을 공격 시 마력 폭발 발생",
+    "category": "Offensive",
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7260700",
+    "type": "relic",
+    "name": "주위에서 동상 발생 시 자신의 모습을 숨김",
+    "category": "Defensive",
+    "stackable": false,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7260710",
+    "type": "relic",
+    "name": "주위에서 독/부패 발생 시 공격력 상승",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "주위의 적 또는 아군에게 독 또는 부패가 발생하면 20초 동안 공격력이 12% 상승합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "7260900",
+    "type": "relic",
+    "name": "주위에서 부패 상태 발생 시 HP 지속 회복",
+    "category": "Utility"
+  },
+  {
+    "id": "7270100",
+    "type": "relic",
+    "name": "[철의 눈]스킬 사용 횟수 +1",
+    "category": "Character Specific",
+    "stackable": false,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7280000",
+    "type": "relic",
+    "name": "[철의 눈]약점의 지속 시간 연장",
+    "category": "Character Specific",
+    "stackable": false,
+    "desc": "약점의 기본 지속 시간이 17.5초에서 22초로 연장됩니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7290000",
+    "type": "relic",
+    "name": "[레이디]스킬 대미지 상승",
+    "category": "Character Specific",
+    "stackable": false,
+    "desc": "리스테이지 피해량이 원래 피해량의 50%에서 60%로 증가합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7300000",
+    "type": "relic",
+    "name": "[레이디]스킬 사용 시 적의 수면을 유발",
+    "category": "Character Specific",
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7310000",
+    "type": "relic",
+    "name": "[무뢰한]아츠 효과 시간 연장",
+    "category": "Character Specific",
+    "stackable": false,
+    "desc": "토템 스텔라의 지속 시간이 20초에서 30초로 증가합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7320000",
+    "type": "relic",
+    "name": "[복수자]어빌리티 발동률 상승",
+    "category": "Character Specific",
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7330000",
+    "type": "relic",
+    "name": "단검 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "단검 공격력이 9% 상승합니다."
+  },
+  {
+    "id": "7330100",
+    "type": "relic",
+    "name": "직검 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "직검 공격력이 9% 상승합니다."
+  },
+  {
+    "id": "7330200",
+    "type": "relic",
+    "name": "대검 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "대검 공격력이 9% 상승합니다."
+  },
+  {
+    "id": "7330300",
+    "type": "relic",
+    "name": "특대검 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "특대검 공격력이 9% 상승합니다."
+  },
+  {
+    "id": "7330400",
+    "type": "relic",
+    "name": "곡검 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "곡검 공격력이 9% 상승합니다."
+  },
+  {
+    "id": "7330500",
+    "type": "relic",
+    "name": "대곡검 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "대곡검 공격력이 9% 상승합니다."
+  },
+  {
+    "id": "7330600",
+    "type": "relic",
+    "name": "도 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "도 공격력이 9% 상승합니다."
+  },
+  {
+    "id": "7330700",
+    "type": "relic",
+    "name": "쌍날검 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "쌍날검 공격력이 9% 상승합니다."
+  },
+  {
+    "id": "7330800",
+    "type": "relic",
+    "name": "자검 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "자검 공격력이 9% 상승합니다."
+  },
+  {
+    "id": "7330900",
+    "type": "relic",
+    "name": "대자검 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "대자검 공격력이 9% 상승합니다."
+  },
+  {
+    "id": "7331000",
+    "type": "relic",
+    "name": "도끼 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "도끼 공격력이 9% 상승합니다."
+  },
+  {
+    "id": "7331100",
+    "type": "relic",
+    "name": "대형 도끼 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "대형 도끼 공격력이 9% 상승합니다."
+  },
+  {
+    "id": "7331200",
+    "type": "relic",
+    "name": "망치 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "망치 공격력이 9% 상승합니다."
+  },
+  {
+    "id": "7331300",
+    "type": "relic",
+    "name": "대형 망치 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "대형 망치 공격력이 9% 상승합니다."
+  },
+  {
+    "id": "7331400",
+    "type": "relic",
+    "name": "철퇴 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "철퇴 공격력이 9% 상승합니다."
+  },
+  {
+    "id": "7331500",
+    "type": "relic",
+    "name": "창 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "창 공격력이 9% 상승합니다."
+  },
+  {
+    "id": "7331600",
+    "type": "relic",
+    "name": "장창 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "장창 공격력이 9% 상승합니다."
+  },
+  {
+    "id": "7331700",
+    "type": "relic",
+    "name": "대형 창 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "대형 창 공격력이 9% 상승합니다."
+  },
+  {
+    "id": "7331800",
+    "type": "relic",
+    "name": "도끼창 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "도끼창 공격력이 9% 상승합니다."
+  },
+  {
+    "id": "7331900",
+    "type": "relic",
+    "name": "낫 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "낫 공격력이 9% 상승합니다."
+  },
+  {
+    "id": "7332000",
+    "type": "relic",
+    "name": "주먹 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "주먹 공격력이 9% 상승합니다."
+  },
+  {
+    "id": "7332100",
+    "type": "relic",
+    "name": "손톱 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "손톱 공격력이 9% 상승합니다."
+  },
+  {
+    "id": "7332200",
+    "type": "relic",
+    "name": "채찍 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "채찍 공격력이 9% 상승합니다."
+  },
+  {
+    "id": "7332300",
+    "type": "relic",
+    "name": "특대형 무기 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "특대형 무기 공격력이 9% 상승합니다."
+  },
+  {
+    "id": "7332400",
+    "type": "relic",
+    "name": "활 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "활 공격력이 6% 상승합니다."
+  },
+  {
+    "id": "7332500",
+    "type": "relic",
+    "name": "대궁 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "unobtainable": true,
+    "desc": "대궁 공격력이 9% 상승합니다."
+  },
+  {
+    "id": "7332600",
+    "type": "relic",
+    "name": "석궁 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "unobtainable": true,
+    "desc": "석궁 공격력이 9% 상승합니다."
+  },
+  {
+    "id": "7332700",
+    "type": "relic",
+    "name": "발리스타 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "unobtainable": true,
+    "desc": "발리스타 공격력이 9% 상승합니다."
+  },
+  {
+    "id": "7340000",
+    "type": "relic",
+    "name": "단검 공격으로 HP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "단검 공격 명중 시 HP를 15 회복합니다."
+  },
+  {
+    "id": "7340100",
+    "type": "relic",
+    "name": "직검 공격으로 HP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "직검 공격 명중 시 HP를 15 회복합니다."
+  },
+  {
+    "id": "7340200",
+    "type": "relic",
+    "name": "대검 공격으로 HP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "대검 공격 명중 시 HP를 15 회복합니다."
+  },
+  {
+    "id": "7340300",
+    "type": "relic",
+    "name": "특대검 공격으로 HP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "특대검 공격 명중 시 HP를 15 회복합니다."
+  },
+  {
+    "id": "7340400",
+    "type": "relic",
+    "name": "곡검 공격으로 HP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "곡검 공격 명중 시 HP를 15 회복합니다."
+  },
+  {
+    "id": "7340500",
+    "type": "relic",
+    "name": "대곡검 공격으로 HP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "대곡검 공격 명중 시 HP를 15 회복합니다."
+  },
+  {
+    "id": "7340600",
+    "type": "relic",
+    "name": "도 공격으로 HP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "도 공격 명중 시 HP를 15 회복합니다."
+  },
+  {
+    "id": "7340700",
+    "type": "relic",
+    "name": "쌍날검 공격으로 HP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "쌍날검 공격 명중 시 HP를 15 회복합니다."
+  },
+  {
+    "id": "7340800",
+    "type": "relic",
+    "name": "자검 공격으로 HP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "자검 공격 명중 시 HP를 15 회복합니다."
+  },
+  {
+    "id": "7340900",
+    "type": "relic",
+    "name": "대자검 공격으로 HP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "대자검 공격 명중 시 HP를 15 회복합니다."
+  },
+  {
+    "id": "7341000",
+    "type": "relic",
+    "name": "도끼 공격으로 HP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "도끼 공격 명중 시 HP를 15 회복합니다."
+  },
+  {
+    "id": "7341100",
+    "type": "relic",
+    "name": "대형 도끼 공격으로 HP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "대형 도끼 공격 명중 시 HP를 15 회복합니다."
+  },
+  {
+    "id": "7341200",
+    "type": "relic",
+    "name": "망치 공격으로 HP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "망치 공격 명중 시 HP를 15 회복합니다."
+  },
+  {
+    "id": "7341300",
+    "type": "relic",
+    "name": "대형 망치 공격으로 HP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "대형 망치 공격 명중 시 HP를 15 회복합니다."
+  },
+  {
+    "id": "7341400",
+    "type": "relic",
+    "name": "철퇴 공격으로 HP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "철퇴 공격 명중 시 HP를 15 회복합니다."
+  },
+  {
+    "id": "7341500",
+    "type": "relic",
+    "name": "창 공격으로 HP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "창 공격 명중 시 HP를 15 회복합니다."
+  },
+  {
+    "id": "7341600",
+    "type": "relic",
+    "name": "장창 공격으로 HP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "장창 공격 명중 시 HP를 15 회복합니다."
+  },
+  {
+    "id": "7341700",
+    "type": "relic",
+    "name": "대형 창 공격으로 HP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "대형 창 공격 명중 시 HP를 15 회복합니다."
+  },
+  {
+    "id": "7341800",
+    "type": "relic",
+    "name": "도끼창 공격으로 HP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "도끼창 공격 명중 시 HP를 15 회복합니다."
+  },
+  {
+    "id": "7341900",
+    "type": "relic",
+    "name": "낫 공격으로 HP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "낫 공격 명중 시 HP를 15 회복합니다."
+  },
+  {
+    "id": "7342000",
+    "type": "relic",
+    "name": "주먹 공격으로 HP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "주먹 공격 명중 시 HP를 15 회복합니다."
+  },
+  {
+    "id": "7342100",
+    "type": "relic",
+    "name": "손톱 공격으로 HP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "손톱 공격 명중 시 HP를 15 회복합니다."
+  },
+  {
+    "id": "7342200",
+    "type": "relic",
+    "name": "채찍 공격으로 HP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "채찍 공격 명중 시 HP를 15 회복합니다."
+  },
+  {
+    "id": "7342300",
+    "type": "relic",
+    "name": "특대형 무기 공격으로 HP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "특대형 무기 공격 명중 시 HP를 15 회복합니다."
+  },
+  {
+    "id": "7342400",
+    "type": "relic",
+    "name": "활 공격으로 HP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "활 공격 명중 시 HP를 15 회복합니다."
+  },
+  {
+    "id": "7342500",
+    "type": "relic",
+    "name": "대궁 공격으로 HP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "unobtainable": true
+  },
+  {
+    "id": "7342600",
+    "type": "relic",
+    "name": "석궁 공격으로 HP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "unobtainable": true
+  },
+  {
+    "id": "7342700",
+    "type": "relic",
+    "name": "발리스타 공격으로 HP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "unobtainable": true
+  },
+  {
+    "id": "7350000",
+    "type": "relic",
+    "name": "단검 공격으로 FP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "단검 공격 명중 시 FP를 2 회복합니다."
+  },
+  {
+    "id": "7350100",
+    "type": "relic",
+    "name": "직검 공격으로 FP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "직검 공격 명중 시 FP를 2 회복합니다."
+  },
+  {
+    "id": "7350200",
+    "type": "relic",
+    "name": "대검 공격으로 FP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "대검 공격 명중 시 FP를 2 회복합니다."
+  },
+  {
+    "id": "7350300",
+    "type": "relic",
+    "name": "특대검 공격으로 FP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "특대검 공격 명중 시 FP를 2 회복합니다."
+  },
+  {
+    "id": "7350400",
+    "type": "relic",
+    "name": "곡검 공격으로 FP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "곡검 공격 명중 시 FP를 2 회복합니다."
+  },
+  {
+    "id": "7350500",
+    "type": "relic",
+    "name": "대곡검 공격으로 FP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "대곡검 공격 명중 시 FP를 2 회복합니다."
+  },
+  {
+    "id": "7350600",
+    "type": "relic",
+    "name": "도 공격으로 FP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "도 공격 명중 시 FP를 2 회복합니다."
+  },
+  {
+    "id": "7350700",
+    "type": "relic",
+    "name": "쌍날검 공격으로 FP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "쌍날검 공격 명중 시 FP를 2 회복합니다."
+  },
+  {
+    "id": "7350800",
+    "type": "relic",
+    "name": "자검 공격으로 FP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "자검 공격 명중 시 FP를 2 회복합니다."
+  },
+  {
+    "id": "7350900",
+    "type": "relic",
+    "name": "대자검 공격으로 FP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "대자검 공격 명중 시 FP를 2 회복합니다."
+  },
+  {
+    "id": "7351000",
+    "type": "relic",
+    "name": "도끼 공격으로 FP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "도끼 공격 명중 시 FP를 2 회복합니다."
+  },
+  {
+    "id": "7351100",
+    "type": "relic",
+    "name": "대형 도끼 공격으로 FP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "대형 도끼 공격 명중 시 FP를 2 회복합니다."
+  },
+  {
+    "id": "7351200",
+    "type": "relic",
+    "name": "망치 공격으로 FP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "망치 공격 명중 시 FP를 2 회복합니다."
+  },
+  {
+    "id": "7351300",
+    "type": "relic",
+    "name": "대형 망치 공격으로 FP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "대형 망치 공격 명중 시 FP를 2 회복합니다."
+  },
+  {
+    "id": "7351400",
+    "type": "relic",
+    "name": "철퇴 공격으로 FP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "철퇴 공격 명중 시 FP를 2 회복합니다."
+  },
+  {
+    "id": "7351500",
+    "type": "relic",
+    "name": "창 공격으로 FP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "창 공격 명중 시 FP를 2 회복합니다."
+  },
+  {
+    "id": "7351600",
+    "type": "relic",
+    "name": "장창 공격으로 FP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "장창 공격 명중 시 FP를 2 회복합니다."
+  },
+  {
+    "id": "7351700",
+    "type": "relic",
+    "name": "대형 창 공격으로 FP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "대형 창 공격 명중 시 FP를 2 회복합니다."
+  },
+  {
+    "id": "7351800",
+    "type": "relic",
+    "name": "도끼창 공격으로 FP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "도끼창 공격 명중 시 FP를 2 회복합니다."
+  },
+  {
+    "id": "7351900",
+    "type": "relic",
+    "name": "낫 공격으로 FP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "낫 공격 명중 시 FP를 2 회복합니다."
+  },
+  {
+    "id": "7352000",
+    "type": "relic",
+    "name": "주먹 공격으로 FP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "주먹 공격 명중 시 FP를 2 회복합니다."
+  },
+  {
+    "id": "7352100",
+    "type": "relic",
+    "name": "손톱 공격으로 FP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "손톱 공격 명중 시 FP를 2 회복합니다."
+  },
+  {
+    "id": "7352200",
+    "type": "relic",
+    "name": "채찍 공격으로 FP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "채찍 공격 명중 시 FP를 2 회복합니다."
+  },
+  {
+    "id": "7352300",
+    "type": "relic",
+    "name": "특대형 무기 공격으로 FP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "특대형 무기 공격 명중 시 FP를 2 회복합니다."
+  },
+  {
+    "id": "7352400",
+    "type": "relic",
+    "name": "활 공격으로 FP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "desc": "활 공격 명중 시 FP를 2 회복합니다."
+  },
+  {
+    "id": "7352500",
+    "type": "relic",
+    "name": "대궁 공격으로 FP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "unobtainable": true
+  },
+  {
+    "id": "7352600",
+    "type": "relic",
+    "name": "석궁 공격으로 FP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "unobtainable": true
+  },
+  {
+    "id": "7352700",
+    "type": "relic",
+    "name": "발리스타 공격으로 FP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "stackOther": "notExisting",
+    "unobtainable": true
+  },
+  {
+    "id": "7360600",
+    "type": "relic",
+    "name": "출격 시 무기의 마술 「마술의 휘검」 ※적용 가능한 무기종만",
+    "category": "Sorceries",
+    "stackable": false,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7360900",
+    "type": "relic",
+    "name": "출격 시 무기의 마술 「카리아의 대검」 ※적용 가능한 무기종만",
+    "category": "Sorceries",
+    "stackable": false,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7361200",
+    "type": "relic",
+    "name": "출격 시 무기의 마술 「밤의 돌팔매」 ※적용 가능한 무기종만",
+    "category": "Sorceries",
+    "stackable": false,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7361300",
+    "type": "relic",
+    "name": "출격 시 무기의 마술 「용암탄」 ※적용 가능한 무기종만",
+    "category": "Sorceries",
+    "stackable": false,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7361500",
+    "type": "relic",
+    "name": "출격 시 무기의 마술 「휘석의 얼음덩어리」 ※적용 가능한 무기종만",
+    "category": "Sorceries",
+    "stackable": false,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7361800",
+    "type": "relic",
+    "name": "출격 시 무기의 마술 「중력탄」 ※적용 가능한 무기종만",
+    "category": "Sorceries",
+    "stackable": false,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7362100",
+    "type": "relic",
+    "name": "출격 시 무기의 마술 「벌의 가시」 ※적용 가능한 무기종만",
+    "category": "Sorceries",
+    "stackable": false,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7370000",
+    "type": "relic",
+    "name": "출격 시 무기의 기도 「은혜의 축복」 ※적용 가능한 무기종만",
+    "category": "Sorceries",
+    "stackable": false,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7370200",
+    "type": "relic",
+    "name": "출격 시 무기의 기도 「도가니의 모습/뿔」 ※적용 가능한 무기종만",
+    "category": "Sorceries",
+    "stackable": false,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7370300",
+    "type": "relic",
+    "name": "출격 시 무기의 기도 「황금의 분노」 ※적용 가능한 무기종만",
+    "category": "Sorceries",
+    "stackable": false,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7370400",
+    "type": "relic",
+    "name": "출격 시 무기의 기도 「벼락 창」 ※적용 가능한 무기종만",
+    "category": "Sorceries",
+    "stackable": false,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7370500",
+    "type": "relic",
+    "name": "출격 시 무기의 기도 「뇌격」 ※적용 가능한 무기종만",
+    "category": "Sorceries",
+    "stackable": false,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7370600",
+    "type": "relic",
+    "name": "출격 시 무기의 기도 「불이여!」 ※적용 가능한 무기종만",
+    "category": "Sorceries",
+    "stackable": false,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7370800",
+    "type": "relic",
+    "name": "출격 시 무기의 기도 「흑염」 ※적용 가능한 무기종만",
+    "category": "Sorceries",
+    "stackable": false,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7370900",
+    "type": "relic",
+    "name": "출격 시 무기의 기도 「짐승 발톱」 ※적용 가능한 무기종만",
+    "category": "Sorceries",
+    "stackable": false,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7371200",
+    "type": "relic",
+    "name": "출격 시 무기의 기도 「파리떼」 ※적용 가능한 무기종만",
+    "category": "Sorceries",
+    "stackable": false,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7371500",
+    "type": "relic",
+    "name": "출격 시 무기의 기도 「용염」 ※적용 가능한 무기종만",
+    "category": "Sorceries",
+    "stackable": false,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "310000",
+    "type": "talisman",
+    "name": "최대 HP 상승",
+    "category": "Attributes",
+    "stackable": true,
+    "desc": "최대 HP가 12% 상승합니다."
+  },
+  {
+    "id": "310100",
+    "type": "talisman",
+    "name": "최대 FP 상승",
+    "category": "Attributes",
+    "stackable": true,
+    "desc": "최대 FP가 12% 상승합니다."
+  },
+  {
+    "id": "310200",
+    "type": "talisman",
+    "name": "최대 스태미나 상승",
+    "category": "Attributes",
+    "stackable": true,
+    "desc": "최대 스태미나가 12% 상승합니다."
+  },
+  {
+    "id": "310400",
+    "type": "talisman",
+    "name": "최대 HP 상승",
+    "category": "Attributes",
+    "stackable": true,
+    "desc": "최대 HP가 7% 상승합니다."
+  },
+  {
+    "id": "310401",
+    "type": "talisman",
+    "name": "최대 스태미나 상승",
+    "category": "Attributes",
+    "desc": "최대 스태미나가 7% 상승합니다."
+  },
+  {
+    "id": "311000",
+    "type": "talisman",
+    "name": "발견력 상승",
+    "category": "Utility",
+    "stackable": true,
+    "desc": "발견력이 40 상승합니다."
+  },
+  {
+    "id": "311100",
+    "type": "talisman",
+    "name": "적 격파 시 획득 룬 증가",
+    "category": "Utility",
+    "stackable": true,
+    "desc": "획득 룬이 15% 증가합니다."
+  },
+  {
+    "id": "311500",
+    "type": "talisman",
+    "name": "스태미나 회복 속도 상승",
+    "category": "Attributes",
+    "stackable": true,
+    "desc": "스태미나 회복 속도가 초당 8 상승합니다."
+  },
+  {
+    "id": "311600",
+    "type": "talisman",
+    "name": "출혈 내성 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "출혈 내성이 75 상승합니다."
+  },
+  {
+    "id": "311601",
+    "type": "talisman",
+    "name": "동상 내성 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "동상 내성이 75 상승합니다."
+  },
+  {
+    "id": "311700",
+    "type": "talisman",
+    "name": "독 내성 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "독 내성이 75 상승합니다."
+  },
+  {
+    "id": "311701",
+    "type": "talisman",
+    "name": "부패 내성 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "부패 내성이 75 상승합니다."
+  },
+  {
+    "id": "311800",
+    "type": "talisman",
+    "name": "수면 내성 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "수면 내성이 75 상승합니다."
+  },
+  {
+    "id": "311801",
+    "type": "talisman",
+    "name": "발광 내성 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "발광 내성이 75 상승합니다."
+  },
+  {
+    "id": "311900",
+    "type": "talisman",
+    "name": "항사 내성 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "죽음 내성이 75 상승합니다."
+  },
+  {
+    "id": "312000",
+    "type": "talisman",
+    "name": "독/부패 내성 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "독/부패 내성이 40 상승합니다."
+  },
+  {
+    "id": "312001",
+    "type": "talisman",
+    "name": "출혈/동상 내성 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "출혈/동상 내성이 40 상승합니다."
+  },
+  {
+    "id": "312002",
+    "type": "talisman",
+    "name": "수면/발광 내성 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "수면/발광 내성이 40 상승합니다."
+  },
+  {
+    "id": "312100",
+    "type": "talisman",
+    "name": "강인도 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "받는 자세 피해가 25% 감소합니다."
+  },
+  {
+    "id": "312300",
+    "type": "talisman",
+    "name": "전투 기술 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "전투 기술 공격력이 15% 상승합니다."
+  },
+  {
+    "id": "312500",
+    "type": "talisman",
+    "name": "기량 상승",
+    "category": "Attributes",
+    "stackable": true,
+    "desc": "기량이 5 상승합니다."
+  },
+  {
+    "id": "312501",
+    "type": "talisman",
+    "name": "공격 연속 시 공격력 상승",
+    "category": "Offensive",
+    "desc": "연속 공격 시 공격력이 4% / 6% / 11% 상승합니다."
+  },
+  {
+    "id": "320000",
+    "type": "talisman",
+    "name": "마력 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "마력 공격력이 15% 상승합니다."
+  },
+  {
+    "id": "320001",
+    "type": "talisman",
+    "name": "물리 경감률 저하",
+    "category": "Impairment",
+    "stackable": true,
+    "desc": "물리 경감률이 10% 저하됩니다."
+  },
+  {
+    "id": "320100",
+    "type": "talisman",
+    "name": "벼락 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "벼락 공격력이 15% 상승합니다."
+  },
+  {
+    "id": "320101",
+    "type": "talisman",
+    "name": "물리 경감률 저하",
+    "category": "Impairment",
+    "stackable": true,
+    "desc": "물리 경감률이 10% 저하됩니다."
+  },
+  {
+    "id": "320200",
+    "type": "talisman",
+    "name": "화염 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "화염 공격력이 15% 상승합니다."
+  },
+  {
+    "id": "320201",
+    "type": "talisman",
+    "name": "물리 경감률 저하",
+    "category": "Impairment",
+    "stackable": true,
+    "desc": "물리 경감률이 10% 저하됩니다."
+  },
+  {
+    "id": "320300",
+    "type": "talisman",
+    "name": "신성 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "신성 공격력이 15% 상승합니다."
+  },
+  {
+    "id": "320301",
+    "type": "talisman",
+    "name": "물리 경감률 저하",
+    "category": "Impairment",
+    "stackable": true,
+    "desc": "물리 경감률이 10% 저하됩니다."
+  },
+  {
+    "id": "320400",
+    "type": "talisman",
+    "name": "HP 저하 시 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "HP가 20% 미만일 때 공격력이 20% 상승합니다."
+  },
+  {
+    "id": "320500",
+    "type": "talisman",
+    "name": "HP 최대 시 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "HP가 최대일 때 공격력이 10% 상승합니다."
+  },
+  {
+    "id": "320600",
+    "type": "talisman",
+    "name": "관통 카운터 강화",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "관통 카운터 공격력이 20% 상승합니다."
+  },
+  {
+    "id": "320700",
+    "type": "talisman",
+    "name": "가드를 무너뜨리는 힘 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "가드를 무너뜨리는 힘이 50% 상승합니다. 방패를 든 적에게만 관련됩니다."
+  },
+  {
+    "id": "320800",
+    "type": "talisman",
+    "name": "공격 연속 시 공격력 상승",
+    "category": "Offensive",
+    "desc": "연속 공격 시 공격력이 4% / 6% / 11% 상승합니다."
+  },
+  {
+    "id": "320900",
+    "type": "talisman",
+    "name": "치명적인 일격 강화",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "치명적인 일격 공격력이 24% 상승합니다."
+  },
+  {
+    "id": "321000",
+    "type": "talisman",
+    "name": "사격 대미지의 비거리 감쇠 경감",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "사격 대미지의 비거리 감쇠가 50% 감소합니다."
+  },
+  {
+    "id": "321200",
+    "type": "talisman",
+    "name": "연속 공격의 최종 공격 강화",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "연속 약공격의 최종 공격력이 15% 상승합니다."
+  },
+  {
+    "id": "321300",
+    "type": "talisman",
+    "name": "차지 공격 강화",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "차지 강공격 공격력이 12% 상승합니다."
+  },
+  {
+    "id": "321500",
+    "type": "talisman",
+    "name": "사격 공격 강화",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "화살과 볼트 공격력이 14% 상승합니다."
+  },
+  {
+    "id": "321600",
+    "type": "talisman",
+    "name": "주위에서 출혈 발생 시 공격력 상승",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "주위 7m 안에서 출혈이 발생하면 20초 동안 공격력이 20% 상승합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "321700",
+    "type": "talisman",
+    "name": "주위에서 독/부패 발생 시 공격력 상승",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "주위 7m 안에서 독 또는 부패가 발생하면 20초 동안 공격력이 20% 상승합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "321800",
+    "type": "talisman",
+    "name": "점프 공격 강화",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "점프 공격력이 12% 상승합니다."
+  },
+  {
+    "id": "321900",
+    "type": "talisman",
+    "name": "포효와 브레스 강화",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "포효와 브레스 공격력이 20% 상승합니다."
+  },
+  {
+    "id": "322000",
+    "type": "talisman",
+    "name": "가드 카운터 강화",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "가드 카운터 공격력이 20% 상승합니다."
+  },
+  {
+    "id": "322100",
+    "type": "talisman",
+    "name": "투척 항아리 강화",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "투척 항아리 공격력이 20% 상승합니다."
+  },
+  {
+    "id": "322200",
+    "type": "talisman",
+    "name": "조향술 강화",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "조향술 공격력이 20% 상승합니다."
+  },
+  {
+    "id": "330000",
+    "type": "talisman",
+    "name": "마술 강화",
+    "category": "Sorceries",
+    "stackable": true,
+    "desc": "마술 공격력이 11% 상승합니다."
+  },
+  {
+    "id": "330400",
+    "type": "talisman",
+    "name": "기도 강화",
+    "category": "Sorceries",
+    "stackable": true,
+    "desc": "기도 공격력이 11% 상승합니다."
+  },
+  {
+    "id": "330600",
+    "type": "talisman",
+    "name": "마술/기도 효과 시간 연장",
+    "category": "Sorceries",
+    "stackable": true,
+    "desc": "마술/기도 보조 효과의 지속 시간이 30% 증가합니다."
+  },
+  {
+    "id": "330700",
+    "type": "talisman",
+    "name": "마술/기도 영창 속도 상승",
+    "category": "Sorceries",
+    "stackable": true,
+    "desc": "마술/기도 영창 속도 보정치가 60 상승합니다."
+  },
+  {
+    "id": "330800",
+    "type": "talisman",
+    "name": "마술/기도 소비 FP 경감",
+    "category": "Sorceries",
+    "stackable": true,
+    "desc": "마술/기도 FP 소비량이 25% 감소합니다."
+  },
+  {
+    "id": "330801",
+    "type": "talisman",
+    "name": "최대 HP 저하",
+    "category": "Impairment",
+    "stackable": true,
+    "desc": "최대 HP가 15% 감소합니다."
+  },
+  {
+    "id": "330900",
+    "type": "talisman",
+    "name": "마술/기도/전투 기술 차지 강화",
+    "category": "Sorceries",
+    "stackable": true,
+    "desc": "차지한 마술/기도/전투 기술 공격력이 18% 상승합니다."
+  },
+  {
+    "id": "340000",
+    "type": "talisman",
+    "name": "물리 경감률 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "물리 경감률이 15% 상승합니다."
+  },
+  {
+    "id": "340100",
+    "type": "talisman",
+    "name": "마력 경감률 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "마력 경감률이 20% 상승합니다."
+  },
+  {
+    "id": "340200",
+    "type": "talisman",
+    "name": "화염 경감률 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "화염 경감률이 20% 상승합니다."
+  },
+  {
+    "id": "340300",
+    "type": "talisman",
+    "name": "벼락 경감률 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "벼락 경감률이 20% 상승합니다."
+  },
+  {
+    "id": "340400",
+    "type": "talisman",
+    "name": "신성 경감률 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "신성 경감률이 20% 상승합니다."
+  },
+  {
+    "id": "340500",
+    "type": "talisman",
+    "name": "속성 경감률 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "마력/화염/벼락/신성 경감률이 10% 상승합니다."
+  },
+  {
+    "id": "340700",
+    "type": "talisman",
+    "name": "회피 강화",
+    "category": "Defensive",
+    "stackable": false,
+    "stackOther": "no",
+    "desc": "회피에 무적 프레임이 3프레임 추가됩니다. 30fps 기준입니다."
+  },
+  {
+    "id": "340701",
+    "type": "talisman",
+    "name": "경감률 저하",
+    "category": "Impairment",
+    "stackable": true,
+    "desc": "경감률이 10% 저하됩니다."
+  },
+  {
+    "id": "340800",
+    "type": "talisman",
+    "name": "HP 저하 시 경감률 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "HP가 40% 미만일 때 경감률이 40% 상승합니다."
+  },
+  {
+    "id": "340900",
+    "type": "talisman",
+    "name": "HP 최대 시 경감률 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "HP가 최대일 때 경감률이 30% 상승합니다."
+  },
+  {
+    "id": "341000",
+    "type": "talisman",
+    "name": "가드 강도 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "가드 시 받는 스태미나 피해가 20% 감소합니다."
+  },
+  {
+    "id": "350000",
+    "type": "talisman",
+    "name": "성배병 회복량 상승",
+    "category": "Utility",
+    "stackable": true,
+    "desc": "성배병으로 회복하는 HP가 20% 상승합니다."
+  },
+  {
+    "id": "350200",
+    "type": "talisman",
+    "name": "HP 지속 회복",
+    "category": "Utility",
+    "stackable": true,
+    "desc": "초당 HP를 2 회복합니다."
+  },
+  {
+    "id": "350300",
+    "type": "talisman",
+    "name": "적 격파 시 HP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "desc": "적을 쓰러뜨리면 최대 HP의 6%를 회복합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "350400",
+    "type": "talisman",
+    "name": "공격 연속 시 HP 회복",
+    "category": "Utility",
+    "desc": "연속 공격 시 최대 HP의 6%를 회복합니다."
+  },
+  {
+    "id": "350500",
+    "type": "talisman",
+    "name": "치명적인 일격으로 HP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "desc": "치명적인 일격 성공 시 최대 HP의 18%를 회복합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "350600",
+    "type": "talisman",
+    "name": "치명적인 일격으로 FP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "desc": "치명적인 일격 성공 시 최대 FP의 10%를 회복합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "360200",
+    "type": "talisman",
+    "name": "전투 기술 소비 FP 경감",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "전투 기술 FP 소비량이 25% 감소합니다."
+  },
+  {
+    "id": "360700",
+    "type": "talisman",
+    "name": "사망 시 룬 손실과 레벨 다운 회피",
+    "category": "Utility"
+  },
+  {
+    "id": "361100",
+    "type": "talisman",
+    "name": "적 격파 시 FP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "desc": "적을 쓰러뜨리면 최대 FP의 5%를 회복합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "370000",
+    "type": "talisman",
+    "name": "발견력 상승",
+    "category": "Utility",
+    "stackable": true,
+    "desc": "발견력이 60 상승합니다."
+  },
+  {
+    "id": "370001",
+    "type": "talisman",
+    "name": "적 격파 시 획득 룬 증가",
+    "category": "Utility",
+    "stackable": true,
+    "desc": "획득 룬이 20% 증가합니다."
+  },
+  {
+    "id": "370002",
+    "type": "talisman",
+    "name": "HP 지속 감소",
+    "category": "Impairment",
+    "desc": "초당 HP가 10 감소합니다."
+  },
+  {
+    "id": "7001900",
+    "type": "weapon",
+    "name": "독 상태 이상 효과 부여",
+    "category": "Status Effect",
+    "stackable": false,
+    "unobtainable": true,
+    "desc": "무기에 독 상태 이상 축적치 18을 부여합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7001901",
+    "type": "weapon",
+    "name": "독 상태 이상 효과 부여+1",
+    "category": "Status Effect",
+    "stackable": false,
+    "unobtainable": true,
+    "desc": "무기에 독 상태 이상 축적치 23을 부여합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7001902",
+    "type": "weapon",
+    "name": "독 상태 이상 효과 부여+2",
+    "category": "Status Effect",
+    "stackable": false,
+    "unobtainable": true,
+    "desc": "무기에 독 상태 이상 축적치 30을 부여합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7002000",
+    "type": "weapon",
+    "name": "출혈 상태 이상 효과 부여",
+    "category": "Status Effect",
+    "stackable": false,
+    "unobtainable": true,
+    "desc": "무기에 출혈 상태 이상 축적치 18을 부여합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7002001",
+    "type": "weapon",
+    "name": "출혈 상태 이상 효과 부여+1",
+    "category": "Status Effect",
+    "stackable": false,
+    "unobtainable": true,
+    "desc": "무기에 출혈 상태 이상 축적치 23을 부여합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7002002",
+    "type": "weapon",
+    "name": "출혈 상태 이상 효과 부여+2",
+    "category": "Status Effect",
+    "stackable": false,
+    "unobtainable": true,
+    "desc": "무기에 출혈 상태 이상 축적치 30을 부여합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7002100",
+    "type": "weapon",
+    "name": "수면 상태 이상 효과 부여",
+    "category": "Status Effect",
+    "stackable": false,
+    "unobtainable": true,
+    "desc": "무기에 수면 상태 이상 축적치 18을 부여합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7002101",
+    "type": "weapon",
+    "name": "수면 상태 이상 효과 부여+1",
+    "category": "Status Effect",
+    "stackable": false,
+    "unobtainable": true,
+    "desc": "무기에 수면 상태 이상 축적치 23을 부여합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7002102",
+    "type": "weapon",
+    "name": "수면 상태 이상 효과 부여+2",
+    "category": "Status Effect",
+    "stackable": false,
+    "unobtainable": true,
+    "desc": "무기에 수면 상태 이상 축적치 30을 부여합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7002103",
+    "type": "weapon",
+    "name": "수면 상태 이상 효과 부여+3",
+    "category": "Status Effect",
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7002200",
+    "type": "weapon",
+    "name": "죽음 상태 이상 효과 부여",
+    "category": "Status Effect",
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7002300",
+    "type": "weapon",
+    "name": "붉은 부패 상태 이상 효과 부여",
+    "category": "Status Effect",
+    "stackable": false,
+    "unobtainable": true,
+    "desc": "무기에 부패 상태 이상 축적치 18을 부여합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7002301",
+    "type": "weapon",
+    "name": "붉은 부패 상태 이상 효과 부여+1",
+    "category": "Status Effect",
+    "stackable": false,
+    "unobtainable": true,
+    "desc": "무기에 부패 상태 이상 축적치 23을 부여합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7002302",
+    "type": "weapon",
+    "name": "붉은 부패 상태 이상 효과 부여+2",
+    "category": "Status Effect",
+    "stackable": false,
+    "unobtainable": true,
+    "desc": "무기에 부패 상태 이상 축적치 30을 부여합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7002400",
+    "type": "weapon",
+    "name": "동상 상태 이상 효과 부여",
+    "category": "Status Effect",
+    "stackable": false,
+    "unobtainable": true,
+    "desc": "무기에 동상 상태 이상 축적치 18을 부여합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7002401",
+    "type": "weapon",
+    "name": "동상 상태 이상 효과 부여+1",
+    "category": "Status Effect",
+    "stackable": false,
+    "unobtainable": true,
+    "desc": "무기에 동상 상태 이상 축적치 23을 부여합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7002402",
+    "type": "weapon",
+    "name": "동상 상태 이상 효과 부여+2",
+    "category": "Status Effect",
+    "stackable": false,
+    "unobtainable": true,
+    "desc": "무기에 동상 상태 이상 축적치 30을 부여합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7002403",
+    "type": "weapon",
+    "name": "동상 상태 이상 효과 부여+3",
+    "category": "Status Effect",
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "7002500",
+    "type": "weapon",
+    "name": "발광 상태 이상 효과 부여",
+    "category": "Status Effect",
+    "stackable": false,
+    "unobtainable": true,
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8000000",
+    "type": "weapon",
+    "name": "최대 HP 상승",
+    "category": "Attributes",
+    "dn": true,
+    "stackable": true,
+    "desc": "최대 HP가 8% / 12% 상승합니다."
+  },
+  {
+    "id": "8010000",
+    "type": "weapon",
+    "name": "최대 FP 상승",
+    "category": "Attributes",
+    "dn": true,
+    "stackable": true,
+    "desc": "최대 FP가 9% / 13% 상승합니다."
+  },
+  {
+    "id": "8020000",
+    "type": "weapon",
+    "name": "최대 스태미나 상승",
+    "category": "Attributes",
+    "dn": true,
+    "stackable": true,
+    "desc": "최대 스태미나가 8% / 12% 상승합니다."
+  },
+  {
+    "id": "8100000",
+    "type": "weapon",
+    "name": "물리 공격력 상승",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "물리 공격력이 6% / 9% 상승합니다."
+  },
+  {
+    "id": "8100100",
+    "type": "weapon",
+    "name": "마력 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "마력 공격력이 6% / 9% / 12% 상승합니다."
+  },
+  {
+    "id": "8100200",
+    "type": "weapon",
+    "name": "화염 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "화염 공격력이 6% / 9% / 12% 상승합니다."
+  },
+  {
+    "id": "8100300",
+    "type": "weapon",
+    "name": "벼락 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "벼락 공격력이 6% / 9% / 12% 상승합니다."
+  },
+  {
+    "id": "8100400",
+    "type": "weapon",
+    "name": "신성 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "신성 공격력이 6% / 9% / 12% 상승합니다."
+  },
+  {
+    "id": "8110000",
+    "type": "weapon",
+    "name": "독 상태 이상 부여",
+    "category": "Status Effect",
+    "stackable": false,
+    "stackOther": "no",
+    "desc": "무기에 독 상태 이상 축적치 18 / 23 / 30을 부여합니다."
+  },
+  {
+    "id": "8110100",
+    "type": "weapon",
+    "name": "출혈 상태 이상 부여",
+    "category": "Status Effect",
+    "stackable": false,
+    "stackOther": "no",
+    "desc": "무기에 출혈 상태 이상 축적치 18 / 23 / 30을 부여합니다."
+  },
+  {
+    "id": "8110200",
+    "type": "weapon",
+    "name": "수면 상태 이상 부여",
+    "category": "Status Effect",
+    "stackable": false,
+    "stackOther": "no",
+    "desc": "무기에 수면 상태 이상 축적치 18 / 23 / 30을 부여합니다."
+  },
+  {
+    "id": "8110300",
+    "type": "weapon",
+    "name": "죽음 상태 이상 부여",
+    "category": "Status Effect",
+    "stackable": false,
+    "stackOther": "no",
+    "desc": "무기에 죽음 상태 이상 축적치 18 / 23 / 30을 부여합니다."
+  },
+  {
+    "id": "8110400",
+    "type": "weapon",
+    "name": "부패 상태 이상 부여",
+    "category": "Status Effect",
+    "stackable": false,
+    "stackOther": "no",
+    "desc": "무기에 부패 상태 이상 축적치 18 / 23 / 30을 부여합니다."
+  },
+  {
+    "id": "8110500",
+    "type": "weapon",
+    "name": "동상 상태 이상 부여",
+    "category": "Status Effect",
+    "stackable": false,
+    "stackOther": "no",
+    "desc": "무기에 동상 상태 이상 축적치 18 / 23 / 30을 부여합니다."
+  },
+  {
+    "id": "8110600",
+    "type": "weapon",
+    "name": "발광 상태 이상 부여",
+    "category": "Status Effect",
+    "stackable": false,
+    "stackOther": "no",
+    "desc": "무기에 발광 상태 이상 축적치 18 / 23 / 30을 부여합니다."
+  },
+  {
+    "id": "8110700",
+    "type": "weapon",
+    "name": "무기를 화염 속성화",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "무기의 물리 공격력을 25 / 26 / 30 / 35 감소시키고, 해당 속성 공격력을 25 / 26 / 30 /35 추가합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "8110800",
+    "type": "weapon",
+    "name": "무기를 마력 속성화",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "무기의 물리 공격력을 25 / 26 / 30 / 35 감소시키고, 해당 속성 공격력을 25 / 26 / 30 /35 추가합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "8110900",
+    "type": "weapon",
+    "name": "무기를 벼락 속성화",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "무기의 물리 공격력을 25 / 26 / 30 / 35 감소시키고, 해당 속성 공격력을 25 / 26 / 30 /35 추가합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "8111000",
+    "type": "weapon",
+    "name": "무기를 신성 속성화",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "무기의 물리 공격력을 25 / 26 / 30 / 35 감소시키고, 해당 속성 공격력을 25 / 26 / 30 /35 추가합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "8120000",
+    "type": "weapon",
+    "name": "자세를 무너뜨리는 힘 상승",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "자세를 무너뜨리는 힘이 8% / 12% 상승합니다."
+  },
+  {
+    "id": "8130000",
+    "type": "weapon",
+    "name": "치명적인 일격 강화",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "치명적인 일격 공격력이 12% / 18% / 24% 상승합니다."
+  },
+  {
+    "id": "8140000",
+    "type": "weapon",
+    "name": "가드를 무너뜨리는 힘 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "가드를 무너뜨리는 힘이 30% / 45% / 60% 상승합니다."
+  },
+  {
+    "id": "8200100",
+    "type": "weapon",
+    "name": "마력 경감률 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "마력 경감률이 12% / 16% / 20% 상승합니다."
+  },
+  {
+    "id": "8200200",
+    "type": "weapon",
+    "name": "화염 경감률 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "화염 경감률이 12% / 16% / 20% 상승합니다."
+  },
+  {
+    "id": "8200300",
+    "type": "weapon",
+    "name": "벼락 경감률 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "벼락 경감률이 12% / 16% / 20% 상승합니다."
+  },
+  {
+    "id": "8200400",
+    "type": "weapon",
+    "name": "신성 경감률 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "신성 경감률이 12% / 16% / 20% 상승합니다."
+  },
+  {
+    "id": "8200500",
+    "type": "weapon",
+    "name": "속성 경감률 상승",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "마력/화염/벼락/신성 공격력이 5.5% / 8% 상승합니다."
+  },
+  {
+    "id": "8210000",
+    "type": "weapon",
+    "name": "독 내성 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "독 내성 내성이 57 / 75 / 112 상승합니다."
+  },
+  {
+    "id": "8210100",
+    "type": "weapon",
+    "name": "출혈 내성 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "출혈 내성 내성이 57 / 75 / 112 상승합니다."
+  },
+  {
+    "id": "8210200",
+    "type": "weapon",
+    "name": "수면 내성 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "수면 내성 내성이 57 / 75 / 112 상승합니다."
+  },
+  {
+    "id": "8210300",
+    "type": "weapon",
+    "name": "항사 내성 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "항사 내성 내성이 57 / 75 / 112 상승합니다."
+  },
+  {
+    "id": "8210400",
+    "type": "weapon",
+    "name": "부패 내성 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "부패 내성 내성이 57 / 75 / 112 상승합니다."
+  },
+  {
+    "id": "8210500",
+    "type": "weapon",
+    "name": "동상 내성 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "동상 내성 내성이 57 / 75 / 112 상승합니다."
+  },
+  {
+    "id": "8210600",
+    "type": "weapon",
+    "name": "발광 내성 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "발광 내성 내성이 57 / 75 / 112 상승합니다."
+  },
+  {
+    "id": "8220000",
+    "type": "weapon",
+    "name": "가드 강도 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "가드 중 받는 스태미나 피해가 10% / 15% / 20% 감소합니다."
+  },
+  {
+    "id": "8230000",
+    "type": "weapon",
+    "name": "강인도 상승",
+    "category": "Defensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "받는 자세 피해가 20% / 33% 감소합니다."
+  },
+  {
+    "id": "8300000",
+    "type": "weapon",
+    "name": "양손 잡기 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "무기를 양손으로 잡고 있을 때 공격력이 12% / 15% / 18% 상승합니다."
+  },
+  {
+    "id": "8300100",
+    "type": "weapon",
+    "name": "양손 잡기의 자세를 무너뜨리는 힘 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "무기를 양손으로 잡고 있을 때 자세를 무너뜨리는 힘이 20% / 25% 상승합니다."
+  },
+  {
+    "id": "8310000",
+    "type": "weapon",
+    "name": "이도류 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "이도류 L1 공격력이 12% / 15% / 18% 상승합니다."
+  },
+  {
+    "id": "8310100",
+    "type": "weapon",
+    "name": "이도류의 자세를 무너뜨리는 힘 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "이도류 L1의 자세를 무너뜨리는 힘이 20% / 25% 상승합니다."
+  },
+  {
+    "id": "8320000",
+    "type": "weapon",
+    "name": "연속 공격의 최종 공격 강화",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "연속 약공격의 최종 공격력이 21% / 26% / 31% 상승합니다."
+  },
+  {
+    "id": "8320100",
+    "type": "weapon",
+    "name": "차지 공격 강화",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "차지 강공격 공격력이 16% / 19% / 22% 상승합니다."
+  },
+  {
+    "id": "8320300",
+    "type": "weapon",
+    "name": "점프 공격 강화",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "점프 공격력이 14% / 17% / 20% 상승합니다."
+  },
+  {
+    "id": "8320400",
+    "type": "weapon",
+    "name": "차지 공격 명중 시 경감률 상승",
+    "category": "Defensive",
+    "stackable": false,
+    "desc": "차지 강공격 명중 후 경감률이 24% / 32% / 40% 상승합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "8320500",
+    "type": "weapon",
+    "name": "근접 공격력 상승",
+    "category": "Offensive",
+    "desc": "근접 공격력이 9% / 12% / 15% 상승합니다."
+  },
+  {
+    "id": "8320600",
+    "type": "weapon",
+    "name": "대시 공격 강화",
+    "category": "Offensive",
+    "desc": "대시 공격력이 20% / 24% / 28% 상승합니다."
+  },
+  {
+    "id": "8320700",
+    "type": "weapon",
+    "name": "구르기 공격 강화",
+    "category": "Offensive",
+    "desc": "구르기 공격력이 20% / 24% / 28% 상승합니다."
+  },
+  {
+    "id": "8330000",
+    "type": "weapon",
+    "name": "마술 강화",
+    "category": "Sorceries",
+    "stackable": true,
+    "desc": "마술 공격력이 5% / 8% / 11% 상승합니다."
+  },
+  {
+    "id": "8330100",
+    "type": "weapon",
+    "name": "기도 강화",
+    "category": "Sorceries",
+    "stackable": true,
+    "desc": "기도 공격력이 5% / 8% / 11% 상승합니다."
+  },
+  {
+    "id": "8330200",
+    "type": "weapon",
+    "name": "마술 차지 강화",
+    "category": "Sorceries",
+    "stackable": true,
+    "desc": "차지 마술 공격력이 9% / 13% / 18% 상승합니다."
+  },
+  {
+    "id": "8330300",
+    "type": "weapon",
+    "name": "기도 차지 강화",
+    "category": "Sorceries",
+    "stackable": true,
+    "desc": "차지 기도 공격력이 9% / 13% / 18% 상승합니다."
+  },
+  {
+    "id": "8330400",
+    "type": "weapon",
+    "name": "마술/기도 영창 속도 상승",
+    "category": "Sorceries",
+    "stackable": true,
+    "desc": "마술/기도 영창 속도 보정치가 30 / 60 상승합니다."
+  },
+  {
+    "id": "8330600",
+    "type": "weapon",
+    "name": "마술/기도 소비 FP 경감",
+    "category": "Sorceries",
+    "stackable": true,
+    "desc": "마술/기도 FP 소비량이 90% / 85% / 80% 감소합니다."
+  },
+  {
+    "id": "8330900",
+    "type": "weapon",
+    "name": "마법/기도 영창 시 경감률 상승",
+    "category": "Defensive",
+    "stackable": false,
+    "desc": "마술/기도 영창 중 경감률이 18% / 24% / 30% 상승합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "8340000",
+    "type": "weapon",
+    "name": "사격 공격 강화",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "화살/볼트 공격력이 7% / 10% / 14% 상승합니다."
+  },
+  {
+    "id": "8340100",
+    "type": "weapon",
+    "name": "사격 대미지의 비거리 감쇠 경감",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "장거리 투사체의 비거리 대미지 감쇠가 30% / 40% / 50% 감소합니다."
+  },
+  {
+    "id": "8350000",
+    "type": "weapon",
+    "name": "전투 기술 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "전투 기술 공격력이 15% / 18% / 21% 상승합니다."
+  },
+  {
+    "id": "8350200",
+    "type": "weapon",
+    "name": "전투 기술 소비 FP 경감",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "전투 기술 FP 소비량이 88% / 82% / 76% 감소합니다."
+  },
+  {
+    "id": "8420000",
+    "type": "weapon",
+    "name": "가드 카운터 강화",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "가드 카운터 공격력이 17% / 20% / 23% 상승합니다."
+  },
+  {
+    "id": "8430000",
+    "type": "weapon",
+    "name": "관통 카운터 강화",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "관통 카운터 공격력이 10% / 15% 상승합니다."
+  },
+  {
+    "id": "8460300",
+    "type": "weapon",
+    "name": "걷기로 주령을 풀어놓음",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "걷는 동안 적을 추적하는 주령을 풀어놓습니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8460500",
+    "type": "weapon",
+    "name": "걷기로 주위에 붉은 낙뢰를 부름",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "걷는 동안 주변에 붉은 낙뢰가 떨어집니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8500000",
+    "type": "weapon",
+    "name": "적 격파 시 획득 룬 증가",
+    "category": "Utility",
+    "dn": true,
+    "stackable": true,
+    "desc": "적 격파 시 획득 룬이 6% / 9% 증가합니다."
+  },
+  {
+    "id": "8510000",
+    "type": "weapon",
+    "name": "발견력 상승",
+    "category": "Utility",
+    "stackable": true,
+    "desc": "발견력이 20 / 30 / 40 상승합니다."
+  },
+  {
+    "id": "8520000",
+    "type": "weapon",
+    "name": "적에게 잘 노려지지 않게 됨",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "적에게 노려질 우선도가 300 / 450 / 600 감소합니다."
+  },
+  {
+    "id": "8530000",
+    "type": "weapon",
+    "name": "일정 간격으로 휘검이 여러 개 발생",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "18초마다 휘검 5개가 생성됩니다. 각 휘검은 마력 공격력 60과 자세 피해 1을 가집니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8530100",
+    "type": "weapon",
+    "name": "일정 간격으로 휘검이 다수 발생",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "18초마다 휘검 9개가 생성됩니다. 각 휘검은 마력 공격력 48과 자세 피해 1을 가집니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8540000",
+    "type": "weapon",
+    "name": "HP 지속 회복",
+    "category": "Utility",
+    "stackable": true,
+    "desc": "초당 HP를 2 회복합니다."
+  },
+  {
+    "id": "8600100",
+    "type": "weapon",
+    "name": "공격 명중 시 HP 회복",
+    "category": "Utility",
+    "stackable": true,
+    "desc": "공격 명중 시 HP를 4 / 6 / 8 회복합니다."
+  },
+  {
+    "id": "8600200",
+    "type": "weapon",
+    "name": "공격 명중 시 FP 회복",
+    "category": "Utility",
+    "stackable": true,
+    "desc": "공격 명중 시 FP를 1 / 2 / 3 회복합니다."
+  },
+  {
+    "id": "8610700",
+    "type": "weapon",
+    "name": "공격 연속 시 단 한 번 경감률 상승",
+    "category": "Defensive",
+    "stackable": false,
+    "stackOther": "withAll",
+    "desc": "연속 공격 시 경감률이 38% / 48% / 60% 상승합니다. 30초 동안 지속되거나 피격 시 해제됩니다."
+  },
+  {
+    "id": "8620000",
+    "type": "weapon",
+    "name": "대미지를 받을 시 FP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "desc": "대미지를 받으면 FP를 2 / 4 / 6 회복합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "8620100",
+    "type": "weapon",
+    "name": "대미지를 받을 시 경감률 상승",
+    "category": "Defensive",
+    "stackable": false,
+    "desc": "대미지를 받은 뒤 10초 동안 경감률이 21% / 28% / 36% 상승합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "8630000",
+    "type": "weapon",
+    "name": "적 격파 시 HP 회복",
+    "category": "Utility",
+    "stackable": true,
+    "desc": "적을 쓰러뜨리면 HP를 20 / 30 / 40 회복합니다."
+  },
+  {
+    "id": "8630100",
+    "type": "weapon",
+    "name": "적 격파 시 FP 회복",
+    "category": "Utility",
+    "stackable": false,
+    "desc": "적을 쓰러뜨리면 최대 FP의 4% / 6% / 8%를 회복합니다.",
+    "stackOther": "withAll"
+  },
+  {
+    "id": "8630200",
+    "type": "weapon",
+    "name": "적 복수 격파 시, 주령을 풀어놓음",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "공격 시 일정 확률로 적을 추적하는 주령을 풀어놓습니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8630300",
+    "type": "weapon",
+    "name": "적 복수 격파 시, 매료의 안개 발생",
+    "category": "Status Effect",
+    "stackable": false,
+    "desc": "공격 시 일정 확률로 적을 매료시키는 안개가 발생합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8630400",
+    "type": "weapon",
+    "name": "적 복수 격파 시, 원령을 불러옴",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "공격 시 일정 확률로 적을 추적하는 원령을 불러옵니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8630500",
+    "type": "weapon",
+    "name": "적 복수 격파 시, 용암 발생",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "공격 시 일정 확률로 끓어오르는 용암이 발생합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8630600",
+    "type": "weapon",
+    "name": "적 복수 격파 시, 냉기 안개 발생",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "공격 시 일정 확률로 냉기 안개가 발생합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8630700",
+    "type": "weapon",
+    "name": "적 복수 격파 시, 낙뢰 발생",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "공격 시 일정 확률로 낙뢰가 발생합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8630800",
+    "type": "weapon",
+    "name": "적 복수 격파 시, 황금의 충격파 발생",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "공격 시 일정 확률로 황금 충격파가 발생합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8652000",
+    "type": "weapon",
+    "name": "가드 성공 시 강인도 상승",
+    "category": "Defensive",
+    "stackable": false,
+    "stackOther": "withAll",
+    "desc": "가드 성공 시 받는 자세 피해가 88% / 82% / 76% 감소합니다."
+  },
+  {
+    "id": "8652100",
+    "type": "weapon",
+    "name": "가드 성공 시 경감률 상승",
+    "category": "Defensive",
+    "stackable": false,
+    "stackOther": "withAll",
+    "desc": "가드 성공 시 경감률이 14% / 19% / 24% 상승합니다."
+  },
+  {
+    "id": "8660000",
+    "type": "weapon",
+    "name": "HP 저하 시 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "HP가 20% 미만일 때 공격력이 7% / 11% / 13% / 17% / 21% 상승합니다."
+  },
+  {
+    "id": "8660101",
+    "type": "weapon",
+    "name": "HP 저하 시 경감률 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "HP가 40% 미만일 때 경감률이 23% / 30% / 37% 상승합니다."
+  },
+  {
+    "id": "8670000",
+    "type": "weapon",
+    "name": "HP 최대 시 공격력 상승",
+    "category": "Offensive",
+    "stackable": true,
+    "desc": "HP가 최대일 때 공격력이 7% / 10.5% / 14% 상승합니다."
+  },
+  {
+    "id": "8670101",
+    "type": "weapon",
+    "name": "HP 최대 시 경감률 상승",
+    "category": "Defensive",
+    "stackable": true,
+    "desc": "HP가 최대일 때 경감률이 24% / 32% / 40% 상승합니다."
+  },
+  {
+    "id": "8690000",
+    "type": "weapon",
+    "name": "독 상태가 되면 독 안개 발생",
+    "category": "Status Effect",
+    "stackable": false,
+    "desc": "독 상태가 되면 독 안개가 발생합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8690100",
+    "type": "weapon",
+    "name": "발광 상태가 되면 공열광화 발생",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "발광 상태가 되면 공열광화를 발사합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8690200",
+    "type": "weapon",
+    "name": "부패 상태가 되면 부패 안개 발생",
+    "category": "Status Effect",
+    "stackable": false,
+    "desc": "부패 상태가 되면 부패 안개가 발생합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8690300",
+    "type": "weapon",
+    "name": "동상 상태가 되면 냉기 안개 발생",
+    "category": "Status Effect",
+    "stackable": false,
+    "desc": "동상 상태가 되면 냉기 안개가 발생합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8690400",
+    "type": "weapon",
+    "name": "수면 상태가 되면 수면 안개 발생",
+    "category": "Status Effect",
+    "stackable": false,
+    "desc": "수면 상태가 되면 수면 안개가 발생합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8760000",
+    "type": "weapon",
+    "name": "최대 HP 저하",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "최대 HP가 4% / 6% 감소합니다."
+  },
+  {
+    "id": "8760100",
+    "type": "weapon",
+    "name": "최대 FP 저하",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "최대 FP가 6% / 9% 감소합니다."
+  },
+  {
+    "id": "8760200",
+    "type": "weapon",
+    "name": "최대 스태미나 저하",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "최대 스태미나가 5% / 8% 감소합니다."
+  },
+  {
+    "id": "8761000",
+    "type": "weapon",
+    "name": "물리 경감률 저하",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "물리 피해를 5.5% / 8% 더 받습니다."
+  },
+  {
+    "id": "8761100",
+    "type": "weapon",
+    "name": "속성 경감률 저하",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "마력/화염/벼락/신성 피해를 5.5% / 8% 더 받습니다."
+  },
+  {
+    "id": "8762000",
+    "type": "weapon",
+    "name": "모든 상태 이상 내성 저하",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "모든 상태 이상 내성이 30 / 45 감소합니다."
+  },
+  {
+    "id": "8763000",
+    "type": "weapon",
+    "name": "성배병 회복량 저하",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "성배병 회복량이 6% / 9% 감소합니다."
+  },
+  {
+    "id": "8766000",
+    "type": "weapon",
+    "name": "HP 지속 감소",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "착용자는 1초 / 0.67초마다 HP 피해를 1 받습니다."
+  },
+  {
+    "id": "8770000",
+    "type": "weapon",
+    "name": "밤의 비로 받는 대미지 증가",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "밤의 비로 받는 피해가 100% / 150% 증가합니다."
+  },
+  {
+    "id": "8771000",
+    "type": "weapon",
+    "name": "밤이 깊어질수록 받는 대미지 증가",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "밤이 깊어질수록 하루에 4번 받는 피해가 1% / 2.5%씩 증가합니다. 보통 하루 시작, 첫 번째 원 폐쇄, 두 번째 원 폐쇄 중, 두 번째 원 폐쇄 시점에 적용됩니다. 밤 1 보스 이후 스택이 초기화됩니다."
+  },
+  {
+    "id": "8800100",
+    "type": "weapon",
+    "name": "회피 직후 경감률 저하",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "회피 직후 받는 피해가 15% / 20% 증가합니다."
+  },
+  {
+    "id": "8800200",
+    "type": "weapon",
+    "name": "회피 연속 시 경감률 저하",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "회피를 연속으로 하면 15초 동안 받는 피해가 23% / 30% 증가합니다."
+  },
+  {
+    "id": "8801000",
+    "type": "weapon",
+    "name": "성배병 사용 시 경감률 저하",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "성배병 사용 중 받는 피해가 33% / 46% 증가합니다."
+  },
+  {
+    "id": "8810000",
+    "type": "weapon",
+    "name": "HP 최대 미만 시 공격력 저하",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "HP가 최대 미만일 때 공격력이 5% / 7% 저하됩니다."
+  },
+  {
+    "id": "8810200",
+    "type": "weapon",
+    "name": "HP 최대 미만 시 아츠 게이지 축적 둔화",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "HP가 최대 미만일 때 아츠 게이지 자연 축적량이 10% / 15% 감소합니다."
+  },
+  {
+    "id": "8810300",
+    "type": "weapon",
+    "name": "HP 최대 미만 시 독 축적",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "HP가 최대 미만일 때 0.28초 / 0.22초마다 독 축적치가 2 쌓입니다."
+  },
+  {
+    "id": "8810400",
+    "type": "weapon",
+    "name": "HP 최대 미만 시 부패 축적",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "HP가 최대 미만일 때 0.32초 / 0.24초마다 부패 축적치가 2 쌓입니다."
+  },
+  {
+    "id": "8813100",
+    "type": "weapon",
+    "name": "스태미나 저하 시 경감률 저하",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "스태미나가 50% 이하일 때 받는 피해가 10% / 15% 증가합니다."
+  },
+  {
+    "id": "8821000",
+    "type": "weapon",
+    "name": "공격 시 드물게 공격을 빗맞힘",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "공격할 때마다 3% / 5% 확률로 피해를 주지 못합니다."
+  },
+  {
+    "id": "8830000",
+    "type": "weapon",
+    "name": "상태 이상에 의해 입는 대미지 증가",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "상태 이상으로 받는 피해가 30% / 45% 증가합니다."
+  },
+  {
+    "id": "8831000",
+    "type": "weapon",
+    "name": "빈사 시 아츠 게이지 감소",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "착용자가 빈사 상태가 되면 아츠 게이지가 25 / 33 감소합니다."
+  },
+  {
+    "id": "8831200",
+    "type": "weapon",
+    "name": "빈사 시 최대 HP 저하",
+    "category": "Impairment",
+    "dn": true,
+    "stackable": true,
+    "desc": "빈사 상태가 된 뒤 30초 동안 최대 HP가 15% 감소합니다."
+  },
+  {
+    "id": "8850300",
+    "type": "weapon",
+    "name": "스태미나 회복 속도 상승",
+    "category": "Utility",
+    "dn": true,
+    "stackable": true,
+    "desc": "스태미나 회복 속도가 초당 3 / 5 상승합니다."
+  },
+  {
+    "id": "8851000",
+    "type": "weapon",
+    "name": "모든 상태 이상 내성 상승",
+    "category": "Defensive",
+    "dn": true,
+    "stackable": true,
+    "desc": "모든 상태 이상 내성이 52 / 65 상승합니다."
+  },
+  {
+    "id": "8851200",
+    "type": "weapon",
+    "name": "마술/기도 강화",
+    "category": "Sorceries",
+    "dn": true,
+    "stackable": true,
+    "desc": "마술/기도 공격력이 5.5% / 8% 상승합니다."
+  },
+  {
+    "id": "8851300",
+    "type": "weapon",
+    "name": "마술/기도 효과 시간 연장",
+    "category": "Sorceries",
+    "dn": true,
+    "stackable": true,
+    "desc": "마술/기도 효과 지속 시간이 45% / 60% 증가합니다."
+  },
+  {
+    "id": "8851900",
+    "type": "weapon",
+    "name": "성배병 회복량 상승",
+    "category": "Utility",
+    "dn": true,
+    "stackable": true,
+    "desc": "성배병으로 회복하는 HP가 13% / 18% 상승합니다."
+  },
+  {
+    "id": "8880000",
+    "type": "weapon",
+    "name": "차지 공격으로 얼음 폭풍 발생",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": false,
+    "desc": "차지 강공격 후 얼음 바람 공격을 수행합니다. 20초 동안 무기에 동상 축적치 20을 부여합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8880100",
+    "type": "weapon",
+    "name": "참격 차지 공격으로 빛고리 발사",
+    "category": "Offensive",
+    "stackable": false,
+    "unobtainable": true,
+    "desc": "참격 차지 공격 시 빛고리를 발사합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8880200",
+    "type": "weapon",
+    "name": "차지 공격으로 흑염을 흩뿌림",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": false,
+    "desc": "차지 강공격 후 지면에 흑염을 생성합니다. 7초 동안 무기에 화염 공격력 12와 지속 피해 효과를 부여합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8880300",
+    "type": "weapon",
+    "name": "차지 공격으로 환영이 공격",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": false,
+    "desc": "참격 차지 공격 시 환영 공격이 발동합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8880400",
+    "type": "weapon",
+    "name": "참격 차지 공격으로 전방을 불태움",
+    "category": "Offensive",
+    "stackable": false,
+    "unobtainable": true,
+    "desc": "참격 차지 공격 시 전방을 불태우는 화염을 발사합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8881000",
+    "type": "weapon",
+    "name": "차지 공격으로 신성 충격파 발생",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": false,
+    "desc": "차지 강공격 후 전회 「황금 파동」을 발동합니다. 20초 동안 무기에 신성 공격력 12를 부여합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8881100",
+    "type": "weapon",
+    "name": "타격 차지 공격으로 마력탄 발사",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "타격 차지 공격 시 마력탄을 발사합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8881200",
+    "type": "weapon",
+    "name": "차지 공격으로 적을 끌어들임",
+    "category": "Utility",
+    "dn": true,
+    "stackable": false,
+    "desc": "차지 강공격 후 적을 끌어들이는 중력 파동을 생성합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8881300",
+    "type": "weapon",
+    "name": "타격 차지 공격으로 충격파 발생",
+    "category": "Offensive",
+    "stackable": false,
+    "unobtainable": true,
+    "desc": "타격 차지 공격 시 충격파가 발생합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8881400",
+    "type": "weapon",
+    "name": "타격 차지 공격으로 환영이 공격",
+    "category": "Offensive",
+    "stackable": false,
+    "unobtainable": true,
+    "desc": "타격 차지 공격 시 환영 공격이 발동합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8881500",
+    "type": "weapon",
+    "name": "차지 공격으로 용암 발생",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": false,
+    "desc": "차지 강공격 후 지면에 용암을 생성합니다. 20초 동안 무기에 화염 공격력 12를 부여합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8881600",
+    "type": "weapon",
+    "name": "타격 차지 공격으로 거품 발사",
+    "category": "Offensive",
+    "stackable": false,
+    "unobtainable": true,
+    "desc": "타격 차지 공격 시 마력 거품을 발사합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8882000",
+    "type": "weapon",
+    "name": "관통 차지 공격으로 환영이 공격",
+    "category": "Offensive",
+    "stackable": false,
+    "unobtainable": true,
+    "desc": "관통 차지 공격 시 환영 공격이 발동합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8882100",
+    "type": "weapon",
+    "name": "차지 공격으로 벼락 발생",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": false,
+    "desc": "차지 강공격 후 벼락 폭발이 발생합니다. 20초 동안 무기에 벼락 공격력 12를 부여합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8882200",
+    "type": "weapon",
+    "name": "관통 차지 공격으로 강산을 흩뿌림",
+    "category": "Status Effect",
+    "stackable": false,
+    "unobtainable": true,
+    "desc": "관통 차지 공격 시 강산 안개를 흩뿌립니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8882300",
+    "type": "weapon",
+    "name": "관통 차지 공격으로 곤충실 발사",
+    "category": "Offensive",
+    "stackable": false,
+    "unobtainable": true,
+    "desc": "관통 차지 공격 시 곤충실을 발사합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8882400",
+    "type": "weapon",
+    "name": "관통 차지 공격으로 독 안개 발생",
+    "category": "Status Effect",
+    "stackable": false,
+    "unobtainable": true,
+    "desc": "관통 차지 공격 시 독 안개를 발생시킵니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8882500",
+    "type": "weapon",
+    "name": "차지 공격으로 수면 안개 발생",
+    "category": "Status Effect",
+    "dn": true,
+    "stackable": false,
+    "desc": "차지 강공격 후 수면 안개를 발생시킵니다. 20초 동안 무기에 수면 축적치 20을 부여합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8883000",
+    "type": "weapon",
+    "name": "차지 공격으로 마력탄 추가 공격",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": false,
+    "desc": "활 차지 정밀 사격 후 마력탄 3발을 발사합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8883100",
+    "type": "weapon",
+    "name": "정밀 사격 착탄 시 낙뢰 발생",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": false,
+    "desc": "정밀 사격 착탄 지점에 낙뢰가 발생합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8883200",
+    "type": "weapon",
+    "name": "정밀 사격 착탄 시 독 안개 발생",
+    "category": "Status Effect",
+    "dn": true,
+    "stackable": false,
+    "desc": "정밀 사격 착탄 지점에 독 안개가 발생합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8883300",
+    "type": "weapon",
+    "name": "정밀 사격 착탄 시 부패 안개 발생",
+    "category": "Status Effect",
+    "dn": true,
+    "stackable": false,
+    "desc": "정밀 사격 착탄 지점에 부패 안개가 발생합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8883400",
+    "type": "weapon",
+    "name": "정밀 사격 착탄 시 피파리 발생",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": false,
+    "desc": "정밀 사격 착탄 지점에 피파리가 발생합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8884000",
+    "type": "weapon",
+    "name": "방패를 들고 있으면 일부 경감률 상승",
+    "category": "Defensive",
+    "stackable": false,
+    "desc": "방패를 들고 있으면 마력/화염/벼락/신성 및 상태 이상 관련 경감률이 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8884100",
+    "type": "weapon",
+    "name": "방패를 들고 있으면 무적 발동",
+    "category": "Defensive",
+    "stackable": false,
+    "desc": "방패를 들고 있으면 잠시 무적이 됩니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8884200",
+    "type": "weapon",
+    "name": "방패를 들고 있으면 성역 전개",
+    "category": "Utility",
+    "dn": true,
+    "stackable": false,
+    "desc": "방패를 3초 동안 들고 있으면 성역을 전개합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8884300",
+    "type": "weapon",
+    "name": "자세가 무너졌을 때 참기 발동",
+    "category": "Defensive",
+    "dn": true,
+    "stackable": false,
+    "desc": "패리당하거나 자세가 무너졌을 때 「참기」가 발동해 강인도와 경감률이 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8885000",
+    "type": "weapon",
+    "name": "성배병 회복으로 FP도 회복",
+    "category": "Utility",
+    "dn": true,
+    "stackable": true,
+    "desc": "성배병을 마시면 최대 FP의 20%를 회복합니다."
+  },
+  {
+    "id": "8885100",
+    "type": "weapon",
+    "name": "FP 부족 시 마술/기도로 FP 회복",
+    "category": "Utility",
+    "dn": true,
+    "stackable": false,
+    "desc": "FP가 부족한 상태에서 마술/기도 시전을 시도하면 최대 FP의 13%를 회복합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "8885200",
+    "type": "weapon",
+    "name": "가드 지속 시 마술/기도 강화 및 영창 속도 상승",
+    "category": "Offensive",
+    "dn": true,
+    "stackable": false,
+    "desc": "지팡이/성인으로 가드한 뒤 2초 동안 마술/기도 공격력이 10% 상승하고, 25초 동안 가상 기량이 30 상승합니다. 최대 3회까지 중첩됩니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "9021400",
+    "type": "weapon",
+    "name": "밤과 화염의 가호",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "자세에 따라 30초 동안 공격에 마력 또는 화염 공격력 67을 추가합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "9030900",
+    "type": "weapon",
+    "name": "암월의 가호",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "공격이 20초 동안 적의 마력 경감률을 15% 낮춥니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "9031000",
+    "type": "weapon",
+    "name": "위대한 가호",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "차지 공격 시 빛의 파동이 발생합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "9031400",
+    "type": "weapon",
+    "name": "모독의 가호",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "적을 쓰러뜨리면 HP를 100 회복합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "9031500",
+    "type": "weapon",
+    "name": "마레 가의 가호",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "적을 쓰러뜨릴 때마다 공격력이 0.8% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "9031700",
+    "type": "weapon",
+    "name": "황금률의 가호",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "차지 공격 시 모든 상태 이상을 치료하고 모든 일시 효과를 해제합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "9040200",
+    "type": "weapon",
+    "name": "운명의 죽음의 가호",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "공격할 때마다 0.8초 동안 0.1초마다 최대 HP의 1% + 2 피해를 줍니다. 총 8회 피해가 발생합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "9040500",
+    "type": "weapon",
+    "name": "별 부수기의 가호",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "쌍검 장비 중 연속 공격의 첫 타격이 적을 끌어들이는 중력파를 생성합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "9040800",
+    "type": "weapon",
+    "name": "붕괴의 가호",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "차지 공격 시 중력의 파동이 발생합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "9041000",
+    "type": "weapon",
+    "name": "복수의 가호",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "적을 쓰러뜨릴 때마다 최대 HP/FP/스태미나와 공격력이 0.5%, 경감률이 1%, 상태 이상 내성이 1 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "9060400",
+    "type": "weapon",
+    "name": "용왕의 가호",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "강한 점프 공격 시 사용자가 뇌운으로 변해 벼락을 두른 검으로 내리꽂습니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "9071000",
+    "type": "weapon",
+    "name": "절망의 가호",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "공격당한 적은 남은 HP와 관계없이 사망하기 쉬워집니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "9081000",
+    "type": "weapon",
+    "name": "흉조왕의 가호",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "치명적인 일격 시 화염 폭발이 발생합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "9090200",
+    "type": "weapon",
+    "name": "불패의 가호",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "대미지를 받은 뒤 공격하면 HP를 일부 회복합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "9111500",
+    "type": "weapon",
+    "name": "여왕의 가호",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "차지 공격 시 신성 충격파가 발생합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "9130300",
+    "type": "weapon",
+    "name": "암흑의 가호",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "공격 시 드물게 어두운 별구름을 발사하며, 잠시 머문 뒤 폭발합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "9150400",
+    "type": "weapon",
+    "name": "황금 일족의 가호",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "차지 공격 시 지면을 뒤흔드는 충격파가 발생합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "9151100",
+    "type": "weapon",
+    "name": "선조령의 가호",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "공격 시 20초 동안 적의 경감률을 10% 낮춥니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "9160900",
+    "type": "weapon",
+    "name": "대고룡의 가호",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "차지 스킬 사용 후 30초 동안 벼락 공격력 67을 추가합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "9170100",
+    "type": "weapon",
+    "name": "피의 군주의 가호",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "주위 7m 안에서 출혈이 발생하면 20초 동안 공격력이 30% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "9200600",
+    "type": "weapon",
+    "name": "거인의 가호",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "스킬 발동 시 화염 기둥의 포화를 불러옵니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "9210600",
+    "type": "weapon",
+    "name": "비룡의 가호",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "치명적인 일격 시 용이 화염을 뿜습니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "9230500",
+    "type": "weapon",
+    "name": "첫 왕의 가호",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "차지 강공격 사용 후 15초 동안 공격력이 20% 상승합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "9330900",
+    "type": "weapon",
+    "name": "만월의 가호",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "마술/기도를 시전하면 날아오는 마술과 기도를 해제하고, 그 힘으로 휘검을 생성해 반격합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "9420000",
+    "type": "weapon",
+    "name": "장군의 가호",
+    "category": "Offensive",
+    "stackable": false,
+    "desc": "강공격 시 화살 다발을 발사합니다.",
+    "stackOther": "notExisting"
+  },
+  {
+    "id": "9990100",
+    "type": "weapon",
+    "name": "추적자의 원통함",
+    "category": "Character Specific",
+    "stackable": true,
+    "desc": "근력/기량이 3/6/9 상승합니다."
+  },
+  {
+    "id": "9990200",
+    "type": "weapon",
+    "name": "수호자의 원통함",
+    "category": "Character Specific",
+    "stackable": true,
+    "desc": "생명력/지구력이 3/6/9 상승합니다."
+  },
+  {
+    "id": "9990300",
+    "type": "weapon",
+    "name": "철의 눈의 원통함",
+    "category": "Character Specific",
+    "stackable": true,
+    "desc": "지구력/기량이 3/6/9 상승합니다."
+  },
+  {
+    "id": "9990400",
+    "type": "weapon",
+    "name": "레이디의 원통함",
+    "category": "Character Specific",
+    "stackable": true,
+    "desc": "기량/지력이 3/6/9 상승합니다."
+  },
+  {
+    "id": "9990500",
+    "type": "weapon",
+    "name": "무뢰한의 원통함",
+    "category": "Character Specific",
+    "stackable": true,
+    "desc": "생명력/근력이 3/6/9 상승합니다."
+  },
+  {
+    "id": "9990600",
+    "type": "weapon",
+    "name": "복수자의 원통함",
+    "category": "Character Specific",
+    "stackable": true,
+    "desc": "신앙/신비이 3/6/9 상승합니다."
+  },
+  {
+    "id": "9990700",
+    "type": "weapon",
+    "name": "은둔자의 원통함",
+    "category": "Character Specific",
+    "stackable": true,
+    "desc": "정신력/지력이 3/6/9 상승합니다."
+  },
+  {
+    "id": "9990800",
+    "type": "weapon",
+    "name": "집행자의 원통함",
+    "category": "Character Specific",
+    "stackable": true,
+    "desc": "기량/신비이 3/6/9 상승합니다."
+  },
+  {
+    "id": "9990900",
+    "type": "weapon",
+    "name": "학자의 원통함",
+    "category": "Character Specific",
+    "stackable": true,
+    "desc": "지력/신비이 3/6/9 상승합니다."
+  },
+  {
+    "id": "9991000",
+    "type": "weapon",
+    "name": "장의사의 원통함",
+    "category": "Character Specific",
+    "stackable": true,
+    "desc": "근력/신앙이 3/6/9 상승합니다."
+  }
+]
