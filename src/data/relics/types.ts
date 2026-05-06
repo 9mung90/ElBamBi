@@ -60,3 +60,68 @@ export type CandidateFile = {
   size: number;
   preview: string;
 };
+
+export type RelicRollEffect = {
+  key: string;
+  effect: string;
+  effect_kor: string;
+  effect_detail_kor: string;
+  group: number | string;
+  id: number | string;
+  cat: number;
+  loc: number;
+  cursed?: boolean;
+};
+
+export type RelicRollMode = {
+  id: string;
+  label: string;
+  sourceFile: string;
+  isDlc: boolean;
+  isDeepMode: boolean;
+  effectSlots: number;
+  debuffTable: string | null;
+  requiresDebuffWhenDebuffSlotUnlocked: boolean;
+  count: number;
+  categoryCounts: Record<string, number>;
+  effects: RelicRollEffect[];
+  indexes: {
+    byKey: Record<string, number>;
+    byEffect: Record<string, string>;
+    byGroup: Record<string, string[]>;
+    byCat: Record<string, string[]>;
+  };
+};
+
+export type RelicRollDebuffTable = {
+  id: string;
+  label: string;
+  sourceFile: string;
+  count: number;
+  categoryCounts: Record<string, number>;
+  effects: RelicRollEffect[];
+  indexes: RelicRollMode['indexes'];
+};
+
+export type RelicRollAppData = {
+  schemaVersion: string;
+  generatedFrom: string;
+  generatedAt: string;
+  purpose: string;
+  importantLimitations: string[];
+  validationRulesInferred: {
+    slotCount: number;
+    noDuplicateEffectKey: boolean;
+    noDuplicateEffectId: boolean;
+    sameGroupMayConflict: boolean;
+    recommendedCategorySortOrder: number[];
+    recommendedLineSortFields: string[];
+    deepModesRequireDebuffWhenUnlocked: boolean;
+    debuffDuplicateNotAllowed: boolean;
+    confidence: string;
+    note: string;
+  };
+  categoryNotes: Record<string, { label: string; description: string }>;
+  modes: Record<string, RelicRollMode>;
+  debuffTables: Record<string, RelicRollDebuffTable>;
+};

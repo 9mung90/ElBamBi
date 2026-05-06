@@ -1049,6 +1049,356 @@
   color: #ff8f84;
 }
 
+.relic-builder-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 340px) minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.relic-builder-page select {
+  width: 100%;
+  min-height: 38px;
+  padding: 0 10px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 7px;
+  background: #101010;
+  color: #f2f2f2;
+  box-sizing: border-box;
+  font: inherit;
+}
+
+.relic-builder-controls {
+  position: sticky;
+  top: 156px;
+}
+
+.relic-builder-mode-grid {
+  grid-template-columns: minmax(0, 1fr) 88px;
+  align-items: end;
+}
+
+.relic-builder-reset {
+  min-height: 38px;
+  border: 1px solid rgba(245, 194, 93, 0.35);
+  border-radius: 7px;
+  background: rgba(245, 194, 93, 0.12);
+  color: #f5c25d;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+}
+
+.relic-builder-reset:hover {
+  background: rgba(245, 194, 93, 0.2);
+}
+
+.relic-builder-rule-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.relic-builder-rule-summary span,
+.relic-builder-debuff-note {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 7px;
+  background: #121212;
+}
+
+.relic-builder-rule-summary span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 0 8px;
+  color: #cfcfcf;
+  font-size: 12px;
+}
+
+.relic-builder-invalid-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #d6d6d6;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.relic-builder-invalid-toggle input {
+  width: 16px;
+  height: 16px;
+  accent-color: #f5c25d;
+}
+
+.relic-builder-debuff-note {
+  display: grid;
+  gap: 5px;
+  padding: 10px;
+}
+
+.relic-builder-debuff-note strong {
+  color: #fff;
+  font-size: 13px;
+}
+
+.relic-builder-debuff-note span {
+  color: #b7b7b7;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.relic-builder-slots {
+  display: grid;
+  gap: 10px;
+}
+
+.relic-builder-slot {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  border-radius: 8px;
+  background: #181818;
+  box-sizing: border-box;
+}
+
+.relic-builder-slot-heading {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.relic-builder-slot-heading span {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(245, 194, 93, 0.35);
+  border-radius: 8px;
+  color: #f5c25d;
+  font-weight: 800;
+}
+
+.relic-builder-slot-heading strong {
+  color: #fff;
+  font-size: 15px;
+}
+
+.relic-builder-slot-heading em {
+  color: #9ca3af;
+  font-style: normal;
+  font-size: 12px;
+}
+
+.relic-builder-empty,
+.relic-builder-selected-effect {
+  display: grid;
+  gap: 5px;
+  min-height: 58px;
+  padding: 10px;
+  border-radius: 7px;
+  background: #111;
+}
+
+.relic-builder-empty strong,
+.relic-builder-selected-effect strong {
+  color: #fff;
+  font-size: 14px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.relic-builder-empty span,
+.relic-builder-selected-effect span {
+  color: #a8a8a8;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.relic-builder-selected-effect p,
+.relic-builder-result-list p {
+  margin: 0;
+  color: #d6d6d6;
+  font-size: 12px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.relic-builder-slot-debuff {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid rgba(214, 75, 64, 0.22);
+  border-radius: 8px;
+  background: rgba(214, 75, 64, 0.08);
+}
+
+.relic-builder-slot-debuff label {
+  display: grid;
+  gap: 6px;
+  color: #ffd0ca;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.relic-builder-result {
+  grid-column: 2;
+}
+
+.relic-builder-result-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.relic-builder-result-heading h3 {
+  margin: 0;
+  color: #fff;
+  font-size: 17px;
+}
+
+.relic-builder-result-heading span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 0 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.relic-builder-result-heading .is-valid {
+  background: rgba(73, 166, 111, 0.18);
+  color: #8ee6a8;
+}
+
+.relic-builder-result-heading .is-pending {
+  background: rgba(245, 194, 93, 0.14);
+  color: #f5c25d;
+}
+
+.relic-builder-result-heading .is-invalid {
+  background: rgba(214, 75, 64, 0.16);
+  color: #ff8f84;
+}
+
+.relic-builder-result-heading > span:not(.relic-builder-result-status) {
+  display: none;
+}
+
+.relic-builder-result-list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.relic-builder-result-list li {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  margin: 0;
+}
+
+.relic-builder-result-list > li > span {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  background: #25201a;
+  color: #f5c25d;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.relic-builder-result-list div {
+  display: grid;
+  gap: 3px;
+}
+
+.relic-builder-result-list strong {
+  color: #f2f2f2;
+  font-size: 13px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.relic-builder-result-list em {
+  color: #9ca3af;
+  font-style: normal;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.relic-builder-result-debuff {
+  display: grid;
+  gap: 4px;
+  margin-top: 4px;
+  padding: 8px;
+  border-left: 2px solid rgba(214, 75, 64, 0.55);
+  background: rgba(214, 75, 64, 0.08);
+}
+
+.relic-builder-selected-effect.is-valid {
+  border: 1px solid rgba(73, 166, 111, 0.18);
+}
+
+.relic-builder-selected-effect.is-invalid {
+  border: 1px solid rgba(214, 75, 64, 0.28);
+}
+
+.relic-builder-selected-effect em {
+  color: #8ee6a8;
+  font-style: normal;
+  font-size: 12px;
+}
+
+.relic-builder-reasons {
+  display: grid;
+  gap: 4px;
+  margin: 2px 0 0;
+  padding-left: 17px;
+  color: #ffb4ad;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.relic-builder-reasons li {
+  margin: 0;
+}
+
+.relic-builder-overall {
+  display: grid;
+  gap: 6px;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  background: #121212;
+}
+
+.relic-builder-overall strong {
+  color: #fff;
+  font-size: 13px;
+}
+
+.relic-builder-overall span {
+  color: #cfcfcf;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.relic-builder-limit-note {
+  margin: 0;
+  color: #8e8e8e;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
 @media (max-width: 520px) {
   .game-title-row {
     min-height: 52px;
@@ -1088,8 +1438,17 @@
 
   .calc-layout,
   .calc-section-heading,
-  .calc-combat-summary {
+  .calc-combat-summary,
+  .relic-builder-layout {
     grid-template-columns: 1fr;
+  }
+
+  .relic-builder-controls {
+    position: static;
+  }
+
+  .relic-builder-result {
+    grid-column: auto;
   }
 
   .calc-effect-results button {

@@ -5,6 +5,7 @@ import GesturesPage from './GesturesPage';
 import ItemsPage from './ItemsPage';
 import OptionsPage from './OptionsPage';
 import PlaceholderPage from './PlaceholderPage';
+import RelicBuilderPage from './RelicBuilderPage';
 import RelicsPage from './RelicsPage';
 import SpellsPage from './SpellsPage';
 import StatsCalculatorPage from './StatsCalculatorPage';
@@ -62,6 +63,12 @@ const categories: Category[] = [
     label: '유물',
     icon: 'R',
     description: '유물 목록입니다.',
+  },
+  {
+    id: 'relic-builder',
+    label: '유물 제작',
+    icon: 'B',
+    description: '유물 옵션 3개를 규칙에 맞춰 조합합니다.',
   },
   {
     id: 'vessels',
@@ -172,6 +179,8 @@ function ListTop() {
         <TalismansPage searchQuery={searchQuery} />
       ) : selectedId === 'relics' ? (
         <RelicsPage searchQuery={searchQuery} />
+      ) : selectedId === 'relic-builder' ? (
+        <RelicBuilderPage searchQuery={searchQuery} />
       ) : selectedId === 'vessels' ? (
         <VesselsPage searchQuery={searchQuery} />
       ) : selectedId === 'items' ? (

@@ -1,0 +1,560 @@
+import { useMemo, useState } from 'react';
+import { relicRollAppData, type RelicRollEffect, type RelicRollMode } from '../data/relics';
+
+type SlotSelection = [string, string, string];
+type CandidateEvaluation = {
+  effect: RelicRollEffect;
+  reasons: string[];
+};
+
+const EMPTY_SELECTION: SlotSelection = ['', '', ''];
+const SLOT_LABELS = ['A', 'B', 'C'];
+
+function getEffectName(effect: RelicRollEffect) {
+  return effect.effect_kor || effect.effect;
+}
+
+function getEffectDetail(effect: RelicRollEffect) {
+  return effect.effect_detail_kor || '상세 설명이 없습니다.';
+}
+
+function getCategoryRank(effect: RelicRollEffect, categoryOrder: number[]) {
+  const rank = categoryOrder.indexOf(effect.cat);
+  return rank === -1 ? categoryOrder.length : rank;
+}
+
+function compareEffects(
+  left: RelicRollEffect,
+  right: RelicRollEffect,
+  categoryOrder: number[],
+) {
+  const leftRank = getCategoryRank(left, categoryOrder);
+  const rightRank = getCategoryRank(right, categoryOrder);
+
+  if (leftRank !== rightRank) return leftRank - rightRank;
+  if (left.loc !== right.loc) return left.loc - right.loc;
+
+  return Number(left.id) - Number(right.id);
+}
+
+function hasEffectConflict(left: RelicRollEffect, right: RelicRollEffect) {
+  return (
+    left.key === right.key ||
+    String(left.id) === String(right.id) ||
+    String(left.group) === String(right.group)
+  );
+}
+
+function getConflictReasons(
+  candidate: RelicRollEffect,
+  selectedEffect: RelicRollEffect,
+  selectedIndex: number,
+) {
+  const slotLabel = SLOT_LABELS[selectedIndex];
+  const reasons: string[] = [];
+
+  if (candidate.key === selectedEffect.key) {
+    reasons.push(`${slotLabel} 슬롯과 같은 효과입니다.`);
+  }
+
+  if (String(candidate.id) === String(selectedEffect.id)) {
+    reasons.push(`${slotLabel} 슬롯과 같은 id입니다.`);
+  }
+
+  if (String(candidate.group) === String(selectedEffect.group)) {
+    reasons.push(`${slotLabel} 슬롯과 같은 group이라 충돌합니다.`);
+  }
+
+  return reasons;
+}
+
+function getEffectByKey(mode: RelicRollMode) {
+  return new Map(mode.effects.map((effect) => [effect.key, effect]));
+}
+
+function getSelectedEffects(mode: RelicRollMode, selectedKeys: SlotSelection) {
+  const effectsByKey = getEffectByKey(mode);
+  return selectedKeys.map((key) => (key ? effectsByKey.get(key) ?? null : null));
+}
+
+function isCandidateAllowedForSlot(
+  candidate: RelicRollEffect,
+  slotIndex: number,
+  selectedEffects: Array<RelicRollEffect | null>,
+  categoryOrder: number[],
+) {
+  return selectedEffects.every((selectedEffect, selectedIndex) => {
+    if (!selectedEffect || selectedIndex === slotIndex) return true;
+    if (hasEffectConflict(candidate, selectedEffect)) return false;
+
+    if (selectedIndex < slotIndex) {
+      return compareEffects(selectedEffect, candidate, categoryOrder) <= 0;
+    }
+
+    return compareEffects(candidate, selectedEffect, categoryOrder) <= 0;
+  });
+}
+
+function getCandidateReasonsForSlot(
+  candidate: RelicRollEffect,
+  slotIndex: number,
+  selectedEffects: Array<RelicRollEffect | null>,
+  categoryOrder: number[],
+) {
+  const reasons: string[] = [];
+
+  selectedEffects.forEach((selectedEffect, selectedIndex) => {
+    if (!selectedEffect || selectedIndex === slotIndex) return;
+
+    reasons.push(...getConflictReasons(candidate, selectedEffect, selectedIndex));
+
+    if (selectedIndex < slotIndex && compareEffects(selectedEffect, candidate, categoryOrder) > 0) {
+      reasons.push(
+        `${SLOT_LABELS[selectedIndex]} 슬롯보다 앞선 cat/loc/id 순서라 ${SLOT_LABELS[slotIndex]} 슬롯에 올 수 없습니다.`,
+      );
+    }
+
+    if (selectedIndex > slotIndex && compareEffects(candidate, selectedEffect, categoryOrder) > 0) {
+      reasons.push(
+        `${SLOT_LABELS[selectedIndex]} 슬롯보다 뒤쪽 cat/loc/id 순서라 ${SLOT_LABELS[slotIndex]} 슬롯에 올 수 없습니다.`,
+      );
+    }
+  });
+
+  return [...new Set(reasons)];
+}
+
+function canCompleteSelection(
+  mode: RelicRollMode,
+  selectedKeys: SlotSelection,
+  categoryOrder: number[],
+): boolean {
+  const emptyIndex = selectedKeys.findIndex((key) => !key);
+  if (emptyIndex === -1) return true;
+
+  const selectedEffects = getSelectedEffects(mode, selectedKeys);
+
+  return mode.effects.some((effect) => {
+    if (!isCandidateAllowedForSlot(effect, emptyIndex, selectedEffects, categoryOrder)) {
+      return false;
+    }
+
+    const nextSelection = [...selectedKeys] as SlotSelection;
+    nextSelection[emptyIndex] = effect.key;
+
+    return canCompleteSelection(mode, nextSelection, categoryOrder);
+  });
+}
+
+function getSlotEvaluations(
+  mode: RelicRollMode,
+  selectedKeys: SlotSelection,
+  slotIndex: number,
+  categoryOrder: number[],
+): CandidateEvaluation[] {
+  const selectedEffects = getSelectedEffects(mode, selectedKeys);
+
+  return mode.effects.map((effect) => {
+    const reasons = getCandidateReasonsForSlot(effect, slotIndex, selectedEffects, categoryOrder);
+
+    if (reasons.length === 0) {
+      const nextSelection = [...selectedKeys] as SlotSelection;
+      nextSelection[slotIndex] = effect.key;
+
+      if (!canCompleteSelection(mode, nextSelection, categoryOrder)) {
+        reasons.push('남은 슬롯까지 채울 수 있는 조합이 없습니다.');
+      }
+    }
+
+    return { effect, reasons };
+  });
+}
+
+function matchesSearch(effect: RelicRollEffect, searchQuery: string) {
+  const normalizedQuery = searchQuery.trim().toLowerCase();
+  if (!normalizedQuery) return true;
+
+  return [
+    effect.effect_kor,
+    effect.effect_detail_kor,
+    effect.effect,
+    effect.key,
+    effect.id,
+    effect.group,
+    effect.cat,
+    effect.loc,
+  ].some((value) => String(value).toLowerCase().includes(normalizedQuery));
+}
+
+function getCategoryLabel(cat: number) {
+  const labels: Record<number, string> = {
+    1: '캐릭터/특수 효과',
+    10: '무기 공격/행동 발동 효과',
+    100: '유틸리티/조건부 효과',
+    101: '룬 특수 효과',
+    1000: '능력치/경감률/내성 효과',
+  };
+
+  return labels[cat] ?? `category ${cat}`;
+}
+
+function RelicEffectOption({
+  candidateCount,
+  effect,
+  reasons,
+  searchQuery,
+}: {
+  candidateCount: number;
+  effect: RelicRollEffect | null;
+  reasons: string[];
+  searchQuery: string;
+}) {
+  if (!effect) {
+    return (
+      <div className="relic-builder-empty">
+        <strong>선택 필요</strong>
+        <span>
+          {searchQuery.trim()
+            ? `${candidateCount}개 후보가 검색 조건에 맞습니다.`
+            : `${candidateCount}개 후보가 표시됩니다.`}
+        </span>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className={`relic-builder-selected-effect${reasons.length ? ' is-invalid' : ' is-valid'}`}
+    >
+      <strong>{getEffectName(effect)}</strong>
+      <p>{getEffectDetail(effect)}</p>
+      <span>
+        {effect.effect} / cat {effect.cat} / loc {effect.loc} / group {effect.group}
+      </span>
+      {reasons.length ? (
+        <ul className="relic-builder-reasons">
+          {reasons.map((reason) => (
+            <li key={reason}>{reason}</li>
+          ))}
+        </ul>
+      ) : (
+        <em>현재 선택 기준으로 가능한 조합입니다.</em>
+      )}
+    </div>
+  );
+}
+
+function RelicBuilderPage({ searchQuery }: { searchQuery: string }) {
+  const modes = useMemo(() => Object.values(relicRollAppData.modes), []);
+  const [modeId, setModeId] = useState(modes[0]?.id ?? '');
+  const [selectedKeys, setSelectedKeys] = useState<SlotSelection>(EMPTY_SELECTION);
+  const [showInvalidOptions, setShowInvalidOptions] = useState(false);
+  const [selectedDebuffKeys, setSelectedDebuffKeys] = useState<SlotSelection>(EMPTY_SELECTION);
+
+  const mode = useMemo(
+    () => modes.find((candidateMode) => candidateMode.id === modeId) ?? modes[0],
+    [modeId, modes],
+  );
+
+  const categoryOrder = relicRollAppData.validationRulesInferred.recommendedCategorySortOrder;
+
+  const selectedEffects = useMemo(
+    () => getSelectedEffects(mode, selectedKeys),
+    [mode, selectedKeys],
+  );
+
+  const allSlotEvaluations = useMemo(
+    () =>
+      selectedKeys.map((_, slotIndex) =>
+        getSlotEvaluations(mode, selectedKeys, slotIndex, categoryOrder),
+      ),
+    [categoryOrder, mode, selectedKeys],
+  );
+
+  const selectedReasons = useMemo(
+    () =>
+      selectedEffects.map((effect, slotIndex) =>
+        effect
+          ? getCandidateReasonsForSlot(effect, slotIndex, selectedEffects, categoryOrder)
+          : [],
+      ),
+    [categoryOrder, selectedEffects],
+  );
+
+  const isComplete = selectedKeys.every(Boolean);
+  const resultReasons = selectedReasons.flat();
+  const debuffTable = mode.debuffTable ? relicRollAppData.debuffTables[mode.debuffTable] : null;
+  const canUseDebuffs = mode.isDeepMode && Boolean(debuffTable);
+  const selectedDebuffs = selectedDebuffKeys.map(
+    (key) => debuffTable?.effects.find((effect) => effect.key === key) ?? null,
+  );
+  const requiredDebuffIndexes = selectedEffects
+    .map((effect, index) => (canUseDebuffs && effect?.cursed ? index : -1))
+    .filter((index) => index !== -1);
+  const missingDebuffIndexes = requiredDebuffIndexes.filter((index) => !selectedDebuffKeys[index]);
+  const duplicateDebuffKeys = selectedDebuffKeys.filter(
+    (key, index) => key && selectedDebuffKeys.indexOf(key) !== index,
+  );
+  const debuffReasons = [
+    ...missingDebuffIndexes.map((index) => `${SLOT_LABELS[index]} 슬롯 옵션은 디버프가 필요합니다.`),
+    ...[...new Set(duplicateDebuffKeys)].map(() => '같은 디버프를 두 번 선택할 수 없습니다.'),
+  ];
+  const isCompleteWithDebuff = isComplete && missingDebuffIndexes.length === 0;
+  const isValidComplete = isCompleteWithDebuff && resultReasons.length === 0 && debuffReasons.length === 0;
+
+  function updateSlot(slotIndex: number, effectKey: string) {
+    setSelectedKeys((currentSelection) => {
+      const nextSelection = [...currentSelection] as SlotSelection;
+      nextSelection[slotIndex] = effectKey;
+      return nextSelection;
+    });
+    setSelectedDebuffKeys((currentSelection) => {
+      const nextSelection = [...currentSelection] as SlotSelection;
+      nextSelection[slotIndex] = '';
+      return nextSelection;
+    });
+  }
+
+  return (
+    <section className="options-page relic-builder-page" aria-labelledby="relic-builder-title">
+      <div className="options-page-heading">
+        <div>
+          <p className="list-page-kicker">ern_relic_app_data</p>
+          <h2 id="relic-builder-title">유물 옵션 제작</h2>
+        </div>
+        <span className="option-count">
+          {mode.effects.length} effects / {mode.effectSlots} slots
+        </span>
+      </div>
+
+      <div className="relic-builder-layout">
+        <section className="calc-panel relic-builder-controls" aria-label="유물 옵션 규칙 설정">
+          <div className="calc-control-grid relic-builder-mode-grid">
+            <label>
+              모드
+              <select
+                value={mode.id}
+                onChange={(event) => {
+                  setModeId(event.target.value);
+                  setSelectedKeys(EMPTY_SELECTION);
+                  setSelectedDebuffKeys(EMPTY_SELECTION);
+                }}
+              >
+                {modes.map((candidateMode) => (
+                  <option key={candidateMode.id} value={candidateMode.id}>
+                    {candidateMode.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <button
+              type="button"
+              className="relic-builder-reset"
+              onClick={() => setSelectedKeys(EMPTY_SELECTION)}
+            >
+              초기화
+            </button>
+          </div>
+
+          <div className="relic-builder-rule-summary">
+            <span>중복 효과 금지</span>
+            <span>같은 group 충돌</span>
+            <span>cat/loc/id 순서 유지</span>
+            {mode.isDeepMode ? <span>Deep 모드 디버프 규칙 포함</span> : null}
+          </div>
+
+          <label className="relic-builder-invalid-toggle">
+            <input
+              type="checkbox"
+              checked={showInvalidOptions}
+              onChange={(event) => setShowInvalidOptions(event.target.checked)}
+            />
+            <span>불가능한 조합도 표시</span>
+          </label>
+
+          {mode.isDeepMode && debuffTable ? (
+            <div className="relic-builder-debuff-note">
+              <strong>{debuffTable.label}</strong>
+              <span>{debuffTable.count}개 디버프 테이블이 이 모드에 연결되어 있습니다.</span>
+            </div>
+          ) : null}
+        </section>
+
+        <div className="relic-builder-slots">
+          {SLOT_LABELS.map((slotLabel, slotIndex) => {
+            const selectedEffect = selectedEffects[slotIndex];
+            const slotEvaluations = allSlotEvaluations[slotIndex];
+            const allowedCount = slotEvaluations.filter(({ reasons }) => reasons.length === 0).length;
+            const visibleEvaluations = slotEvaluations.filter(
+              ({ effect, reasons }) =>
+                effect.key === selectedKeys[slotIndex] ||
+                ((showInvalidOptions || reasons.length === 0) && matchesSearch(effect, searchQuery)),
+            );
+            const selectedEvaluation = slotEvaluations.find(
+              ({ effect }) => effect.key === selectedKeys[slotIndex],
+            );
+            const totalCount = showInvalidOptions ? slotEvaluations.length : allowedCount;
+            const selectedDebuff = selectedDebuffs[slotIndex];
+            const usedDebuffKeys = selectedDebuffKeys.filter((key, index) => key && index !== slotIndex);
+            const visibleDebuffs =
+              debuffTable?.effects.filter(
+                (effect) =>
+                  effect.key === selectedDebuffKeys[slotIndex] ||
+                  (!usedDebuffKeys.includes(effect.key) && matchesSearch(effect, searchQuery)),
+              ) ?? [];
+            const needsDebuff = canUseDebuffs && Boolean(selectedEffect?.cursed);
+
+            return (
+              <section className="relic-builder-slot" key={slotLabel}>
+                <div className="relic-builder-slot-heading">
+                  <span>{slotLabel}</span>
+                  <strong>옵션 {slotIndex + 1}</strong>
+                  <em>{visibleEvaluations.length} / {totalCount}</em>
+                </div>
+
+                <select
+                  value={selectedKeys[slotIndex]}
+                  onChange={(event) => updateSlot(slotIndex, event.target.value)}
+                  aria-label={`옵션 ${slotIndex + 1} 효과 선택`}
+                >
+                  <option value="">효과 선택</option>
+                  {visibleEvaluations.map(({ effect, reasons }) => (
+                    <option key={effect.key} value={effect.key}>
+                      {getEffectName(effect)}
+                      {reasons.length ? ' (불가)' : ''}
+                    </option>
+                  ))}
+                </select>
+
+                <RelicEffectOption
+                  candidateCount={visibleEvaluations.length}
+                  effect={selectedEffect}
+                  reasons={selectedEvaluation?.reasons ?? selectedReasons[slotIndex]}
+                  searchQuery={searchQuery}
+                />
+
+                {needsDebuff ? (
+                  <div className="relic-builder-slot-debuff">
+                    <label>
+                      디버프
+                      <select
+                        value={selectedDebuffKeys[slotIndex]}
+                        onChange={(event) => {
+                          const effectKey = event.target.value;
+                          setSelectedDebuffKeys((currentSelection) => {
+                            const nextSelection = [...currentSelection] as SlotSelection;
+                            nextSelection[slotIndex] = effectKey;
+                            return nextSelection;
+                          });
+                        }}
+                        aria-label={`${slotLabel} 슬롯 디버프 선택`}
+                      >
+                        <option value="">디버프 선택</option>
+                        {visibleDebuffs.map((effect) => (
+                          <option key={effect.key} value={effect.key}>
+                            {getEffectName(effect)}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+
+                    <RelicEffectOption
+                      candidateCount={visibleDebuffs.length}
+                      effect={selectedDebuff}
+                      reasons={[]}
+                      searchQuery={searchQuery}
+                    />
+                  </div>
+                ) : null}
+              </section>
+            );
+          })}
+        </div>
+
+        <section className="calc-panel relic-builder-result" aria-label="선택된 유물 옵션 결과">
+          <div className="relic-builder-result-heading">
+            <h3>결과</h3>
+            <span
+              className={`relic-builder-result-status ${
+                isValidComplete ? 'is-valid' : isCompleteWithDebuff ? 'is-invalid' : 'is-pending'
+              }`}
+            >
+              {isValidComplete ? '조합 가능' : isCompleteWithDebuff ? '조합 불가' : '선택 중'}
+            </span>
+          </div>
+
+          <ol className="relic-builder-result-list">
+            {selectedEffects.map((effect, index) => (
+              <li key={SLOT_LABELS[index]}>
+                <span>{SLOT_LABELS[index]}</span>
+                {effect ? (
+                  <div>
+                    <strong>{getEffectName(effect)}</strong>
+                    <p>{getEffectDetail(effect)}</p>
+                    <em>
+                      {getCategoryLabel(effect.cat)} / {effect.effect}
+                    </em>
+                    {selectedReasons[index].length ? (
+                      <ul className="relic-builder-reasons">
+                        {selectedReasons[index].map((reason) => (
+                          <li key={reason}>{reason}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <em>가능</em>
+                    )}
+                    {canUseDebuffs && effect.cursed ? (
+                      selectedDebuffs[index] ? (
+                        <div className="relic-builder-result-debuff">
+                          <strong>디버프: {getEffectName(selectedDebuffs[index])}</strong>
+                          <p>{getEffectDetail(selectedDebuffs[index])}</p>
+                          <em>{selectedDebuffs[index].effect}</em>
+                        </div>
+                      ) : (
+                        <em>이 옵션은 디버프 선택이 필요합니다.</em>
+                      )
+                    ) : null}
+                  </div>
+                ) : (
+                  <div>
+                    <strong>아직 선택되지 않음</strong>
+                    <em>앞뒤 슬롯과 동시에 가능한 효과만 후보에 표시됩니다.</em>
+                  </div>
+                )}
+              </li>
+            ))}
+          </ol>
+
+          <div className="relic-builder-overall">
+            <strong>종합 판정</strong>
+            {isCompleteWithDebuff ? (
+              resultReasons.length || debuffReasons.length ? (
+                <ul className="relic-builder-reasons">
+                  {[...new Set([...resultReasons, ...debuffReasons])].map((reason) => (
+                    <li key={reason}>{reason}</li>
+                  ))}
+                </ul>
+              ) : (
+                <span>
+                  선택한 3개 옵션과 필요한 디버프는 현재 규칙 기준으로 조합 가능합니다.
+                </span>
+              )
+            ) : (
+              <span>
+                3개 슬롯과 필요한 디버프를 모두 선택하면 최종 조합 가능 여부를 판정합니다.
+              </span>
+            )}
+          </div>
+
+          <p className="relic-builder-limit-note">
+            데이터 원문 기준 검증 코드는 완전히 복원되지 않았으므로, 이 페이지는 JSON에 들어 있는
+            추정 규칙을 앱용으로 적용합니다.
+          </p>
+        </section>
+      </div>
+    </section>
+  );
+}
+
+export default RelicBuilderPage;
