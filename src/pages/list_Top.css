@@ -237,6 +237,12 @@
   gap: 10px;
 }
 
+.boss-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 10px;
+}
+
 .character-card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
@@ -578,6 +584,70 @@
   border-radius: 6px;
   color: #b7b7b7;
   font-size: 12px;
+}
+
+.boss-card {
+  gap: 12px;
+  min-height: 360px;
+}
+
+.boss-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.boss-stat-grid > div {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  background: #111;
+}
+
+.boss-stat-grid span,
+.boss-stat-grid small,
+.boss-info-section strong {
+  color: #9ca3af;
+  font-size: 12px;
+}
+
+.boss-stat-grid strong {
+  color: #f6f2e8;
+  font-size: 14px;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.boss-info-section {
+  display: grid;
+  gap: 6px;
+}
+
+.boss-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.boss-chip-row span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  max-width: 100%;
+  padding: 0 7px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  color: #d7d7d7;
+  font-size: 12px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.boss-chip-row .is-muted {
+  color: #777;
 }
 
 .vessel-card {
@@ -1425,6 +1495,10 @@
   }
 
   .option-card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .boss-card-grid {
     grid-template-columns: 1fr;
   }
 

@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import AshesPage from './AshesPage';
+import BossesPage from './BossesPage';
 import CharactersPage from './CharactersPage';
 import GesturesPage from './GesturesPage';
 import ItemsPage from './ItemsPage';
@@ -45,6 +46,12 @@ const categories: Category[] = [
     label: '전회',
     icon: 'S',
     description: '전회 목록 페이지 임시 영역입니다.',
+  },
+  {
+    id: 'bosses',
+    label: '보스',
+    icon: 'B',
+    description: '보스 목록입니다.',
   },
   {
     id: 'spells',
@@ -173,6 +180,8 @@ function ListTop() {
         <StatsCalculatorPage searchQuery={searchQuery} />
       ) : selectedId === 'ashes' ? (
         <AshesPage searchQuery={searchQuery} />
+      ) : selectedId === 'bosses' ? (
+        <BossesPage searchQuery={searchQuery} />
       ) : selectedId === 'spells' ? (
         <SpellsPage searchQuery={searchQuery} />
       ) : selectedId === 'talismans' ? (
