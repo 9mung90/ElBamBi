@@ -9,6 +9,7 @@ import OptionsPage from './OptionsPage';
 import PlaceholderPage from './PlaceholderPage';
 import RelicBuilderPage from './RelicBuilderPage';
 import RelicsPage from './RelicsPage';
+import SaveParserPage from './SaveParserPage';
 import SpellsPage from './SpellsPage';
 import StatsCalculatorPage from './StatsCalculatorPage';
 import TalismansPage from './TalismansPage';
@@ -83,6 +84,12 @@ const categories: Category[] = [
     label: '유물 제작',
     icon: 'B',
     description: '유물 옵션 3개를 규칙에 맞춰 조합합니다.',
+  },
+  {
+    id: 'save-parser',
+    label: 'Save',
+    icon: 'P',
+    description: 'Nightreign save relic parser test page.',
   },
   {
     id: 'vessels',
@@ -199,6 +206,8 @@ function ListTop() {
         <MapPage />
       ) : selectedId === 'relic-builder' ? (
         <RelicBuilderPage searchQuery={searchQuery} />
+      ) : selectedId === 'save-parser' ? (
+        <SaveParserPage />
       ) : selectedId === 'vessels' ? (
         <VesselsPage searchQuery={searchQuery} />
       ) : selectedId === 'items' ? (

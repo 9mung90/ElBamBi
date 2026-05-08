@@ -1469,6 +1469,181 @@
   line-height: 1.5;
 }
 
+.save-parser-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+  margin-bottom: 14px;
+}
+
+.save-parser-controls {
+  position: sticky;
+  top: 156px;
+}
+
+.save-parser-controls label {
+  display: grid;
+  gap: 6px;
+  color: #d6d6d6;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.save-parser-controls select {
+  width: 100%;
+  min-height: 38px;
+  padding: 0 10px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 7px;
+  background: #101010;
+  color: #f2f2f2;
+  box-sizing: border-box;
+  font: inherit;
+}
+
+.save-upload-box {
+  min-height: 132px;
+  place-content: center;
+  padding: 16px;
+  border: 1px dashed rgba(245, 194, 93, 0.42);
+  border-radius: 8px;
+  background: #111;
+  cursor: pointer;
+  text-align: center;
+}
+
+.save-upload-box input {
+  width: 100%;
+  color: #cfcfcf;
+}
+
+.save-upload-box strong {
+  color: #fff;
+  font-size: 15px;
+}
+
+.save-upload-box span {
+  color: #9ca3af;
+  font-size: 12px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.save-parser-error {
+  margin: 0;
+  padding: 10px;
+  border: 1px solid rgba(214, 75, 64, 0.28);
+  border-radius: 8px;
+  background: rgba(214, 75, 64, 0.08);
+  color: #ffb4ad;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.save-parser-summary h3 {
+  margin: 0;
+  color: #fff;
+  font-size: 17px;
+}
+
+.save-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.save-summary-grid > div {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  background: #121212;
+}
+
+.save-summary-grid span {
+  color: #9ca3af;
+  font-size: 12px;
+}
+
+.save-summary-grid strong {
+  color: #f6f2e8;
+  font-size: 13px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.save-relic-grid {
+  margin-bottom: 14px;
+}
+
+.save-relic-card {
+  min-height: 230px;
+}
+
+.save-relic-id-row,
+.save-effect-item {
+  display: grid;
+  gap: 3px;
+  padding: 8px;
+  border-radius: 7px;
+  background: #111;
+}
+
+.save-relic-id-row {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.save-relic-id-row span,
+.save-effect-item span {
+  color: #9ca3af;
+  font-size: 12px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.save-effect-list {
+  display: grid;
+  gap: 7px;
+}
+
+.save-effect-item strong {
+  color: #f6f2e8;
+  font-size: 13px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.save-parser-details {
+  margin-bottom: 14px;
+}
+
+.save-parser-details summary {
+  cursor: pointer;
+  color: #f5c25d;
+  font-weight: 700;
+}
+
+.save-parser-details textarea,
+.save-parser-details pre {
+  width: 100%;
+  margin: 10px 0 0;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  background: #0f0f0f;
+  color: #d7d7d7;
+  box-sizing: border-box;
+  font: 12px/1.5 ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+
+.save-parser-details pre {
+  overflow: auto;
+  white-space: pre-wrap;
+}
+
 @media (max-width: 520px) {
   .game-title-row {
     min-height: 52px;
@@ -1513,11 +1688,14 @@
   .calc-layout,
   .calc-section-heading,
   .calc-combat-summary,
-  .relic-builder-layout {
+  .relic-builder-layout,
+  .save-parser-layout,
+  .save-summary-grid {
     grid-template-columns: 1fr;
   }
 
-  .relic-builder-controls {
+  .relic-builder-controls,
+  .save-parser-controls {
     position: static;
   }
 

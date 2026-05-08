@@ -6532,6 +6532,77 @@
       "rawText": "신수 사자무\nNight Boss\nWEAK AGAINST\nNo weaknesses\nSTRONG AGAINST\nSlash\n-20%\nStrike\n-30%\nStandard\n-30%\nMagic\n-40%\nLightning\n-40%\nHoly\n-40%\nRESISTANCES\nPoison\n154\n154 / 252 / 542 / 999\nScarlet Rot\n112\n112 / 154 / 252 / 542 / 999\nBloodloss\n112\n112 / 154 / 252 / 542 / 999\nFrostbite\n252\n252 / 542 / 999\nSleep\nImmune\nMadness\nImmune\nDEEP OF NIGHT\n/\n:\nHP and Attack Scaling\nL1:\n1.3 / 1.3\nLevel 1\nL2:\n1.5 / 1.6\nLevel 2\nL3:\n1.6 / 2.0\nLevel 3\nL4:\n2.0 / 3.0\nLevel 4\nL5:\n2.3 / 3.6\nLevel 5\nMUT:\n1.1 / 1.1\nMutation Scaling (on top)\nBOSS ID:\n#905210600\nNPC ID:\n#52100010\nHP\n16,323 / 10,882 / 5,441\nTrio / Duo / Solo\nRUNES\n42,000 / 54,600 / 63,000\nTrio / Duo / Solo\nREWARD\nBuff\nBuff\nBuff"
     },
     {
+  "name": "신수 전사",
+  "type": "Night Boss",
+  "weakAgainst": [],
+  "strongAgainst": [
+    {
+      "type": "Slash",
+      "value": -40
+    },
+    {
+      "type": "Strike",
+      "value": -40
+    },
+    {
+      "type": "Standard",
+      "value": -40
+    },
+    {
+      "type": "Magic",
+      "value": -20
+    },
+    {
+      "type": "Fire",
+      "value": -20
+    },
+    {
+      "type": "Lightning",
+      "value": -20
+    }
+  ],
+  "resistances": [
+    {
+      "type": "Poison",
+      "value": 112
+    },
+    {
+      "type": "Scarlet Rot",
+      "value": 112
+    },
+    {
+      "type": "Bloodloss",
+      "value": 112
+    },
+    {
+      "type": "Frostbite",
+      "value": 112
+    },
+    {
+      "type": "Sleep",
+      "value": 63
+    },
+    {
+      "type": "Madness",
+      "value": "Immune"
+    }
+  ],
+  "deepOfNight": {
+    "L1": [1.4, 1.4],
+    "L2": [1.5, 1.7],
+    "L3": [1.7, 2.1],
+    "L4": [2.1, 3.1],
+    "L5": [2.3, 3.7],
+    "MUT": [1.6, 1.5]
+  },
+  "ids": {
+    "bossId": "#905250600",
+    "npcId": "#2501220"
+  },
+  "hp": [6525, 4350, 2175],
+  "runes": [14800, 19240, 22200]
+},
+    {
       "name": "주검사",
       "bossType": "Night Boss",
       "ids": {

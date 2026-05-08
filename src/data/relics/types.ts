@@ -15,6 +15,14 @@ export type Relic = {
   raw?: string;
 };
 
+export type RelicItemColorMapEntry = {
+  itemId: number;
+  name: string;
+  color: RelicColor;
+  type?: string;
+  effects?: number[];
+};
+
 export type RelicEffect = {
   id: string | number;
   type: 'relic' | 'weapon' | string;
