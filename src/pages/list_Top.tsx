@@ -4,6 +4,7 @@ import BossesPage from './BossesPage';
 import CharactersPage from './CharactersPage';
 import GesturesPage from './GesturesPage';
 import ItemsPage from './ItemsPage';
+import MapPage from './MapPage';
 import OptionsPage from './OptionsPage';
 import PlaceholderPage from './PlaceholderPage';
 import RelicBuilderPage from './RelicBuilderPage';
@@ -70,6 +71,12 @@ const categories: Category[] = [
     label: '유물',
     icon: 'R',
     description: '유물 목록입니다.',
+  },
+  {
+    id: 'map',
+    label: '맵',
+    icon: 'M',
+    description: '맵 보기입니다.',
   },
   {
     id: 'relic-builder',
@@ -188,6 +195,8 @@ function ListTop() {
         <TalismansPage searchQuery={searchQuery} />
       ) : selectedId === 'relics' ? (
         <RelicsPage searchQuery={searchQuery} />
+      ) : selectedId === 'map' ? (
+        <MapPage />
       ) : selectedId === 'relic-builder' ? (
         <RelicBuilderPage searchQuery={searchQuery} />
       ) : selectedId === 'vessels' ? (

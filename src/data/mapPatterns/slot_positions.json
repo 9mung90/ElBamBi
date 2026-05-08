@@ -1,0 +1,318 @@
+{
+  "map_type": "normal",
+  "normal_slot_count": 27,
+  "has_nightlord_position": true,
+  "map_rect": {
+    "width": 535,
+    "height": 535
+  },
+  "slots": {
+    "1": {
+      "slot_name": "Major Base - South Lake",
+      "x_percent": 40,
+      "y_percent": 17.944,
+      "x_px": 214,
+      "y_px": 96,
+      "building": "empty",
+      "icon_src": "/Images/buildingIcons/empty.webp",
+      "data_slot_id": "1",
+      "style": "margin-left: -24px; margin-top: -24px; width: 48px; height: 48px; transform: translate3d(214px, 96px, 0px); z-index: 96;"
+    },
+    "2": {
+      "slot_name": "Major Base - Groveside",
+      "x_percent": 71.028,
+      "y_percent": 20.935,
+      "x_px": 380,
+      "y_px": 112,
+      "building": "empty",
+      "icon_src": "/Images/buildingIcons/empty.webp",
+      "data_slot_id": "2",
+      "style": "margin-left: -24px; margin-top: -24px; width: 48px; height: 48px; transform: translate3d(380px, 112px, 0px); z-index: 112;"
+    },
+    "3": {
+      "slot_name": "Major Base - Gatefront",
+      "x_percent": 53.458,
+      "y_percent": 22.43,
+      "x_px": 286,
+      "y_px": 120,
+      "building": "empty",
+      "icon_src": "/Images/buildingIcons/empty.webp",
+      "data_slot_id": "3",
+      "style": "margin-left: -24px; margin-top: -24px; width: 48px; height: 48px; transform: translate3d(286px, 120px, 0px); z-index: 120; filter: hue-rotate(115deg) saturate(1.5) brightness(1);"
+    },
+    "4": {
+      "slot_name": "Major Base - Stormhill North of Gate",
+      "x_percent": 23.178,
+      "y_percent": 28.037,
+      "x_px": 124,
+      "y_px": 150,
+      "building": "empty",
+      "icon_src": "/Images/buildingIcons/empty.webp",
+      "data_slot_id": "4",
+      "style": "margin-left: -24px; margin-top: -24px; width: 48px; height: 48px; transform: translate3d(124px, 150px, 0px); z-index: 150;"
+    },
+    "5": {
+      "slot_name": "Major Base - Alexander Spot",
+      "x_percent": 62.804,
+      "y_percent": 29.346,
+      "x_px": 336,
+      "y_px": 157,
+      "building": "empty",
+      "icon_src": "/Images/buildingIcons/empty.webp",
+      "data_slot_id": "5",
+      "style": "margin-left: -24px; margin-top: -24px; width: 48px; height: 48px; transform: translate3d(336px, 157px, 0px); z-index: 157;"
+    },
+    "6": {
+      "slot_name": "Major Base - Northwest Stormhill",
+      "x_percent": 41.121,
+      "y_percent": 30.28,
+      "x_px": 220,
+      "y_px": 162,
+      "building": "empty",
+      "icon_src": "/Images/buildingIcons/empty.webp",
+      "data_slot_id": "6",
+      "style": "margin-left: -24px; margin-top: -24px; width: 48px; height: 48px; transform: translate3d(220px, 162px, 0px); z-index: 162;"
+    },
+    "7": {
+      "slot_name": "Major Base - Northeast Stormhill",
+      "x_percent": 77.57,
+      "y_percent": 36.075,
+      "x_px": 415,
+      "y_px": 193,
+      "building": "empty",
+      "icon_src": "/Images/buildingIcons/empty.webp",
+      "data_slot_id": "7",
+      "style": "margin-left: -24px; margin-top: -24px; width: 48px; height: 48px; transform: translate3d(415px, 193px, 0px); z-index: 193;"
+    },
+    "8": {
+      "slot_name": "Major Base - South Mistwood",
+      "x_percent": 21.682,
+      "y_percent": 35.327,
+      "x_px": 116,
+      "y_px": 189,
+      "building": "empty",
+      "icon_src": "/Images/buildingIcons/empty.webp",
+      "data_slot_id": "8",
+      "style": "margin-left: -24px; margin-top: -24px; width: 48px; height: 48px; transform: translate3d(116px, 189px, 0px); z-index: 189; filter: hue-rotate(115deg) saturate(1.5) brightness(1);"
+    },
+    "9": {
+      "slot_name": "Major Base - Waypoint Ruins",
+      "x_percent": 69.346,
+      "y_percent": 37.009,
+      "x_px": 371,
+      "y_px": 198,
+      "building": "empty",
+      "icon_src": "/Images/buildingIcons/empty.webp",
+      "data_slot_id": "9",
+      "style": "margin-left: -24px; margin-top: -24px; width: 48px; height: 48px; transform: translate3d(371px, 198px, 0px); z-index: 198; filter: hue-rotate(115deg) saturate(1.5) brightness(1);"
+    },
+    "10": {
+      "slot_name": "Major Base - Minor Erdtree",
+      "x_percent": 35.701,
+      "y_percent": 39.439,
+      "x_px": 191,
+      "y_px": 211,
+      "building": "empty",
+      "icon_src": "/Images/buildingIcons/empty.webp",
+      "data_slot_id": "10",
+      "style": "margin-left: -24px; margin-top: -24px; width: 48px; height: 48px; transform: translate3d(191px, 211px, 0px); z-index: 211; filter: hue-rotate(115deg) saturate(1.5) brightness(1);"
+    },
+    "11": {
+      "slot_name": "Major Base - West Mistwood",
+      "x_percent": 57.944,
+      "y_percent": 42.991,
+      "x_px": 310,
+      "y_px": 230,
+      "building": "empty",
+      "icon_src": "/Images/buildingIcons/empty.webp",
+      "data_slot_id": "11",
+      "style": "margin-left: -24px; margin-top: -24px; width: 48px; height: 48px; transform: translate3d(310px, 230px, 0px); z-index: 230;"
+    },
+    "12": {
+      "slot_name": "Major Base - Northwest Mistwood",
+      "x_percent": 77.383,
+      "y_percent": 42.43,
+      "x_px": 414,
+      "y_px": 227,
+      "building": "empty",
+      "icon_src": "/Images/buildingIcons/empty.webp",
+      "data_slot_id": "12",
+      "style": "margin-left: -24px; margin-top: -24px; width: 48px; height: 48px; transform: translate3d(414px, 227px, 0px); z-index: 227;"
+    },
+    "13": {
+      "slot_name": "Major Base - Artist's Shack",
+      "x_percent": 28.224,
+      "y_percent": 44.673,
+      "x_px": 151,
+      "y_px": 239,
+      "building": "empty",
+      "icon_src": "/Images/buildingIcons/empty.webp",
+      "data_slot_id": "13",
+      "style": "margin-left: -24px; margin-top: -24px; width: 48px; height: 48px; transform: translate3d(151px, 239px, 0px); z-index: 239;"
+    },
+    "14": {
+      "slot_name": "Major Base - Northeast Mistwood",
+      "x_percent": 66.355,
+      "y_percent": 46.542,
+      "x_px": 355,
+      "y_px": 249,
+      "building": "empty",
+      "icon_src": "/Images/buildingIcons/empty.webp",
+      "data_slot_id": "14",
+      "style": "margin-left: -24px; margin-top: -24px; width: 48px; height: 48px; transform: translate3d(355px, 249px, 0px); z-index: 249;"
+    },
+    "15": {
+      "slot_name": "Major Base - Summonwater Approach",
+      "x_percent": 31.776,
+      "y_percent": 54.953,
+      "x_px": 170,
+      "y_px": 294,
+      "building": "empty",
+      "icon_src": "/Images/buildingIcons/empty.webp",
+      "data_slot_id": "15",
+      "style": "margin-left: -24px; margin-top: -24px; width: 48px; height: 48px; transform: translate3d(170px, 294px, 0px); z-index: 294;"
+    },
+    "16": {
+      "slot_name": "Major Base - Summonwater",
+      "x_percent": 20.561,
+      "y_percent": 55.514,
+      "x_px": 110,
+      "y_px": 297,
+      "building": "empty",
+      "icon_src": "/Images/buildingIcons/empty.webp",
+      "data_slot_id": "16",
+      "style": "margin-left: -24px; margin-top: -24px; width: 48px; height: 48px; transform: translate3d(110px, 297px, 0px); z-index: 297; filter: hue-rotate(115deg) saturate(1.5) brightness(1);"
+    },
+    "17": {
+      "slot_name": "Minor Base - Far Southwest",
+      "x_percent": 80.374,
+      "y_percent": 57.57,
+      "x_px": 430,
+      "y_px": 308,
+      "building": "empty",
+      "icon_src": "/Images/buildingIcons/empty.webp",
+      "data_slot_id": "17",
+      "style": "margin-left: -24px; margin-top: -24px; width: 48px; height: 48px; transform: translate3d(430px, 308px, 0px); z-index: 308; filter: hue-rotate(115deg) saturate(1.5) brightness(1);"
+    },
+    "18": {
+      "slot_name": "Minor Base - Lake",
+      "x_percent": 62.991,
+      "y_percent": 58.505,
+      "x_px": 337,
+      "y_px": 313,
+      "building": "empty",
+      "icon_src": "/Images/buildingIcons/empty.webp",
+      "data_slot_id": "18",
+      "style": "margin-left: -24px; margin-top: -24px; width: 48px; height: 48px; transform: translate3d(337px, 313px, 0px); z-index: 313;"
+    },
+    "19": {
+      "slot_name": "Minor Base - Stormhill South of Gate",
+      "x_percent": 54.953,
+      "y_percent": 62.991,
+      "x_px": 294,
+      "y_px": 337,
+      "building": "empty",
+      "icon_src": "/Images/buildingIcons/empty.webp",
+      "data_slot_id": "19",
+      "style": "margin-left: -24px; margin-top: -24px; width: 48px; height: 48px; transform: translate3d(294px, 337px, 0px); z-index: 337; filter: hue-rotate(115deg) saturate(1.5) brightness(1);"
+    },
+    "20": {
+      "slot_name": "Minor Base - Above Stormhill Tunnel Entrance",
+      "x_percent": 75.327,
+      "y_percent": 63.178,
+      "x_px": 403,
+      "y_px": 338,
+      "building": "empty",
+      "icon_src": "/Images/buildingIcons/empty.webp",
+      "data_slot_id": "20",
+      "style": "margin-left: -24px; margin-top: -24px; width: 48px; height: 48px; transform: translate3d(403px, 338px, 0px); z-index: 338;"
+    },
+    "21": {
+      "slot_name": "Minor Base - West of Warmaster's Shack",
+      "x_percent": 27.664,
+      "y_percent": 65.047,
+      "x_px": 148,
+      "y_px": 348,
+      "building": "empty",
+      "icon_src": "/Images/buildingIcons/empty.webp",
+      "data_slot_id": "21",
+      "style": "margin-left: -24px; margin-top: -24px; width: 48px; height: 48px; transform: translate3d(148px, 348px, 0px); z-index: 348;"
+    },
+    "22": {
+      "slot_name": "Minor Base - Southeast of Lake",
+      "x_percent": 60.935,
+      "y_percent": 68.972,
+      "x_px": 326,
+      "y_px": 369,
+      "building": "empty",
+      "icon_src": "/Images/buildingIcons/empty.webp",
+      "data_slot_id": "22",
+      "style": "margin-left: -24px; margin-top: -24px; width: 48px; height: 48px; transform: translate3d(326px, 369px, 0px); z-index: 369;"
+    },
+    "23": {
+      "slot_name": "Minor Base - East of Cavalry Bridge",
+      "x_percent": 45.234,
+      "y_percent": 69.533,
+      "x_px": 242,
+      "y_px": 372,
+      "building": "empty",
+      "icon_src": "/Images/buildingIcons/empty.webp",
+      "data_slot_id": "23",
+      "style": "margin-left: -24px; margin-top: -24px; width: 48px; height: 48px; transform: translate3d(242px, 372px, 0px); z-index: 372;"
+    },
+    "24": {
+      "slot_name": "Minor Base - Minor Erdtree",
+      "x_percent": 19.813,
+      "y_percent": 71.028,
+      "x_px": 106,
+      "y_px": 380,
+      "building": "empty",
+      "icon_src": "/Images/buildingIcons/empty.webp",
+      "data_slot_id": "24",
+      "style": "margin-left: -24px; margin-top: -24px; width: 48px; height: 48px; transform: translate3d(106px, 380px, 0px); z-index: 380; filter: hue-rotate(115deg) saturate(1.5) brightness(1);"
+    },
+    "25": {
+      "slot_name": "Minor Base - Below Summonwater Hawk",
+      "x_percent": 74.579,
+      "y_percent": 74.019,
+      "x_px": 399,
+      "y_px": 396,
+      "building": "empty",
+      "icon_src": "/Images/buildingIcons/empty.webp",
+      "data_slot_id": "25",
+      "style": "margin-left: -24px; margin-top: -24px; width: 48px; height: 48px; transform: translate3d(399px, 396px, 0px); z-index: 396;"
+    },
+    "26": {
+      "slot_name": "Minor Base - Third Church",
+      "x_percent": 40,
+      "y_percent": 77.944,
+      "x_px": 214,
+      "y_px": 417,
+      "building": "empty",
+      "icon_src": "/Images/buildingIcons/empty.webp",
+      "data_slot_id": "26",
+      "style": "margin-left: -24px; margin-top: -24px; width: 48px; height: 48px; transform: translate3d(214px, 417px, 0px); z-index: 417;"
+    },
+    "27": {
+      "slot_name": "Minor Base - Northeast of Saintsbridge",
+      "x_percent": 56.636,
+      "y_percent": 79.439,
+      "x_px": 303,
+      "y_px": 425,
+      "building": "empty",
+      "icon_src": "/Images/buildingIcons/empty.webp",
+      "data_slot_id": "27",
+      "style": "margin-left: -24px; margin-top: -24px; width: 48px; height: 48px; transform: translate3d(303px, 425px, 0px); z-index: 425; filter: hue-rotate(115deg) saturate(1.5) brightness(1);"
+    }
+  },
+  "nightlord": {
+    "x_percent": 11.028,
+    "y_percent": 90.093,
+    "x_px": 59,
+    "y_px": 482,
+    "building": "empty",
+    "icon_src": "/Images/nightlordIcons/empty_nightlord.webp",
+    "data_slot_id": "nightlord",
+    "style": "margin-left: -42px; margin-top: -42px; width: 84px; height: 84px; transform: translate3d(59px, 482px, 0px); z-index: 482;"
+  }
+}
