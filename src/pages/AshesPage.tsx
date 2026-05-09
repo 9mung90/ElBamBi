@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react';
 import { ashes, type AshOfWar } from '../data/ashes';
 
+const visibleAshes = ashes.filter((ash) => !Object.values(ash).some((value) => String(value).includes('◇')));
+
 function matchesAshSearch(ash: AshOfWar, query: string) {
   const normalizedQuery = query.trim().toLowerCase();
   if (!normalizedQuery) return true;
@@ -44,7 +46,7 @@ function AshCard({ ash }: { ash: AshOfWar }) {
 
 function AshesPage({ searchQuery }: { searchQuery: string }) {
   const filteredAshes = useMemo(
-    () => ashes.filter((ash) => matchesAshSearch(ash, searchQuery)),
+    () => visibleAshes.filter((ash) => matchesAshSearch(ash, searchQuery)),
     [searchQuery],
   );
 
@@ -56,7 +58,7 @@ function AshesPage({ searchQuery }: { searchQuery: string }) {
           <h2 id="ashes-title">전회</h2>
         </div>
         <span className="option-count">
-          {filteredAshes.length} / {ashes.length}
+          {filteredAshes.length} / {visibleAshes.length}
         </span>
       </div>
 

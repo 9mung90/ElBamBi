@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react';
 import { spells, type Spell } from '../data/spells';
 
+const visibleSpells = spells.filter((spell) => !Object.values(spell).some((value) => String(value).includes('◇')));
+
 function matchesSpellSearch(spell: Spell, query: string) {
   const normalizedQuery = query.trim().toLowerCase();
   if (!normalizedQuery) return true;
@@ -58,7 +60,7 @@ function SpellCard({ spell }: { spell: Spell }) {
 
 function SpellsPage({ searchQuery }: { searchQuery: string }) {
   const filteredSpells = useMemo(
-    () => spells.filter((spell) => matchesSpellSearch(spell, searchQuery)),
+    () => visibleSpells.filter((spell) => matchesSpellSearch(spell, searchQuery)),
     [searchQuery],
   );
 
@@ -70,7 +72,7 @@ function SpellsPage({ searchQuery }: { searchQuery: string }) {
           <h2 id="spells-title">마술,기도</h2>
         </div>
         <span className="option-count">
-          {filteredSpells.length} / {spells.length}
+          {filteredSpells.length} / {visibleSpells.length}
         </span>
       </div>
 

@@ -550,6 +550,94 @@
   object-fit: cover;
 }
 
+.relic-card {
+  align-items: stretch;
+  min-height: 0;
+  text-align: left;
+}
+
+.relic-card.is-expandable {
+  cursor: pointer;
+}
+
+.relic-card.is-expandable:hover {
+  border-color: rgba(245, 194, 93, 0.42);
+  background: #202020;
+}
+
+.relic-card.is-expandable:focus-visible {
+  outline: 2px solid rgba(245, 194, 93, 0.72);
+  outline-offset: 2px;
+}
+
+.relic-card-main {
+  display: grid;
+  grid-template-columns: 62px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+}
+
+.relic-card-main.has-no-image {
+  display: block;
+}
+
+.relic-catalog-image {
+  width: 62px;
+  height: 62px;
+  border: 1px solid rgba(245, 194, 93, 0.24);
+  border-radius: 8px;
+  background: #0f0f0f;
+  object-fit: contain;
+}
+
+.relic-effect-list {
+  display: grid;
+  align-items: start;
+  align-content: start;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.relic-effect-list li {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  padding: 9px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  background: #111;
+}
+
+.relic-effect-list div {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  justify-content: space-between;
+}
+
+.relic-effect-list strong {
+  color: #f6f2e8;
+  font-size: 13px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.relic-effect-list span {
+  flex: 0 0 auto;
+  color: #f5c25d;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.relic-effect-list p {
+  margin: 0;
+  color: #a8a8a8;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
 .option-card h3 {
   margin: 0;
   color: #fff;
@@ -653,6 +741,7 @@
 .vessel-card {
   min-height: 190px;
   padding: 10px;
+  text-align: left;
 }
 
 .vessel-card-main {

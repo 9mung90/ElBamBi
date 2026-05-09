@@ -62,7 +62,6 @@
     "color": "Red",
     "image": "/src/assets/images/relics/red/9.webp"
   },
-
   {
     "id": 118,
     "name": "섬세한, 빛나는 풍경",
@@ -126,7 +125,6 @@
     "color": "Yellow",
     "image": "/src/assets/images/relics/yellow/9.webp"
   },
-
   {
     "id": 127,
     "name": "섬세한, 고요한 풍경",
@@ -190,7 +188,6 @@
     "color": "Green",
     "image": "/src/assets/images/relics/green/9.webp"
   },
-
   {
     "id": 109,
     "name": "섬세한, 촉촉한 풍경",
@@ -255,265 +252,263 @@
     "image": "/src/assets/images/relics/blue/9.webp"
   },
   {
-  "id": 200,
-  "name": "섬세한, 불타는 혼경",
-  "nameOrNull": "섬세한, 불타는 혼경",
-  "color": "Red",
-  "image": "/src/assets/images/relics/red/10.webp"
-},
-{
-  "id": 203,
-  "name": "섬세한, 불타는 혼경",
-  "nameOrNull": "섬세한, 불타는 혼경",
-  "color": "Red",
-  "image": "/src/assets/images/relics/red/13.webp"
-},
-{
-  "id": 206,
-  "name": "섬세한, 불타는 혼경",
-  "nameOrNull": "섬세한, 불타는 혼경",
-  "color": "Red",
-  "image": "/src/assets/images/relics/red/16.webp"
-},
-{
-  "id": 201,
-  "name": "단정한, 불타는 혼경",
-  "nameOrNull": "단정한, 불타는 혼경",
-  "color": "Red",
-  "image": "/src/assets/images/relics/red/11.webp"
-},
-{
-  "id": 204,
-  "name": "단정한, 불타는 혼경",
-  "nameOrNull": "단정한, 불타는 혼경",
-  "color": "Red",
-  "image": "/src/assets/images/relics/red/14.webp"
-},
-{
-  "id": 207,
-  "name": "단정한, 불타는 혼경",
-  "nameOrNull": "단정한, 불타는 혼경",
-  "color": "Red",
-  "image": "/src/assets/images/relics/red/17.webp"
-},
-{
-  "id": 202,
-  "name": "웅장한, 불타는 혼경",
-  "nameOrNull": "웅장한, 불타는 혼경",
-  "color": "Red",
-  "image": "/src/assets/images/relics/red/12.webp"
-},
-{
-  "id": 205,
-  "name": "웅장한, 불타는 혼경",
-  "nameOrNull": "웅장한, 불타는 혼경",
-  "color": "Red",
-  "image": "/src/assets/images/relics/red/15.webp"
-},
-{
-  "id": 208,
-  "name": "웅장한, 불타는 혼경",
-  "nameOrNull": "웅장한, 불타는 혼경",
-  "color": "Red",
-  "image": "/src/assets/images/relics/red/18.webp"
-},
-
-{
-  "id": 218,
-  "name": "섬세한, 빛나는 혼경",
-  "nameOrNull": "섬세한, 빛나는 혼경",
-  "color": "Yellow",
-  "image": "/src/assets/images/relics/yellow/10.webp"
-},
-{
-  "id": 221,
-  "name": "섬세한, 빛나는 혼경",
-  "nameOrNull": "섬세한, 빛나는 혼경",
-  "color": "Yellow",
-  "image": "/src/assets/images/relics/yellow/13.webp"
-},
-{
-  "id": 224,
-  "name": "섬세한, 빛나는 혼경",
-  "nameOrNull": "섬세한, 빛나는 혼경",
-  "color": "Yellow",
-  "image": "/src/assets/images/relics/yellow/16.webp"
-},
-{
-  "id": 219,
-  "name": "단정한, 빛나는 혼경",
-  "nameOrNull": "단정한, 빛나는 혼경",
-  "color": "Yellow",
-  "image": "/src/assets/images/relics/yellow/11.webp"
-},
-{
-  "id": 222,
-  "name": "단정한, 빛나는 혼경",
-  "nameOrNull": "단정한, 빛나는 혼경",
-  "color": "Yellow",
-  "image": "/src/assets/images/relics/yellow/14.webp"
-},
-{
-  "id": 225,
-  "name": "단정한, 빛나는 혼경",
-  "nameOrNull": "단정한, 빛나는 혼경",
-  "color": "Yellow",
-  "image": "/src/assets/images/relics/yellow/17.webp"
-},
-{
-  "id": 220,
-  "name": "웅장한, 빛나는 혼경",
-  "nameOrNull": "웅장한, 빛나는 혼경",
-  "color": "Yellow",
-  "image": "/src/assets/images/relics/yellow/12.webp"
-},
-{
-  "id": 223,
-  "name": "웅장한, 빛나는 혼경",
-  "nameOrNull": "웅장한, 빛나는 혼경",
-  "color": "Yellow",
-  "image": "/src/assets/images/relics/yellow/15.webp"
-},
-{
-  "id": 226,
-  "name": "웅장한, 빛나는 혼경",
-  "nameOrNull": "웅장한, 빛나는 혼경",
-  "color": "Yellow",
-  "image": "/src/assets/images/relics/yellow/18.webp"
-},
-
-{
-  "id": 227,
-  "name": "섬세한, 고요한 혼경",
-  "nameOrNull": "섬세한, 고요한 혼경",
-  "color": "Green",
-  "image": "/src/assets/images/relics/green/10.webp"
-},
-{
-  "id": 230,
-  "name": "섬세한, 고요한 혼경",
-  "nameOrNull": "섬세한, 고요한 혼경",
-  "color": "Green",
-  "image": "/src/assets/images/relics/green/13.webp"
-},
-{
-  "id": 233,
-  "name": "섬세한, 고요한 혼경",
-  "nameOrNull": "섬세한, 고요한 혼경",
-  "color": "Green",
-  "image": "/src/assets/images/relics/green/16.webp"
-},
-{
-  "id": 228,
-  "name": "단정한, 고요한 혼경",
-  "nameOrNull": "단정한, 고요한 혼경",
-  "color": "Green",
-  "image": "/src/assets/images/relics/green/11.webp"
-},
-{
-  "id": 231,
-  "name": "단정한, 고요한 혼경",
-  "nameOrNull": "단정한, 고요한 혼경",
-  "color": "Green",
-  "image": "/src/assets/images/relics/green/14.webp"
-},
-{
-  "id": 234,
-  "name": "단정한, 고요한 혼경",
-  "nameOrNull": "단정한, 고요한 혼경",
-  "color": "Green",
-  "image": "/src/assets/images/relics/green/17.webp"
-},
-{
-  "id": 229,
-  "name": "웅장한, 고요한 혼경",
-  "nameOrNull": "웅장한, 고요한 혼경",
-  "color": "Green",
-  "image": "/src/assets/images/relics/green/12.webp"
-},
-{
-  "id": 232,
-  "name": "웅장한, 고요한 혼경",
-  "nameOrNull": "웅장한, 고요한 혼경",
-  "color": "Green",
-  "image": "/src/assets/images/relics/green/15.webp"
-},
-{
-  "id": 235,
-  "name": "웅장한, 고요한 혼경",
-  "nameOrNull": "웅장한, 고요한 혼경",
-  "color": "Green",
-  "image": "/src/assets/images/relics/green/18.webp"
-},
-
-{
-  "id": 209,
-  "name": "섬세한, 촉촉한 혼경",
-  "nameOrNull": "섬세한, 촉촉한 혼경",
-  "color": "Blue",
-  "image": "/src/assets/images/relics/blue/10.webp"
-},
-{
-  "id": 212,
-  "name": "섬세한, 촉촉한 혼경",
-  "nameOrNull": "섬세한, 촉촉한 혼경",
-  "color": "Blue",
-  "image": "/src/assets/images/relics/blue/13.webp"
-},
-{
-  "id": 215,
-  "name": "섬세한, 촉촉한 혼경",
-  "nameOrNull": "섬세한, 촉촉한 혼경",
-  "color": "Blue",
-  "image": "/src/assets/images/relics/blue/16.webp"
-},
-{
-  "id": 210,
-  "name": "단정한, 촉촉한 혼경",
-  "nameOrNull": "단정한, 촉촉한 혼경",
-  "color": "Blue",
-  "image": "/src/assets/images/relics/blue/11.webp"
-},
-{
-  "id": 213,
-  "name": "단정한, 촉촉한 혼경",
-  "nameOrNull": "단정한, 촉촉한 혼경",
-  "color": "Blue",
-  "image": "/src/assets/images/relics/blue/14.webp"
-},
-{
-  "id": 216,
-  "name": "단정한, 촉촉한 혼경",
-  "nameOrNull": "단정한, 촉촉한 혼경",
-  "color": "Blue",
-  "image": "/src/assets/images/relics/blue/17.webp"
-},
-{
-  "id": 211,
-  "name": "웅장한, 촉촉한 혼경",
-  "nameOrNull": "웅장한, 촉촉한 혼경",
-  "color": "Blue",
-  "image": "/src/assets/images/relics/blue/12.webp"
-},
-{
-  "id": 214,
-  "name": "웅장한, 촉촉한 혼경",
-  "nameOrNull": "웅장한, 촉촉한 혼경",
-  "color": "Blue",
-  "image": "/src/assets/images/relics/blue/15.webp"
-},
-{
-  "id": 217,
-  "name": "웅장한, 촉촉한 혼경",
-  "nameOrNull": "웅장한, 촉촉한 혼경",
-  "color": "Blue",
-  "image": "/src/assets/images/relics/blue/18.webp"
-},
+    "id": 200,
+    "name": "섬세한, 불타는 혼경",
+    "nameOrNull": "섬세한, 불타는 혼경",
+    "color": "Red",
+    "image": "/src/assets/images/relics/red/10.webp"
+  },
+  {
+    "id": 203,
+    "name": "섬세한, 불타는 혼경",
+    "nameOrNull": "섬세한, 불타는 혼경",
+    "color": "Red",
+    "image": "/src/assets/images/relics/red/13.webp"
+  },
+  {
+    "id": 206,
+    "name": "섬세한, 불타는 혼경",
+    "nameOrNull": "섬세한, 불타는 혼경",
+    "color": "Red",
+    "image": "/src/assets/images/relics/red/16.webp"
+  },
+  {
+    "id": 201,
+    "name": "단정한, 불타는 혼경",
+    "nameOrNull": "단정한, 불타는 혼경",
+    "color": "Red",
+    "image": "/src/assets/images/relics/red/11.webp"
+  },
+  {
+    "id": 204,
+    "name": "단정한, 불타는 혼경",
+    "nameOrNull": "단정한, 불타는 혼경",
+    "color": "Red",
+    "image": "/src/assets/images/relics/red/14.webp"
+  },
+  {
+    "id": 207,
+    "name": "단정한, 불타는 혼경",
+    "nameOrNull": "단정한, 불타는 혼경",
+    "color": "Red",
+    "image": "/src/assets/images/relics/red/17.webp"
+  },
+  {
+    "id": 202,
+    "name": "웅장한, 불타는 혼경",
+    "nameOrNull": "웅장한, 불타는 혼경",
+    "color": "Red",
+    "image": "/src/assets/images/relics/red/12.webp"
+  },
+  {
+    "id": 205,
+    "name": "웅장한, 불타는 혼경",
+    "nameOrNull": "웅장한, 불타는 혼경",
+    "color": "Red",
+    "image": "/src/assets/images/relics/red/15.webp"
+  },
+  {
+    "id": 208,
+    "name": "웅장한, 불타는 혼경",
+    "nameOrNull": "웅장한, 불타는 혼경",
+    "color": "Red",
+    "image": "/src/assets/images/relics/red/18.webp"
+  },
+  {
+    "id": 218,
+    "name": "섬세한, 빛나는 혼경",
+    "nameOrNull": "섬세한, 빛나는 혼경",
+    "color": "Yellow",
+    "image": "/src/assets/images/relics/yellow/10.webp"
+  },
+  {
+    "id": 221,
+    "name": "섬세한, 빛나는 혼경",
+    "nameOrNull": "섬세한, 빛나는 혼경",
+    "color": "Yellow",
+    "image": "/src/assets/images/relics/yellow/13.webp"
+  },
+  {
+    "id": 224,
+    "name": "섬세한, 빛나는 혼경",
+    "nameOrNull": "섬세한, 빛나는 혼경",
+    "color": "Yellow",
+    "image": "/src/assets/images/relics/yellow/16.webp"
+  },
+  {
+    "id": 219,
+    "name": "단정한, 빛나는 혼경",
+    "nameOrNull": "단정한, 빛나는 혼경",
+    "color": "Yellow",
+    "image": "/src/assets/images/relics/yellow/11.webp"
+  },
+  {
+    "id": 222,
+    "name": "단정한, 빛나는 혼경",
+    "nameOrNull": "단정한, 빛나는 혼경",
+    "color": "Yellow",
+    "image": "/src/assets/images/relics/yellow/14.webp"
+  },
+  {
+    "id": 225,
+    "name": "단정한, 빛나는 혼경",
+    "nameOrNull": "단정한, 빛나는 혼경",
+    "color": "Yellow",
+    "image": "/src/assets/images/relics/yellow/17.webp"
+  },
+  {
+    "id": 220,
+    "name": "웅장한, 빛나는 혼경",
+    "nameOrNull": "웅장한, 빛나는 혼경",
+    "color": "Yellow",
+    "image": "/src/assets/images/relics/yellow/12.webp"
+  },
+  {
+    "id": 223,
+    "name": "웅장한, 빛나는 혼경",
+    "nameOrNull": "웅장한, 빛나는 혼경",
+    "color": "Yellow",
+    "image": "/src/assets/images/relics/yellow/15.webp"
+  },
+  {
+    "id": 226,
+    "name": "웅장한, 빛나는 혼경",
+    "nameOrNull": "웅장한, 빛나는 혼경",
+    "color": "Yellow",
+    "image": "/src/assets/images/relics/yellow/18.webp"
+  },
+  {
+    "id": 227,
+    "name": "섬세한, 고요한 혼경",
+    "nameOrNull": "섬세한, 고요한 혼경",
+    "color": "Green",
+    "image": "/src/assets/images/relics/green/10.webp"
+  },
+  {
+    "id": 230,
+    "name": "섬세한, 고요한 혼경",
+    "nameOrNull": "섬세한, 고요한 혼경",
+    "color": "Green",
+    "image": "/src/assets/images/relics/green/13.webp"
+  },
+  {
+    "id": 233,
+    "name": "섬세한, 고요한 혼경",
+    "nameOrNull": "섬세한, 고요한 혼경",
+    "color": "Green",
+    "image": "/src/assets/images/relics/green/16.webp"
+  },
+  {
+    "id": 228,
+    "name": "단정한, 고요한 혼경",
+    "nameOrNull": "단정한, 고요한 혼경",
+    "color": "Green",
+    "image": "/src/assets/images/relics/green/11.webp"
+  },
+  {
+    "id": 231,
+    "name": "단정한, 고요한 혼경",
+    "nameOrNull": "단정한, 고요한 혼경",
+    "color": "Green",
+    "image": "/src/assets/images/relics/green/14.webp"
+  },
+  {
+    "id": 234,
+    "name": "단정한, 고요한 혼경",
+    "nameOrNull": "단정한, 고요한 혼경",
+    "color": "Green",
+    "image": "/src/assets/images/relics/green/17.webp"
+  },
+  {
+    "id": 229,
+    "name": "웅장한, 고요한 혼경",
+    "nameOrNull": "웅장한, 고요한 혼경",
+    "color": "Green",
+    "image": "/src/assets/images/relics/green/12.webp"
+  },
+  {
+    "id": 232,
+    "name": "웅장한, 고요한 혼경",
+    "nameOrNull": "웅장한, 고요한 혼경",
+    "color": "Green",
+    "image": "/src/assets/images/relics/green/15.webp"
+  },
+  {
+    "id": 235,
+    "name": "웅장한, 고요한 혼경",
+    "nameOrNull": "웅장한, 고요한 혼경",
+    "color": "Green",
+    "image": "/src/assets/images/relics/green/18.webp"
+  },
+  {
+    "id": 209,
+    "name": "섬세한, 촉촉한 혼경",
+    "nameOrNull": "섬세한, 촉촉한 혼경",
+    "color": "Blue",
+    "image": "/src/assets/images/relics/blue/10.webp"
+  },
+  {
+    "id": 212,
+    "name": "섬세한, 촉촉한 혼경",
+    "nameOrNull": "섬세한, 촉촉한 혼경",
+    "color": "Blue",
+    "image": "/src/assets/images/relics/blue/13.webp"
+  },
+  {
+    "id": 215,
+    "name": "섬세한, 촉촉한 혼경",
+    "nameOrNull": "섬세한, 촉촉한 혼경",
+    "color": "Blue",
+    "image": "/src/assets/images/relics/blue/16.webp"
+  },
+  {
+    "id": 210,
+    "name": "단정한, 촉촉한 혼경",
+    "nameOrNull": "단정한, 촉촉한 혼경",
+    "color": "Blue",
+    "image": "/src/assets/images/relics/blue/11.webp"
+  },
+  {
+    "id": 213,
+    "name": "단정한, 촉촉한 혼경",
+    "nameOrNull": "단정한, 촉촉한 혼경",
+    "color": "Blue",
+    "image": "/src/assets/images/relics/blue/14.webp"
+  },
+  {
+    "id": 216,
+    "name": "단정한, 촉촉한 혼경",
+    "nameOrNull": "단정한, 촉촉한 혼경",
+    "color": "Blue",
+    "image": "/src/assets/images/relics/blue/17.webp"
+  },
+  {
+    "id": 211,
+    "name": "웅장한, 촉촉한 혼경",
+    "nameOrNull": "웅장한, 촉촉한 혼경",
+    "color": "Blue",
+    "image": "/src/assets/images/relics/blue/12.webp"
+  },
+  {
+    "id": 214,
+    "name": "웅장한, 촉촉한 혼경",
+    "nameOrNull": "웅장한, 촉촉한 혼경",
+    "color": "Blue",
+    "image": "/src/assets/images/relics/blue/15.webp"
+  },
+  {
+    "id": 217,
+    "name": "웅장한, 촉촉한 혼경",
+    "nameOrNull": "웅장한, 촉촉한 혼경",
+    "color": "Blue",
+    "image": "/src/assets/images/relics/blue/18.webp"
+  },
   {
     "id": 2000,
     "name": "짐승의 밤",
     "nameOrNull": "짐승의 밤",
     "color": "Green",
+    "image": "/src/assets/images/relics/night/2000.webp",
     "location": "Acquired as a reward for defeating the Tricephalos Night Lord for the first time.",
     "type": "quest",
     "obtainable": "",
@@ -526,6 +521,7 @@
     "name": "짐승의 어두운 밤",
     "nameOrNull": "짐승의 어두운 밤",
     "color": "Yellow",
+    "image": "/src/assets/images/relics/night/2000.webp",
     "location": "Defeat Everdark Sovereign Gladius and purchase from the Collector Signboard.",
     "type": "quest",
     "obtainable": "",
@@ -538,6 +534,7 @@
     "name": "제후의 밤",
     "nameOrNull": "제후의 밤",
     "color": "Blue",
+    "image": "/src/assets/images/relics/night/2010.webp",
     "location": "Acquired by defeating the Gaping Jaw Night Lord for the first time.",
     "type": "quest",
     "obtainable": "",
@@ -550,6 +547,7 @@
     "name": "제후의 어두운 밤",
     "nameOrNull": "제후의 어두운 밤",
     "color": "Red",
+    "image": "/src/assets/images/relics/night/2010.webp",
     "location": "Defeat Everdark Sovereign Gaping Jaw and purchase from the Collector Signboard.",
     "type": "quest",
     "obtainable": "",
@@ -562,6 +560,7 @@
     "name": "지식의 밤",
     "nameOrNull": "지식의 밤",
     "color": "Yellow",
+    "image": "/src/assets/images/relics/night/2020.webp",
     "location": "Acquired as a reward for defeating the Sentient Pest Night Lord for the first time.",
     "type": "quest",
     "obtainable": "",
@@ -574,6 +573,7 @@
     "name": "지식의 어두운 밤",
     "nameOrNull": "지식의 어두운 밤",
     "color": "Green",
+    "image": "/src/assets/images/relics/night/2020.webp",
     "location": "Defeat Everdark Sovereign Gaping Jaw and purchase from the Collector Signboard.",
     "type": "quest",
     "obtainable": "",
@@ -586,6 +586,7 @@
     "name": "심해의 밤",
     "nameOrNull": "심해의 밤",
     "color": "Red",
+    "image": "/src/assets/images/relics/night/2030.webp",
     "location": "Acquired as a reward for defeating the Augur Night Lord for the first time.",
     "type": "quest",
     "obtainable": "",
@@ -598,6 +599,7 @@
     "name": "심해의 어두운 밤",
     "nameOrNull": "심해의 어두운 밤",
     "color": "Blue",
+    "image": "/src/assets/images/relics/night/2030.webp",
     "location": "Defeat Everdark Sovereign Augur and purchase from the Collector Signboard.",
     "type": "quest",
     "obtainable": "",
@@ -610,6 +612,7 @@
     "name": "악마의 밤",
     "nameOrNull": "악마의 밤",
     "color": "Red",
+    "image": "/src/assets/images/relics/night/2040.webp",
     "location": "Acquired as a reward for defeating the Equilibrious Beast Night Lord for the first time.",
     "type": "quest",
     "obtainable": "",
@@ -622,6 +625,7 @@
     "name": "악마의 어두운 밤",
     "nameOrNull": "악마의 어두운 밤",
     "color": "Blue",
+    "image": "/src/assets/images/relics/night/2040.webp",
     "location": "Defeat Everdark Sovereign Libra Creature of Night and purchase from the Collector Signboard.",
     "type": "quest",
     "obtainable": "",
@@ -634,6 +638,7 @@
     "name": "사냥꾼의 밤",
     "nameOrNull": "사냥꾼의 밤",
     "color": "Green",
+    "image": "/src/assets/images/relics/night/2050.webp",
     "location": "Acquired as a reward for defeating the Darkdrift Knight Night Lord for the first time.",
     "type": "quest",
     "obtainable": "",
@@ -646,6 +651,7 @@
     "name": "사냥꾼의 어두운 밤",
     "nameOrNull": "사냥꾼의 어두운 밤",
     "color": "Yellow",
+    "image": "/src/assets/images/relics/night/2050.webp",
     "location": "Defeat Everdark Sovereign Darkdrift Knight and purchase from the Collector Signboard.",
     "type": "quest",
     "obtainable": "",
@@ -658,6 +664,7 @@
     "name": "안개의 밤",
     "nameOrNull": "안개의 밤",
     "color": "Yellow",
+    "image": "/src/assets/images/relics/night/2060.webp",
     "location": "Acquired as a reward for defeating the Fissure in the Fog Night Lord for the first time.",
     "type": "quest",
     "obtainable": "",
@@ -670,6 +677,7 @@
     "name": "안개의 어두운 밤",
     "nameOrNull": "안개의 어두운 밤",
     "color": "Green",
+    "image": "/src/assets/images/relics/night/2060.webp",
     "location": "Defeat Everdark Sovereign Caligo and purchase from the Collector Signboard.",
     "type": "quest",
     "obtainable": "",
@@ -682,6 +690,7 @@
     "name": "안녕을 가져오는 자가 남긴 뜻",
     "nameOrNull": "안녕을 가져오는 자가 남긴 뜻",
     "color": "Blue",
+    "image": "/src/assets/images/relics/night/2070.webp",
     "location": "Acquired as a reward for defeating the Balancers for the first time.",
     "type": "quest",
     "obtainable": "",
@@ -694,6 +703,7 @@
     "name": "안녕이 남긴 뜻",
     "nameOrNull": "안녕이 남긴 뜻",
     "color": "Red",
+    "image": "/src/assets/images/relics/night/2070.webp",
     "location": "Unknown",
     "type": "quest",
     "obtainable": "",
@@ -706,6 +716,7 @@
     "name": "잔해의 밤",
     "nameOrNull": "잔해의 밤",
     "color": "Red",
+    "image": "/src/assets/images/relics/night/2080.webp",
     "location": "Acquired as a reward for defeating the Dreglord for the first time.",
     "type": "quest",
     "obtainable": "",
@@ -718,6 +729,7 @@
     "name": "왕의 밤",
     "nameOrNull": "왕의 밤",
     "color": "Blue",
+    "image": "/src/assets/images/relics/night/2100.webp",
     "location": "Acquired as a reward for defeating the Night Aspect Night Lord for the first time.",
     "type": "quest",
     "obtainable": "",
@@ -730,6 +742,7 @@
     "name": "낡은 회중시계",
     "nameOrNull": "낡은 회중시계",
     "color": "Green",
+    "image": "/src/assets/images/relics/rememberence/10000.webp",
     "location": "Acquired as a reward for defeating the Gladius Night Lord for the first time, or as random drop.",
     "type": "quest",
     "obtainable": "",
@@ -738,22 +751,11 @@
     "raw": "{\"name\":\"낡은 회중시계\",\"color\":\"Green\",\"type\":\"quest\",\"location\":\"Acquired as a reward for defeating the Gladius Night Lord for the first time, or as random drop.\",\"effects\":[10000,7000402]}"
   },
   {
-    "id": 10001,
-    "name": "꾀죄죄한 액자",
-    "nameOrNull": "꾀죄죄한 액자",
-    "color": "Blue",
-    "location": "Purchased from the Small Jar Bazaar at the Roundtable Hold for 1500 murk, after unlocking Duchess.",
-    "type": "quest",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"꾀죄죄한 액자\",\"color\":\"Blue\",\"type\":\"quest\",\"location\":\"Purchased from the Small Jar Bazaar at the Roundtable Hold for 1500 murk, after unlocking Duchess.\",\"effects\":[10001,7000602]}"
-  },
-  {
     "id": 10002,
     "name": "끔찍한 흉조의 주물",
     "nameOrNull": "끔찍한 흉조의 주물",
     "color": "Blue",
+    "image": "/src/assets/images/relics/rememberence/10002.webp",
     "location": "Acquired as a reward for defeating Fell Omen boss encountered in the tutorial section of the game.",
     "type": "quest",
     "obtainable": "",
@@ -766,6 +768,7 @@
     "name": "회색 숫돌",
     "nameOrNull": "회색 숫돌",
     "color": "Red",
+    "image": "/src/assets/images/relics/rememberence/11000.webp",
     "location": "Acquired as a reward for completing the Wylder's Remembrance Quest.",
     "type": "quest",
     "obtainable": "",
@@ -778,6 +781,7 @@
     "name": "추적자의 귀고리",
     "nameOrNull": "추적자의 귀고리",
     "color": "Red",
+    "image": "/src/assets/images/relics/rememberence/11001.webp",
     "location": "Complete Wylders's Remembrance quests and kill Heolstor the Nightlord while you have the Silver Tear relic equipped.",
     "type": "quest",
     "obtainable": "",
@@ -790,6 +794,7 @@
     "name": "은 물방울",
     "nameOrNull": "은 물방울",
     "color": "Red",
+    "image": "/src/assets/images/relics/rememberence/11002.webp",
     "location": "Acquired as a reward for completing the Wylder's Remembrance Quest.",
     "type": "quest",
     "obtainable": "",
@@ -798,22 +803,11 @@
     "raw": "{\"name\":\"은 물방울\",\"color\":\"Red\",\"type\":\"quest\",\"location\":\"Acquired as a reward for completing the Wylder's Remembrance Quest.\",\"effects\":[7032400,7000902,7000702]}"
   },
   {
-    "id": 11004,
-    "name": "섬세한, 불타는 풍경",
-    "nameOrNull": "섬세한, 불타는 풍경",
-    "color": "Red",
-    "location": "Can be purchased from one of the shops",
-    "type": "shop",
-    "obtainable": "",
-    "group": "",
-    "description": "",
-    "raw": "{\"name\":\"섬세한, 불타는 풍경\",\"color\":\"Red\",\"type\":\"shop\",\"effects\":[7000400]}"
-  },
-  {
     "id": 12000,
     "name": "세 권째 책",
     "nameOrNull": "세 권째 책",
     "color": "Red",
+    "image": "/src/assets/images/relics/rememberence/12000.webp",
     "location": "Acquired as a reward for completing the Guardian's Remembrance Quest.",
     "type": "quest",
     "obtainable": "",
@@ -826,6 +820,7 @@
     "name": "돌 말뚝",
     "nameOrNull": "돌 말뚝",
     "color": "Red",
+    "image": "/src/assets/images/relics/rememberence/12001.webp",
     "location": "Acquired as a reward for completing the Guardian's Remembrance Quest.",
     "type": "quest",
     "obtainable": "",
@@ -838,6 +833,7 @@
     "name": "마녀의 브로치",
     "nameOrNull": "마녀의 브로치",
     "color": "Blue",
+    "image": "/src/assets/images/relics/rememberence/12002.webp",
     "location": "Acquired as a reward for completing the Guardian's Remembrance Quest.",
     "type": "quest",
     "obtainable": "",
@@ -850,6 +846,7 @@
     "name": "부서진 마녀의 브로치",
     "nameOrNull": "부서진 마녀의 브로치",
     "color": "Blue",
+    "image": "/src/assets/images/relics/rememberence/12003.webp",
     "location": "Acquired as a reward for completing the Guardian's Remembrance Quest.",
     "type": "quest",
     "obtainable": "",
@@ -862,6 +859,7 @@
     "name": "깨진 봉랍",
     "nameOrNull": "깨진 봉랍",
     "color": "Yellow",
+    "image": "/src/assets/images/relics/rememberence/13001.webp",
     "location": "Acquired as a reward for completing the Ironeye's Remembrance Quest.",
     "type": "quest",
     "obtainable": "",
@@ -874,6 +872,7 @@
     "name": "성률의 칼날",
     "nameOrNull": "성률의 칼날",
     "color": "Yellow",
+    "image": "/src/assets/images/relics/rememberence/13002.webp",
     "location": "Acquired as a reward for completing the Ironeye's Remembrance Quest.",
     "type": "quest",
     "obtainable": "",
@@ -886,6 +885,7 @@
     "name": "금색 이슬",
     "nameOrNull": "금색 이슬",
     "color": "Yellow",
+    "image": "/src/assets/images/relics/rememberence/14000.webp",
     "location": "Acquired as a reward for completing the Duchess' Remembrance Quest.",
     "type": "quest",
     "obtainable": "",
@@ -898,6 +898,7 @@
     "name": "머리관 메달",
     "nameOrNull": "머리관 메달",
     "color": "Green",
+    "image": "/src/assets/images/relics/rememberence/14001.webp",
     "location": "Acquired as a reward for completing the Duchess' Remembrance Quest.",
     "type": "quest",
     "obtainable": "",
@@ -910,6 +911,7 @@
     "name": "축복받은 철전",
     "nameOrNull": "축복받은 철전",
     "color": "Green",
+    "image": "/src/assets/images/relics/rememberence/14002.webp",
     "location": "Acquired as a reward for completing the Duchess' Remembrance Quest.",
     "type": "quest",
     "obtainable": "",
@@ -922,6 +924,7 @@
     "name": "끊어진 매듭끈",
     "nameOrNull": "끊어진 매듭끈",
     "color": "Blue",
+    "image": "/src/assets/images/relics/rememberence/15000.webp",
     "location": "Acquired as a reward for completing the Raider's Remembrance Quest.",
     "type": "quest",
     "obtainable": "",
@@ -934,6 +937,7 @@
     "name": "검은 발톱의 목걸이",
     "nameOrNull": "검은 발톱의 목걸이",
     "color": "Yellow",
+    "image": "/src/assets/images/relics/rememberence/15002.webp",
     "location": "Acquired as a reward for completing the Raider's Remembrance Quest.",
     "type": "quest",
     "obtainable": "",
@@ -946,6 +950,7 @@
     "name": "작은 화장도구",
     "nameOrNull": "작은 화장도구",
     "color": "Blue",
+    "image": "/src/assets/images/relics/rememberence/16001.webp",
     "location": "Acquired as a reward for completing the Revenant's Remembrance Quest.",
     "type": "quest",
     "obtainable": "",
@@ -958,6 +963,7 @@
     "name": "낡은 미니어처 액자",
     "nameOrNull": "낡은 미니어처 액자",
     "color": "Blue",
+    "image": "/src/assets/images/relics/rememberence/16002.webp",
     "location": "Acquired as a reward for completing the Revenant's Remembrance Quest.",
     "type": "quest",
     "obtainable": "",
@@ -970,6 +976,7 @@
     "name": "밤의 흔적",
     "nameOrNull": "밤의 흔적",
     "color": "Green",
+    "image": "/src/assets/images/relics/rememberence/17001.webp",
     "location": "Acquired as a reward for completing the Recluse's Remembrance Quest.",
     "type": "quest",
     "obtainable": "",
@@ -982,6 +989,7 @@
     "name": "뼈처럼 생긴 돌",
     "nameOrNull": "뼈처럼 생긴 돌",
     "color": "Green",
+    "image": "/src/assets/images/relics/rememberence/17002.webp",
     "location": "Acquired as a reward for completing the Recluse's Remembrance Quest.",
     "type": "quest",
     "obtainable": "",
@@ -994,6 +1002,7 @@
     "name": "축복받은 꽃",
     "nameOrNull": "축복받은 꽃",
     "color": "Green",
+    "image": "/src/assets/images/relics/rememberence/18000.webp",
     "location": "Acquired as a reward for completing the Recluse's Remembrance Quest.",
     "type": "quest",
     "obtainable": "",
@@ -1006,6 +1015,7 @@
     "name": "황금 싹",
     "nameOrNull": "황금 싹",
     "color": "Red",
+    "image": "/src/assets/images/relics/rememberence/18002.webp",
     "location": "Acquired as a reward for completing the Executor's Remembrance Quest.",
     "type": "quest",
     "obtainable": "",
@@ -1018,6 +1028,7 @@
     "name": "청정의 물방울",
     "nameOrNull": "청정의 물방울",
     "color": "Red",
+    "image": "/src/assets/images/relics/rememberence/19000.webp",
     "location": "Acquired as a reward for completing the Scholar's Remembrance Quest.",
     "type": "quest",
     "obtainable": "",
@@ -1030,6 +1041,7 @@
     "name": "기록 「후계자에게」",
     "nameOrNull": "기록 「후계자에게」",
     "color": "Yellow",
+    "image": "/src/assets/images/relics/rememberence/19001.webp",
     "location": "Acquired as a reward for completing the Scholar's Remembrance Quest.",
     "type": "quest",
     "obtainable": "",
@@ -1042,6 +1054,7 @@
     "name": "단안경용 가죽 주머니",
     "nameOrNull": "단안경용 가죽 주머니",
     "color": "Blue",
+    "image": "/src/assets/images/relics/rememberence/19050.webp",
     "location": "Acquired as a reward for completing the Undertakers's Remembrance Quest.",
     "type": "quest",
     "obtainable": "",
@@ -1054,6 +1067,7 @@
     "name": "유리 목걸이",
     "nameOrNull": "유리 목걸이",
     "color": "Green",
+    "image": "/src/assets/images/relics/rememberence/19051.webp",
     "location": "Acquired as a reward for completing the Undertakers's Remembrance Quest.",
     "type": "quest",
     "obtainable": "",

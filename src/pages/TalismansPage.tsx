@@ -1,6 +1,8 @@
 import { useMemo } from 'react';
 import { talismans, type Talisman } from '../data/talismans';
 
+const visibleTalismans = talismans.filter((talisman) => !Object.values(talisman).some((value) => String(value).includes('◇')));
+
 function matchesTalismanSearch(talisman: Talisman, query: string) {
   const normalizedQuery = query.trim().toLowerCase();
   if (!normalizedQuery) return true;
@@ -35,7 +37,7 @@ function TalismanCard({ talisman }: { talisman: Talisman }) {
 
 function TalismansPage({ searchQuery }: { searchQuery: string }) {
   const filteredTalismans = useMemo(
-    () => talismans.filter((talisman) => matchesTalismanSearch(talisman, searchQuery)),
+    () => visibleTalismans.filter((talisman) => matchesTalismanSearch(talisman, searchQuery)),
     [searchQuery],
   );
 
@@ -47,7 +49,7 @@ function TalismansPage({ searchQuery }: { searchQuery: string }) {
           <h2 id="talismans-title">탈리스만</h2>
         </div>
         <span className="option-count">
-          {filteredTalismans.length} / {talismans.length}
+          {filteredTalismans.length} / {visibleTalismans.length}
         </span>
       </div>
 
