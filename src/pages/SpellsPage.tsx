@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type KeyboardEvent } from 'react';
 import { spells, type Spell } from '../data/spells';
 
 const visibleSpells = spells.filter((spell) => !Object.values(spell).some((value) => String(value).includes('◇')));
@@ -22,29 +22,50 @@ function matchesSpellSearch(spell: Spell, query: string) {
 }
 
 function SpellCard({ spell }: { spell: Spell }) {
+  const [isExpanded, setIsExpanded] = useState(false);
   const [isMotionVisible, setIsMotionVisible] = useState(false);
+  const toggleExpanded = () => {
+    setIsExpanded((current) => {
+      if (current) setIsMotionVisible(false);
+      return !current;
+    });
+  };
+  const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    if (event.key !== 'Enter' && event.key !== ' ') return;
+    event.preventDefault();
+    toggleExpanded();
+  };
 
   return (
-    <article className="catalog-card">
+    <article
+      className={`catalog-card spell-card is-expandable${isExpanded ? ' is-expanded' : ''}`}
+      role="button"
+      tabIndex={0}
+      aria-expanded={isExpanded}
+      onClick={toggleExpanded}
+      onKeyDown={handleKeyDown}
+    >
       <div className="catalog-card-header">
         <img src={spell.img} alt="" className="catalog-icon-image" />
         <div>
-          <span className="option-category">{spell.spell}</span>
+          <div className="spell-badge-row">
+            <span className="option-category">{spell.spell}</span>
+            <span className="option-category spell-school-badge">{spell.type}</span>
+          </div>
           <h3>{spell.title}</h3>
         </div>
       </div>
-      <div className="option-meta-row">
-        <span>{spell.type}</span>
-        <span>슬롯 {spell.slot}</span>
-        <span>{spell.need}</span>
-      </div>
-      <p>{spell.description}</p>
-      {spell.gif ? (
+      {isExpanded ? <p>{spell.description}</p> : null}
+      {isExpanded && spell.gif ? (
         <>
           <button
             type="button"
             className="motion-toggle-button"
-            onClick={() => setIsMotionVisible((current) => !current)}
+            onClick={(event) => {
+              event.stopPropagation();
+              setIsMotionVisible((current) => !current);
+            }}
+            onKeyDown={(event) => event.stopPropagation()}
           >
             {isMotionVisible ? '시전 모션 숨기기' : '시전 모션 보기'}
           </button>

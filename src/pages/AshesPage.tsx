@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type KeyboardEvent } from 'react';
 import { ashes, type AshOfWar } from '../data/ashes';
 
 const visibleAshes = ashes.filter((ash) => !Object.values(ash).some((value) => String(value).includes('◇')));
@@ -13,10 +13,29 @@ function matchesAshSearch(ash: AshOfWar, query: string) {
 }
 
 function AshCard({ ash }: { ash: AshOfWar }) {
+  const [isExpanded, setIsExpanded] = useState(false);
   const [isMotionVisible, setIsMotionVisible] = useState(false);
+  const toggleExpanded = () => {
+    setIsExpanded((current) => {
+      if (current) setIsMotionVisible(false);
+      return !current;
+    });
+  };
+  const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    if (event.key !== 'Enter' && event.key !== ' ') return;
+    event.preventDefault();
+    toggleExpanded();
+  };
 
   return (
-    <article className="catalog-card">
+    <article
+      className={`catalog-card ash-card is-expandable${isExpanded ? ' is-expanded' : ''}`}
+      role="button"
+      tabIndex={0}
+      aria-expanded={isExpanded}
+      onClick={toggleExpanded}
+      onKeyDown={handleKeyDown}
+    >
       <div className="catalog-card-header">
         <img src={ash.img} alt="" className="catalog-icon-image" />
         <div>
@@ -24,13 +43,17 @@ function AshCard({ ash }: { ash: AshOfWar }) {
           <h3>{ash.title}</h3>
         </div>
       </div>
-      <p>{ash.description}</p>
-      {ash.gif ? (
+      {isExpanded ? <p>{ash.description}</p> : null}
+      {isExpanded && ash.gif ? (
         <>
           <button
             type="button"
             className="motion-toggle-button"
-            onClick={() => setIsMotionVisible((current) => !current)}
+            onClick={(event) => {
+              event.stopPropagation();
+              setIsMotionVisible((current) => !current);
+            }}
+            onKeyDown={(event) => event.stopPropagation()}
           >
             {isMotionVisible ? '시전 모션 숨기기' : '시전 모션 보기'}
           </button>
@@ -46,17 +69,10 @@ function AshCard({ ash }: { ash: AshOfWar }) {
 function AshesPage({
   searchQuery,
   ashProperty,
-  onPropertyChange,
 }: {
   searchQuery: string;
   ashProperty: string | null;
-  onPropertyChange: (property: string | null) => void;
 }) {
-  const properties = useMemo(() => {
-    const uniqueProps = new Set(visibleAshes.map((ash) => ash.property));
-    return Array.from(uniqueProps).sort();
-  }, []);
-
   const filteredAshes = useMemo(() => {
     let result = visibleAshes.filter((ash) => matchesAshSearch(ash, searchQuery));
     if (ashProperty) {

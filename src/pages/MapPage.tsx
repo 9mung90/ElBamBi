@@ -52,22 +52,14 @@ const MapPage = () => {
     return Array.from(new Set(seeds.map((seed) => seed.nightlord))).sort();
   }, []);
 
-  const [selectedMapType, setSelectedMapType] = useState<string>('');
+  const [selectedMapType, setSelectedMapType] = useState<string>('Normal');
   const [selectedNightlord, setSelectedNightlord] = useState<string>('');
   const [selectedSlots, setSelectedSlots] = useState<Record<string, string>>({});
   const [activeSlot, setActiveSlot] = useState<string | null>(null);
 
-  const slotNameToId = useMemo(() => {
-    const map: Record<string, string> = {};
-    Object.entries(slots).forEach(([slotId, slotData]) => {
-      map[slotData.slot_name] = slotId;
-    });
-    return map;
-  }, [slots]);
-
   const filteredSeeds = useMemo(() => {
     return seeds.filter((seed) => {
-      if (selectedMapType && seed.map_type !== selectedMapType) {
+      if (seed.map_type !== selectedMapType) {
         return false;
       }
       if (selectedNightlord && seed.nightlord !== selectedNightlord) {
@@ -140,7 +132,7 @@ const MapPage = () => {
     return matchedPath ? mapImages[matchedPath] : null;
   };
 
-  const mapImageUrl = selectedMapType ? getMapImageUrl(selectedMapType) : null;
+  const mapImageUrl = getMapImageUrl(selectedMapType);
 
   return (
     <div style={{ padding: '20px', color: 'var(--night-text)' }}>
@@ -155,7 +147,6 @@ const MapPage = () => {
               onChange={(event) => setSelectedMapType(event.target.value)}
               style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid var(--night-border)', backgroundColor: 'var(--night-input)', color: 'var(--night-text)' }}
             >
-              <option value="">전체 맵 타입</option>
               {mapTypeOptions.map((type) => (
                 <option key={type} value={type}>
                   {type}

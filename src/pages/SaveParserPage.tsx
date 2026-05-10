@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type DragEvent } from 'react';
 import { relicEffectsKo, relicItemColorMap, relics } from '../data/relics';
 import type { RelicColor } from '../data/relics/types';
 import {
@@ -9,6 +9,7 @@ import {
 } from '../utils/nightreignSaveParser';
 
 const characterSlots = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] as const;
+const supportedSaveExtensions = ['.sl2', '.co2', '.dat'];
 
 const relicLookup = new Map(
   relicItemColorMap.map((relic) => [
@@ -49,6 +50,15 @@ function formatHex(bytes: Uint8Array) {
   return Array.from(bytes)
     .map((byte) => byte.toString(16).padStart(2, '0').toUpperCase())
     .join(' ');
+}
+
+function isSupportedSaveFile(file: File) {
+  const lowerName = file.name.toLowerCase();
+  return supportedSaveExtensions.some((extension) => lowerName.endsWith(extension));
+}
+
+function getUnsupportedFileMessage(file: File) {
+  return `${file.name}은 지원하지 않는 파일 형식입니다. .sl2, .co2, .dat 파일을 업로드해 주세요.`;
 }
 
 function getRelicName(relic: ParsedRelic) {
@@ -106,6 +116,7 @@ function SaveParserPage() {
   const [logs, setLogs] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isParsing, setIsParsing] = useState(false);
+  const [isDragOver, setIsDragOver] = useState(false);
 
   const resultJson = useMemo(
     () => (result ? JSON.stringify(result.relics, null, 2) : ''),
@@ -113,6 +124,15 @@ function SaveParserPage() {
   );
 
   async function parseFile(file: File, slot: CharacterSlot) {
+    if (!isSupportedSaveFile(file)) {
+      setSelectedFile(null);
+      setResult(null);
+      setLogs([]);
+      setError(getUnsupportedFileMessage(file));
+      setIsParsing(false);
+      return;
+    }
+
     setSelectedFile(file);
     setResult(null);
     setLogs([]);
@@ -137,6 +157,27 @@ function SaveParserPage() {
     } finally {
       setIsParsing(false);
     }
+  }
+
+  function handleFileUpload(file: File | undefined) {
+    if (!file) return;
+    void parseFile(file, characterSlot);
+  }
+
+  function handleUploadDrag(event: DragEvent<HTMLLabelElement>) {
+    event.preventDefault();
+    event.stopPropagation();
+    if (event.type === 'dragenter' || event.type === 'dragover') {
+      setIsDragOver(true);
+    }
+    if (event.type === 'dragleave' || event.type === 'drop') {
+      setIsDragOver(false);
+    }
+  }
+
+  function handleUploadDrop(event: DragEvent<HTMLLabelElement>) {
+    handleUploadDrag(event);
+    handleFileUpload(event.dataTransfer.files[0]);
   }
 
   return (
@@ -168,20 +209,26 @@ function SaveParserPage() {
             </select>
           </label>
 
-          <label className="save-upload-box">
+          <label
+            className={`save-upload-box${isDragOver ? ' is-drag-over' : ''}`}
+            onDragEnter={handleUploadDrag}
+            onDragOver={handleUploadDrag}
+            onDragLeave={handleUploadDrag}
+            onDrop={handleUploadDrop}
+          >
             <input
               type="file"
               accept=".sl2,.co2,.dat"
               onChange={(event) => {
-                const file = event.target.files?.[0];
-                if (file) void parseFile(file, characterSlot);
+                handleFileUpload(event.target.files?.[0]);
+                event.currentTarget.value = '';
               }}
             />
             <strong>.sl2 / .co2 / .dat 업로드</strong>
             <span>
               {selectedFile
                 ? `${selectedFile.name} (${formatBytes(selectedFile.size)})`
-                : '파일을 선택하면 바로 분석합니다.'}
+                : '파일을 선택하거나 여기로 끌어오면 바로 분석합니다.'}
             </span>
           </label>
 

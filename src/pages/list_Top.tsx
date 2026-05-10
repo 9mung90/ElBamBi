@@ -2,6 +2,12 @@ import { useMemo, useState } from 'react';
 import { ashes } from '../data/ashes';
 import AshesPage from './AshesPage';
 import BossesPage from './BossesPage';
+import {
+  bossFilterOptions,
+  bossTypeLabels,
+  createEmptyBossFilters,
+  type BossFilters,
+} from './bossFilters';
 import CharactersPage from './CharactersPage';
 import GesturesPage from './GesturesPage';
 import ItemsPage from './ItemsPage';
@@ -135,6 +141,7 @@ function ListTop() {
   const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false);
   const [weaponFilters, setWeaponFilters] = useState<WeaponFilters>(() => createEmptyWeaponFilters());
   const [optionFilters, setOptionFilters] = useState<OptionFilters>(() => createEmptyOptionFilters());
+  const [bossFilters, setBossFilters] = useState<BossFilters>(() => createEmptyBossFilters());
   const [selectedWeaponGroupId, setSelectedWeaponGroupId] = useState<number | null>(null);
   const [focusedWeaponGroupId, setFocusedWeaponGroupId] = useState<number | null>(null);
   const [ashProperty, setAshProperty] = useState<string | null>(null);
@@ -151,8 +158,10 @@ function ListTop() {
     optionFilters.categories.length > 0 ||
     optionFilters.types.length > 0 ||
     optionFilters.stackable.length > 0;
+  const hasActiveBossFilters = bossFilters.types.length > 0;
   const hasActiveAshFilters = ashProperty !== null;
-  const canUseFilters = selectedId === 'weapons' || selectedId === 'options' || selectedId === 'ashes';
+  const canUseFilters =
+    selectedId === 'weapons' || selectedId === 'options' || selectedId === 'ashes' || selectedId === 'bosses';
 
   const updateWeaponLevelFilter = (level: number) => {
     setWeaponFilters((currentFilters) => ({
@@ -182,6 +191,13 @@ function ListTop() {
     }));
   };
 
+  const updateBossTypeFilter = (value: string) => {
+    setBossFilters((currentFilters) => ({
+      ...currentFilters,
+      types: toggleFilterValue(currentFilters.types, value),
+    }));
+  };
+
   return (
     <main className="list-top-shell">
       <header className="list-top-header">
@@ -206,7 +222,7 @@ function ListTop() {
           <button
             type="button"
             className={`icon-button${canUseFilters && isFilterPanelOpen ? ' is-active' : ''}`}
-            aria-label={selectedId === 'options' ? 'Option filters' : 'Weapon filters'}
+            aria-label={`${selectedCategory.label} 필터`}
             aria-pressed={canUseFilters && isFilterPanelOpen}
             onClick={() => {
               if (!canUseFilters) return;
@@ -382,6 +398,38 @@ function ListTop() {
           </section>
         ) : null}
 
+        {selectedId === 'bosses' && isFilterPanelOpen ? (
+          <section className="filter-panel" aria-label="Boss filters">
+            <div className="filter-panel-heading">
+              <strong>보스 필터</strong>
+              <button
+                type="button"
+                className="filter-reset-button"
+                disabled={!hasActiveBossFilters}
+                onClick={() => setBossFilters(createEmptyBossFilters())}
+              >
+                초기화
+              </button>
+            </div>
+
+            <div className="filter-group">
+              <span>보스 종류</span>
+              <div className="filter-chip-row">
+                {bossFilterOptions.types.map((type) => (
+                  <button
+                    key={type}
+                    type="button"
+                    className={`filter-chip${bossFilters.types.includes(type) ? ' is-selected' : ''}`}
+                    onClick={() => updateBossTypeFilter(type)}
+                  >
+                    {bossTypeLabels[type] ?? type}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </section>
+        ) : null}
+
         <nav className="category-tabs" aria-label="아이템 카테고리">
           {categories.map((category) => {
             const isSelected = category.id === selectedId;
@@ -441,9 +489,9 @@ function ListTop() {
       ) : selectedId === 'stats-calculator' ? (
         <StatsCalculatorPage searchQuery={searchQuery} />
       ) : selectedId === 'ashes' ? (
-        <AshesPage searchQuery={searchQuery} ashProperty={ashProperty} onPropertyChange={setAshProperty} />
+        <AshesPage searchQuery={searchQuery} ashProperty={ashProperty} />
       ) : selectedId === 'bosses' ? (
-        <BossesPage searchQuery={searchQuery} />
+        <BossesPage searchQuery={searchQuery} filters={bossFilters} />
       ) : selectedId === 'spells' ? (
         <SpellsPage searchQuery={searchQuery} />
       ) : selectedId === 'talismans' ? (

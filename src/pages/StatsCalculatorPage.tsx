@@ -28,6 +28,7 @@ type CombatSummaryRow = {
 const statKeys: StatKey[] = ['STR', 'DEX', 'INT', 'FAI', 'ARC', 'VIG', 'MND', 'END'];
 const attackStats: StatKey[] = ['STR', 'DEX', 'INT', 'FAI', 'ARC'];
 const damageKeys: DamageKey[] = ['Phys', 'Magic', 'Fire', 'Lightning', 'Holy'];
+const resourceBarMaxValue = 3500;
 
 const statLabels: Record<StatKey, string> = {
   STR: '근력',
@@ -375,7 +376,7 @@ function parseCombatModifiers(effect: RelicEffect): CombatModifier[] {
 
   for (const sentence of sentences) {
     const pattern =
-      /([가-힣A-Za-z0-9/·,\s\[\]]{0,52}?)(공격력|경감률)(?:이|가|을|를)?\s*((?:\d+(?:\.\d+)?\s*%\s*(?:\/\s*)?)+)\s*(상승|저하|감소|증가|낮춥니다?)/g;
+      /([가-힣A-Za-z0-9/·,\s[\]]{0,52}?)(공격력|경감률)(?:이|가|을|를)?\s*((?:\d+(?:\.\d+)?\s*%\s*(?:\/\s*)?)+)\s*(상승|저하|감소|증가|낮춥니다?)/g;
     const inheritedAction = /(상승|저하|감소|증가|낮춥니다?)/.exec(sentence)?.[1];
     const candidateSentences = [
       sentence,
@@ -538,7 +539,7 @@ function StatusBar({
   color: string;
 }) {
   const delta = value - base;
-  const width = Math.min(100, (value / Math.max(base, value, 1)) * 100);
+  const width = Math.max(0, Math.min(100, (value / resourceBarMaxValue) * 100));
 
   return (
     <div className="calc-status-bar">
@@ -546,7 +547,12 @@ function StatusBar({
         <span>{label}</span>
         <strong>
           {value}
-          {delta ? <em>{delta > 0 ? ` +${delta}` : ` ${delta}`}</em> : null}
+          <small> / {resourceBarMaxValue}</small>
+          {delta ? (
+            <em className={delta > 0 ? 'is-positive' : 'is-negative'}>
+              {delta > 0 ? ` +${delta}` : ` ${delta}`}
+            </em>
+          ) : null}
         </strong>
       </div>
       <div className="calc-bar-track">

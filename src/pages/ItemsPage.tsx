@@ -60,7 +60,6 @@ function ItemCard({ item, imageLookup }: { item: ConsumableItem; imageLookup: Ma
           {item.type_kor ? <span className="option-category">{item.type_kor}</span> : null}
           <h3>{title}</h3>
         </div>
-        <span className="option-id">#{item.id}</span>
       </div>
       {item.ability_kor ? <p className="catalog-ability">{item.ability_kor}</p> : null}
       <p>{description}</p>

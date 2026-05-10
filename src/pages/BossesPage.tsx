@@ -1,5 +1,6 @@
-import { useMemo } from 'react';
+import { useMemo, useState, type KeyboardEvent } from 'react';
 import { bosses, bossesData, type Boss } from '../data/bosses';
+import { formatBossType, type BossFilters } from './bossFilters';
 
 const tokenLabels: Record<string, string> = {
   Bloodloss: '출혈',
@@ -21,13 +22,6 @@ const tokenLabels: Record<string, string> = {
   Strike: '타격',
 };
 
-const bossTypeLabels: Record<string, string> = {
-  'Evergoal Boss': '봉인감옥 보스',
-  'Field Boss': '필드 보스',
-  'Location Boss': '지역 보스',
-  'Night Boss': '밤 보스',
-};
-
 const resistanceNames = new Set([
   'Poison',
   'Scarlet Rot',
@@ -39,10 +33,6 @@ const resistanceNames = new Set([
 
 function labelToken(token: string) {
   return tokenLabels[token] ?? token;
-}
-
-function formatBossType(type: string) {
-  return bossTypeLabels[type] ?? type;
 }
 
 function formatPairs(tokens: string[]) {
@@ -105,6 +95,10 @@ function matchesBossSearch(boss: Boss, query: string) {
     .some((value) => String(value).toLowerCase().includes(normalizedQuery));
 }
 
+function matchesBossFilters(boss: Boss, filters: BossFilters) {
+  return filters.types.length === 0 || filters.types.includes(boss.bossType);
+}
+
 function BossChipList({
   title,
   values,
@@ -129,12 +123,26 @@ function BossChipList({
 }
 
 function BossCard({ boss }: { boss: Boss }) {
+  const [isExpanded, setIsExpanded] = useState(false);
   const weakAgainst = formatPairs(boss.weakAgainst);
   const strongAgainst = formatPairs(boss.strongAgainst);
   const resistances = formatResistances(boss.resistances);
+  const toggleExpanded = () => setIsExpanded((current) => !current);
+  const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    if (event.key !== 'Enter' && event.key !== ' ') return;
+    event.preventDefault();
+    toggleExpanded();
+  };
 
   return (
-    <article className="option-card boss-card">
+    <article
+      className={`option-card boss-card is-expandable${isExpanded ? ' is-expanded' : ''}`}
+      role="button"
+      tabIndex={0}
+      aria-expanded={isExpanded}
+      onClick={toggleExpanded}
+      onKeyDown={handleKeyDown}
+    >
       <div className="option-card-header">
         <span className="option-category">{formatBossType(boss.bossType)}</span>
       </div>
@@ -144,31 +152,39 @@ function BossCard({ boss }: { boss: Boss }) {
         {boss.ids.instance ? <p className="muted-text">{boss.ids.instance}</p> : null}
       </div>
 
-      <div className="boss-stat-grid" aria-label={`${boss.name} 보스 능력치`}>
-        <div>
-          <span>HP</span>
-          <strong>{boss.hp.raw}</strong>
-          <small>트리오 / 듀오 / 솔로</small>
-        </div>
-        <div>
-          <span>룬</span>
-          <strong>{boss.runes.raw}</strong>
-          <small>트리오 / 듀오 / 솔로</small>
-        </div>
+      <div className="option-meta-row">
+        <span>HP {boss.hp.raw}</span>
+        <span>룬 {boss.runes.raw}</span>
       </div>
 
-      <BossChipList title="약점" values={weakAgainst} emptyText="약점 없음" />
-      <BossChipList title="강함" values={strongAgainst} emptyText="저항 없음" />
-      <BossChipList title="상태 내성" values={resistances} emptyText="정보 없음" />
+      {isExpanded ? (
+        <>
+          <div className="boss-stat-grid" aria-label={`${boss.name} 보스 능력치`}>
+            <div>
+              <span>HP</span>
+              <strong>{boss.hp.raw}</strong>
+              <small>트리오 / 듀오 / 솔로</small>
+            </div>
+            <div>
+              <span>룬</span>
+              <strong>{boss.runes.raw}</strong>
+              <small>트리오 / 듀오 / 솔로</small>
+            </div>
+          </div>
 
+          <BossChipList title="약점" values={weakAgainst} emptyText="약점 없음" />
+          <BossChipList title="강함" values={strongAgainst} emptyText="저항 없음" />
+          <BossChipList title="상태 내성" values={resistances} emptyText="정보 없음" />
+        </>
+      ) : null}
     </article>
   );
 }
 
-function BossesPage({ searchQuery }: { searchQuery: string }) {
+function BossesPage({ searchQuery, filters }: { searchQuery: string; filters: BossFilters }) {
   const filteredBosses = useMemo(
-    () => bosses.filter((boss) => matchesBossSearch(boss, searchQuery)),
-    [searchQuery],
+    () => bosses.filter((boss) => matchesBossSearch(boss, searchQuery) && matchesBossFilters(boss, filters)),
+    [filters, searchQuery],
   );
 
   return (
