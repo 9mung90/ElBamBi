@@ -562,7 +562,11 @@ function StatsCalculatorPage({ searchQuery }: { searchQuery: string }) {
   const [effectQuery, setEffectQuery] = useState('');
   const [selectedEffectEntries, setSelectedEffectEntries] = useState<SelectedEffect[]>([]);
   const [weaponQuery, setWeaponQuery] = useState('');
-  const [manualStats, setManualStats] = useState<StatMap>(emptyStats);
+  const [manualStats, setManualStats] = useState<Record<StatKey, number | null>>(() => {
+    const stats: Record<string, number | null> = {};
+    for (const key of statKeys) stats[key] = null;
+    return stats as Record<StatKey, number | null>;
+  });
   const [twoHanding, setTwoHanding] = useState(false);
 
   const baseStatsEntry = getStats(selectedCharacter, selectedLevel) ?? characterStats[0];
@@ -592,7 +596,8 @@ function StatsCalculatorPage({ searchQuery }: { searchQuery: string }) {
   const finalStats = useMemo(() => {
     const next = emptyStats();
     for (const key of statKeys) {
-      next[key] = Math.max(1, baseStats[key] + effectAdjustment.stats[key] + manualStats[key]);
+      const manualValue = manualStats[key] ?? 0;
+      next[key] = Math.max(1, baseStats[key] + effectAdjustment.stats[key] + manualValue);
     }
     return next;
   }, [baseStatsEntry, effectAdjustment, manualStats]);
@@ -607,11 +612,10 @@ function StatsCalculatorPage({ searchQuery }: { searchQuery: string }) {
 
   const effectMatches = useMemo(() => {
     const normalized = effectQuery.trim().toLowerCase();
-    if (!normalized) return combatOptionEffects.slice(0, 12);
+    if (!normalized) return combatOptionEffects;
 
     return combatOptionEffects
-      .filter((effect) => getEffectSearchText(effect).includes(normalized))
-      .slice(0, 12);
+      .filter((effect) => getEffectSearchText(effect).includes(normalized));
   }, [combatOptionEffects, effectQuery]);
 
   const weapons = useMemo(() => {
@@ -681,10 +685,8 @@ function StatsCalculatorPage({ searchQuery }: { searchQuery: string }) {
     <section className="options-page calc-page" aria-labelledby="stats-calculator-title">
       <div className="options-page-heading">
         <div>
-          <p className="list-page-kicker">attack_power</p>
           <h2 id="stats-calculator-title">스탯 계산기</h2>
         </div>
-        <span className="option-count">AP / 스탯 / 상태이상</span>
       </div>
 
       <div className="calc-layout">
@@ -730,8 +732,13 @@ function StatsCalculatorPage({ searchQuery }: { searchQuery: string }) {
             <button
               type="button"
               onClick={() => {
+                setSelectedLevel(1);
                 setSelectedEffectEntries([]);
-                setManualStats(emptyStats());
+                setManualStats(() => {
+                  const stats: Record<string, number | null> = {};
+                  for (const key of statKeys) stats[key] = null;
+                  return stats as Record<StatKey, number | null>;
+                });
               }}
             >
               초기화
@@ -764,11 +771,11 @@ function StatsCalculatorPage({ searchQuery }: { searchQuery: string }) {
                 <span>{effectAdjustment.stats[key]}</span>
                 <input
                   type="number"
-                  value={manualStats[key]}
+                  value={manualStats[key] ?? ''}
                   onChange={(event) =>
                     setManualStats((current) => ({
                       ...current,
-                      [key]: Number(event.target.value),
+                      [key]: event.target.value === '' ? null : Number(event.target.value),
                     }))
                   }
                 />

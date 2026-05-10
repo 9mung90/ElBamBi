@@ -1,5 +1,11 @@
 import { useMemo } from 'react';
 import { nightfarers, type Nightfarer } from '../data/nightfarers';
+import { getWeaponGroupIdByName } from './WeaponsPage';
+
+type CharactersPageProps = {
+  searchQuery: string;
+  onSelectWeapon?: (weaponGroupId: number) => void;
+};
 
 const nightAssetUrls = import.meta.glob('../assets/images/night/**/*.webp', {
   eager: true,
@@ -80,7 +86,7 @@ function matchesCharacterSearch(nightfarer: Nightfarer, query: string) {
     .some((value) => String(value).toLowerCase().includes(normalizedQuery));
 }
 
-function CharactersPage({ searchQuery }: { searchQuery: string }) {
+function CharactersPage({ searchQuery, onSelectWeapon }: CharactersPageProps) {
   const filteredCharacters = useMemo(
     () => nightfarers.filter((nightfarer) => matchesCharacterSearch(nightfarer, searchQuery)),
     [searchQuery],
@@ -90,12 +96,8 @@ function CharactersPage({ searchQuery }: { searchQuery: string }) {
     <section className="options-page" aria-labelledby="characters-title">
       <div className="options-page-heading">
         <div>
-          <p className="list-page-kicker">nightreign_nightfarers</p>
           <h2 id="characters-title">캐릭터</h2>
         </div>
-        <span className="option-count">
-          {filteredCharacters.length} / {nightfarers.length}
-        </span>
       </div>
 
       <div className="character-card-grid">
@@ -112,7 +114,6 @@ function CharactersPage({ searchQuery }: { searchQuery: string }) {
                   className="character-portrait"
                 />
                 <div>
-                  <span className="option-category">Nightfarer</span>
                   <h3>{nightfarer.name}</h3>
                   <p>{nightfarer.rawText}</p>
                 </div>
@@ -139,12 +140,30 @@ function CharactersPage({ searchQuery }: { searchQuery: string }) {
                 <div className="character-section">
                   <h4>장비</h4>
                   <div className="equipment-row">
-                    {equipment.map((item) => (
-                      <span className="equipment-pill" key={item.name}>
-                        {item.imageUrl ? <img src={item.imageUrl} alt="" /> : null}
-                        {item.name}
-                      </span>
-                    ))}
+                    {equipment.map((item) => {
+                      const weaponGroupId = getWeaponGroupIdByName(item.name);
+                      const content = (
+                        <>
+                          {item.imageUrl ? <img src={item.imageUrl} alt="" /> : null}
+                          {item.name}
+                        </>
+                      );
+
+                      return weaponGroupId && onSelectWeapon ? (
+                        <button
+                          type="button"
+                          className="equipment-pill equipment-pill-button"
+                          key={item.name}
+                          onClick={() => onSelectWeapon(weaponGroupId)}
+                        >
+                          {content}
+                        </button>
+                      ) : (
+                        <span className="equipment-pill" key={item.name}>
+                          {content}
+                        </span>
+                      );
+                    })}
                   </div>
                 </div>
               ) : null}

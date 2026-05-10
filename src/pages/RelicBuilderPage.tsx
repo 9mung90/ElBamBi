@@ -319,7 +319,6 @@ function RelicBuilderPage({ searchQuery }: { searchQuery: string }) {
     <section className="options-page relic-builder-page" aria-labelledby="relic-builder-title">
       <div className="options-page-heading">
         <div>
-          <p className="list-page-kicker">ern_relic_app_data</p>
           <h2 id="relic-builder-title">유물 옵션 제작</h2>
         </div>
         <span className="option-count">

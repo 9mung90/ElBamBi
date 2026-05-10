@@ -102,7 +102,6 @@ function RelicCard({ relic }: { relic: Relic }) {
         <span className={`option-category relic-color-${relic.color.toLowerCase()}`}>
           {relic.color}
         </span>
-        <span className="option-id">#{relic.id}</span>
       </div>
 
       <div className={`relic-card-main${relicImageUrl ? '' : ' has-no-image'}`}>
@@ -120,7 +119,7 @@ function RelicCard({ relic }: { relic: Relic }) {
         ) : null}
         <div>
           <h3>{relic.name}</h3>
-          {relic.location ? <p>{relic.location}</p> : <p className="muted-text">획득 정보 없음</p>}
+          {relic.location ? <p>{relic.location}</p> : null}
         </div>
       </div>
 
@@ -156,7 +155,6 @@ function RelicsPage({ searchQuery }: { searchQuery: string }) {
     <section className="options-page" aria-labelledby="relics-title">
       <div className="options-page-heading">
         <div>
-          <p className="list-page-kicker">relics_raw</p>
           <h2 id="relics-title">유물</h2>
         </div>
         <span className="option-count">

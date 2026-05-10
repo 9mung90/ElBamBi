@@ -36,7 +36,6 @@ function GesturesPage({ searchQuery }: { searchQuery: string }) {
     <section className="options-page" aria-labelledby="gestures-title">
       <div className="options-page-heading">
         <div>
-          <p className="list-page-kicker">EGesturev1</p>
           <h2 id="gestures-title">제스처</h2>
         </div>
         <span className="option-count">

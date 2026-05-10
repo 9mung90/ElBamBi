@@ -143,7 +143,6 @@ function SaveParserPage() {
     <section className="options-page save-parser-page" aria-labelledby="save-parser-title">
       <div className="options-page-heading">
         <div>
-          <p className="list-page-kicker">save_parser</p>
           <h2 id="save-parser-title">세이브 유물 분석</h2>
         </div>
         <span className="option-count">{result ? `${result.relics.length} relics` : 'ready'}</span>

@@ -45,10 +45,6 @@ function formatBossType(type: string) {
   return bossTypeLabels[type] ?? type;
 }
 
-function formatNumber(value: number | undefined) {
-  return typeof value === 'number' ? value.toLocaleString('ko-KR') : '-';
-}
-
 function formatPairs(tokens: string[]) {
   if (!tokens.length) return [];
   if (tokens.length === 1) return [labelToken(tokens[0])];
@@ -141,7 +137,6 @@ function BossCard({ boss }: { boss: Boss }) {
     <article className="option-card boss-card">
       <div className="option-card-header">
         <span className="option-category">{formatBossType(boss.bossType)}</span>
-        <span className="option-id">{boss.ids.bossId}</span>
       </div>
 
       <div>
@@ -166,11 +161,6 @@ function BossCard({ boss }: { boss: Boss }) {
       <BossChipList title="강함" values={strongAgainst} emptyText="저항 없음" />
       <BossChipList title="상태 내성" values={resistances} emptyText="정보 없음" />
 
-      <div className="option-meta-row">
-        <span>NPC {boss.ids.npcId}</span>
-        <span>Solo HP {formatNumber(boss.hp.values[2])}</span>
-        <span>Solo 룬 {formatNumber(boss.runes.values[2])}</span>
-      </div>
     </article>
   );
 }
@@ -185,7 +175,6 @@ function BossesPage({ searchQuery }: { searchQuery: string }) {
     <section className="options-page" aria-labelledby="bosses-title">
       <div className="options-page-heading">
         <div>
-          <p className="list-page-kicker">relicspro_bosses_ko</p>
           <h2 id="bosses-title">보스</h2>
         </div>
         <span className="option-count">

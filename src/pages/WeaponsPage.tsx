@@ -1,10 +1,14 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useRef, type Ref } from 'react';
 import { nightfarers } from '../data/nightfarers';
 import { relicWeapons, type RelicWeapon } from '../data/relics';
 import { weaponCatalog, weaponCatalogByTitle, type WeaponCatalogItem } from '../data/weaponCatalog';
 import bloodIcon from '../assets/images/attribute/blood.png';
 import fireIcon from '../assets/images/attribute/fire.png';
 import frostIcon from '../assets/images/attribute/frost.png';
+import gradeFrame0 from '../assets/images/grade/0.webp';
+import gradeFrame1 from '../assets/images/grade/1.webp';
+import gradeFrame2 from '../assets/images/grade/2.webp';
+import gradeFrame3 from '../assets/images/grade/3.webp';
 import holyIcon from '../assets/images/attribute/holy.png';
 import lightningIcon from '../assets/images/attribute/lightning.png';
 import magicIcon from '../assets/images/attribute/magic.png';
@@ -19,9 +23,17 @@ type WeaponGroup = {
 
 type WeaponsPageProps = {
   searchQuery: string;
+  filters: WeaponFilters;
   selectedGroupId: number | null;
+  focusedGroupId: number | null;
   onSelectGroup: (groupId: number) => void;
   onBack: () => void;
+};
+
+export type WeaponFilters = {
+  levels: number[];
+  types: string[];
+  genres: string[];
 };
 
 const damageLabels: Record<string, string> = {
@@ -68,9 +80,40 @@ const nightfarerEquipmentImageByName = buildNightfarerEquipmentImageMap();
 const nightfarerDefaultEquipmentImages = buildNightfarerDefaultEquipmentImages();
 
 const weaponGroups = buildWeaponGroups(relicWeapons);
+export const weaponFilterOptions = buildWeaponFilterOptions(relicWeapons);
+const weaponGroupIdAliases = new Map(
+  [
+    ["Raider's Greataxe", 23750000],
+    ['복수자의 손톱', 21750000],
+    ['성인', 34000000],
+  ].map(([alias, groupId]) => [normalizeWeaponCatalogName(String(alias)), Number(groupId)]),
+);
 
 function getWeaponGroupId(weapon: RelicWeapon) {
   return Math.floor(weapon.id / 10000) * 10000;
+}
+
+export function getWeaponGroupIdByName(weaponName: string) {
+  const normalizedWeaponName = normalizeWeaponCatalogName(weaponName);
+  const aliasGroupId = weaponGroupIdAliases.get(normalizedWeaponName);
+  if (aliasGroupId) return aliasGroupId;
+
+  const normalizedBaseWeaponName = normalizeWeaponCatalogName(getBaseWeaponName(weaponName));
+  const targetNames = new Set([
+    normalizedWeaponName,
+    normalizedBaseWeaponName,
+  ]);
+
+  return (
+    weaponGroups.find((group) =>
+      group.weapons.some((weapon) => {
+        const candidateName = normalizeWeaponCatalogName(weapon.name);
+        const candidateBaseName = normalizeWeaponCatalogName(getBaseWeaponName(weapon.name));
+
+        return targetNames.has(candidateName) || targetNames.has(candidateBaseName);
+      }),
+    )?.id ?? null
+  );
 }
 
 function buildWeaponGroups(weapons: RelicWeapon[]): WeaponGroup[] {
@@ -136,11 +179,26 @@ function matchesWeaponSearch(weapon: RelicWeapon, query: string) {
     .some((value) => String(value).toLowerCase().includes(normalizedQuery));
 }
 
-function matchesWeaponGroupSearch(group: WeaponGroup, query: string) {
-  const normalizedQuery = query.trim();
-  if (!normalizedQuery) return true;
+function matchesWeaponFilters(weapon: RelicWeapon, filters: WeaponFilters) {
+  const requiredLevel = weapon.requiredLevel ?? 0;
+  const catalogItem = getWeaponCatalogItem(weapon.name);
+  const catalogType = catalogItem?.type ? normalizeWeaponFilterText(catalogItem.type) : '';
+  const catalogGenre = catalogItem?.genre ? normalizeWeaponFilterText(catalogItem.genre) : '';
+  const matchesLevel = filters.levels.length === 0 || filters.levels.includes(requiredLevel);
+  const matchesType =
+    filters.types.length === 0 || Boolean(catalogType && filters.types.includes(catalogType));
+  const matchesGenre =
+    filters.genres.length === 0 || Boolean(catalogGenre && filters.genres.includes(catalogGenre));
 
-  return group.weapons.some((weapon) => matchesWeaponSearch(weapon, normalizedQuery));
+  return matchesLevel && matchesType && matchesGenre;
+}
+
+function matchesWeaponGroupSearch(group: WeaponGroup, query: string, filters: WeaponFilters) {
+  const normalizedQuery = query.trim();
+
+  return group.weapons.some(
+    (weapon) => matchesWeaponSearch(weapon, normalizedQuery) && matchesWeaponFilters(weapon, filters),
+  );
 }
 
 function getWeaponAffinityIcon(weaponName: string) {
@@ -168,6 +226,10 @@ function resolveNightAssetUrl(url: string) {
 
 function normalizeWeaponCatalogName(weaponName: string) {
   return weaponName.replace(/(?:\s|[^\p{L}\p{N}])+$/gu, '').trim();
+}
+
+function normalizeWeaponFilterText(value: string) {
+  return value === '소형무기' ? '소형 무기' : value;
 }
 
 function buildNightfarerEquipmentImageMap() {
@@ -241,35 +303,100 @@ function getWeaponImageUrl(weaponName: string) {
   );
 }
 
+function buildWeaponFilterOptions(weapons: RelicWeapon[]) {
+  const levels = [...new Set(weapons.map((weapon) => weapon.requiredLevel ?? 0))].sort(
+    (left, right) => left - right,
+  );
+  const usedTypes = new Set<string>();
+  const usedGenres = new Set<string>();
+
+  weapons.forEach((weapon) => {
+    const catalogItem = getWeaponCatalogItem(weapon.name);
+    if (catalogItem?.type) usedTypes.add(normalizeWeaponFilterText(catalogItem.type));
+    if (catalogItem?.genre) usedGenres.add(normalizeWeaponFilterText(catalogItem.genre));
+  });
+
+  const types: string[] = [];
+  const genres: string[] = [];
+
+  weaponCatalog.forEach((catalogItem) => {
+    const type = catalogItem.type ? normalizeWeaponFilterText(catalogItem.type) : '';
+    const genre = catalogItem.genre ? normalizeWeaponFilterText(catalogItem.genre) : '';
+
+    if (type && usedTypes.has(type) && !types.includes(type)) types.push(type);
+    if (genre && usedGenres.has(genre) && !genres.includes(genre)) genres.push(genre);
+  });
+
+  usedTypes.forEach((type) => {
+    if (!types.includes(type)) types.push(type);
+  });
+
+  usedGenres.forEach((genre) => {
+    if (!genres.includes(genre)) genres.push(genre);
+  });
+
+  return {
+    levels,
+    types,
+    genres,
+  };
+}
+
+export function createEmptyWeaponFilters(): WeaponFilters {
+  return {
+    levels: [],
+    types: [],
+    genres: [],
+  };
+}
+
+function getWeaponGradeFrameUrl(requiredLevel: number) {
+  if (requiredLevel === 10) return gradeFrame3;
+  if (requiredLevel === 7) return gradeFrame2;
+  if (requiredLevel === 3) return gradeFrame1;
+  return gradeFrame0;
+}
+
 function WeaponCard({
   weapon,
   showAffinityIcon = false,
-  variantCount,
+  isFocused = false,
+  cardRef,
   onClick,
 }: {
   weapon: RelicWeapon;
   showAffinityIcon?: boolean;
-  variantCount?: number;
+  isFocused?: boolean;
+  cardRef?: Ref<HTMLButtonElement>;
   onClick?: () => void;
 }) {
   const damage = formatRecordValues(weapon.baseDamage, damageLabels);
   const scaling = formatRecordValues(weapon.scaling, {});
   const status = formatRecordValues(weapon.statusDamage, statusLabels);
   const affinityIcon = showAffinityIcon ? getWeaponAffinityIcon(weapon.name) : null;
+  const catalogItem = getWeaponCatalogItem(weapon.name);
   const weaponImageUrl = getWeaponImageUrl(weapon.name);
+  const requiredLevel = weapon.requiredLevel ?? 0;
+  const gradeFrameUrl = getWeaponGradeFrameUrl(requiredLevel);
+  const catalogMeta = [catalogItem?.genre, catalogItem?.type].filter(
+    (value): value is string => Boolean(value),
+  );
   const content = (
     <>
       <div className="option-card-header">
-        <span className="option-category">Lv. {weapon.requiredLevel ?? 0}</span>
+        <span className={`option-category weapon-level-badge weapon-level-${requiredLevel}`}>
+          Lv. {requiredLevel}
+        </span>
         {affinityIcon ? (
           <img src={affinityIcon.src} alt={affinityIcon.label} className="weapon-affinity-icon" />
-        ) : (
-          <span className="option-id">#{weapon.id}</span>
-        )}
+        ) : null}
       </div>
       <div className={`weapon-card-main${weaponImageUrl ? '' : ' has-no-image'}`}>
         {weaponImageUrl ? (
-          <img src={weaponImageUrl} alt="" className="weapon-catalog-image" loading="lazy" />
+          <span className="weapon-image-frame" aria-hidden="true">
+            <img src={gradeFrameUrl} alt="" className="weapon-grade-frame" loading="lazy" />
+            <img src={weaponImageUrl} alt="" className="weapon-catalog-image" loading="lazy" />
+          </span>
         ) : null}
         <div>
           <h3>{weapon.name}</h3>
@@ -277,16 +404,23 @@ function WeaponCard({
         </div>
       </div>
       <div className="option-meta-row">
+        {catalogMeta.map((value) => (
+          <span key={value}>{value}</span>
+        ))}
         {scaling.length ? <span>{scaling.join(' · ')}</span> : null}
         {status.length ? <span>{status.join(' · ')}</span> : null}
-        {typeof variantCount === 'number' ? <span>파생 {variantCount}개</span> : null}
       </div>
     </>
   );
 
   if (onClick) {
     return (
-      <button type="button" className="option-card weapon-card-button" onClick={onClick}>
+      <button
+        type="button"
+        ref={cardRef}
+        className={`option-card weapon-card-button${isFocused ? ' is-focused' : ''}`}
+        onClick={onClick}
+      >
         {content}
       </button>
     );
@@ -297,24 +431,41 @@ function WeaponCard({
 
 function WeaponsPage({
   searchQuery,
+  filters,
   selectedGroupId,
+  focusedGroupId,
   onSelectGroup,
   onBack,
 }: WeaponsPageProps) {
+  const groupCardRefs = useRef(new Map<number, HTMLButtonElement>());
   const selectedGroup = useMemo(
     () => weaponGroups.find((group) => group.id === selectedGroupId) ?? null,
     [selectedGroupId],
   );
 
   const filteredGroups = useMemo(
-    () => weaponGroups.filter((group) => matchesWeaponGroupSearch(group, searchQuery)),
-    [searchQuery],
+    () => weaponGroups.filter((group) => matchesWeaponGroupSearch(group, searchQuery, filters)),
+    [searchQuery, filters],
   );
 
   const filteredVariants = useMemo(() => {
     if (!selectedGroup) return [];
-    return selectedGroup.variants.filter((weapon) => matchesWeaponSearch(weapon, searchQuery));
-  }, [searchQuery, selectedGroup]);
+    return selectedGroup.variants.filter(
+      (weapon) => matchesWeaponSearch(weapon, searchQuery) && matchesWeaponFilters(weapon, filters),
+    );
+  }, [searchQuery, selectedGroup, filters]);
+
+  useEffect(() => {
+    if (!focusedGroupId || selectedGroup) return;
+
+    const timeoutId = window.setTimeout(() => {
+      const focusedCard = groupCardRefs.current.get(focusedGroupId);
+      focusedCard?.focus({ preventScroll: true });
+      focusedCard?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [focusedGroupId, selectedGroup, filteredGroups]);
 
   if (selectedGroup) {
     return (
@@ -357,7 +508,6 @@ function WeaponsPage({
     <section className="options-page" aria-labelledby="weapons-title">
       <div className="options-page-heading">
         <div>
-          <p className="list-page-kicker">relics_weapons_raw</p>
           <h2 id="weapons-title">무기</h2>
         </div>
         <span className="option-count">
@@ -370,7 +520,14 @@ function WeaponsPage({
           <WeaponCard
             key={group.id}
             weapon={group.representative}
-            variantCount={group.variants.length}
+            isFocused={group.id === focusedGroupId}
+            cardRef={(element) => {
+              if (element) {
+                groupCardRefs.current.set(group.id, element);
+              } else {
+                groupCardRefs.current.delete(group.id);
+              }
+            }}
             onClick={() => onSelectGroup(group.id)}
           />
         ))}

@@ -23,7 +23,6 @@ function AshCard({ ash }: { ash: AshOfWar }) {
           <span className="option-category">{ash.property}</span>
           <h3>{ash.title}</h3>
         </div>
-        <span className="option-id">#{ash.id}</span>
       </div>
       <p>{ash.description}</p>
       {ash.gif ? (
@@ -44,17 +43,32 @@ function AshCard({ ash }: { ash: AshOfWar }) {
   );
 }
 
-function AshesPage({ searchQuery }: { searchQuery: string }) {
-  const filteredAshes = useMemo(
-    () => visibleAshes.filter((ash) => matchesAshSearch(ash, searchQuery)),
-    [searchQuery],
-  );
+function AshesPage({
+  searchQuery,
+  ashProperty,
+  onPropertyChange,
+}: {
+  searchQuery: string;
+  ashProperty: string | null;
+  onPropertyChange: (property: string | null) => void;
+}) {
+  const properties = useMemo(() => {
+    const uniqueProps = new Set(visibleAshes.map((ash) => ash.property));
+    return Array.from(uniqueProps).sort();
+  }, []);
+
+  const filteredAshes = useMemo(() => {
+    let result = visibleAshes.filter((ash) => matchesAshSearch(ash, searchQuery));
+    if (ashProperty) {
+      result = result.filter((ash) => ash.property === ashProperty);
+    }
+    return result;
+  }, [searchQuery, ashProperty]);
 
   return (
     <section className="options-page" aria-labelledby="ashes-title">
       <div className="options-page-heading">
         <div>
-          <p className="list-page-kicker">EAshv1</p>
           <h2 id="ashes-title">전회</h2>
         </div>
         <span className="option-count">

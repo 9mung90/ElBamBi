@@ -1,6 +1,8 @@
 import itemsJson from './raw/items.json';
-import type { EtcItem } from './types';
+import consumablesJson from './raw/consumables_all.json';
+import type { ConsumableItem, EtcItem } from './types';
 
 export const items = itemsJson as unknown as EtcItem[];
+export const consumables = consumablesJson as unknown as ConsumableItem[];
 
-export type { EtcItem };
+export type { ConsumableItem, EtcItem };

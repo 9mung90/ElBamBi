@@ -115,7 +115,6 @@ function VesselsPage({ searchQuery }: { searchQuery: string }) {
     <section className="options-page" aria-labelledby="vessels-title">
       <div className="options-page-heading">
         <div>
-          <p className="list-page-kicker">vessels_raw</p>
           <h2 id="vessels-title">현기</h2>
         </div>
         <span className="option-count">

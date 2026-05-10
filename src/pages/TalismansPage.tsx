@@ -27,7 +27,6 @@ function TalismanCard({ talisman }: { talisman: Talisman }) {
           <span className="option-category">탈리스만</span>
           <h3>{talisman.title}</h3>
         </div>
-        <span className="option-id">#{talisman.id}</span>
       </div>
       {talisman.ability ? <p className="catalog-ability">{talisman.ability}</p> : null}
       <p>{talisman.description}</p>
@@ -45,7 +44,6 @@ function TalismansPage({ searchQuery }: { searchQuery: string }) {
     <section className="options-page" aria-labelledby="talismans-title">
       <div className="options-page-heading">
         <div>
-          <p className="list-page-kicker">ETalismanv1</p>
           <h2 id="talismans-title">탈리스만</h2>
         </div>
         <span className="option-count">

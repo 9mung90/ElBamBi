@@ -32,7 +32,6 @@ function SpellCard({ spell }: { spell: Spell }) {
           <span className="option-category">{spell.spell}</span>
           <h3>{spell.title}</h3>
         </div>
-        <span className="option-id">#{spell.id}</span>
       </div>
       <div className="option-meta-row">
         <span>{spell.type}</span>
@@ -68,7 +67,6 @@ function SpellsPage({ searchQuery }: { searchQuery: string }) {
     <section className="options-page" aria-labelledby="spells-title">
       <div className="options-page-heading">
         <div>
-          <p className="list-page-kicker">ESpellv1</p>
           <h2 id="spells-title">마술,기도</h2>
         </div>
         <span className="option-count">

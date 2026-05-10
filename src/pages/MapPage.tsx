@@ -178,7 +178,7 @@ const MapPage = () => {
   const selectedSeed = matchingPatterns.length === 1 ? matchingPatterns[0] : null;
 
   return (
-    <div style={{ padding: '20px', color: '#000' }}>
+    <div style={{ padding: '20px', color: 'var(--night-text)' }}>
       <h1>맵 식별 도구</h1>
 
       <section style={{ marginBottom: '24px' }}>
@@ -188,7 +188,7 @@ const MapPage = () => {
             <select
               value={selectedMapType}
               onChange={(event) => setSelectedMapType(event.target.value)}
-              style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #ccc' }}
+              style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid var(--night-border)', backgroundColor: 'var(--night-input)', color: 'var(--night-text)' }}
             >
               <option value="">전체 맵 타입</option>
               {mapTypeOptions.map((type) => (
@@ -204,7 +204,7 @@ const MapPage = () => {
             <select
               value={selectedNightlord}
               onChange={(event) => setSelectedNightlord(event.target.value)}
-              style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #ccc' }}
+              style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid var(--night-border)', backgroundColor: 'var(--night-input)', color: 'var(--night-text)' }}
             >
               <option value="">전체 Nightlord</option>
               {nightlordOptions.map((nightlord) => (
@@ -215,7 +215,7 @@ const MapPage = () => {
             </select>
           </div>
         </div>
-        <p style={{ marginTop: '12px', color: '#666' }}>
+        <p style={{ marginTop: '12px', color: 'var(--night-muted)' }}>
           맵 타입과 Nightlord를 먼저 선택한 후 거점을 고르세요. 불가능한 거점 값은 후보가 좁혀지면 자동으로 제외됩니다.
         </p>
       </section>
@@ -227,8 +227,8 @@ const MapPage = () => {
               position: 'relative',
               width: `${map_rect.width}px`,
               height: `${map_rect.height}px`,
-              backgroundColor: '#f1f1f1',
-              border: '2px solid #333',
+              backgroundColor: 'var(--night-bg-deep)',
+              border: '2px solid var(--night-border-strong)',
               borderRadius: '8px',
               overflow: 'hidden',
             }}
@@ -249,10 +249,10 @@ const MapPage = () => {
                     width: '48px',
                     height: '48px',
                     borderRadius: '8px',
-                    border: isActive ? '2px solid #1e88e5' : '1px solid rgba(0,0,0,0.2)',
-                    backgroundColor: isSelected ? '#66bb6a' : 'rgba(255,255,255,0.9)',
+                    border: isActive ? '2px solid var(--night-accent-bright)' : '1px solid var(--night-border)',
+                    backgroundColor: isSelected ? 'var(--night-green-bg)' : 'rgba(17, 26, 48, 0.92)',
                     cursor: 'pointer',
-                    color: '#111',
+                    color: 'var(--night-text)',
                     fontSize: '12px',
                     fontWeight: 700,
                     textAlign: 'center',
@@ -271,8 +271,8 @@ const MapPage = () => {
                 key={slotId}
                 style={{
                   padding: '10px 12px',
-                  backgroundColor: '#1976d2',
-                  color: 'white',
+                  backgroundColor: 'var(--night-accent-bg)',
+                  color: 'var(--night-text)',
                   borderRadius: '6px',
                   display: 'flex',
                   alignItems: 'center',
@@ -288,7 +288,7 @@ const MapPage = () => {
                   style={{
                     border: 'none',
                     background: 'transparent',
-                    color: 'white',
+                    color: 'var(--night-text)',
                     cursor: 'pointer',
                     fontSize: '16px',
                     lineHeight: 1,
@@ -302,7 +302,7 @@ const MapPage = () => {
         </div>
 
         <div style={{ flex: 1, minWidth: '360px' }}>
-          <div style={{ marginBottom: '20px', padding: '18px', borderRadius: '10px', backgroundColor: '#fafafa', border: '1px solid #ddd' }}>
+          <div style={{ marginBottom: '20px', padding: '18px', borderRadius: '10px', backgroundColor: 'var(--night-surface)', border: '1px solid var(--night-border-soft)' }}>
             <h2 style={{ margin: '0 0 12px' }}>거점 선택</h2>
             {activeSlot ? (
               <>
@@ -320,8 +320,9 @@ const MapPage = () => {
                         padding: '12px 14px',
                         textAlign: 'left',
                         borderRadius: '8px',
-                        border: '1px solid #ccc',
-                        backgroundColor: '#fff',
+                        border: '1px solid var(--night-border)',
+                        backgroundColor: 'var(--night-surface-2)',
+                        color: 'var(--night-text)',
                         cursor: 'pointer',
                       }}
                     >
@@ -331,13 +332,13 @@ const MapPage = () => {
                 </div>
               </>
             ) : (
-              <p style={{ margin: 0, color: '#000' }}>맵에서 슬롯을 누르면 가능한 거점 목록이 나타납니다.</p>
+              <p style={{ margin: 0, color: 'var(--night-text-soft)' }}>맵에서 슬롯을 누르면 가능한 거점 목록이 나타납니다.</p>
             )}
           </div>
 
-          <div style={{ padding: '18px', borderRadius: '10px', backgroundColor: '#fff', border: '1px solid #ddd' }}>
+          <div style={{ padding: '18px', borderRadius: '10px', backgroundColor: 'var(--night-surface-2)', border: '1px solid var(--night-border-soft)' }}>
             <h2 style={{ margin: '0 0 12px' }}>가능한 시드</h2>
-            <p style={{ margin: '0 0 14px', color: '#000' }}>
+            <p style={{ margin: '0 0 14px', color: 'var(--night-text-soft)' }}>
               선택한 맵과 보스, 거점 조건을 만족하는 후보 시드 수: <strong>{matchingPatterns.length}</strong>
             </p>
             {matchingPatterns.length > 0 ? (
@@ -348,13 +349,13 @@ const MapPage = () => {
                     style={{
                       padding: '12px 14px',
                       borderRadius: '10px',
-                      border: selectedSeed?.id === pattern.id ? '2px solid #1e88e5' : '1px solid #ddd',
-                      backgroundColor: '#f9f9f9',
+                      border: selectedSeed?.id === pattern.id ? '2px solid var(--night-accent-bright)' : '1px solid var(--night-border-soft)',
+                      backgroundColor: 'var(--night-surface-2)',
                     }}
                   >
                     <div style={{ display: 'flex', justifyContent: 'space-between', gap: '12px' }}>
                       <strong>seed {pattern.seedInfo?.seed_id ?? 'unknown'}</strong>
-                      <span style={{ color: '#000' }}>{pattern.sourceFile}</span>
+                      <span style={{ color: 'var(--night-text-soft)' }}>{pattern.sourceFile}</span>
                     </div>
                     <p style={{ margin: '8px 0 0' }}>
                       <strong>Nightlord:</strong> {pattern.nightlord}
@@ -366,23 +367,23 @@ const MapPage = () => {
                       <strong>Night 2 Boss:</strong> {pattern.night2Boss}
                     </p>
                     {pattern.seedInfo && (
-                      <p style={{ margin: '6px 0 0', color: '#000' }}>
+                      <p style={{ margin: '6px 0 0', color: 'var(--night-text-soft)' }}>
                         Event: {pattern.seedInfo.Event || '없음'} / OldGaol: {pattern.seedInfo.hasOldGaol ? '있음' : '없음'}
                       </p>
                     )}
                   </div>
                 ))}
                 {matchingPatterns.length > 10 && (
-                  <p style={{ margin: '0', color: '#000' }}>처음 10개만 표시됩니다. 더 좁혀주세요.</p>
+                  <p style={{ margin: '0', color: 'var(--night-text-soft)' }}>처음 10개만 표시됩니다. 더 좁혀주세요.</p>
                 )}
               </div>
             ) : (
-              <p style={{ margin: 0, color: '#000' }}>조건에 맞는 시드가 없습니다.</p>
+              <p style={{ margin: 0, color: 'var(--night-text-soft)' }}>조건에 맞는 시드가 없습니다.</p>
             )}
           </div>
 
           {selectedSeed && (
-            <div style={{ marginTop: '20px', padding: '18px', borderRadius: '10px', backgroundColor: '#e3f2fd', border: '1px solid #90caf9' }}>
+            <div style={{ marginTop: '20px', padding: '18px', borderRadius: '10px', backgroundColor: 'var(--night-accent-bg)', border: '1px solid var(--night-border-strong)' }}>
               <h2 style={{ margin: '0 0 12px' }}>확정된 시드</h2>
               <p style={{ margin: '0 0 8px' }}><strong>seed {selectedSeed.seedInfo?.seed_id}</strong> ({selectedSeed.sourceFile})</p>
               <p style={{ margin: '0 0 6px' }}><strong>Nightlord:</strong> {selectedSeed.nightlord}</p>

@@ -14,7 +14,13 @@ import spellIcon from '../assets/images/Icon/spell.webp';
 import walkIcon from '../assets/images/Icon/walk.webp';
 import { relicEffectsKo, type RelicEffect } from '../data/relics';
 
-const categoryLabels: Record<string, string> = {
+export type OptionFilters = {
+  categories: string[];
+  types: string[];
+  stackable: boolean[];
+};
+
+export const optionCategoryLabels: Record<string, string> = {
   Utility: '유틸리티',
   Offensive: '공격',
   Attributes: '능력치',
@@ -27,6 +33,45 @@ const categoryLabels: Record<string, string> = {
   'Armament Skills': '무기 기술',
 };
 
+export const optionTypeLabels: Record<string, string> = {
+  relic: '유물 옵션',
+  weapon: '무기 옵션',
+  talisman: '탈리스만 옵션',
+};
+
+export const optionStackableLabels: Record<string, string> = {
+  true: '중첩 가능',
+  false: '중첩 불가',
+};
+
+const obtainableRelicEffects = relicEffectsKo.filter((option) => !option.unobtainable);
+
+export const optionFilterOptions = buildOptionFilterOptions(obtainableRelicEffects);
+
+function buildOptionFilterOptions(options: RelicEffect[]) {
+  const categories: string[] = [];
+  const types: string[] = [];
+
+  options.forEach((option) => {
+    if (option.category && !categories.includes(option.category)) categories.push(option.category);
+    if (option.type && !types.includes(option.type)) types.push(option.type);
+  });
+
+  return {
+    categories,
+    types,
+    stackable: [true, false],
+  };
+}
+
+export function createEmptyOptionFilters(): OptionFilters {
+  return {
+    categories: [],
+    types: [],
+    stackable: [],
+  };
+}
+
 function matchesOptionSearch(option: RelicEffect, query: string) {
   const normalizedQuery = query.trim().toLowerCase();
   if (!normalizedQuery) return true;
@@ -34,6 +79,17 @@ function matchesOptionSearch(option: RelicEffect, query: string) {
   return [option.id, option.name, option.category, option.type, option.desc]
     .filter(Boolean)
     .some((value) => String(value).toLowerCase().includes(normalizedQuery));
+}
+
+function matchesOptionFilters(option: RelicEffect, filters: OptionFilters) {
+  const stackable = Boolean(option.stackable);
+  const matchesCategory =
+    filters.categories.length === 0 || Boolean(option.category && filters.categories.includes(option.category));
+  const matchesType = filters.types.length === 0 || filters.types.includes(option.type);
+  const matchesStackable =
+    filters.stackable.length === 0 || filters.stackable.includes(stackable);
+
+  return matchesCategory && matchesType && matchesStackable;
 }
 
 function getOptionText(option: RelicEffect) {
@@ -55,7 +111,7 @@ function getOptionHeaderIcon(option: RelicEffect) {
     option.category === 'Character Specific' &&
     (text.includes('어빌리티') || text.includes('패시브'))
   ) {
-    return { src: characterActiveIcon, alt: '캐릭터 패시브' };
+    return { src: characterActiveIcon, alt: '캐릭터 어빌리티' };
   }
 
   if (text.includes('HP')) return { src: hpIcon, alt: 'HP' };
@@ -76,7 +132,7 @@ function getOptionHeaderIcon(option: RelicEffect) {
       text.includes(keyword),
     )
   ) {
-    return { src: bowIcon, alt: '활' };
+    return { src: bowIcon, alt: '원거리' };
   }
   if (option.category === 'Armament Skills' || text.includes('전투 기술')) {
     return { src: ashIcon, alt: '전투 기술' };
@@ -90,7 +146,7 @@ function getOptionHeaderIcon(option: RelicEffect) {
 
 function OptionCard({ option }: { option: RelicEffect }) {
   const category = option.category ?? '기타';
-  const categoryLabel = categoryLabels[category] ?? category;
+  const categoryLabel = optionCategoryLabels[category] ?? category;
   const headerIcon = getOptionHeaderIcon(option);
 
   return (
@@ -102,29 +158,30 @@ function OptionCard({ option }: { option: RelicEffect }) {
       <h3>{option.name}</h3>
       <p>{option.desc ?? ''}</p>
       <div className="option-meta-row">
-        <span>{option.type === 'weapon' ? '무기 옵션' : '유물 옵션'}</span>
-        <span>{option.stackable ? '중첩 가능' : '중첩 불가'}</span>
-        {option.unobtainable ? <span>획득 불가</span> : null}
+        <span>{optionTypeLabels[option.type] ?? option.type}</span>
+        <span>{option.stackable ? optionStackableLabels.true : optionStackableLabels.false}</span>
       </div>
     </article>
   );
 }
 
-function OptionsPage({ searchQuery }: { searchQuery: string }) {
+function OptionsPage({ searchQuery, filters }: { searchQuery: string; filters: OptionFilters }) {
   const filteredOptions = useMemo(
-    () => relicEffectsKo.filter((option) => matchesOptionSearch(option, searchQuery)),
-    [searchQuery],
+    () =>
+      obtainableRelicEffects.filter(
+        (option) => matchesOptionSearch(option, searchQuery) && matchesOptionFilters(option, filters),
+      ),
+    [filters, searchQuery],
   );
 
   return (
     <section className="options-page" aria-labelledby="options-title">
       <div className="options-page-heading">
         <div>
-          <p className="list-page-kicker">relic_desc_ko</p>
           <h2 id="options-title">옵션</h2>
         </div>
         <span className="option-count">
-          {filteredOptions.length} / {relicEffectsKo.length}
+          {filteredOptions.length} / {obtainableRelicEffects.length}
         </span>
       </div>
 
