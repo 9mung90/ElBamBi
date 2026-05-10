@@ -1,7 +1,12 @@
 import { useMemo, useState } from 'react';
 import slotPositions from '../data/mapPatterns/slot_positions.json';
-import mapPatterns from '../data/mapPatterns/mapPatterns.json';
 import seedData from '../data/mapPatterns/seed_data.json';
+
+const mapImages = import.meta.glob('../assets/images/map/*.webp', {
+  eager: true,
+  import: 'default',
+  query: '?url',
+}) as Record<string, string>;
 
 interface SlotPosition {
   slot_name: string;
@@ -26,14 +31,7 @@ interface SlotPositionsFile {
   slots: Record<string, SlotPosition>;
 }
 
-interface MapPatternLocation {
-  slot: string;
-  category: string;
-  location: string;
-  value: string;
-}
-
-interface SeedRaw {
+interface SeedData {
   seed_id: string;
   map_type: string;
   Event: string;
@@ -42,58 +40,17 @@ interface SeedRaw {
   hasOldGaol: boolean;
 }
 
-interface MapPatternData {
-  id: number;
-  sourceFile: string;
-  nightlord: string;
-  shiftingEarth: string;
-  spawnPoint: string;
-  specialEvent: string | null;
-  night1Boss: string;
-  night2Boss: string;
-  extraNightBoss: string | null;
-  night1Circle: string;
-  night2Circle: string;
-  rotBlessing: string | null;
-  frenzyTower: string | null;
-  scaleBearingMerchant: string | null;
-  locations: MapPatternLocation[];
-  seedInfo?: SeedRaw | null;
-}
-
 const MapPage = () => {
   const { map_rect, slots } = slotPositions as SlotPositionsFile;
-  const patterns = (mapPatterns as MapPatternData[]).map((pattern) => ({
-    ...pattern,
-    seedInfo: null,
-  }));
-
-  const enrichedPatterns = useMemo(() => {
-    const seedByPatternId = new Map<number, SeedRaw>();
-    (seedData as SeedRaw[]).forEach((seed) => {
-      const id = Number(seed.seed_id) + 1;
-      seedByPatternId.set(id, seed);
-    });
-
-    return patterns.map((pattern) => ({
-      ...pattern,
-      seedInfo: seedByPatternId.get(pattern.id) ?? null,
-    }));
-  }, [patterns]);
+  const seeds = (seedData as SeedData[]);
 
   const mapTypeOptions = useMemo(() => {
-    return Array.from(
-      new Set(
-        (enrichedPatterns as MapPatternData[])
-          .map((pattern) => pattern.seedInfo?.map_type ?? '')
-          .filter(Boolean),
-      ),
-    ).sort();
-  }, [enrichedPatterns]);
+    return Array.from(new Set(seeds.map((seed) => seed.map_type))).sort();
+  }, []);
 
   const nightlordOptions = useMemo(() => {
-    return Array.from(new Set(enrichedPatterns.map((pattern) => pattern.nightlord))).sort();
-  }, [enrichedPatterns]);
+    return Array.from(new Set(seeds.map((seed) => seed.nightlord))).sort();
+  }, []);
 
   const [selectedMapType, setSelectedMapType] = useState<string>('');
   const [selectedNightlord, setSelectedNightlord] = useState<string>('');
@@ -108,43 +65,36 @@ const MapPage = () => {
     return map;
   }, [slots]);
 
-  const filteredPatterns = useMemo(() => {
-    return enrichedPatterns.filter((pattern) => {
-      if (selectedMapType && pattern.seedInfo?.map_type !== selectedMapType) {
+  const filteredSeeds = useMemo(() => {
+    return seeds.filter((seed) => {
+      if (selectedMapType && seed.map_type !== selectedMapType) {
         return false;
       }
-      if (selectedNightlord && pattern.nightlord !== selectedNightlord) {
+      if (selectedNightlord && seed.nightlord !== selectedNightlord) {
         return false;
       }
       return true;
     });
-  }, [enrichedPatterns, selectedMapType, selectedNightlord]);
+  }, [selectedMapType, selectedNightlord]);
 
-  const matchingPatterns = useMemo(() => {
-    return filteredPatterns.filter((pattern) => {
+  const matchingSeeds = useMemo(() => {
+    return filteredSeeds.filter((seed) => {
       return Object.entries(selectedSlots).every(([slotId, value]) => {
-        const slotName = slots[slotId]?.slot_name;
-        if (!slotName) {
-          return false;
-        }
-        return pattern.locations.some((location) => location.slot === slotName && location.value === value);
+        return seed.slots[slotId] === value;
       });
     });
-  }, [filteredPatterns, selectedSlots, slots]);
+  }, [filteredSeeds, selectedSlots]);
 
   const slotPossibilities = useMemo(() => {
     const possibilities: Record<string, Set<string>> = {};
 
-    matchingPatterns.forEach((pattern) => {
-      pattern.locations.forEach((location) => {
-        const slotId = slotNameToId[location.slot];
-        if (!slotId) {
-          return;
-        }
+    matchingSeeds.forEach((seed) => {
+      Object.entries(seed.slots).forEach(([slotId, value]) => {
+        if (!value) return;
         if (!possibilities[slotId]) {
           possibilities[slotId] = new Set();
         }
-        possibilities[slotId].add(location.value);
+        possibilities[slotId].add(value);
       });
     });
 
@@ -153,7 +103,7 @@ const MapPage = () => {
       result[slotId] = Array.from(possibilities[slotId]).sort();
     });
     return result;
-  }, [matchingPatterns, slotNameToId]);
+  }, [matchingSeeds]);
 
   const handleSlotClick = (slotId: string) => {
     setActiveSlot((current) => (current === slotId ? null : slotId));
@@ -175,7 +125,22 @@ const MapPage = () => {
     });
   };
 
-  const selectedSeed = matchingPatterns.length === 1 ? matchingPatterns[0] : null;
+  const selectedSeed = matchingSeeds.length === 1 ? matchingSeeds[0] : null;
+
+  const getMapImageUrl = (mapType: string) => {
+    const normalizedName = mapType
+      .split(' ')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join('');
+
+    const matchedPath = Object.keys(mapImages).find(
+      (path) => path.toLowerCase().includes(normalizedName.toLowerCase()),
+    );
+
+    return matchedPath ? mapImages[matchedPath] : null;
+  };
+
+  const mapImageUrl = selectedMapType ? getMapImageUrl(selectedMapType) : null;
 
   return (
     <div style={{ padding: '20px', color: 'var(--night-text)' }}>
@@ -231,6 +196,9 @@ const MapPage = () => {
               border: '2px solid var(--night-border-strong)',
               borderRadius: '8px',
               overflow: 'hidden',
+              backgroundImage: mapImageUrl ? `url('${mapImageUrl}')` : 'none',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
             }}
           >
             {Object.entries(slots).map(([slotId, slot]) => {
@@ -339,41 +307,33 @@ const MapPage = () => {
           <div style={{ padding: '18px', borderRadius: '10px', backgroundColor: 'var(--night-surface-2)', border: '1px solid var(--night-border-soft)' }}>
             <h2 style={{ margin: '0 0 12px' }}>가능한 시드</h2>
             <p style={{ margin: '0 0 14px', color: 'var(--night-text-soft)' }}>
-              선택한 맵과 보스, 거점 조건을 만족하는 후보 시드 수: <strong>{matchingPatterns.length}</strong>
+              조건을 만족하는 후보 시드 수: <strong>{matchingSeeds.length}</strong>
             </p>
-            {matchingPatterns.length > 0 ? (
+            {matchingSeeds.length > 0 ? (
               <div style={{ display: 'grid', gap: '12px' }}>
-                {matchingPatterns.slice(0, 10).map((pattern) => (
+                {matchingSeeds.slice(0, 10).map((seed) => (
                   <div
-                    key={pattern.id}
+                    key={seed.seed_id}
                     style={{
                       padding: '12px 14px',
                       borderRadius: '10px',
-                      border: selectedSeed?.id === pattern.id ? '2px solid var(--night-accent-bright)' : '1px solid var(--night-border-soft)',
+                      border: selectedSeed?.seed_id === seed.seed_id ? '2px solid var(--night-accent-bright)' : '1px solid var(--night-border-soft)',
                       backgroundColor: 'var(--night-surface-2)',
                     }}
                   >
-                    <div style={{ display: 'flex', justifyContent: 'space-between', gap: '12px' }}>
-                      <strong>seed {pattern.seedInfo?.seed_id ?? 'unknown'}</strong>
-                      <span style={{ color: 'var(--night-text-soft)' }}>{pattern.sourceFile}</span>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', gap: '12px', alignItems: 'center' }}>
+                      <strong>seed {seed.seed_id}</strong>
+                      <span style={{ color: 'var(--night-text-soft)', fontSize: '12px' }}>{seed.map_type}</span>
                     </div>
                     <p style={{ margin: '8px 0 0' }}>
-                      <strong>Nightlord:</strong> {pattern.nightlord}
+                      <strong>Nightlord:</strong> {seed.nightlord}
                     </p>
-                    <p style={{ margin: '6px 0 0' }}>
-                      <strong>Night 1 Boss:</strong> {pattern.night1Boss}
+                    <p style={{ margin: '6px 0 0', color: 'var(--night-text-soft)' }}>
+                      Event: {seed.Event || '없음'} / OldGaol: {seed.hasOldGaol ? '있음' : '없음'}
                     </p>
-                    <p style={{ margin: '6px 0 0' }}>
-                      <strong>Night 2 Boss:</strong> {pattern.night2Boss}
-                    </p>
-                    {pattern.seedInfo && (
-                      <p style={{ margin: '6px 0 0', color: 'var(--night-text-soft)' }}>
-                        Event: {pattern.seedInfo.Event || '없음'} / OldGaol: {pattern.seedInfo.hasOldGaol ? '있음' : '없음'}
-                      </p>
-                    )}
                   </div>
                 ))}
-                {matchingPatterns.length > 10 && (
+                {matchingSeeds.length > 10 && (
                   <p style={{ margin: '0', color: 'var(--night-text-soft)' }}>처음 10개만 표시됩니다. 더 좁혀주세요.</p>
                 )}
               </div>
@@ -385,10 +345,11 @@ const MapPage = () => {
           {selectedSeed && (
             <div style={{ marginTop: '20px', padding: '18px', borderRadius: '10px', backgroundColor: 'var(--night-accent-bg)', border: '1px solid var(--night-border-strong)' }}>
               <h2 style={{ margin: '0 0 12px' }}>확정된 시드</h2>
-              <p style={{ margin: '0 0 8px' }}><strong>seed {selectedSeed.seedInfo?.seed_id}</strong> ({selectedSeed.sourceFile})</p>
+              <p style={{ margin: '0 0 8px' }}><strong>seed {selectedSeed.seed_id}</strong></p>
+              <p style={{ margin: '0 0 6px' }}><strong>Map Type:</strong> {selectedSeed.map_type}</p>
               <p style={{ margin: '0 0 6px' }}><strong>Nightlord:</strong> {selectedSeed.nightlord}</p>
-              <p style={{ margin: '0 0 6px' }}><strong>Spawn Point:</strong> {selectedSeed.spawnPoint}</p>
-              <p style={{ margin: 0 }}><strong>Night 1 Boss:</strong> {selectedSeed.night1Boss}, <strong>Night 2 Boss:</strong> {selectedSeed.night2Boss}</p>
+              <p style={{ margin: 0 }}><strong>Event:</strong> {selectedSeed.Event || '없음'} / <strong>OldGaol:</strong> {selectedSeed.hasOldGaol ? '있음' : '없음'}</p>
+              {/* 여기에 완성된 맵 이미지를 표시할 예정 */}
             </div>
           )}
         </div>
