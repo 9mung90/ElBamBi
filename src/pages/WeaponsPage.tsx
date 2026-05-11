@@ -44,6 +44,17 @@ const damageLabels: Record<string, string> = {
   Holy: '신성',
 };
 
+const statLabels: Record<string, string> = {
+  STR: '근력',
+  DEX: '기량',
+  INT: '지력',
+  FAI: '신앙',
+  ARC: '신비',
+  VIG: '생명력',
+  MND: '정신력',
+  END: '지구력',
+};
+
 const statusLabels: Record<string, string> = {
   Poison: '독',
   Bloodloss: '출혈',
@@ -160,7 +171,7 @@ function matchesWeaponSearch(weapon: RelicWeapon, query: string) {
   if (!normalizedQuery) return true;
 
   const damage = formatRecordValues(weapon.baseDamage, damageLabels);
-  const scaling = formatRecordValues(weapon.scaling, {});
+  const scaling = formatRecordValues(weapon.scaling, statLabels);
   const status = formatRecordValues(weapon.statusDamage, statusLabels);
 
   return [
@@ -371,7 +382,7 @@ function WeaponCard({
   onClick?: () => void;
 }) {
   const damage = formatRecordValues(weapon.baseDamage, damageLabels);
-  const scaling = formatRecordValues(weapon.scaling, {});
+  const scaling = formatRecordValues(weapon.scaling, statLabels);
   const status = formatRecordValues(weapon.statusDamage, statusLabels);
   const affinityIcon = showAffinityIcon ? getWeaponAffinityIcon(weapon.name) : null;
   const catalogItem = getWeaponCatalogItem(weapon.name);
@@ -398,7 +409,7 @@ function WeaponCard({
             <img src={weaponImageUrl} alt="" className="weapon-catalog-image" loading="lazy" />
           </span>
         ) : null}
-        <div>
+        <div className="weapon-card-copy">
           <h3>{weapon.name}</h3>
           <p>{damage.length ? damage.join(' · ') : '공격력 정보 없음'}</p>
         </div>
@@ -528,7 +539,7 @@ function WeaponsPage({
                 groupCardRefs.current.delete(group.id);
               }
             }}
-            onClick={() => onSelectGroup(group.id)}
+            onClick={group.variants.length ? () => onSelectGroup(group.id) : undefined}
           />
         ))}
       </div>

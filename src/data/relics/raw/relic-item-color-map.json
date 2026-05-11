@@ -1,32 +1,32 @@
 [
   {
     "itemId": 1,
-    "name": "Antique",
+    "name": "골동품",
     "color": "Red"
   },
   {
     "itemId": 2,
-    "name": "Antique",
+    "name": "골동품",
     "color": "Red"
   },
   {
     "itemId": 3,
-    "name": "Antique",
+    "name": "골동품",
     "color": "Red"
   },
   {
     "itemId": 4,
-    "name": "Antique",
+    "name": "골동품",
     "color": "Red"
   },
   {
     "itemId": 5,
-    "name": "Antique",
+    "name": "골동품",
     "color": "Red"
   },
   {
     "itemId": 6,
-    "name": "Antique",
+    "name": "골동품",
     "color": "Red"
   },
   {
@@ -36,377 +36,377 @@
   },
   {
     "itemId": 11,
-    "name": "Sovereign Sigil",
+    "name": "왕의 인장",
     "color": "Red"
   },
   {
     "itemId": 20,
-    "name": "Scenic Flatstone",
+    "name": "풍경의 편평한 돌",
     "color": "Red"
   },
   {
     "itemId": 100,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 불타는 풍경",
     "color": "Red"
   },
   {
     "itemId": 101,
-    "name": "Polished Burning Scene",
+    "name": "단정한, 불타는 풍경",
     "color": "Red"
   },
   {
     "itemId": 102,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 불타는 풍경",
     "color": "Red"
   },
   {
     "itemId": 103,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 불타는 풍경",
     "color": "Red"
   },
   {
     "itemId": 104,
-    "name": "Polished Burning Scene",
+    "name": "단정한, 불타는 풍경",
     "color": "Red"
   },
   {
     "itemId": 105,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 불타는 풍경",
     "color": "Red"
   },
   {
     "itemId": 106,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 불타는 풍경",
     "color": "Red"
   },
   {
     "itemId": 107,
-    "name": "Polished Burning Scene",
+    "name": "단정한, 불타는 풍경",
     "color": "Red"
   },
   {
     "itemId": 108,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 불타는 풍경",
     "color": "Red"
   },
   {
     "itemId": 109,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 촉촉한 풍경",
     "color": "Blue"
   },
   {
     "itemId": 110,
-    "name": "Polished Drizzly Scene",
+    "name": "단정한, 촉촉한 풍경",
     "color": "Blue"
   },
   {
     "itemId": 111,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 촉촉한 풍경",
     "color": "Blue"
   },
   {
     "itemId": 112,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 촉촉한 풍경",
     "color": "Blue"
   },
   {
     "itemId": 113,
-    "name": "Polished Drizzly Scene",
+    "name": "단정한, 촉촉한 풍경",
     "color": "Blue"
   },
   {
     "itemId": 114,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 촉촉한 풍경",
     "color": "Blue"
   },
   {
     "itemId": 115,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 촉촉한 풍경",
     "color": "Blue"
   },
   {
     "itemId": 116,
-    "name": "Polished Drizzly Scene",
+    "name": "단정한, 촉촉한 풍경",
     "color": "Blue"
   },
   {
     "itemId": 117,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 촉촉한 풍경",
     "color": "Blue"
   },
   {
     "itemId": 118,
-    "name": "Delicate Luminous Scene",
+    "name": "섬세한, 빛나는 풍경",
     "color": "Yellow"
   },
   {
     "itemId": 119,
-    "name": "Polished Luminous Scene",
+    "name": "단정한, 빛나는 풍경",
     "color": "Yellow"
   },
   {
     "itemId": 120,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 빛나는 풍경",
     "color": "Yellow"
   },
   {
     "itemId": 121,
-    "name": "Delicate Luminous Scene",
+    "name": "섬세한, 빛나는 풍경",
     "color": "Yellow"
   },
   {
     "itemId": 122,
-    "name": "Polished Luminous Scene",
+    "name": "단정한, 빛나는 풍경",
     "color": "Yellow"
   },
   {
     "itemId": 123,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 빛나는 풍경",
     "color": "Yellow"
   },
   {
     "itemId": 124,
-    "name": "Delicate Luminous Scene",
+    "name": "섬세한, 빛나는 풍경",
     "color": "Yellow"
   },
   {
     "itemId": 125,
-    "name": "Polished Luminous Scene",
+    "name": "단정한, 빛나는 풍경",
     "color": "Yellow"
   },
   {
     "itemId": 126,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 빛나는 풍경",
     "color": "Yellow"
   },
   {
     "itemId": 127,
-    "name": "Delicate Tranquil Scene",
+    "name": "섬세한, 고요한 풍경",
     "color": "Green"
   },
   {
     "itemId": 128,
-    "name": "Polished Tranquil Scene",
+    "name": "단정한, 고요한 풍경",
     "color": "Green"
   },
   {
     "itemId": 129,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 고요한 풍경",
     "color": "Green"
   },
   {
     "itemId": 130,
-    "name": "Delicate Tranquil Scene",
+    "name": "섬세한, 고요한 풍경",
     "color": "Green"
   },
   {
     "itemId": 131,
-    "name": "Polished Tranquil Scene",
+    "name": "단정한, 고요한 풍경",
     "color": "Green"
   },
   {
     "itemId": 132,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 고요한 풍경",
     "color": "Green"
   },
   {
     "itemId": 133,
-    "name": "Delicate Tranquil Scene",
+    "name": "섬세한, 고요한 풍경",
     "color": "Green"
   },
   {
     "itemId": 134,
-    "name": "Polished Tranquil Scene",
+    "name": "단정한, 고요한 풍경",
     "color": "Green"
   },
   {
     "itemId": 135,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 고요한 풍경",
     "color": "Green"
   },
   {
     "itemId": 200,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 201,
-    "name": "Polished Burning Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 202,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 203,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 204,
-    "name": "Polished Burning Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 205,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 206,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 207,
-    "name": "Polished Burning Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 208,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 209,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 210,
-    "name": "Polished Drizzly Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 211,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 212,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 213,
-    "name": "Polished Drizzly Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 214,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 215,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 216,
-    "name": "Polished Drizzly Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 217,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 218,
-    "name": "Delicate Luminous Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 219,
-    "name": "Polished Luminous Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 220,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 221,
-    "name": "Delicate Luminous Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 222,
-    "name": "Polished Luminous Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 223,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 224,
-    "name": "Delicate Luminous Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 225,
-    "name": "Polished Luminous Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 226,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 227,
-    "name": "Delicate Tranquil Scene",
+    "name": "섬세한, 고요한 혼경",
     "color": "Green"
   },
   {
     "itemId": 228,
-    "name": "Polished Tranquil Scene",
+    "name": "단정한, 고요한 혼경",
     "color": "Green"
   },
   {
     "itemId": 229,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 고요한 혼경",
     "color": "Green"
   },
   {
     "itemId": 230,
-    "name": "Delicate Tranquil Scene",
+    "name": "섬세한, 고요한 혼경",
     "color": "Green"
   },
   {
     "itemId": 231,
-    "name": "Polished Tranquil Scene",
+    "name": "단정한, 고요한 혼경",
     "color": "Green"
   },
   {
     "itemId": 232,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 고요한 혼경",
     "color": "Green"
   },
   {
     "itemId": 233,
-    "name": "Delicate Tranquil Scene",
+    "name": "섬세한, 고요한 혼경",
     "color": "Green"
   },
   {
     "itemId": 234,
-    "name": "Polished Tranquil Scene",
+    "name": "단정한, 고요한 혼경",
     "color": "Green"
   },
   {
     "itemId": 235,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 고요한 혼경",
     "color": "Green"
   },
   {
     "itemId": 1000,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Red",
     "type": "shop",
     "effects": [
@@ -415,7 +415,7 @@
   },
   {
     "itemId": 1010,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Blue",
     "type": "shop",
     "effects": [
@@ -424,7 +424,7 @@
   },
   {
     "itemId": 1020,
-    "name": "Delicate Luminous Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Yellow",
     "type": "shop",
     "effects": [
@@ -433,7 +433,7 @@
   },
   {
     "itemId": 1030,
-    "name": "Delicate Tranquil Scene",
+    "name": "섬세한, 고요한 혼경",
     "color": "Green",
     "type": "shop",
     "effects": [
@@ -501,7 +501,7 @@
   },
   {
     "itemId": 1100,
-    "name": "Polished Tranquil Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Green",
     "type": "shop",
     "effects": [
@@ -511,7 +511,7 @@
   },
   {
     "itemId": 1110,
-    "name": "Polished Burning Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Red",
     "type": "shop",
     "effects": [
@@ -521,7 +521,7 @@
   },
   {
     "itemId": 1120,
-    "name": "Polished Burning Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Red",
     "type": "shop",
     "effects": [
@@ -531,7 +531,7 @@
   },
   {
     "itemId": 1130,
-    "name": "Polished Tranquil Scene",
+    "name": "단정한, 고요한 혼경",
     "color": "Green",
     "type": "shop",
     "effects": [
@@ -603,7 +603,7 @@
   },
   {
     "itemId": 1200,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Green",
     "type": "shop",
     "effects": [
@@ -614,7 +614,7 @@
   },
   {
     "itemId": 1210,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Yellow",
     "type": "shop",
     "effects": [
@@ -625,7 +625,7 @@
   },
   {
     "itemId": 1220,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Yellow",
     "type": "shop",
     "effects": [
@@ -636,7 +636,7 @@
   },
   {
     "itemId": 1230,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 고요한 혼경",
     "color": "Blue",
     "type": "shop",
     "effects": [
@@ -691,17 +691,17 @@
   },
   {
     "itemId": 1300,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1310,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Green"
   },
   {
     "itemId": 1400,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Blue",
     "type": "shop",
     "effects": [
@@ -712,7 +712,7 @@
   },
   {
     "itemId": 1410,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Red",
     "type": "shop",
     "effects": [
@@ -723,7 +723,7 @@
   },
   {
     "itemId": 1420,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Green",
     "type": "shop",
     "effects": [
@@ -734,7 +734,7 @@
   },
   {
     "itemId": 1430,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 고요한 혼경",
     "color": "Green",
     "type": "shop",
     "effects": [
@@ -811,7 +811,7 @@
   },
   {
     "itemId": 1500,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Red",
     "type": "shop",
     "effects": [
@@ -822,7 +822,7 @@
   },
   {
     "itemId": 1510,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Yellow",
     "type": "shop",
     "effects": [
@@ -833,7 +833,7 @@
   },
   {
     "itemId": 1520,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Blue",
     "type": "shop",
     "effects": [
@@ -844,22 +844,22 @@
   },
   {
     "itemId": 1600,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1610,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1620,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1630,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 고요한 혼경",
     "color": "Yellow"
   },
   {
@@ -894,22 +894,22 @@
   },
   {
     "itemId": 1700,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1710,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Red"
   },
   {
     "itemId": 1720,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1730,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 고요한 혼경",
     "color": "Blue"
   },
   {
@@ -924,17 +924,17 @@
   },
   {
     "itemId": 1800,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1820,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1830,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 고요한 혼경",
     "color": "Blue"
   },
   {
@@ -964,17 +964,17 @@
   },
   {
     "itemId": 1900,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1920,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 2000,
-    "name": "Night of the Beast",
+    "name": "짐승의 밤",
     "color": "Green",
     "type": "quest",
     "effects": [
@@ -984,7 +984,7 @@
   },
   {
     "itemId": 2001,
-    "name": "Dark Night of the Beast",
+    "name": "짐승의 어두운 밤",
     "color": "Yellow",
     "type": "quest",
     "effects": [
@@ -995,7 +995,7 @@
   },
   {
     "itemId": 2010,
-    "name": "Night of the Baron",
+    "name": "제후의 밤",
     "color": "Blue",
     "type": "quest",
     "effects": [
@@ -1006,7 +1006,7 @@
   },
   {
     "itemId": 2011,
-    "name": "Dark Night of the Baron",
+    "name": "제후의 어두운 밤",
     "color": "Red",
     "type": "quest",
     "effects": [
@@ -1017,7 +1017,7 @@
   },
   {
     "itemId": 2020,
-    "name": "Night of the Wise",
+    "name": "지식의 밤",
     "color": "Yellow",
     "type": "quest",
     "effects": [
@@ -1028,7 +1028,7 @@
   },
   {
     "itemId": 2021,
-    "name": "Dark Night of the Wise",
+    "name": "지식의 어두운 밤",
     "color": "Green",
     "type": "quest",
     "effects": [
@@ -1039,7 +1039,7 @@
   },
   {
     "itemId": 2030,
-    "name": "Night of the Fathom",
+    "name": "심해의 밤",
     "color": "Red",
     "type": "quest",
     "effects": [
@@ -1050,7 +1050,7 @@
   },
   {
     "itemId": 2031,
-    "name": "Dark Night of the Fathom",
+    "name": "심해의 어두운 밤",
     "color": "Blue",
     "type": "quest",
     "effects": [
@@ -1061,7 +1061,7 @@
   },
   {
     "itemId": 2040,
-    "name": "Night of the Demon",
+    "name": "악마의 밤",
     "color": "Red",
     "type": "quest",
     "effects": [
@@ -1072,7 +1072,7 @@
   },
   {
     "itemId": 2041,
-    "name": "Dark Night of the Demon",
+    "name": "악마의 어두운 밤",
     "color": "Blue",
     "type": "quest",
     "effects": [
@@ -1083,7 +1083,7 @@
   },
   {
     "itemId": 2050,
-    "name": "Night of the Champion",
+    "name": "사냥꾼의 밤",
     "color": "Green",
     "type": "quest",
     "effects": [
@@ -1094,7 +1094,7 @@
   },
   {
     "itemId": 2051,
-    "name": "Dark Night of the Champion",
+    "name": "사냥꾼의 어두운 밤",
     "color": "Yellow",
     "type": "quest",
     "effects": [
@@ -1105,7 +1105,7 @@
   },
   {
     "itemId": 2060,
-    "name": "Night of the Miasma",
+    "name": "안개의 밤",
     "color": "Yellow",
     "type": "quest",
     "effects": [
@@ -1116,7 +1116,7 @@
   },
   {
     "itemId": 2061,
-    "name": "Dark Night of the Miasma",
+    "name": "안개의 어두운 밤",
     "color": "Green",
     "type": "quest",
     "effects": [
@@ -1127,7 +1127,7 @@
   },
   {
     "itemId": 2070,
-    "name": "The Will of the Balancers",
+    "name": "안녕을 가져오는 자가 남긴 뜻",
     "color": "Blue",
     "type": "quest",
     "effects": [
@@ -1138,7 +1138,7 @@
   },
   {
     "itemId": 2071,
-    "name": "The Will of Balance",
+    "name": "안녕이 남긴 뜻",
     "color": "Red",
     "type": "quest",
     "effects": [
@@ -1149,7 +1149,7 @@
   },
   {
     "itemId": 2080,
-    "name": "The Night of Dregs",
+    "name": "잔해의 밤",
     "color": "Red",
     "type": "quest",
     "effects": [
@@ -1160,7 +1160,7 @@
   },
   {
     "itemId": 2100,
-    "name": "Night of the Lord",
+    "name": "왕의 밤",
     "color": "Blue",
     "type": "quest",
     "effects": [
@@ -1171,7 +1171,7 @@
   },
   {
     "itemId": 10000,
-    "name": "Old Pocketwatch",
+    "name": "낡은 회중시계",
     "color": "Green",
     "type": "quest",
     "effects": [
@@ -1181,7 +1181,7 @@
   },
   {
     "itemId": 10001,
-    "name": "Besmirched Frame",
+    "name": "끔찍한 흉조의 주물",
     "color": "Blue",
     "type": "quest",
     "effects": [
@@ -1191,7 +1191,7 @@
   },
   {
     "itemId": 10002,
-    "name": "Fell Omen Fetish",
+    "name": "끔찍한 흉조의 주물",
     "color": "Blue",
     "type": "quest",
     "effects": [
@@ -1202,7 +1202,7 @@
   },
   {
     "itemId": 11000,
-    "name": "Slate Whetstone",
+    "name": "회색 숫돌",
     "color": "Red",
     "type": "quest",
     "effects": [
@@ -1212,7 +1212,7 @@
   },
   {
     "itemId": 11001,
-    "name": "The Wylder's Earring",
+    "name": "추적자의 귀고리",
     "color": "Red",
     "type": "quest",
     "effects": [
@@ -1223,7 +1223,7 @@
   },
   {
     "itemId": 11002,
-    "name": "Silver Tear",
+    "name": "은 물방울",
     "color": "Red",
     "type": "quest",
     "effects": [
@@ -1234,12 +1234,12 @@
   },
   {
     "itemId": 11003,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 11004,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Red",
     "type": "shop",
     "effects": [
@@ -1248,7 +1248,7 @@
   },
   {
     "itemId": 12000,
-    "name": "Third Volume",
+    "name": "세 권째 책",
     "color": "Red",
     "type": "quest",
     "effects": [
@@ -1258,7 +1258,7 @@
   },
   {
     "itemId": 12001,
-    "name": "Stone Stake",
+    "name": "돌 말뚝",
     "color": "Red",
     "type": "quest",
     "effects": [
@@ -1268,7 +1268,7 @@
   },
   {
     "itemId": 12002,
-    "name": "Witch's Brooch",
+    "name": "마녀의 브로치",
     "color": "Blue",
     "type": "quest",
     "effects": [
@@ -1279,7 +1279,7 @@
   },
   {
     "itemId": 12003,
-    "name": "Cracked Witch's Brooch",
+    "name": "부서진 마녀의 브로치",
     "color": "Blue",
     "type": "quest",
     "effects": [
@@ -1290,27 +1290,27 @@
   },
   {
     "itemId": 12004,
-    "name": "Delicate Luminous Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 12005,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 12006,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 12007,
-    "name": "Delicate Tranquil Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Green"
   },
   {
     "itemId": 13001,
-    "name": "Cracked Sealing Wax",
+    "name": "깨진 봉랍",
     "color": "Yellow",
     "type": "quest",
     "effects": [
@@ -1320,7 +1320,7 @@
   },
   {
     "itemId": 13002,
-    "name": "Edge of Order",
+    "name": "성률의 칼날",
     "color": "Yellow",
     "type": "quest",
     "effects": [
@@ -1331,7 +1331,7 @@
   },
   {
     "itemId": 14000,
-    "name": "Golden Dew",
+    "name": "금색 이슬",
     "color": "Yellow",
     "type": "quest",
     "effects": [
@@ -1341,7 +1341,7 @@
   },
   {
     "itemId": 14001,
-    "name": "Crown Medal",
+    "name": "머리관 메달",
     "color": "Green",
     "type": "quest",
     "effects": [
@@ -1351,7 +1351,7 @@
   },
   {
     "itemId": 14002,
-    "name": "Blessed Iron Coin",
+    "name": "축복받은 철전",
     "color": "Green",
     "type": "quest",
     "effects": [
@@ -1362,7 +1362,7 @@
   },
   {
     "itemId": 15000,
-    "name": "Torn Braided Cord",
+    "name": "끊어진 매듭끈",
     "color": "Blue",
     "type": "quest",
     "effects": [
@@ -1372,7 +1372,7 @@
   },
   {
     "itemId": 15002,
-    "name": "Black Claw Necklace",
+    "name": "검은 발톱의 목걸이",
     "color": "Yellow",
     "type": "quest",
     "effects": [
@@ -1383,7 +1383,7 @@
   },
   {
     "itemId": 16001,
-    "name": "Small Makeup Brush",
+    "name": "작은 화장도구",
     "color": "Blue",
     "type": "quest",
     "effects": [
@@ -1393,7 +1393,7 @@
   },
   {
     "itemId": 16002,
-    "name": "Old Portrait",
+    "name": "낡은 미니어처 액자",
     "color": "Blue",
     "type": "quest",
     "effects": [
@@ -1404,7 +1404,7 @@
   },
   {
     "itemId": 17001,
-    "name": "Vestige of Night",
+    "name": "밤의 흔적",
     "color": "Green",
     "type": "quest",
     "effects": [
@@ -1414,7 +1414,7 @@
   },
   {
     "itemId": 17002,
-    "name": "Bone-Like Stone",
+    "name": "뼈처럼 생긴 돌",
     "color": "Green",
     "type": "quest",
     "effects": [
@@ -1425,7 +1425,7 @@
   },
   {
     "itemId": 18000,
-    "name": "Blessed Flowers",
+    "name": "축복받은 꽃",
     "color": "Green",
     "type": "quest",
     "effects": [
@@ -1435,7 +1435,7 @@
   },
   {
     "itemId": 18002,
-    "name": "Golden Sprout",
+    "name": "황금 싹",
     "color": "Red",
     "type": "quest",
     "effects": [
@@ -1446,7 +1446,7 @@
   },
   {
     "itemId": 19000,
-    "name": "Cleansing Tear",
+    "name": "청정의 물방울",
     "color": "Red",
     "type": "quest",
     "effects": [
@@ -1457,7 +1457,7 @@
   },
   {
     "itemId": 19001,
-    "name": "Note \"My Dear Successor\"",
+    "name": "기록 「후계자에게」",
     "color": "Yellow",
     "type": "quest",
     "effects": [
@@ -1468,7 +1468,7 @@
   },
   {
     "itemId": 19050,
-    "name": "Leather Monocle Case",
+    "name": "단안경용 가죽 주머니",
     "color": "Blue",
     "type": "quest",
     "effects": [
@@ -1479,7 +1479,7 @@
   },
   {
     "itemId": 19051,
-    "name": "Glass Necklace",
+    "name": "유리 목걸이",
     "color": "Green",
     "type": "quest",
     "effects": [
@@ -1490,3493 +1490,3493 @@
   },
   {
     "itemId": 20000,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 20001,
-    "name": "Polished Burning Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 20002,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 20003,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 20004,
-    "name": "Polished Burning Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 20005,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 20006,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 20007,
-    "name": "Polished Burning Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 20008,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 20009,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 20010,
-    "name": "Polished Drizzly Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 20011,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 20012,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 20013,
-    "name": "Polished Drizzly Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 20014,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 20015,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 20016,
-    "name": "Polished Drizzly Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 20017,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 20018,
-    "name": "Delicate Luminous Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 20019,
-    "name": "Polished Luminous Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 20020,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 20021,
-    "name": "Delicate Luminous Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 20022,
-    "name": "Polished Luminous Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 20023,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 20024,
-    "name": "Delicate Luminous Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 20025,
-    "name": "Polished Luminous Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 20026,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 20027,
-    "name": "Delicate Tranquil Scene",
+    "name": "섬세한, 고요한 혼경",
     "color": "Green"
   },
   {
     "itemId": 20028,
-    "name": "Polished Tranquil Scene",
+    "name": "단정한, 고요한 혼경",
     "color": "Green"
   },
   {
     "itemId": 20029,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 고요한 혼경",
     "color": "Green"
   },
   {
     "itemId": 20030,
-    "name": "Delicate Tranquil Scene",
+    "name": "섬세한, 고요한 혼경",
     "color": "Green"
   },
   {
     "itemId": 20031,
-    "name": "Polished Tranquil Scene",
+    "name": "단정한, 고요한 혼경",
     "color": "Green"
   },
   {
     "itemId": 20032,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 고요한 혼경",
     "color": "Green"
   },
   {
     "itemId": 20033,
-    "name": "Delicate Tranquil Scene",
+    "name": "섬세한, 고요한 혼경",
     "color": "Green"
   },
   {
     "itemId": 20034,
-    "name": "Polished Tranquil Scene",
+    "name": "단정한, 고요한 혼경",
     "color": "Green"
   },
   {
     "itemId": 20035,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 고요한 혼경",
     "color": "Green"
   },
   {
     "itemId": 30000,
-    "name": "Deep Delicate Burning Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 30001,
-    "name": "Deep Polished Burning Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 30002,
-    "name": "Deep Grand Burning Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 30003,
-    "name": "Deep Delicate Burning Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 30004,
-    "name": "Deep Polished Burning Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 30005,
-    "name": "Deep Grand Burning Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 30006,
-    "name": "Deep Delicate Burning Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 30007,
-    "name": "Deep Polished Burning Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 30008,
-    "name": "Deep Grand Burning Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 30009,
-    "name": "Deep Delicate Drizzly Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 30010,
-    "name": "Deep Polished Drizzly Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 30011,
-    "name": "Deep Grand Drizzly Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 30012,
-    "name": "Deep Delicate Drizzly Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 30013,
-    "name": "Deep Polished Drizzly Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 30014,
-    "name": "Deep Grand Drizzly Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 30015,
-    "name": "Deep Delicate Drizzly Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 30016,
-    "name": "Deep Polished Drizzly Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 30017,
-    "name": "Deep Grand Drizzly Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 30018,
-    "name": "Deep Delicate Luminous Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 30019,
-    "name": "Deep Polished Luminous Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 30020,
-    "name": "Deep Grand Luminous Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 30021,
-    "name": "Deep Delicate Luminous Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 30022,
-    "name": "Deep Polished Luminous Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 30023,
-    "name": "Deep Grand Luminous Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 30024,
-    "name": "Deep Delicate Luminous Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 30025,
-    "name": "Deep Polished Luminous Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 30026,
-    "name": "Deep Grand Luminous Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 30027,
-    "name": "Deep Delicate Tranquil Scene",
+    "name": "섬세한, 고요한 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 30028,
-    "name": "Deep Polished Tranquil Scene",
+    "name": "단정한, 고요한 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 30029,
-    "name": "Deep Grand Tranquil Scene",
+    "name": "웅장한, 고요한 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 30030,
-    "name": "Deep Delicate Tranquil Scene",
+    "name": "섬세한, 고요한 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 30031,
-    "name": "Deep Polished Tranquil Scene",
+    "name": "단정한, 고요한 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 30032,
-    "name": "Deep Grand Tranquil Scene",
+    "name": "웅장한, 고요한 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 30033,
-    "name": "Deep Delicate Tranquil Scene",
+    "name": "섬세한, 고요한 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 30034,
-    "name": "Deep Polished Tranquil Scene",
+    "name": "단정한, 고요한 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 30035,
-    "name": "Deep Grand Tranquil Scene",
+    "name": "웅장한, 고요한 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 1000000,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1000001,
-    "name": "Polished Burning Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1000002,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1000010,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Red"
   },
   {
     "itemId": 1000011,
-    "name": "Polished Burning Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Red"
   },
   {
     "itemId": 1000012,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Red"
   },
   {
     "itemId": 1000020,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1000021,
-    "name": "Polished Burning Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1000022,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1000100,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1000101,
-    "name": "Polished Drizzly Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1000102,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1000110,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1000111,
-    "name": "Polished Drizzly Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1000112,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1000120,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1000121,
-    "name": "Polished Drizzly Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1000122,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1000200,
-    "name": "Delicate Luminous Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1000201,
-    "name": "Polished Luminous Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1000202,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1000210,
-    "name": "Delicate Luminous Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1000211,
-    "name": "Polished Luminous Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1000212,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1000220,
-    "name": "Delicate Luminous Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1000221,
-    "name": "Polished Luminous Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1000222,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1000300,
-    "name": "Delicate Tranquil Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1000301,
-    "name": "Polished Tranquil Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1000302,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1000310,
-    "name": "Delicate Tranquil Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Green"
   },
   {
     "itemId": 1000311,
-    "name": "Polished Tranquil Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Green"
   },
   {
     "itemId": 1000312,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Green"
   },
   {
     "itemId": 1000320,
-    "name": "Delicate Tranquil Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1000321,
-    "name": "Polished Tranquil Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1000322,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1001000,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1001001,
-    "name": "Polished Burning Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1001002,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1001010,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Red"
   },
   {
     "itemId": 1001011,
-    "name": "Polished Burning Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Red"
   },
   {
     "itemId": 1001012,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Red"
   },
   {
     "itemId": 1001020,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1001021,
-    "name": "Polished Burning Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1001022,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1001100,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1001101,
-    "name": "Polished Drizzly Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1001102,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1001110,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1001111,
-    "name": "Polished Drizzly Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1001112,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1001120,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1001121,
-    "name": "Polished Drizzly Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1001122,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1001200,
-    "name": "Delicate Luminous Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1001201,
-    "name": "Polished Luminous Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1001202,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1001210,
-    "name": "Delicate Luminous Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1001211,
-    "name": "Polished Luminous Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1001212,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1001220,
-    "name": "Delicate Luminous Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1001221,
-    "name": "Polished Luminous Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1001222,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1001300,
-    "name": "Delicate Tranquil Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1001301,
-    "name": "Polished Tranquil Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1001302,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1001310,
-    "name": "Delicate Tranquil Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Green"
   },
   {
     "itemId": 1001311,
-    "name": "Polished Tranquil Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Green"
   },
   {
     "itemId": 1001312,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Green"
   },
   {
     "itemId": 1001320,
-    "name": "Delicate Tranquil Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1001321,
-    "name": "Polished Tranquil Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1001322,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1002000,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1002001,
-    "name": "Polished Burning Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1002002,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1002010,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Red"
   },
   {
     "itemId": 1002011,
-    "name": "Polished Burning Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Red"
   },
   {
     "itemId": 1002012,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Red"
   },
   {
     "itemId": 1002020,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1002021,
-    "name": "Polished Burning Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1002022,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1002100,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1002101,
-    "name": "Polished Drizzly Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1002102,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1002110,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1002111,
-    "name": "Polished Drizzly Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1002112,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1002120,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1002121,
-    "name": "Polished Drizzly Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1002122,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1002200,
-    "name": "Delicate Luminous Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1002201,
-    "name": "Polished Luminous Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1002202,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1002210,
-    "name": "Delicate Luminous Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1002211,
-    "name": "Polished Luminous Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1002212,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1002220,
-    "name": "Delicate Luminous Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1002221,
-    "name": "Polished Luminous Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1002222,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1002300,
-    "name": "Delicate Tranquil Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1002301,
-    "name": "Polished Tranquil Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1002302,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1002310,
-    "name": "Delicate Tranquil Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Green"
   },
   {
     "itemId": 1002311,
-    "name": "Polished Tranquil Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Green"
   },
   {
     "itemId": 1002312,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Green"
   },
   {
     "itemId": 1002320,
-    "name": "Delicate Tranquil Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1002321,
-    "name": "Polished Tranquil Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1002322,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1003000,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1003001,
-    "name": "Polished Burning Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1003002,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1003010,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Red"
   },
   {
     "itemId": 1003011,
-    "name": "Polished Burning Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Red"
   },
   {
     "itemId": 1003012,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Red"
   },
   {
     "itemId": 1003020,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1003021,
-    "name": "Polished Burning Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1003022,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1003100,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1003101,
-    "name": "Polished Drizzly Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1003102,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1003110,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1003111,
-    "name": "Polished Drizzly Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1003112,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1003120,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1003121,
-    "name": "Polished Drizzly Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1003122,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1003200,
-    "name": "Delicate Luminous Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1003201,
-    "name": "Polished Luminous Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1003202,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1003210,
-    "name": "Delicate Luminous Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1003211,
-    "name": "Polished Luminous Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1003212,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1003220,
-    "name": "Delicate Luminous Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1003221,
-    "name": "Polished Luminous Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1003222,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1003300,
-    "name": "Delicate Tranquil Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1003301,
-    "name": "Polished Tranquil Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1003302,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1003310,
-    "name": "Delicate Tranquil Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Green"
   },
   {
     "itemId": 1003311,
-    "name": "Polished Tranquil Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Green"
   },
   {
     "itemId": 1003312,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Green"
   },
   {
     "itemId": 1003320,
-    "name": "Delicate Tranquil Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1003321,
-    "name": "Polished Tranquil Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1003322,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1004000,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1004001,
-    "name": "Polished Burning Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1004002,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1004010,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Red"
   },
   {
     "itemId": 1004011,
-    "name": "Polished Burning Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Red"
   },
   {
     "itemId": 1004012,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Red"
   },
   {
     "itemId": 1004020,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1004021,
-    "name": "Polished Burning Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1004022,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1004100,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1004101,
-    "name": "Polished Drizzly Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1004102,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1004110,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1004111,
-    "name": "Polished Drizzly Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1004112,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1004120,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1004121,
-    "name": "Polished Drizzly Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1004122,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1004200,
-    "name": "Delicate Luminous Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1004201,
-    "name": "Polished Luminous Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1004202,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1004210,
-    "name": "Delicate Luminous Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1004211,
-    "name": "Polished Luminous Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1004212,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1004220,
-    "name": "Delicate Luminous Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1004221,
-    "name": "Polished Luminous Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1004222,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1004300,
-    "name": "Delicate Tranquil Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1004301,
-    "name": "Polished Tranquil Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1004302,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1004310,
-    "name": "Delicate Tranquil Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Green"
   },
   {
     "itemId": 1004311,
-    "name": "Polished Tranquil Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Green"
   },
   {
     "itemId": 1004312,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Green"
   },
   {
     "itemId": 1004320,
-    "name": "Delicate Tranquil Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1004321,
-    "name": "Polished Tranquil Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1004322,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1005000,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1005001,
-    "name": "Polished Burning Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1005002,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1005010,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Red"
   },
   {
     "itemId": 1005011,
-    "name": "Polished Burning Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Red"
   },
   {
     "itemId": 1005012,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Red"
   },
   {
     "itemId": 1005020,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1005021,
-    "name": "Polished Burning Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1005022,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1005100,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1005101,
-    "name": "Polished Drizzly Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1005102,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1005110,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1005111,
-    "name": "Polished Drizzly Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1005112,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1005120,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1005121,
-    "name": "Polished Drizzly Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1005122,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1005200,
-    "name": "Delicate Luminous Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1005201,
-    "name": "Polished Luminous Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1005202,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1005210,
-    "name": "Delicate Luminous Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1005211,
-    "name": "Polished Luminous Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1005212,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1005220,
-    "name": "Delicate Luminous Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1005221,
-    "name": "Polished Luminous Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1005222,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1005300,
-    "name": "Delicate Tranquil Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1005301,
-    "name": "Polished Tranquil Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1005302,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1005310,
-    "name": "Delicate Tranquil Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Green"
   },
   {
     "itemId": 1005311,
-    "name": "Polished Tranquil Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Green"
   },
   {
     "itemId": 1005312,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Green"
   },
   {
     "itemId": 1005320,
-    "name": "Delicate Tranquil Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1005321,
-    "name": "Polished Tranquil Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1005322,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1006000,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1006001,
-    "name": "Polished Burning Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1006002,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1006010,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Red"
   },
   {
     "itemId": 1006011,
-    "name": "Polished Burning Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Red"
   },
   {
     "itemId": 1006012,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Red"
   },
   {
     "itemId": 1006020,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1006021,
-    "name": "Polished Burning Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1006022,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1006100,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1006101,
-    "name": "Polished Drizzly Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1006102,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1006110,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1006111,
-    "name": "Polished Drizzly Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1006112,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1006120,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1006121,
-    "name": "Polished Drizzly Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1006122,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1006200,
-    "name": "Delicate Luminous Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1006201,
-    "name": "Polished Luminous Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1006202,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1006210,
-    "name": "Delicate Luminous Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1006211,
-    "name": "Polished Luminous Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1006212,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1006220,
-    "name": "Delicate Luminous Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1006221,
-    "name": "Polished Luminous Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1006222,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1006300,
-    "name": "Delicate Tranquil Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1006301,
-    "name": "Polished Tranquil Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1006302,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1006310,
-    "name": "Delicate Tranquil Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Green"
   },
   {
     "itemId": 1006311,
-    "name": "Polished Tranquil Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Green"
   },
   {
     "itemId": 1006312,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Green"
   },
   {
     "itemId": 1006320,
-    "name": "Delicate Tranquil Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1006321,
-    "name": "Polished Tranquil Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1006322,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1007000,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1007001,
-    "name": "Polished Burning Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1007002,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1007010,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Red"
   },
   {
     "itemId": 1007011,
-    "name": "Polished Burning Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Red"
   },
   {
     "itemId": 1007012,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Red"
   },
   {
     "itemId": 1007020,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1007021,
-    "name": "Polished Burning Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1007022,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1007100,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1007101,
-    "name": "Polished Drizzly Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1007102,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1007110,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1007111,
-    "name": "Polished Drizzly Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1007112,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1007120,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1007121,
-    "name": "Polished Drizzly Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1007122,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1007200,
-    "name": "Delicate Luminous Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1007201,
-    "name": "Polished Luminous Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1007202,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1007210,
-    "name": "Delicate Luminous Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1007211,
-    "name": "Polished Luminous Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1007212,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1007220,
-    "name": "Delicate Luminous Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1007221,
-    "name": "Polished Luminous Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1007222,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1007300,
-    "name": "Delicate Tranquil Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1007301,
-    "name": "Polished Tranquil Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1007302,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1007310,
-    "name": "Delicate Tranquil Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Green"
   },
   {
     "itemId": 1007311,
-    "name": "Polished Tranquil Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Green"
   },
   {
     "itemId": 1007312,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Green"
   },
   {
     "itemId": 1007320,
-    "name": "Delicate Tranquil Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1007321,
-    "name": "Polished Tranquil Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1007322,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1008000,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1008001,
-    "name": "Polished Burning Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1008002,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1008010,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Red"
   },
   {
     "itemId": 1008011,
-    "name": "Polished Burning Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Red"
   },
   {
     "itemId": 1008012,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Red"
   },
   {
     "itemId": 1008020,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1008021,
-    "name": "Polished Burning Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1008022,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1008100,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1008101,
-    "name": "Polished Drizzly Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1008102,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1008110,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1008111,
-    "name": "Polished Drizzly Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1008112,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1008120,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1008121,
-    "name": "Polished Drizzly Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1008122,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1008200,
-    "name": "Delicate Luminous Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1008201,
-    "name": "Polished Luminous Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1008202,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1008210,
-    "name": "Delicate Luminous Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1008211,
-    "name": "Polished Luminous Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1008212,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1008220,
-    "name": "Delicate Luminous Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1008221,
-    "name": "Polished Luminous Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1008222,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1008300,
-    "name": "Delicate Tranquil Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1008301,
-    "name": "Polished Tranquil Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1008302,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1008310,
-    "name": "Delicate Tranquil Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Green"
   },
   {
     "itemId": 1008311,
-    "name": "Polished Tranquil Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Green"
   },
   {
     "itemId": 1008312,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Green"
   },
   {
     "itemId": 1008320,
-    "name": "Delicate Tranquil Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1008321,
-    "name": "Polished Tranquil Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1008322,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1009000,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1009001,
-    "name": "Polished Burning Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1009002,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1009010,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Red"
   },
   {
     "itemId": 1009011,
-    "name": "Polished Burning Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Red"
   },
   {
     "itemId": 1009012,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Red"
   },
   {
     "itemId": 1009020,
-    "name": "Delicate Burning Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1009021,
-    "name": "Polished Burning Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1009022,
-    "name": "Grand Burning Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Red"
   },
   {
     "itemId": 1009100,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1009101,
-    "name": "Polished Drizzly Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1009102,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1009110,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1009111,
-    "name": "Polished Drizzly Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1009112,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1009120,
-    "name": "Delicate Drizzly Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1009121,
-    "name": "Polished Drizzly Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1009122,
-    "name": "Grand Drizzly Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Blue"
   },
   {
     "itemId": 1009200,
-    "name": "Delicate Luminous Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1009201,
-    "name": "Polished Luminous Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1009202,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1009210,
-    "name": "Delicate Luminous Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1009211,
-    "name": "Polished Luminous Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1009212,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1009220,
-    "name": "Delicate Luminous Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1009221,
-    "name": "Polished Luminous Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1009222,
-    "name": "Grand Luminous Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Yellow"
   },
   {
     "itemId": 1009300,
-    "name": "Delicate Tranquil Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1009301,
-    "name": "Polished Tranquil Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1009302,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1009310,
-    "name": "Delicate Tranquil Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Green"
   },
   {
     "itemId": 1009311,
-    "name": "Polished Tranquil Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Green"
   },
   {
     "itemId": 1009312,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Green"
   },
   {
     "itemId": 1009320,
-    "name": "Delicate Tranquil Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1009321,
-    "name": "Polished Tranquil Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Green"
   },
   {
     "itemId": 1009322,
-    "name": "Grand Tranquil Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Green"
   },
   {
     "itemId": 2000000,
-    "name": "Deep Delicate Burning Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2000001,
-    "name": "Deep Polished Burning Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2000002,
-    "name": "Deep Grand Burning Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2000010,
-    "name": "Deep Delicate Burning Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2000011,
-    "name": "Deep Polished Burning Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2000012,
-    "name": "Deep Grand Burning Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2000020,
-    "name": "Deep Delicate Burning Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2000021,
-    "name": "Deep Polished Burning Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2000022,
-    "name": "Deep Grand Burning Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2000100,
-    "name": "Deep Delicate Drizzly Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2000101,
-    "name": "Deep Polished Drizzly Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2000102,
-    "name": "Deep Grand Drizzly Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2000110,
-    "name": "Deep Delicate Drizzly Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2000111,
-    "name": "Deep Polished Drizzly Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2000112,
-    "name": "Deep Grand Drizzly Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2000120,
-    "name": "Deep Delicate Drizzly Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2000121,
-    "name": "Deep Polished Drizzly Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2000122,
-    "name": "Deep Grand Drizzly Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2000200,
-    "name": "Deep Delicate Luminous Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2000201,
-    "name": "Deep Polished Luminous Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2000202,
-    "name": "Deep Grand Luminous Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2000210,
-    "name": "Deep Delicate Luminous Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2000211,
-    "name": "Deep Polished Luminous Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2000212,
-    "name": "Deep Grand Luminous Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2000220,
-    "name": "Deep Delicate Luminous Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2000221,
-    "name": "Deep Polished Luminous Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2000222,
-    "name": "Deep Grand Luminous Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2000300,
-    "name": "Deep Delicate Tranquil Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2000301,
-    "name": "Deep Polished Tranquil Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2000302,
-    "name": "Deep Grand Tranquil Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2000310,
-    "name": "Deep Delicate Tranquil Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2000311,
-    "name": "Deep Polished Tranquil Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2000312,
-    "name": "Deep Grand Tranquil Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2000320,
-    "name": "Deep Delicate Tranquil Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2000321,
-    "name": "Deep Polished Tranquil Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2000322,
-    "name": "Deep Grand Tranquil Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2001001,
-    "name": "Deep Polished Burning Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2001002,
-    "name": "Deep Grand Burning Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2001011,
-    "name": "Deep Polished Burning Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2001012,
-    "name": "Deep Grand Burning Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2001021,
-    "name": "Deep Polished Burning Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2001022,
-    "name": "Deep Grand Burning Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2001101,
-    "name": "Deep Polished Drizzly Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2001102,
-    "name": "Deep Grand Drizzly Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2001111,
-    "name": "Deep Polished Drizzly Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2001112,
-    "name": "Deep Grand Drizzly Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2001121,
-    "name": "Deep Polished Drizzly Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2001122,
-    "name": "Deep Grand Drizzly Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2001201,
-    "name": "Deep Polished Luminous Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2001202,
-    "name": "Deep Grand Luminous Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2001211,
-    "name": "Deep Polished Luminous Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2001212,
-    "name": "Deep Grand Luminous Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2001221,
-    "name": "Deep Polished Luminous Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2001222,
-    "name": "Deep Grand Luminous Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2001301,
-    "name": "Deep Polished Tranquil Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2001302,
-    "name": "Deep Grand Tranquil Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2001311,
-    "name": "Deep Polished Tranquil Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2001312,
-    "name": "Deep Grand Tranquil Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2001321,
-    "name": "Deep Polished Tranquil Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2001322,
-    "name": "Deep Grand Tranquil Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2002002,
-    "name": "Deep Grand Burning Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2002012,
-    "name": "Deep Grand Burning Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2002022,
-    "name": "Deep Grand Burning Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2002102,
-    "name": "Deep Grand Drizzly Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2002112,
-    "name": "Deep Grand Drizzly Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2002122,
-    "name": "Deep Grand Drizzly Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2002202,
-    "name": "Deep Grand Luminous Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2002212,
-    "name": "Deep Grand Luminous Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2002222,
-    "name": "Deep Grand Luminous Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2002302,
-    "name": "Deep Grand Tranquil Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2002312,
-    "name": "Deep Grand Tranquil Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2002322,
-    "name": "Deep Grand Tranquil Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2003000,
-    "name": "Deep Delicate Burning Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2003001,
-    "name": "Deep Polished Burning Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2003002,
-    "name": "Deep Grand Burning Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2003010,
-    "name": "Deep Delicate Burning Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2003011,
-    "name": "Deep Polished Burning Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2003012,
-    "name": "Deep Grand Burning Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2003020,
-    "name": "Deep Delicate Burning Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2003021,
-    "name": "Deep Polished Burning Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2003022,
-    "name": "Deep Grand Burning Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2003100,
-    "name": "Deep Delicate Drizzly Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2003101,
-    "name": "Deep Polished Drizzly Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2003102,
-    "name": "Deep Grand Drizzly Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2003110,
-    "name": "Deep Delicate Drizzly Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2003111,
-    "name": "Deep Polished Drizzly Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2003112,
-    "name": "Deep Grand Drizzly Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2003120,
-    "name": "Deep Delicate Drizzly Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2003121,
-    "name": "Deep Polished Drizzly Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2003122,
-    "name": "Deep Grand Drizzly Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2003200,
-    "name": "Deep Delicate Luminous Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2003201,
-    "name": "Deep Polished Luminous Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2003202,
-    "name": "Deep Grand Luminous Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2003210,
-    "name": "Deep Delicate Luminous Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2003211,
-    "name": "Deep Polished Luminous Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2003212,
-    "name": "Deep Grand Luminous Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2003220,
-    "name": "Deep Delicate Luminous Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2003221,
-    "name": "Deep Polished Luminous Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2003222,
-    "name": "Deep Grand Luminous Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2003300,
-    "name": "Deep Delicate Tranquil Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2003301,
-    "name": "Deep Polished Tranquil Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2003302,
-    "name": "Deep Grand Tranquil Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2003310,
-    "name": "Deep Delicate Tranquil Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2003311,
-    "name": "Deep Polished Tranquil Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2003312,
-    "name": "Deep Grand Tranquil Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2003320,
-    "name": "Deep Delicate Tranquil Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2003321,
-    "name": "Deep Polished Tranquil Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2003322,
-    "name": "Deep Grand Tranquil Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2010000,
-    "name": "Deep Delicate Burning Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2010001,
-    "name": "Deep Polished Burning Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2010002,
-    "name": "Deep Grand Burning Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2010010,
-    "name": "Deep Delicate Burning Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2010011,
-    "name": "Deep Polished Burning Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2010012,
-    "name": "Deep Grand Burning Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2010020,
-    "name": "Deep Delicate Burning Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2010021,
-    "name": "Deep Polished Burning Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2010022,
-    "name": "Deep Grand Burning Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2010100,
-    "name": "Deep Delicate Drizzly Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2010101,
-    "name": "Deep Polished Drizzly Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2010102,
-    "name": "Deep Grand Drizzly Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2010110,
-    "name": "Deep Delicate Drizzly Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2010111,
-    "name": "Deep Polished Drizzly Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2010112,
-    "name": "Deep Grand Drizzly Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2010120,
-    "name": "Deep Delicate Drizzly Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2010121,
-    "name": "Deep Polished Drizzly Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2010122,
-    "name": "Deep Grand Drizzly Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2010200,
-    "name": "Deep Delicate Luminous Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2010201,
-    "name": "Deep Polished Luminous Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2010202,
-    "name": "Deep Grand Luminous Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2010210,
-    "name": "Deep Delicate Luminous Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2010211,
-    "name": "Deep Polished Luminous Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2010212,
-    "name": "Deep Grand Luminous Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2010220,
-    "name": "Deep Delicate Luminous Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2010221,
-    "name": "Deep Polished Luminous Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2010222,
-    "name": "Deep Grand Luminous Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2010300,
-    "name": "Deep Delicate Tranquil Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2010301,
-    "name": "Deep Polished Tranquil Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2010302,
-    "name": "Deep Grand Tranquil Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2010310,
-    "name": "Deep Delicate Tranquil Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2010311,
-    "name": "Deep Polished Tranquil Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2010312,
-    "name": "Deep Grand Tranquil Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2010320,
-    "name": "Deep Delicate Tranquil Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2010321,
-    "name": "Deep Polished Tranquil Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2010322,
-    "name": "Deep Grand Tranquil Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2011001,
-    "name": "Deep Polished Burning Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2011002,
-    "name": "Deep Grand Burning Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2011011,
-    "name": "Deep Polished Burning Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2011012,
-    "name": "Deep Grand Burning Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2011021,
-    "name": "Deep Polished Burning Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2011022,
-    "name": "Deep Grand Burning Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2011101,
-    "name": "Deep Polished Drizzly Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2011102,
-    "name": "Deep Grand Drizzly Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2011111,
-    "name": "Deep Polished Drizzly Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2011112,
-    "name": "Deep Grand Drizzly Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2011121,
-    "name": "Deep Polished Drizzly Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2011122,
-    "name": "Deep Grand Drizzly Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2011201,
-    "name": "Deep Polished Luminous Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2011202,
-    "name": "Deep Grand Luminous Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2011211,
-    "name": "Deep Polished Luminous Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2011212,
-    "name": "Deep Grand Luminous Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2011221,
-    "name": "Deep Polished Luminous Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2011222,
-    "name": "Deep Grand Luminous Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2011301,
-    "name": "Deep Polished Tranquil Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2011302,
-    "name": "Deep Grand Tranquil Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2011311,
-    "name": "Deep Polished Tranquil Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2011312,
-    "name": "Deep Grand Tranquil Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2011321,
-    "name": "Deep Polished Tranquil Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2011322,
-    "name": "Deep Grand Tranquil Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2012002,
-    "name": "Deep Grand Burning Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2012012,
-    "name": "Deep Grand Burning Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2012022,
-    "name": "Deep Grand Burning Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2012102,
-    "name": "Deep Grand Drizzly Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2012112,
-    "name": "Deep Grand Drizzly Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2012122,
-    "name": "Deep Grand Drizzly Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2012202,
-    "name": "Deep Grand Luminous Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2012212,
-    "name": "Deep Grand Luminous Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2012222,
-    "name": "Deep Grand Luminous Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2012302,
-    "name": "Deep Grand Tranquil Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2012312,
-    "name": "Deep Grand Tranquil Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2012322,
-    "name": "Deep Grand Tranquil Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2013000,
-    "name": "Deep Delicate Burning Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2013001,
-    "name": "Deep Polished Burning Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2013002,
-    "name": "Deep Grand Burning Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2013010,
-    "name": "Deep Delicate Burning Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2013011,
-    "name": "Deep Polished Burning Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2013012,
-    "name": "Deep Grand Burning Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2013020,
-    "name": "Deep Delicate Burning Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2013021,
-    "name": "Deep Polished Burning Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2013022,
-    "name": "Deep Grand Burning Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Red",
     "dn": true
   },
   {
     "itemId": 2013100,
-    "name": "Deep Delicate Drizzly Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2013101,
-    "name": "Deep Polished Drizzly Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2013102,
-    "name": "Deep Grand Drizzly Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2013110,
-    "name": "Deep Delicate Drizzly Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2013111,
-    "name": "Deep Polished Drizzly Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2013112,
-    "name": "Deep Grand Drizzly Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2013120,
-    "name": "Deep Delicate Drizzly Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2013121,
-    "name": "Deep Polished Drizzly Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2013122,
-    "name": "Deep Grand Drizzly Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Blue",
     "dn": true
   },
   {
     "itemId": 2013200,
-    "name": "Deep Delicate Luminous Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2013201,
-    "name": "Deep Polished Luminous Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2013202,
-    "name": "Deep Grand Luminous Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2013210,
-    "name": "Deep Delicate Luminous Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2013211,
-    "name": "Deep Polished Luminous Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2013212,
-    "name": "Deep Grand Luminous Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2013220,
-    "name": "Deep Delicate Luminous Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2013221,
-    "name": "Deep Polished Luminous Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2013222,
-    "name": "Deep Grand Luminous Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Yellow",
     "dn": true
   },
   {
     "itemId": 2013300,
-    "name": "Deep Delicate Tranquil Scene",
+    "name": "섬세한, 불타는 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2013301,
-    "name": "Deep Polished Tranquil Scene",
+    "name": "단정한, 불타는 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2013302,
-    "name": "Deep Grand Tranquil Scene",
+    "name": "웅장한, 불타는 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2013310,
-    "name": "Deep Delicate Tranquil Scene",
+    "name": "섬세한, 촉촉한 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2013311,
-    "name": "Deep Polished Tranquil Scene",
+    "name": "단정한, 촉촉한 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2013312,
-    "name": "Deep Grand Tranquil Scene",
+    "name": "웅장한, 촉촉한 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2013320,
-    "name": "Deep Delicate Tranquil Scene",
+    "name": "섬세한, 빛나는 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2013321,
-    "name": "Deep Polished Tranquil Scene",
+    "name": "단정한, 빛나는 혼경",
     "color": "Green",
     "dn": true
   },
   {
     "itemId": 2013322,
-    "name": "Deep Grand Tranquil Scene",
+    "name": "웅장한, 빛나는 혼경",
     "color": "Green",
     "dn": true
   }

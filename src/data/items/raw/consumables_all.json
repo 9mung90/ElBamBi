@@ -248,7 +248,7 @@
     "name_kor": "독 이끼약",
     "type_kor": "소비",
     "description_kor": "동굴 이끼를 사용한 초록색 환약. 제작 가능한 아이템의 일종.  독 상태를 치료하며 독의 축적을 경감한다.  독은 서서히 축적되며 다 쌓이면 독 상태가 되고, 잠시 이어지며 HP가 계속 감소한다.",
-    "ability_kor": "독 상태를 치료하며 축적을 경감한다.",
+    "ability_kor": " 섭취하면 독 축적을 경감한다. 상태이상에 대한 저항력을 상승시키며, 그 효과는 진행중인 세션이 끝날 때까지 유지된다. 상태이상 저항력 상승 효과는 여러 종류의 이끼약을 먹어 중첩시킬 수 있으며, 같은 이끼약을 여러 개 먹어 강화시키는 것 역시 가능하다",
     "rarity": "common"
   },
   {
@@ -262,7 +262,7 @@
     "name_kor": "출혈 이끼약",
     "type_kor": "소비",
     "description_kor": "동굴 이끼를 사용한 붉은색 환약. 제작 가능한 아이템의 일종.  출혈의 축적을 경감한다.  출혈은 서서히 축적되며 다 쌓이면 큰 대미지를 입는다. 그렇게 되기 전에 이 환약을 사용하면 된다.",
-    "ability_kor": "출혈 축적을 경감한다.",
+    "ability_kor": "섭취하면 출혈 축적을 경감하며 출혈 상태이상에 대한 저항력을 상승시키며, 그 효과는 진행중인 세션이 끝날 때까지 유지된다. 상태이상 저항력 상승 효과는 여러 종류의 이끼약을 먹어 중첩시킬 수 있으며, 같은 이끼약을 여러 개 먹어 강화시키는 것 역시 가능하다.",
     "rarity": "common"
   },
   {
@@ -276,7 +276,7 @@
     "name_kor": "동상 이끼약",
     "type_kor": "소비",
     "description_kor": "동굴 이끼를 사용한 얼음색 환약. 제작 가능한 아이템의 일종.  동상 축적을 경감하고 동상 상태를 치유한다.  동상은 서서히 축적되며 다 쌓이면 큰 대미지를 입고 일정 시간 받는 대미지가 커진다.  그렇게 되기 전에 이 환약을 사용하면 된다.",
-    "ability_kor": "동상 상태를 치료하며 축적을 경감한다.",
+    "ability_kor": "섭취하면 동상 축적을 경감하며 동상 상태이상에 대한 저항력을 상승시키며, 그 효과는 진행중인 세션이 끝날 때까지 유지된다. 상태이상 저항력 상승 효과는 여러 종류의 이끼약을 먹어 중첩시킬 수 있으며, 같은 이끼약을 여러 개 먹어 강화시키는 것 역시 가능하다.",
     "rarity": "common"
   },
   {
@@ -290,7 +290,7 @@
     "name_kor": "수면 이끼약",
     "type_kor": "소비",
     "description_kor": "동굴 이끼를 사용한 연보라색 환약. 제작 가능한 아이템의 일종.  수면의 축적을 경감한다.  수면은 서서히 축적되며 다 쌓여도 잠들지는 않으나 순간적으로 몽롱해져 FP가 감소한다.  그렇게 되기 전에 이 환약을 사용하면 된다.",
-    "ability_kor": "수면 축적을 경감한다.",
+    "ability_kor": "섭취하면 수면 축적을 경감하며 수면 상태이상에 대한 저항력을 상승시키며, 그 효과는 진행중인 세션이 끝날 때까지 유지된다. 상태이상 저항력 상승 효과는 여러 종류의 이끼약을 먹어 중첩시킬 수 있으며, 같은 이끼약을 여러 개 먹어 강화시키는 것 역시 가능하다.",
     "rarity": "common"
   },
   {
@@ -304,7 +304,7 @@
     "name_kor": "부패 이끼약",
     "type_kor": "소비",
     "description_kor": "동굴 이끼를 사용한 붉은색 환약. 제작 가능한 아이템의 일종.  붉은 부패의 축적을 경감하고 부패 상태를 치료한다.  붉은 부패는 서서히 축적되며 다 쌓이면 잠시 부패 상태가 되어 HP가 크게 계속 감소한다.",
-    "ability_kor": "붉은 부패 상태를 치료하며 축적을 경감한다.",
+    "ability_kor": "섭취하면 붉은 부패 상태를 치료하며 축적을 경감하며 붉은 부패 상태이상에 대한 저항력을 상승시키며, 그 효과는 진행중인 세션이 끝날 때까지 유지된다. 상태이상 저항력 상승 효과는 여러 종류의 이끼약을 먹어 중첩시킬 수 있으며, 같은 이끼약을 여러 개 먹어 강화시키는 것 역시 가능하다.",
     "rarity": "common"
   },
   {
@@ -318,7 +318,7 @@
     "name_kor": "죽음 이끼약",
     "type_kor": "소비",
     "description_kor": "동굴 이끼를 사용한 검은색 환약. 제작 가능한 아이템의 일종.  죽음의 축적을 경감한다.  죽음은 서서히 축적되며 다 쌓이면 즉사하고 만다. 그렇게 되기 전에 이 환약을 사용하면 된다.",
-    "ability_kor": "죽음 축적을 경감한다.",
+    "ability_kor": "섭취하면 죽음 축적을 경감하며 죽음 상태이상에 대한 저항력을 상승시키며, 그 효과는 진행중인 세션이 끝날 때까지 유지된다. 상태이상 저항력 상승 효과는 여러 종류의 이끼약을 먹어 중첩시킬 수 있으며, 같은 이끼약을 여러 개 먹어 강화시키는 것 역시 가능하다.",
     "rarity": "common"
   },
   {
@@ -332,7 +332,7 @@
     "name_kor": "발광 이끼약",
     "type_kor": "소비",
     "description_kor": "동굴 이끼를 사용한 노란색 환약. 제작 가능한 아이템의 일종.  발광의 축적을 경감한다.  발광은 서서히 축적되며 다 쌓이면 큰 대미지를 입고 FP도 감소한다.  그렇게 되기 전에 이 환약을 사용하면 된다.",
-    "ability_kor": "발광 축적을 경감한다.",
+    "ability_kor": " 섭취하면 발광 축적을 경감하며 발광 상태이상에 대한 저항력을 상승시키며, 그 효과는 진행중인 세션이 끝날 때까지 유지된다. 상태이상 저항력 상승 효과는 여러 종류의 이끼약을 먹어 중첩시킬 수 있으며, 같은 이끼약을 여러 개 먹어 강화시키는 것 역시 가능하다.",
     "rarity": "common"
   },
   {
@@ -401,8 +401,8 @@
     "bagcraftCategory": 4,
     "name_kor": "별빛 조각",
     "type_kor": "소비",
-    "description_kor": "파랗게 빛나는, 덧없는 조각. 잠시 흘러온 별빛의 잔해.  사용하면 FP를 서서히 회복한다.  과거에 영원한 도읍에서는 정약의 재료로 귀중하게 여겼다고 한다.",
-    "ability_kor": "60초 동안 초당 2 FP씩 총 120 FP를 회복",
+    "description_kor": "파랗게 빛나는, 덧없는 조각. 잠시 흘러온 별빛의 잔해.  사용하면 FP를 회복한다.  과거에 영원한 도읍에서는 정약의 재료로 귀중하게 여겼다고 한다.",
+    "ability_kor": "총 FP의 60%를 회복한다.",
     "rarity": "uncommon"
   },
   {
@@ -515,20 +515,6 @@
     "type_kor": "기름",
     "description_kor": "빙결 상태의 재료를 섞은 기름. 제작 가능한 아이템의 일종.  무기에 발라 동상 상태 이상을 부여한다. 효과는 일정 시간이 지나면 사라진다.",
     "ability_kor": "무기에 60초 동안 63 동상 수치를 부여한다.",
-    "rarity": "common"
-  },
-  {
-    "id": 38,
-    "name": "Dragonwound Grease",
-    "description": "Solidified grease made from a gravel-stone mixture. Coats armament, granting an anti-dragon effect and boosting physical attack. The effect lasts only for a short time. When the dragons were born from their ancient kin, they lost their stone scales, which can now be used to cause them mortal harm.",
-    "maxStack": 2,
-    "bagcraftMaxStack": 4,
-    "bagcraftExperience": 20,
-    "bagcraftCategory": 7,
-    "name_kor": "",
-    "type_kor": "",
-    "description_kor": "",
-    "ability_kor": "",
     "rarity": "common"
   },
   {
@@ -889,26 +875,14 @@
     "bagcraftMaxStack": 1,
     "bagcraftExperience": null,
     "bagcraftCategory": null,
-    "name_kor": "",
-    "type_kor": "",
-    "description_kor": "",
-    "ability_kor": "",
-    "rarity": "legendary"
+    "name_kor": "실 끝부분",
+    "type_kor": "밤의 통치자 전용",
+    "description_kor": "교회의 상자에서 굉장히 낮은 확률로 드랍되며 맵 중앙 강에 숨겨진 방을 열 수 있다. 숨겨진 방을 열면 희생의 가는 가지를 3개 얻을 수 있다.",
+    "ability_kor": "맵 중앙 강에 숨겨진 방을 열 수 있다.",
+    "rarity": "legendary",
+    "image": "/src/assets/images/items/End.webp"
   },
-  {
-    "id": 65,
-    "name": "Dismembered Finger",
-    "description": "A finger torn from the Primordial Nightlord. Lacking the life-giving spark of blood, it is instead saturated with Night. The Undertaker held a faint glimmer of hope. That she might finally shed the dreadful power that enshrouds her. But she knew her hopes were only fantasies. And so she became determined to at least find comfort. The Night was brought to an end, but the loathsome hex would be hers forever.",
-    "maxStack": 1,
-    "bagcraftMaxStack": 1,
-    "bagcraftExperience": null,
-    "bagcraftCategory": null,
-    "name_kor": "",
-    "type_kor": "",
-    "description_kor": "",
-    "ability_kor": "",
-    "rarity": "unique"
-  },
+  
   {
     "id": 66,
     "name": "Small Pouch",
@@ -917,25 +891,12 @@
     "bagcraftMaxStack": 1,
     "bagcraftExperience": null,
     "bagcraftCategory": null,
-    "name_kor": "",
-    "type_kor": "",
-    "description_kor": "",
-    "ability_kor": "",
-    "rarity": "uncommon"
-  },
-  {
-    "id": 67,
-    "name": "Dragon Heart",
-    "description": "Dragon heart seized by a dragon tracker. Riddled with Gravel Stone, this grotesque organ continues to beat vivaciously. An offering used in the Dragon Communion. Consume a dragon's heart at the altar to make its power yours. While a terrible and savage-looking thing, the heart has a peculiar beauty to it.",
-    "maxStack": 1,
-    "bagcraftMaxStack": 1,
-    "bagcraftExperience": null,
-    "bagcraftCategory": null,
-    "name_kor": "",
-    "type_kor": "",
-    "description_kor": "",
-    "ability_kor": "",
-    "rarity": "uncommon"
+    "name_kor": "작은 파우치",
+    "type_kor": "밤의 통치자 전용",
+    "description_kor": "맵의 상인이 판매하고 있으며 유물로도 갖고 시작할 수 있다. 여러개를 사용할 수 있다.",
+    "ability_kor": "도구 슬롯의 크기를 1칸 확장해준다.",
+    "rarity": "uncommon",
+    "image": "/src/assets/images/items/smallPouch.webp"
   },
   {
     "id": 68,
@@ -945,9 +906,9 @@
     "bagcraftMaxStack": 1,
     "bagcraftExperience": null,
     "bagcraftCategory": null,
-    "name_kor": "단석 [4]",
+    "name_kor": "단석 [1]",
     "type_kor": "강화 재료",
-    "description_kor": "틈새의 땅에서 온갖 무기를 제련하는 돌조각.  특히 경질이고 큰 것.  특히 경질이고 큰 것. 무기를 +12까지 강화한다. 단석은 틈새의 땅에 널리 분포하며 그것을 채굴하기 위한 갱도가 각지에 존재한다.",
+    "description_kor": "틈새의 땅에서 온갖 무기를 제련하는 돌조각.  특히 경질이고 큰 것.  특히 경질이고 큰 것. 무기를 1강으로 강화한다. 단석은 틈새의 땅에 널리 분포하며 그것을 채굴하기 위한 갱도가 각지에 존재한다.",
     "ability_kor": "",
     "rarity": "uncommon"
   },
@@ -959,25 +920,11 @@
     "bagcraftMaxStack": 1,
     "bagcraftExperience": null,
     "bagcraftCategory": null,
-    "name_kor": "단석 [8]",
+    "name_kor": "단석 [2]",
     "type_kor": "강화 재료",
-    "description_kor": "틈새의 땅에서 온갖 무기를 제련하는 돌조각.  극지에서 나는, 반쯤 유리화된 큰 것. 무기를 +24까지 강화한다.  황금 나무의 시작인 거인 전쟁에서 영웅의 무기를 만들었다고 한다.",
+    "description_kor": "틈새의 땅에서 온갖 무기를 제련하는 돌조각.  극지에서 나는, 반쯤 유리화된 큰 것. 무기를 2강으로 강화한다.  황금 나무의 시작인 거인 전쟁에서 영웅의 무기를 만들었다고 한다.",
     "ability_kor": "",
     "rarity": "rare"
-  },
-  {
-    "id": 70,
-    "name": "Smithing Stone [3]",
-    "description": "Smithing stone made by polishing a golden Gravel Stone. A scale of the Ancient Dragonlord, and hidden treasure of Farum Azula. Use at a smithing table to strengthen rare armaments. The Ancient Dragonlord's seat is said to lie beyond time. This stone lightly twists time, allowing the creation of a weapon capable of slaying a god.",
-    "maxStack": 1,
-    "bagcraftMaxStack": 1,
-    "bagcraftExperience": null,
-    "bagcraftCategory": null,
-    "name_kor": "고룡암의 단석",
-    "type_kor": "강화 재료",
-    "description_kor": "황금 자갈을 단련한 단석. 고룡 왕의 비늘이며 파름 아즈라의 비보이다.  무기를 +25까지 강화한다.  고룡 왕은 시간의 틈새에 자리한다고 한다. 이 돌 또한 미약하게 시간을 왜곡하며 그렇기에 신을 죽일 무기를 만든다.",
-    "ability_kor": "",
-    "rarity": "legendary"
   },
   {
     "id": 71,

@@ -54,15 +54,15 @@ function getConflictReasons(
   const reasons: string[] = [];
 
   if (candidate.key === selectedEffect.key) {
-    reasons.push(`${slotLabel} 슬롯과 같은 효과입니다.`);
+    reasons.push(`${slotLabel}와 같은 효과`);
   }
 
   if (String(candidate.id) === String(selectedEffect.id)) {
-    reasons.push(`${slotLabel} 슬롯과 같은 id입니다.`);
+    reasons.push(`${slotLabel}와 같은 ID`);
   }
 
   if (String(candidate.group) === String(selectedEffect.group)) {
-    reasons.push(`${slotLabel} 슬롯과 같은 group이라 충돌합니다.`);
+    reasons.push(`${slotLabel}와 같은 그룹`);
   }
 
   return reasons;
@@ -110,13 +110,13 @@ function getCandidateReasonsForSlot(
 
     if (selectedIndex < slotIndex && compareEffects(selectedEffect, candidate, categoryOrder) > 0) {
       reasons.push(
-        `${SLOT_LABELS[selectedIndex]} 슬롯보다 앞선 cat/loc/id 순서라 ${SLOT_LABELS[slotIndex]} 슬롯에 올 수 없습니다.`,
+        `${SLOT_LABELS[selectedIndex]}보다 앞선 순서라 ${SLOT_LABELS[slotIndex]}에 올 수 없음`,
       );
     }
 
     if (selectedIndex > slotIndex && compareEffects(candidate, selectedEffect, categoryOrder) > 0) {
       reasons.push(
-        `${SLOT_LABELS[selectedIndex]} 슬롯보다 뒤쪽 cat/loc/id 순서라 ${SLOT_LABELS[slotIndex]} 슬롯에 올 수 없습니다.`,
+        `${SLOT_LABELS[selectedIndex]}보다 뒤쪽 순서라 ${SLOT_LABELS[slotIndex]}에 올 수 없음`,
       );
     }
   });
@@ -162,7 +162,7 @@ function getSlotEvaluations(
       nextSelection[slotIndex] = effect.key;
 
       if (!canCompleteSelection(mode, nextSelection, categoryOrder)) {
-        reasons.push('남은 슬롯까지 채울 수 있는 조합이 없습니다.');
+        reasons.push('남은 슬롯 조합 없음');
       }
     }
 
@@ -186,16 +186,24 @@ function matchesSearch(effect: RelicRollEffect, searchQuery: string) {
   ].some((value) => String(value).toLowerCase().includes(normalizedQuery));
 }
 
-function getCategoryLabel(cat: number) {
-  const labels: Record<number, string> = {
-    1: '캐릭터/특수 효과',
-    10: '무기 공격/행동 발동 효과',
-    100: '유틸리티/조건부 효과',
-    101: '룬 특수 효과',
-    1000: '능력치/경감률/내성 효과',
+function getModeLabel(mode: RelicRollMode) {
+  const labels: Record<string, string> = {
+    base_game_v102: '일반',
+    deep_night_v102: '심도',
+    tfh_dlc_base: '버려진 공허',
+    tfh_dlc_deep: '버려진 공허, 심도',
   };
 
-  return labels[cat] ?? `category ${cat}`;
+  return labels[mode.id] ?? mode.label;
+}
+
+function getDebuffTableLabel(label: string) {
+  const labels: Record<string, string> = {
+    'Base / Deep of the Night debuffs': '심도 디버프',
+    'The Forsaken Hollow DLC debuffs': '버려진 공허 디버프',
+  };
+
+  return labels[label] ?? label;
 }
 
 function RelicEffectOption({
@@ -228,9 +236,6 @@ function RelicEffectOption({
     >
       <strong>{getEffectName(effect)}</strong>
       <p>{getEffectDetail(effect)}</p>
-      <span>
-        {effect.effect} / cat {effect.cat} / loc {effect.loc} / group {effect.group}
-      </span>
       {reasons.length ? (
         <ul className="relic-builder-reasons">
           {reasons.map((reason) => (
@@ -341,7 +346,7 @@ function RelicBuilderPage({ searchQuery }: { searchQuery: string }) {
               >
                 {modes.map((candidateMode) => (
                   <option key={candidateMode.id} value={candidateMode.id}>
-                    {candidateMode.label}
+                    {getModeLabel(candidateMode)}
                   </option>
                 ))}
               </select>
@@ -356,13 +361,6 @@ function RelicBuilderPage({ searchQuery }: { searchQuery: string }) {
             </button>
           </div>
 
-          <div className="relic-builder-rule-summary">
-            <span>중복 효과 금지</span>
-            <span>같은 group 충돌</span>
-            <span>cat/loc/id 순서 유지</span>
-            {mode.isDeepMode ? <span>Deep 모드 디버프 규칙 포함</span> : null}
-          </div>
-
           <label className="relic-builder-invalid-toggle">
             <input
               type="checkbox"
@@ -374,7 +372,7 @@ function RelicBuilderPage({ searchQuery }: { searchQuery: string }) {
 
           {mode.isDeepMode && debuffTable ? (
             <div className="relic-builder-debuff-note">
-              <strong>{debuffTable.label}</strong>
+              <strong>{getDebuffTableLabel(debuffTable.label)}</strong>
               <span>{debuffTable.count}개 디버프 테이블이 이 모드에 연결되어 있습니다.</span>
             </div>
           ) : null}
@@ -491,24 +489,12 @@ function RelicBuilderPage({ searchQuery }: { searchQuery: string }) {
                   <div>
                     <strong>{getEffectName(effect)}</strong>
                     <p>{getEffectDetail(effect)}</p>
-                    <em>
-                      {getCategoryLabel(effect.cat)} / {effect.effect}
-                    </em>
-                    {selectedReasons[index].length ? (
-                      <ul className="relic-builder-reasons">
-                        {selectedReasons[index].map((reason) => (
-                          <li key={reason}>{reason}</li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <em>가능</em>
-                    )}
+                    {!selectedReasons[index].length ? <em>가능</em> : null}
                     {canUseDebuffs && effect.cursed ? (
                       selectedDebuffs[index] ? (
                         <div className="relic-builder-result-debuff">
                           <strong>디버프: {getEffectName(selectedDebuffs[index])}</strong>
                           <p>{getEffectDetail(selectedDebuffs[index])}</p>
-                          <em>{selectedDebuffs[index].effect}</em>
                         </div>
                       ) : (
                         <em>이 옵션은 디버프 선택이 필요합니다.</em>

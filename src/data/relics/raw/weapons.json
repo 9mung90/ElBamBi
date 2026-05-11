@@ -8532,7 +8532,7 @@
   },
   "4110000": {
     "id": 4110000,
-    "name": "트롤의 기사검",
+    "name": "거인의 마법검",
     "requiredLevel": 3,
     "weaponType": 7,
     "rarity": 1,
@@ -8562,7 +8562,7 @@
   },
   "4110800": {
     "id": 4110800,
-    "name": "마력의 트롤의 기사검",
+    "name": "마력의 거인의 마법검",
     "requiredLevel": 3,
     "weaponType": 7,
     "rarity": 1,

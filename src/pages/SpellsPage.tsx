@@ -3,6 +3,31 @@ import { spells, type Spell } from '../data/spells';
 
 const visibleSpells = spells.filter((spell) => !Object.values(spell).some((value) => String(value).includes('◇')));
 
+export type SpellFilters = {
+  spell: string | null;
+  type: string | null;
+};
+
+export const spellFilterOptions = {
+  spells: Array.from(new Set(visibleSpells.map((spell) => spell.spell))).sort((a, b) =>
+    a.localeCompare(b, 'ko'),
+  ),
+  typesBySpell: visibleSpells.reduce<Record<string, string[]>>((options, spell) => {
+    const current = options[spell.spell] ?? [];
+    if (!current.includes(spell.type)) {
+      options[spell.spell] = [...current, spell.type].sort((a, b) => a.localeCompare(b, 'ko'));
+    }
+    return options;
+  }, {}),
+};
+
+export function createEmptySpellFilters(): SpellFilters {
+  return {
+    spell: null,
+    type: null,
+  };
+}
+
 function matchesSpellSearch(spell: Spell, query: string) {
   const normalizedQuery = query.trim().toLowerCase();
   if (!normalizedQuery) return true;
@@ -19,6 +44,13 @@ function matchesSpellSearch(spell: Spell, query: string) {
   ]
     .filter(Boolean)
     .some((value) => String(value).toLowerCase().includes(normalizedQuery));
+}
+
+function matchesSpellFilters(spell: Spell, filters: SpellFilters) {
+  const matchesSpell = !filters.spell || spell.spell === filters.spell;
+  const matchesType = !filters.type || spell.type === filters.type;
+
+  return matchesSpell && matchesType;
 }
 
 function SpellCard({ spell }: { spell: Spell }) {
@@ -78,10 +110,10 @@ function SpellCard({ spell }: { spell: Spell }) {
   );
 }
 
-function SpellsPage({ searchQuery }: { searchQuery: string }) {
+function SpellsPage({ searchQuery, filters }: { searchQuery: string; filters: SpellFilters }) {
   const filteredSpells = useMemo(
-    () => visibleSpells.filter((spell) => matchesSpellSearch(spell, searchQuery)),
-    [searchQuery],
+    () => visibleSpells.filter((spell) => matchesSpellSearch(spell, searchQuery) && matchesSpellFilters(spell, filters)),
+    [filters, searchQuery],
   );
 
   return (

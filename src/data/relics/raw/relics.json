@@ -509,12 +509,12 @@
     "nameOrNull": "짐승의 밤",
     "color": "Green",
     "image": "/src/assets/images/relics/night/2000.webp",
-    "location": "Acquired as a reward for defeating the Tricephalos Night Lord for the first time.",
-    "type": "quest",
+    "location": "세 목 달린 짐승을 처음 처치 보상으로 획득.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"짐승의 밤\",\"color\":\"Green\",\"type\":\"quest\",\"location\":\"Acquired as a reward for defeating the Tricephalos Night Lord for the first time.\",\"effects\":[7100110,7120100]}"
+    "raw": "{\"name\":\"짐승의 밤\",\"color\":\"Green\",\"type\":\"퀘스트\",\"location\":\"세 목 달린 짐승을 처음 처치 보상으로 획득.\",\"effects\":[7100110,7120100]}"
   },
   {
     "id": 2001,
@@ -522,12 +522,12 @@
     "nameOrNull": "짐승의 어두운 밤",
     "color": "Yellow",
     "image": "/src/assets/images/relics/night/2000.webp",
-    "location": "Defeat Everdark Sovereign Gladius and purchase from the Collector Signboard.",
-    "type": "quest",
+    "location": "어두운 밤의 왕 세 목 달린 짐승을 처치하고 수집가의 간판에서 구입.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"짐승의 어두운 밤\",\"color\":\"Yellow\",\"type\":\"quest\",\"location\":\"Defeat Everdark Sovereign Gladius and purchase from the Collector Signboard.\",\"effects\":[7100110,10001,7001602]}"
+    "raw": "{\"name\":\"짐승의 어두운 밤\",\"color\":\"Yellow\",\"type\":\"퀘스트\",\"location\":\"어두운 밤의 왕 세 목 달린 짐승을 처치하고 수집가의 간판에서 구입.\",\"effects\":[7100110,10001,7001602]}"
   },
   {
     "id": 2010,
@@ -535,12 +535,12 @@
     "nameOrNull": "제후의 밤",
     "color": "Blue",
     "image": "/src/assets/images/relics/night/2010.webp",
-    "location": "Acquired by defeating the Gaping Jaw Night Lord for the first time.",
-    "type": "quest",
+    "location": "달려드는 턱을 처음 처치 보상으로 획득.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"제후의 밤\",\"color\":\"Blue\",\"type\":\"quest\",\"location\":\"Acquired by defeating the Gaping Jaw Night Lord for the first time.\",\"effects\":[7040201,7030800,7035100]}"
+    "raw": "{\"name\":\"제후의 밤\",\"color\":\"Blue\",\"type\":\"퀘스트\",\"location\":\"달려드는 턱을 처음 처치 보상으로 획득.\",\"effects\":[7040201,7030800,7035100]}"
   },
   {
     "id": 2011,
@@ -548,12 +548,12 @@
     "nameOrNull": "제후의 어두운 밤",
     "color": "Red",
     "image": "/src/assets/images/relics/night/2010.webp",
-    "location": "Defeat Everdark Sovereign Gaping Jaw and purchase from the Collector Signboard.",
-    "type": "quest",
+    "location": "어두운 밤의 왕 달려드는 턱을 처치하고 수집가의 간판에서 구입.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"제후의 어두운 밤\",\"color\":\"Red\",\"type\":\"quest\",\"location\":\"Defeat Everdark Sovereign Gaping Jaw and purchase from the Collector Signboard.\",\"effects\":[7040201,7040200,7031900]}"
+    "raw": "{\"name\":\"제후의 어두운 밤\",\"color\":\"Red\",\"type\":\"퀘스트\",\"location\":\"어두운 밤의 왕 달려드는 턱을 처치하고 수집가의 간판에서 구입.\",\"effects\":[7040201,7040200,7031900]}"
   },
   {
     "id": 2020,
@@ -561,12 +561,12 @@
     "nameOrNull": "지식의 밤",
     "color": "Yellow",
     "image": "/src/assets/images/relics/night/2020.webp",
-    "location": "Acquired as a reward for defeating the Sentient Pest Night Lord for the first time.",
-    "type": "quest",
+    "location": "지성의 벌레를 처음 처치 보상으로 획득.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"지식의 밤\",\"color\":\"Yellow\",\"type\":\"quest\",\"location\":\"Acquired as a reward for defeating the Sentient Pest Night Lord for the first time.\",\"effects\":[7000190,7120500,7260710]}"
+    "raw": "{\"name\":\"지식의 밤\",\"color\":\"Yellow\",\"type\":\"퀘스트\",\"location\":\"지성의 벌레를 처음 처치 보상으로 획득.\",\"effects\":[7000190,7120500,7260710]}"
   },
   {
     "id": 2021,
@@ -574,12 +574,12 @@
     "nameOrNull": "지식의 어두운 밤",
     "color": "Green",
     "image": "/src/assets/images/relics/night/2020.webp",
-    "location": "Defeat Everdark Sovereign Gaping Jaw and purchase from the Collector Signboard.",
-    "type": "quest",
+    "location": "어두운 밤의 왕 지성의 벌레를 처치하고 수집가의 간판에서 구입.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"지식의 어두운 밤\",\"color\":\"Green\",\"type\":\"quest\",\"location\":\"Defeat Everdark Sovereign Gaping Jaw and purchase from the Collector Signboard.\",\"effects\":[7000190,10000,7060100]}"
+    "raw": "{\"name\":\"지식의 어두운 밤\",\"color\":\"Green\",\"type\":\"퀘스트\",\"location\":\"어두운 밤의 왕 지성의 벌레를 처치하고 수집가의 간판에서 구입.\",\"effects\":[7000190,10000,7060100]}"
   },
   {
     "id": 2030,
@@ -587,12 +587,12 @@
     "nameOrNull": "심해의 밤",
     "color": "Red",
     "image": "/src/assets/images/relics/night/2030.webp",
-    "location": "Acquired as a reward for defeating the Augur Night Lord for the first time.",
-    "type": "quest",
+    "location": "징조를 처음 처치 보상으로 획득.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"심해의 밤\",\"color\":\"Red\",\"type\":\"quest\",\"location\":\"Acquired as a reward for defeating the Augur Night Lord for the first time.\",\"effects\":[7000090,7010200,7050100]}"
+    "raw": "{\"name\":\"심해의 밤\",\"color\":\"Red\",\"type\":\"퀘스트\",\"location\":\"징조를 처음 처치 보상으로 획득.\",\"effects\":[7000090,7010200,7050100]}"
   },
   {
     "id": 2031,
@@ -600,12 +600,12 @@
     "nameOrNull": "심해의 어두운 밤",
     "color": "Blue",
     "image": "/src/assets/images/relics/night/2030.webp",
-    "location": "Defeat Everdark Sovereign Augur and purchase from the Collector Signboard.",
-    "type": "quest",
+    "location": "어두운 밤의 왕 징조를 처치하고 수집가의 간판에서 구입.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"심해의 어두운 밤\",\"color\":\"Blue\",\"type\":\"quest\",\"location\":\"Defeat Everdark Sovereign Augur and purchase from the Collector Signboard.\",\"effects\":[7000090,7001100,7012200]}"
+    "raw": "{\"name\":\"심해의 어두운 밤\",\"color\":\"Blue\",\"type\":\"퀘스트\",\"location\":\"어두운 밤의 왕 징조를 처치하고 수집가의 간판에서 구입.\",\"effects\":[7000090,7001100,7012200]}"
   },
   {
     "id": 2040,
@@ -613,12 +613,12 @@
     "nameOrNull": "악마의 밤",
     "color": "Red",
     "image": "/src/assets/images/relics/night/2040.webp",
-    "location": "Acquired as a reward for defeating the Equilibrious Beast Night Lord for the first time.",
-    "type": "quest",
+    "location": "조율의 마물을 처음 처치 보상으로 획득.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"악마의 밤\",\"color\":\"Red\",\"type\":\"quest\",\"location\":\"Acquired as a reward for defeating the Equilibrious Beast Night Lord for the first time.\",\"effects\":[7230001,7035400,7035500]}"
+    "raw": "{\"name\":\"악마의 밤\",\"color\":\"Red\",\"type\":\"퀘스트\",\"location\":\"조율의 마물을 처음 처치 보상으로 획득.\",\"effects\":[7230001,7035400,7035500]}"
   },
   {
     "id": 2041,
@@ -626,12 +626,12 @@
     "nameOrNull": "악마의 어두운 밤",
     "color": "Blue",
     "image": "/src/assets/images/relics/night/2040.webp",
-    "location": "Defeat Everdark Sovereign Libra Creature of Night and purchase from the Collector Signboard.",
-    "type": "quest",
+    "location": "어두운 밤의 왕 조율의 마물을 처치하고 수집가의 간판에서 구입.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"악마의 어두운 밤\",\"color\":\"Blue\",\"type\":\"quest\",\"location\":\"Defeat Everdark Sovereign Libra Creature of Night and purchase from the Collector Signboard.\",\"effects\":[10001,7035400,7035500]}"
+    "raw": "{\"name\":\"악마의 어두운 밤\",\"color\":\"Blue\",\"type\":\"퀘스트\",\"location\":\"어두운 밤의 왕 조율의 마물을 처치하고 수집가의 간판에서 구입.\",\"effects\":[10001,7035400,7035500]}"
   },
   {
     "id": 2050,
@@ -639,12 +639,12 @@
     "nameOrNull": "사냥꾼의 밤",
     "color": "Green",
     "image": "/src/assets/images/relics/night/2050.webp",
-    "location": "Acquired as a reward for defeating the Darkdrift Knight Night Lord for the first time.",
-    "type": "quest",
+    "location": "어둠을 달리는 사냥꾼을 처음 처치 보상으로 획득.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"사냥꾼의 밤\",\"color\":\"Green\",\"type\":\"quest\",\"location\":\"Acquired as a reward for defeating the Darkdrift Knight Night Lord for the first time.\",\"effects\":[7000290,7150000,7160000]}"
+    "raw": "{\"name\":\"사냥꾼의 밤\",\"color\":\"Green\",\"type\":\"퀘스트\",\"location\":\"어둠을 달리는 사냥꾼을 처음 처치 보상으로 획득.\",\"effects\":[7000290,7150000,7160000]}"
   },
   {
     "id": 2051,
@@ -652,12 +652,12 @@
     "nameOrNull": "사냥꾼의 어두운 밤",
     "color": "Yellow",
     "image": "/src/assets/images/relics/night/2050.webp",
-    "location": "Defeat Everdark Sovereign Darkdrift Knight and purchase from the Collector Signboard.",
-    "type": "quest",
+    "location": "어두운 밤의 왕 어둠을 달리는 사냥꾼을 처치하고 수집가의 간판에서 구입.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"사냥꾼의 어두운 밤\",\"color\":\"Yellow\",\"type\":\"quest\",\"location\":\"Defeat Everdark Sovereign Darkdrift Knight and purchase from the Collector Signboard.\",\"effects\":[7000290,7035800,7090000]}"
+    "raw": "{\"name\":\"사냥꾼의 어두운 밤\",\"color\":\"Yellow\",\"type\":\"퀘스트\",\"location\":\"어두운 밤의 왕 어둠을 달리는 사냥꾼을 처치하고 수집가의 간판에서 구입.\",\"effects\":[7000290,7035800,7090000]}"
   },
   {
     "id": 2060,
@@ -665,12 +665,12 @@
     "nameOrNull": "안개의 밤",
     "color": "Yellow",
     "image": "/src/assets/images/relics/night/2060.webp",
-    "location": "Acquired as a reward for defeating the Fissure in the Fog Night Lord for the first time.",
-    "type": "quest",
+    "location": "안개의 틈새를 처음 처치 보상으로 획득.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"안개의 밤\",\"color\":\"Yellow\",\"type\":\"quest\",\"location\":\"Acquired as a reward for defeating the Fissure in the Fog Night Lord for the first time.\",\"effects\":[7260700,7123900,7260400]}"
+    "raw": "{\"name\":\"안개의 밤\",\"color\":\"Yellow\",\"type\":\"퀘스트\",\"location\":\"안개의 틈새를 처음 처치 보상으로 획득.\",\"effects\":[7260700,7123900,7260400]}"
   },
   {
     "id": 2061,
@@ -678,12 +678,12 @@
     "nameOrNull": "안개의 어두운 밤",
     "color": "Green",
     "image": "/src/assets/images/relics/night/2060.webp",
-    "location": "Defeat Everdark Sovereign Caligo and purchase from the Collector Signboard.",
-    "type": "quest",
+    "location": "어두운 밤의 왕 안개의 틈새를 처치하고 수집가의 간판에서 구입.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"안개의 어두운 밤\",\"color\":\"Green\",\"type\":\"quest\",\"location\":\"Defeat Everdark Sovereign Caligo and purchase from the Collector Signboard.\",\"effects\":[7260700,7120400,7006200]}"
+    "raw": "{\"name\":\"안개의 어두운 밤\",\"color\":\"Green\",\"type\":\"퀘스트\",\"location\":\"어두운 밤의 왕 안개의 틈새를 처치하고 수집가의 간판에서 구입.\",\"effects\":[7260700,7120400,7006200]}"
   },
   {
     "id": 2070,
@@ -691,12 +691,12 @@
     "nameOrNull": "안녕을 가져오는 자가 남긴 뜻",
     "color": "Blue",
     "image": "/src/assets/images/relics/night/2070.webp",
-    "location": "Acquired as a reward for defeating the Balancers for the first time.",
-    "type": "quest",
+    "location": "안녕을 가져오는 자들을 처음 처치 보상으로 획득.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"안녕을 가져오는 자가 남긴 뜻\",\"color\":\"Blue\",\"type\":\"quest\",\"location\":\"Acquired as a reward for defeating the Balancers for the first time.\",\"effects\":[7006600,7006700,7006500]}"
+    "raw": "{\"name\":\"안녕을 가져오는 자가 남긴 뜻\",\"color\":\"Blue\",\"type\":\"퀘스트\",\"location\":\"안녕을 가져오는 자들을 처음 처치 보상으로 획득.\",\"effects\":[7006600,7006700,7006500]}"
   },
   {
     "id": 2071,
@@ -704,12 +704,12 @@
     "nameOrNull": "안녕이 남긴 뜻",
     "color": "Red",
     "image": "/src/assets/images/relics/night/2070.webp",
-    "location": "Unknown",
-    "type": "quest",
+    "location": "구원의 기수 안녕을 가져오는 자를 처치하고 수집가의 간판에서 구입.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"안녕이 남긴 뜻\",\"color\":\"Red\",\"type\":\"quest\",\"effects\":[7006600,7006700,7037800]}"
+    "raw": "{\"name\":\"안녕이 남긴 뜻\",\"color\":\"Red\",\"type\":\"퀘스트\",\"effects\":[7006600,7006700,7037800],\"location\":\"구원의 기수 안녕을 가져오는 자를 처치하고 수집가의 간판에서 구입.\"}"
   },
   {
     "id": 2080,
@@ -717,12 +717,12 @@
     "nameOrNull": "잔해의 밤",
     "color": "Red",
     "image": "/src/assets/images/relics/night/2080.webp",
-    "location": "Acquired as a reward for defeating the Dreglord for the first time.",
-    "type": "quest",
+    "location": "잔해의 왕을 처음 처치 보상으로 획득.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"잔해의 밤\",\"color\":\"Red\",\"type\":\"quest\",\"location\":\"Acquired as a reward for defeating the Dreglord for the first time.\",\"effects\":[7170100,7260900,7037700]}"
+    "raw": "{\"name\":\"잔해의 밤\",\"color\":\"Red\",\"type\":\"퀘스트\",\"location\":\"잔해의 왕을 처음 처치 보상으로 획득.\",\"effects\":[7170100,7260900,7037700]}"
   },
   {
     "id": 2100,
@@ -730,12 +730,12 @@
     "nameOrNull": "왕의 밤",
     "color": "Blue",
     "image": "/src/assets/images/relics/night/2100.webp",
-    "location": "Acquired as a reward for defeating the Night Aspect Night Lord for the first time.",
-    "type": "quest",
+    "location": "밤을 본뜬 자를 처음 처치 보상으로 획득.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"왕의 밤\",\"color\":\"Blue\",\"type\":\"quest\",\"location\":\"Acquired as a reward for defeating the Night Aspect Night Lord for the first time.\",\"effects\":[7035700,7035800,7035900]}"
+    "raw": "{\"name\":\"왕의 밤\",\"color\":\"Blue\",\"type\":\"퀘스트\",\"location\":\"밤을 본뜬 자를 처음 처치 보상으로 획득.\",\"effects\":[7035700,7035800,7035900]}"
   },
   {
     "id": 10000,
@@ -743,12 +743,12 @@
     "nameOrNull": "낡은 회중시계",
     "color": "Green",
     "image": "/src/assets/images/relics/rememberence/10000.webp",
-    "location": "Acquired as a reward for defeating the Gladius Night Lord for the first time, or as random drop.",
-    "type": "quest",
+    "location": "세 목 달린 짐승을 처음 처치 보상 또는 무작위 드롭으로 획득.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"낡은 회중시계\",\"color\":\"Green\",\"type\":\"quest\",\"location\":\"Acquired as a reward for defeating the Gladius Night Lord for the first time, or as random drop.\",\"effects\":[10000,7000402]}"
+    "raw": "{\"name\":\"낡은 회중시계\",\"color\":\"Green\",\"type\":\"퀘스트\",\"location\":\"세 목 달린 짐승을 처음 처치 보상 또는 무작위 드롭으로 획득.\",\"effects\":[10000,7000402]}"
   },
   {
     "id": 10002,
@@ -756,12 +756,12 @@
     "nameOrNull": "끔찍한 흉조의 주물",
     "color": "Blue",
     "image": "/src/assets/images/relics/rememberence/10002.webp",
-    "location": "Acquired as a reward for defeating Fell Omen boss encountered in the tutorial section of the game.",
-    "type": "quest",
+    "location": "튜토리얼 구간의 끔찍한 흉조 보스 처치 보상으로 획득.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"끔찍한 흉조의 주물\",\"color\":\"Blue\",\"type\":\"quest\",\"location\":\"Acquired as a reward for defeating Fell Omen boss encountered in the tutorial section of the game.\",\"effects\":[7035900,7040400,7000000]}"
+    "raw": "{\"name\":\"끔찍한 흉조의 주물\",\"color\":\"Blue\",\"type\":\"퀘스트\",\"location\":\"튜토리얼 구간의 끔찍한 흉조 보스 처치 보상으로 획득.\",\"effects\":[7035900,7040400,7000000]}"
   },
   {
     "id": 11000,
@@ -769,12 +769,12 @@
     "nameOrNull": "회색 숫돌",
     "color": "Red",
     "image": "/src/assets/images/relics/rememberence/11000.webp",
-    "location": "Acquired as a reward for completing the Wylder's Remembrance Quest.",
-    "type": "quest",
+    "location": "추적자의 추억 퀘스트 완료 보상으로 획득.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"회색 숫돌\",\"color\":\"Red\",\"type\":\"quest\",\"location\":\"Acquired as a reward for completing the Wylder's Remembrance Quest.\",\"effects\":[7020000,7001400]}"
+    "raw": "{\"name\":\"회색 숫돌\",\"color\":\"Red\",\"type\":\"퀘스트\",\"location\":\"추적자의 추억 퀘스트 완료 보상으로 획득.\",\"effects\":[7020000,7001400]}"
   },
   {
     "id": 11001,
@@ -782,12 +782,12 @@
     "nameOrNull": "추적자의 귀고리",
     "color": "Red",
     "image": "/src/assets/images/relics/rememberence/11001.webp",
-    "location": "Complete Wylders's Remembrance quests and kill Heolstor the Nightlord while you have the Silver Tear relic equipped.",
-    "type": "quest",
+    "location": "추적자의 추억 퀘스트를 완료하고 은 물방울 유물을 장착한 상태로 밤의 왕 밤을 본뜬 자를 처치.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"추적자의 귀고리\",\"color\":\"Red\",\"type\":\"quest\",\"location\":\"Complete Wylders's Remembrance quests and kill Heolstor the Nightlord while you have the Silver Tear relic equipped.\",\"effects\":[7010500,7033200,7100100]}"
+    "raw": "{\"name\":\"추적자의 귀고리\",\"color\":\"Red\",\"type\":\"퀘스트\",\"location\":\"추적자의 추억 퀘스트를 완료하고 은 물방울 유물을 장착한 상태로 밤의 왕 밤을 본뜬 자를 처치.\",\"effects\":[7010500,7033200,7100100]}"
   },
   {
     "id": 11002,
@@ -795,12 +795,12 @@
     "nameOrNull": "은 물방울",
     "color": "Red",
     "image": "/src/assets/images/relics/rememberence/11002.webp",
-    "location": "Acquired as a reward for completing the Wylder's Remembrance Quest.",
-    "type": "quest",
+    "location": "추적자의 추억 퀘스트 완료 보상으로 획득.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"은 물방울\",\"color\":\"Red\",\"type\":\"quest\",\"location\":\"Acquired as a reward for completing the Wylder's Remembrance Quest.\",\"effects\":[7032400,7000902,7000702]}"
+    "raw": "{\"name\":\"은 물방울\",\"color\":\"Red\",\"type\":\"퀘스트\",\"location\":\"추적자의 추억 퀘스트 완료 보상으로 획득.\",\"effects\":[7032400,7000902,7000702]}"
   },
   {
     "id": 12000,
@@ -808,12 +808,12 @@
     "nameOrNull": "세 권째 책",
     "color": "Red",
     "image": "/src/assets/images/relics/rememberence/12000.webp",
-    "location": "Acquired as a reward for completing the Guardian's Remembrance Quest.",
-    "type": "quest",
+    "location": "수호자의 추억 퀘스트 완료 보상으로 획득.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"세 권째 책\",\"color\":\"Red\",\"type\":\"quest\",\"location\":\"Acquired as a reward for completing the Guardian's Remembrance Quest.\",\"effects\":[7011600,7341800]}"
+    "raw": "{\"name\":\"세 권째 책\",\"color\":\"Red\",\"type\":\"퀘스트\",\"location\":\"수호자의 추억 퀘스트 완료 보상으로 획득.\",\"effects\":[7011600,7341800]}"
   },
   {
     "id": 12001,
@@ -821,12 +821,12 @@
     "nameOrNull": "돌 말뚝",
     "color": "Red",
     "image": "/src/assets/images/relics/rememberence/12001.webp",
-    "location": "Acquired as a reward for completing the Guardian's Remembrance Quest.",
-    "type": "quest",
+    "location": "수호자의 추억 퀘스트 완료 보상으로 획득.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"돌 말뚝\",\"color\":\"Red\",\"type\":\"quest\",\"location\":\"Acquired as a reward for completing the Guardian's Remembrance Quest.\",\"effects\":[7011000,7000802]}"
+    "raw": "{\"name\":\"돌 말뚝\",\"color\":\"Red\",\"type\":\"퀘스트\",\"location\":\"수호자의 추억 퀘스트 완료 보상으로 획득.\",\"effects\":[7011000,7000802]}"
   },
   {
     "id": 12002,
@@ -834,12 +834,12 @@
     "nameOrNull": "마녀의 브로치",
     "color": "Blue",
     "image": "/src/assets/images/relics/rememberence/12002.webp",
-    "location": "Acquired as a reward for completing the Guardian's Remembrance Quest.",
-    "type": "quest",
+    "location": "수호자의 추억 퀘스트 완료 보상으로 획득.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"마녀의 브로치\",\"color\":\"Blue\",\"type\":\"quest\",\"location\":\"Acquired as a reward for completing the Guardian's Remembrance Quest.\",\"effects\":[7012000,7033400,7000002]}"
+    "raw": "{\"name\":\"마녀의 브로치\",\"color\":\"Blue\",\"type\":\"퀘스트\",\"location\":\"수호자의 추억 퀘스트 완료 보상으로 획득.\",\"effects\":[7012000,7033400,7000002]}"
   },
   {
     "id": 12003,
@@ -847,12 +847,12 @@
     "nameOrNull": "부서진 마녀의 브로치",
     "color": "Blue",
     "image": "/src/assets/images/relics/rememberence/12003.webp",
-    "location": "Acquired as a reward for completing the Guardian's Remembrance Quest.",
-    "type": "quest",
+    "location": "수호자의 추억 퀘스트 완료 보상으로 획득.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"부서진 마녀의 브로치\",\"color\":\"Blue\",\"type\":\"quest\",\"location\":\"Acquired as a reward for completing the Guardian's Remembrance Quest.\",\"effects\":[7012000,7033400,7000002]}"
+    "raw": "{\"name\":\"부서진 마녀의 브로치\",\"color\":\"Blue\",\"type\":\"퀘스트\",\"location\":\"수호자의 추억 퀘스트 완료 보상으로 획득.\",\"effects\":[7012000,7033400,7000002]}"
   },
   {
     "id": 13001,
@@ -860,12 +860,12 @@
     "nameOrNull": "깨진 봉랍",
     "color": "Yellow",
     "image": "/src/assets/images/relics/rememberence/13001.webp",
-    "location": "Acquired as a reward for completing the Ironeye's Remembrance Quest.",
-    "type": "quest",
+    "location": "철의 눈의 추억 퀘스트 완료 보상으로 획득.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"깨진 봉랍\",\"color\":\"Yellow\",\"type\":\"quest\",\"location\":\"Acquired as a reward for completing the Ironeye's Remembrance Quest.\",\"effects\":[7280000,7031900]}"
+    "raw": "{\"name\":\"깨진 봉랍\",\"color\":\"Yellow\",\"type\":\"퀘스트\",\"location\":\"철의 눈의 추억 퀘스트 완료 보상으로 획득.\",\"effects\":[7280000,7031900]}"
   },
   {
     "id": 13002,
@@ -873,12 +873,12 @@
     "nameOrNull": "성률의 칼날",
     "color": "Yellow",
     "image": "/src/assets/images/relics/rememberence/13002.webp",
-    "location": "Acquired as a reward for completing the Ironeye's Remembrance Quest.",
-    "type": "quest",
+    "location": "철의 눈의 추억 퀘스트 완료 보상으로 획득.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"성률의 칼날\",\"color\":\"Yellow\",\"type\":\"quest\",\"location\":\"Acquired as a reward for completing the Ironeye's Remembrance Quest.\",\"effects\":[7034700,7332400,7120300]}"
+    "raw": "{\"name\":\"성률의 칼날\",\"color\":\"Yellow\",\"type\":\"퀘스트\",\"location\":\"철의 눈의 추억 퀘스트 완료 보상으로 획득.\",\"effects\":[7034700,7332400,7120300]}"
   },
   {
     "id": 14000,
@@ -886,12 +886,12 @@
     "nameOrNull": "금색 이슬",
     "color": "Yellow",
     "image": "/src/assets/images/relics/rememberence/14000.webp",
-    "location": "Acquired as a reward for completing the Duchess' Remembrance Quest.",
-    "type": "quest",
+    "location": "레이디의 추억 퀘스트 완료 보상으로 획득.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"금색 이슬\",\"color\":\"Yellow\",\"type\":\"quest\",\"location\":\"Acquired as a reward for completing the Duchess' Remembrance Quest.\",\"effects\":[7290000,7035800]}"
+    "raw": "{\"name\":\"금색 이슬\",\"color\":\"Yellow\",\"type\":\"퀘스트\",\"location\":\"레이디의 추억 퀘스트 완료 보상으로 획득.\",\"effects\":[7290000,7035800]}"
   },
   {
     "id": 14001,
@@ -899,12 +899,12 @@
     "nameOrNull": "머리관 메달",
     "color": "Green",
     "image": "/src/assets/images/relics/rememberence/14001.webp",
-    "location": "Acquired as a reward for completing the Duchess' Remembrance Quest.",
-    "type": "quest",
+    "location": "레이디의 추억 퀘스트 완료 보상으로 획득.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"머리관 메달\",\"color\":\"Green\",\"type\":\"quest\",\"location\":\"Acquired as a reward for completing the Duchess' Remembrance Quest.\",\"effects\":[7010700,7330000]}"
+    "raw": "{\"name\":\"머리관 메달\",\"color\":\"Green\",\"type\":\"퀘스트\",\"location\":\"레이디의 추억 퀘스트 완료 보상으로 획득.\",\"effects\":[7010700,7330000]}"
   },
   {
     "id": 14002,
@@ -912,12 +912,12 @@
     "nameOrNull": "축복받은 철전",
     "color": "Green",
     "image": "/src/assets/images/relics/rememberence/14002.webp",
-    "location": "Acquired as a reward for completing the Duchess' Remembrance Quest.",
-    "type": "quest",
+    "location": "레이디의 추억 퀘스트 완료 보상으로 획득.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"축복받은 철전\",\"color\":\"Green\",\"type\":\"quest\",\"location\":\"Acquired as a reward for completing the Duchess' Remembrance Quest.\",\"effects\":[7032700,7001100,7000002]}"
+    "raw": "{\"name\":\"축복받은 철전\",\"color\":\"Green\",\"type\":\"퀘스트\",\"location\":\"레이디의 추억 퀘스트 완료 보상으로 획득.\",\"effects\":[7032700,7001100,7000002]}"
   },
   {
     "id": 15000,
@@ -925,12 +925,12 @@
     "nameOrNull": "끊어진 매듭끈",
     "color": "Blue",
     "image": "/src/assets/images/relics/rememberence/15000.webp",
-    "location": "Acquired as a reward for completing the Raider's Remembrance Quest.",
-    "type": "quest",
+    "location": "무뢰한의 추억 퀘스트 완료 보상으로 획득.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"끊어진 매듭끈\",\"color\":\"Blue\",\"type\":\"quest\",\"location\":\"Acquired as a reward for completing the Raider's Remembrance Quest.\",\"effects\":[7031300,7000302]}"
+    "raw": "{\"name\":\"끊어진 매듭끈\",\"color\":\"Blue\",\"type\":\"퀘스트\",\"location\":\"무뢰한의 추억 퀘스트 완료 보상으로 획득.\",\"effects\":[7031300,7000302]}"
   },
   {
     "id": 15002,
@@ -938,12 +938,12 @@
     "nameOrNull": "검은 발톱의 목걸이",
     "color": "Yellow",
     "image": "/src/assets/images/relics/rememberence/15002.webp",
-    "location": "Acquired as a reward for completing the Raider's Remembrance Quest.",
-    "type": "quest",
+    "location": "무뢰한의 추억 퀘스트 완료 보상으로 획득.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"검은 발톱의 목걸이\",\"color\":\"Yellow\",\"type\":\"quest\",\"location\":\"Acquired as a reward for completing the Raider's Remembrance Quest.\",\"effects\":[7090300,7090000,7001002]}"
+    "raw": "{\"name\":\"검은 발톱의 목걸이\",\"color\":\"Yellow\",\"type\":\"퀘스트\",\"location\":\"무뢰한의 추억 퀘스트 완료 보상으로 획득.\",\"effects\":[7090300,7090000,7001002]}"
   },
   {
     "id": 16001,
@@ -951,12 +951,12 @@
     "nameOrNull": "작은 화장도구",
     "color": "Blue",
     "image": "/src/assets/images/relics/rememberence/16001.webp",
-    "location": "Acquired as a reward for completing the Revenant's Remembrance Quest.",
-    "type": "quest",
+    "location": "복수자의 추억 퀘스트 완료 보상으로 획득.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"작은 화장도구\",\"color\":\"Blue\",\"type\":\"quest\",\"location\":\"Acquired as a reward for completing the Revenant's Remembrance Quest.\",\"effects\":[7220000,7110000]}"
+    "raw": "{\"name\":\"작은 화장도구\",\"color\":\"Blue\",\"type\":\"퀘스트\",\"location\":\"복수자의 추억 퀘스트 완료 보상으로 획득.\",\"effects\":[7220000,7110000]}"
   },
   {
     "id": 16002,
@@ -964,12 +964,12 @@
     "nameOrNull": "낡은 미니어처 액자",
     "color": "Blue",
     "image": "/src/assets/images/relics/rememberence/16002.webp",
-    "location": "Acquired as a reward for completing the Revenant's Remembrance Quest.",
-    "type": "quest",
+    "location": "복수자의 추억 퀘스트 완료 보상으로 획득.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"낡은 미니어처 액자\",\"color\":\"Blue\",\"type\":\"quest\",\"location\":\"Acquired as a reward for completing the Revenant's Remembrance Quest.\",\"effects\":[7011200,7010900,7090000]}"
+    "raw": "{\"name\":\"낡은 미니어처 액자\",\"color\":\"Blue\",\"type\":\"퀘스트\",\"location\":\"복수자의 추억 퀘스트 완료 보상으로 획득.\",\"effects\":[7011200,7010900,7090000]}"
   },
   {
     "id": 17001,
@@ -977,12 +977,12 @@
     "nameOrNull": "밤의 흔적",
     "color": "Green",
     "image": "/src/assets/images/relics/rememberence/17001.webp",
-    "location": "Acquired as a reward for completing the Recluse's Remembrance Quest.",
-    "type": "quest",
+    "location": "은둔자의 추억 퀘스트 완료 보상으로 획득.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"밤의 흔적\",\"color\":\"Green\",\"type\":\"quest\",\"location\":\"Acquired as a reward for completing the Recluse's Remembrance Quest.\",\"effects\":[7032800,7001502]}"
+    "raw": "{\"name\":\"밤의 흔적\",\"color\":\"Green\",\"type\":\"퀘스트\",\"location\":\"은둔자의 추억 퀘스트 완료 보상으로 획득.\",\"effects\":[7032800,7001502]}"
   },
   {
     "id": 17002,
@@ -990,12 +990,12 @@
     "nameOrNull": "뼈처럼 생긴 돌",
     "color": "Green",
     "image": "/src/assets/images/relics/rememberence/17002.webp",
-    "location": "Acquired as a reward for completing the Recluse's Remembrance Quest.",
-    "type": "quest",
+    "location": "은둔자의 추억 퀘스트 완료 보상으로 획득.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"뼈처럼 생긴 돌\",\"color\":\"Green\",\"type\":\"quest\",\"location\":\"Acquired as a reward for completing the Recluse's Remembrance Quest.\",\"effects\":[7034100,7032900,7000502]}"
+    "raw": "{\"name\":\"뼈처럼 생긴 돌\",\"color\":\"Green\",\"type\":\"퀘스트\",\"location\":\"은둔자의 추억 퀘스트 완료 보상으로 획득.\",\"effects\":[7034100,7032900,7000502]}"
   },
   {
     "id": 18000,
@@ -1003,12 +1003,12 @@
     "nameOrNull": "축복받은 꽃",
     "color": "Green",
     "image": "/src/assets/images/relics/rememberence/18000.webp",
-    "location": "Acquired as a reward for completing the Recluse's Remembrance Quest.",
-    "type": "quest",
+    "location": "은둔자의 추억 퀘스트 완료 보상으로 획득.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"축복받은 꽃\",\"color\":\"Green\",\"type\":\"quest\",\"location\":\"Acquired as a reward for completing the Recluse's Remembrance Quest.\",\"effects\":[7034500,7000402]}"
+    "raw": "{\"name\":\"축복받은 꽃\",\"color\":\"Green\",\"type\":\"퀘스트\",\"location\":\"은둔자의 추억 퀘스트 완료 보상으로 획득.\",\"effects\":[7034500,7000402]}"
   },
   {
     "id": 18002,
@@ -1016,12 +1016,12 @@
     "nameOrNull": "황금 싹",
     "color": "Red",
     "image": "/src/assets/images/relics/rememberence/18002.webp",
-    "location": "Acquired as a reward for completing the Executor's Remembrance Quest.",
-    "type": "quest",
+    "location": "집행자의 추억 퀘스트 완료 보상으로 획득.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"황금 싹\",\"color\":\"Red\",\"type\":\"quest\",\"location\":\"Acquired as a reward for completing the Executor's Remembrance Quest.\",\"effects\":[7011700,7036100,7012200]}"
+    "raw": "{\"name\":\"황금 싹\",\"color\":\"Red\",\"type\":\"퀘스트\",\"location\":\"집행자의 추억 퀘스트 완료 보상으로 획득.\",\"effects\":[7011700,7036100,7012200]}"
   },
   {
     "id": 19000,
@@ -1029,12 +1029,12 @@
     "nameOrNull": "청정의 물방울",
     "color": "Red",
     "image": "/src/assets/images/relics/rememberence/19000.webp",
-    "location": "Acquired as a reward for completing the Scholar's Remembrance Quest.",
-    "type": "quest",
+    "location": "학자의 추억 퀘스트 완료 보상으로 획득.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"청정의 물방울\",\"color\":\"Red\",\"type\":\"quest\",\"location\":\"Acquired as a reward for completing the Scholar's Remembrance Quest.\",\"effects\":[7036400,7090000,7006300]}"
+    "raw": "{\"name\":\"청정의 물방울\",\"color\":\"Red\",\"type\":\"퀘스트\",\"location\":\"학자의 추억 퀘스트 완료 보상으로 획득.\",\"effects\":[7036400,7090000,7006300]}"
   },
   {
     "id": 19001,
@@ -1042,12 +1042,12 @@
     "nameOrNull": "기록 「후계자에게」",
     "color": "Yellow",
     "image": "/src/assets/images/relics/rememberence/19001.webp",
-    "location": "Acquired as a reward for completing the Scholar's Remembrance Quest.",
-    "type": "quest",
+    "location": "학자의 추억 퀘스트 완료 보상으로 획득.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"기록 「후계자에게」\",\"color\":\"Yellow\",\"type\":\"quest\",\"location\":\"Acquired as a reward for completing the Scholar's Remembrance Quest.\",\"effects\":[7036200,7036300,7000802]}"
+    "raw": "{\"name\":\"기록 「후계자에게」\",\"color\":\"Yellow\",\"type\":\"퀘스트\",\"location\":\"학자의 추억 퀘스트 완료 보상으로 획득.\",\"effects\":[7036200,7036300,7000802]}"
   },
   {
     "id": 19050,
@@ -1055,12 +1055,12 @@
     "nameOrNull": "단안경용 가죽 주머니",
     "color": "Blue",
     "image": "/src/assets/images/relics/rememberence/19050.webp",
-    "location": "Acquired as a reward for completing the Undertakers's Remembrance Quest.",
-    "type": "quest",
+    "location": "장의사의 추억 퀘스트 완료 보상으로 획득.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"단안경용 가죽 주머니\",\"color\":\"Blue\",\"type\":\"quest\",\"location\":\"Acquired as a reward for completing the Undertakers's Remembrance Quest.\",\"effects\":[7037000,7001402,7006400]}"
+    "raw": "{\"name\":\"단안경용 가죽 주머니\",\"color\":\"Blue\",\"type\":\"퀘스트\",\"location\":\"장의사의 추억 퀘스트 완료 보상으로 획득.\",\"effects\":[7037000,7001402,7006400]}"
   },
   {
     "id": 19051,
@@ -1068,11 +1068,11 @@
     "nameOrNull": "유리 목걸이",
     "color": "Green",
     "image": "/src/assets/images/relics/rememberence/19051.webp",
-    "location": "Acquired as a reward for completing the Undertakers's Remembrance Quest.",
-    "type": "quest",
+    "location": "장의사의 추억 퀘스트 완료 보상으로 획득.",
+    "type": "퀘스트",
     "obtainable": "",
     "group": "",
     "description": "",
-    "raw": "{\"name\":\"유리 목걸이\",\"color\":\"Green\",\"type\":\"quest\",\"location\":\"Acquired as a reward for completing the Undertakers's Remembrance Quest.\",\"effects\":[7036800,7000902,7037600]}"
+    "raw": "{\"name\":\"유리 목걸이\",\"color\":\"Green\",\"type\":\"퀘스트\",\"location\":\"장의사의 추억 퀘스트 완료 보상으로 획득.\",\"effects\":[7036800,7000902,7037600]}"
   }
 ]

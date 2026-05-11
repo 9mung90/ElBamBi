@@ -30,6 +30,7 @@ function matchesItemSearch(item: ConsumableItem, query: string) {
 
 function getConsumableImage(item: ConsumableItem, imageLookup: Map<string, EtcItem>) {
   if (item.name === 'Wending Grace') return wendingGraceImage;
+  if (item.image) return item.image;
 
   return item.name_kor ? imageLookup.get(item.name_kor)?.img : undefined;
 }
@@ -61,7 +62,9 @@ function ItemCard({ item, imageLookup }: { item: ConsumableItem; imageLookup: Ma
           <h3>{title}</h3>
         </div>
       </div>
-      {item.ability_kor ? <p className="catalog-ability">{item.ability_kor}</p> : null}
+      <p className={item.ability_kor ? "catalog-ability" : "catalog-ability-empty"}>
+        {item.ability_kor || <span aria-hidden="true">&nbsp;</span>}
+      </p>
       <p>{description}</p>
     </article>
   );

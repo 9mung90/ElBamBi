@@ -19,9 +19,7 @@ function GestureCard({ gesture }: { gesture: Gesture }) {
           <span className="option-category">제스처</span>
           <h3>{gesture.title}</h3>
         </div>
-        <span className="option-id">#{gesture.id}</span>
       </div>
-      <p>{gesture.description}</p>
     </article>
   );
 }

@@ -28,7 +28,11 @@ type CombatSummaryRow = {
 const statKeys: StatKey[] = ['STR', 'DEX', 'INT', 'FAI', 'ARC', 'VIG', 'MND', 'END'];
 const attackStats: StatKey[] = ['STR', 'DEX', 'INT', 'FAI', 'ARC'];
 const damageKeys: DamageKey[] = ['Phys', 'Magic', 'Fire', 'Lightning', 'Holy'];
-const resourceBarMaxValue = 3500;
+const resourceBarMaxValues: Record<ResourceKey, number> = {
+  HP: 2500,
+  FP: 1500,
+  Stamina: 1000,
+};
 
 const statLabels: Record<StatKey, string> = {
   STR: '근력',
@@ -529,17 +533,19 @@ function applyAttackSummaryToWeapon(
 
 function StatusBar({
   label,
+  maxValue,
   base,
   value,
   color,
 }: {
   label: string;
+  maxValue: number;
   base: number;
   value: number;
   color: string;
 }) {
   const delta = value - base;
-  const width = Math.max(0, Math.min(100, (value / resourceBarMaxValue) * 100));
+  const width = Math.max(0, Math.min(100, (value / maxValue) * 100));
 
   return (
     <div className="calc-status-bar">
@@ -547,7 +553,7 @@ function StatusBar({
         <span>{label}</span>
         <strong>
           {value}
-          <small> / {resourceBarMaxValue}</small>
+          <small> / {maxValue}</small>
           {delta ? (
             <em className={delta > 0 ? 'is-positive' : 'is-negative'}>
               {delta > 0 ? ` +${delta}` : ` ${delta}`}
@@ -733,7 +739,7 @@ function StatsCalculatorPage({ searchQuery }: { searchQuery: string }) {
                 checked={twoHanding}
                 onChange={(event) => setTwoHanding(event.target.checked)}
               />
-              양손잡기 STR 1.5배
+              양손잡기 근력 1.5배
             </label>
             <button
               type="button"
@@ -752,10 +758,23 @@ function StatsCalculatorPage({ searchQuery }: { searchQuery: string }) {
           </div>
 
           <div className="calc-status-section">
-            <StatusBar label="HP" base={baseResources.HP} value={adjustedResources.HP} color="#cc5531" />
-            <StatusBar label="FP" base={baseResources.FP} value={adjustedResources.FP} color="#3d89a5" />
+            <StatusBar
+              label="HP"
+              maxValue={resourceBarMaxValues.HP}
+              base={baseResources.HP}
+              value={adjustedResources.HP}
+              color="#cc5531"
+            />
+            <StatusBar
+              label="FP"
+              maxValue={resourceBarMaxValues.FP}
+              base={baseResources.FP}
+              value={adjustedResources.FP}
+              color="#3d89a5"
+            />
             <StatusBar
               label="스태미나"
+              maxValue={resourceBarMaxValues.Stamina}
               base={baseResources.Stamina}
               value={adjustedResources.Stamina}
               color="#67b04e"
@@ -772,7 +791,7 @@ function StatsCalculatorPage({ searchQuery }: { searchQuery: string }) {
             </div>
             {statKeys.map((key) => (
               <div className="calc-stat-row" key={key}>
-                <span title={statLabels[key]}>{key}</span>
+                <span title={key}>{statLabels[key]}</span>
                 <span>{baseStats[key]}</span>
                 <span>{effectAdjustment.stats[key]}</span>
                 <input

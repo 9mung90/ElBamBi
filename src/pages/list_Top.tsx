@@ -1,4 +1,5 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import type { RelicScanResult, CharacterSlot } from '../utils/nightreignSaveParser';
 import { ashes } from '../data/ashes';
 import AshesPage from './AshesPage';
 import BossesPage from './BossesPage';
@@ -24,7 +25,11 @@ import PlaceholderPage from './PlaceholderPage';
 import RelicBuilderPage from './RelicBuilderPage';
 import RelicsPage from './RelicsPage';
 import SaveParserPage from './SaveParserPage';
-import SpellsPage from './SpellsPage';
+import SpellsPage, {
+  createEmptySpellFilters,
+  spellFilterOptions,
+  type SpellFilters,
+} from './SpellsPage';
 import StatsCalculatorPage from './StatsCalculatorPage';
 import TalismansPage from './TalismansPage';
 import VesselsPage from './VesselsPage';
@@ -142,9 +147,57 @@ function ListTop() {
   const [weaponFilters, setWeaponFilters] = useState<WeaponFilters>(() => createEmptyWeaponFilters());
   const [optionFilters, setOptionFilters] = useState<OptionFilters>(() => createEmptyOptionFilters());
   const [bossFilters, setBossFilters] = useState<BossFilters>(() => createEmptyBossFilters());
+  const [spellFilters, setSpellFilters] = useState<SpellFilters>(() => createEmptySpellFilters());
   const [selectedWeaponGroupId, setSelectedWeaponGroupId] = useState<number | null>(null);
   const [focusedWeaponGroupId, setFocusedWeaponGroupId] = useState<number | null>(null);
   const [ashProperty, setAshProperty] = useState<string | null>(null);
+
+  // SaveParserPage state
+  const [characterSlot, setCharacterSlot] = useState<CharacterSlot>(1);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [saveParserResult, setSaveParserResult] = useState<RelicScanResult | null>(null);
+  const [saveParserLogs, setSaveParserLogs] = useState<string[]>([]);
+  const [saveParserError, setSaveParserError] = useState<string | null>(null);
+  const [isSaveParserParsing, setIsSaveParserParsing] = useState(false);
+
+  const CACHE_KEY = 'nightreign_save_parser_result';
+
+  // localStorage에 결과 저장
+  const setSaveParserResultWithCache = (newResult: RelicScanResult | null) => {
+    setSaveParserResult(newResult);
+    if (newResult) {
+      try {
+        localStorage.setItem(CACHE_KEY, JSON.stringify(newResult));
+      } catch (e) {
+        console.warn('Failed to save to localStorage:', e);
+      }
+    }
+  };
+
+  // 마운트 시 localStorage에서 이전 결과 로드
+  useEffect(() => {
+    try {
+      const cached = localStorage.getItem(CACHE_KEY);
+      if (cached) {
+        const parsed = JSON.parse(cached) as RelicScanResult;
+        setSaveParserResult(parsed);
+      }
+    } catch (e) {
+      console.warn('Failed to load from localStorage:', e);
+    }
+  }, []);
+
+  const clearSaveParserCache = () => {
+    setSaveParserResult(null);
+    setSelectedFile(null);
+    setSaveParserLogs([]);
+    setSaveParserError(null);
+    try {
+      localStorage.removeItem(CACHE_KEY);
+    } catch (e) {
+      console.warn('Failed to clear localStorage:', e);
+    }
+  };
 
   const selectedCategory = useMemo(
     () => categories.find((category) => category.id === selectedId) ?? categories[0],
@@ -160,8 +213,13 @@ function ListTop() {
     optionFilters.stackable.length > 0;
   const hasActiveBossFilters = bossFilters.types.length > 0;
   const hasActiveAshFilters = ashProperty !== null;
+  const hasActiveSpellFilters = spellFilters.spell !== null || spellFilters.type !== null;
   const canUseFilters =
-    selectedId === 'weapons' || selectedId === 'options' || selectedId === 'ashes' || selectedId === 'bosses';
+    selectedId === 'weapons' ||
+    selectedId === 'options' ||
+    selectedId === 'ashes' ||
+    selectedId === 'bosses' ||
+    selectedId === 'spells';
 
   const updateWeaponLevelFilter = (level: number) => {
     setWeaponFilters((currentFilters) => ({
@@ -195,6 +253,20 @@ function ListTop() {
     setBossFilters((currentFilters) => ({
       ...currentFilters,
       types: toggleFilterValue(currentFilters.types, value),
+    }));
+  };
+
+  const updateSpellFilter = (value: string) => {
+    setSpellFilters((currentFilters) => ({
+      spell: currentFilters.spell === value ? null : value,
+      type: null,
+    }));
+  };
+
+  const updateSpellTypeFilter = (value: string) => {
+    setSpellFilters((currentFilters) => ({
+      ...currentFilters,
+      type: currentFilters.type === value ? null : value,
     }));
   };
 
@@ -303,7 +375,7 @@ function ListTop() {
         {selectedId === 'ashes' && isFilterPanelOpen ? (
           <section className="filter-panel" aria-label="Ash filters">
             <div className="filter-panel-heading">
-              <strong>속성</strong>
+              <strong>전회 필터</strong>
               <button
                 type="button"
                 className="filter-reset-button"
@@ -331,6 +403,56 @@ function ListTop() {
                   ))}
               </div>
             </div>
+          </section>
+        ) : null}
+
+        {selectedId === 'spells' && isFilterPanelOpen ? (
+          <section className="filter-panel" aria-label="Spell filters">
+            <div className="filter-panel-heading">
+              <strong>마술/기도 필터</strong>
+              <button
+                type="button"
+                className="filter-reset-button"
+                disabled={!hasActiveSpellFilters}
+                onClick={() => setSpellFilters(createEmptySpellFilters())}
+              >
+                초기화
+              </button>
+            </div>
+
+            <div className="filter-group">
+              <span>분류</span>
+              <div className="filter-chip-row">
+                {spellFilterOptions.spells.map((spell) => (
+                  <button
+                    key={spell}
+                    type="button"
+                    className={`filter-chip${spellFilters.spell === spell ? ' is-selected' : ''}`}
+                    onClick={() => updateSpellFilter(spell)}
+                  >
+                    {spell}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {spellFilters.spell ? (
+              <div className="filter-group">
+                <span>세부 분류</span>
+                <div className="filter-chip-row">
+                  {(spellFilterOptions.typesBySpell[spellFilters.spell] ?? []).map((type) => (
+                    <button
+                      key={type}
+                      type="button"
+                      className={`filter-chip${spellFilters.type === type ? ' is-selected' : ''}`}
+                      onClick={() => updateSpellTypeFilter(type)}
+                    >
+                      {type}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ) : null}
           </section>
         ) : null}
 
@@ -493,7 +615,7 @@ function ListTop() {
       ) : selectedId === 'bosses' ? (
         <BossesPage searchQuery={searchQuery} filters={bossFilters} />
       ) : selectedId === 'spells' ? (
-        <SpellsPage searchQuery={searchQuery} />
+        <SpellsPage searchQuery={searchQuery} filters={spellFilters} />
       ) : selectedId === 'talismans' ? (
         <TalismansPage searchQuery={searchQuery} />
       ) : selectedId === 'relics' ? (
@@ -503,7 +625,21 @@ function ListTop() {
       ) : selectedId === 'relic-builder' ? (
         <RelicBuilderPage searchQuery={searchQuery} />
       ) : selectedId === 'save-parser' ? (
-        <SaveParserPage />
+        <SaveParserPage
+          characterSlot={characterSlot}
+          setCharacterSlot={setCharacterSlot}
+          selectedFile={selectedFile}
+          setSelectedFile={setSelectedFile}
+          result={saveParserResult}
+          setResult={setSaveParserResultWithCache}
+          logs={saveParserLogs}
+          setLogs={setSaveParserLogs}
+          error={saveParserError}
+          setError={setSaveParserError}
+          isParsing={isSaveParserParsing}
+          setIsParsing={setIsSaveParserParsing}
+          clearCache={clearSaveParserCache}
+        />
       ) : selectedId === 'vessels' ? (
         <VesselsPage searchQuery={searchQuery} />
       ) : selectedId === 'items' ? (

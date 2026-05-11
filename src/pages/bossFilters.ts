@@ -7,6 +7,7 @@ export type BossFilters = {
 export const bossTypeLabels: Record<string, string> = {
   'Evergoal Boss': '봉인감옥 보스',
   'Field Boss': '필드 보스',
+  'Final Boss': '밤의 왕',
   'Location Boss': '지역 보스',
   'Night Boss': '밤 보스',
 };

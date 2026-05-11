@@ -21,4 +21,5 @@ export type ConsumableItem = {
   type_kor: string;
   description_kor: string;
   ability_kor: string;
+  image?: string;
 };

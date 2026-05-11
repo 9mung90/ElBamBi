@@ -1,5 +1,5 @@
-import { useMemo, useState, type DragEvent } from 'react';
-import { relicEffectsKo, relicItemColorMap, relics } from '../data/relics';
+import { useEffect, useMemo, useState, type DragEvent } from 'react';
+import { relicEffectsKo, relicItemColorMap, relics, relicRollAppData } from '../data/relics';
 import type { RelicColor } from '../data/relics/types';
 import {
   parseNightreignSaveFile,
@@ -36,9 +36,22 @@ const effectLookup = new Map(
       name: effect.name,
       category: effect.category,
       dn: effect.dn,
+      desc: effect.desc,
     },
   ]),
 );
+
+const debuffLookup = new Map<string, { name: string; desc: string }>();
+for (const debuffTable of Object.values(relicRollAppData.debuffTables)) {
+  for (const debuffEffect of debuffTable.effects) {
+    debuffLookup.set(String(debuffEffect.id), {
+      name: debuffEffect.effect_kor,
+      desc: debuffEffect.effect_detail_kor,
+    });
+  }
+}
+
+const debuffEffectIds = new Set(debuffLookup.keys());
 
 function formatBytes(value: number) {
   if (value < 1024) return `${value} B`;
@@ -62,11 +75,21 @@ function getUnsupportedFileMessage(file: File) {
 }
 
 function getRelicName(relic: ParsedRelic) {
-  return relicLookup.get(relic.itemId)?.name ?? `Unknown relic ${relic.itemId}`;
+  return relicLookup.get(relic.itemId)?.name ?? `알 수 없는 유물 ${relic.itemId}`;
 }
 
 function getRelicColor(relic: ParsedRelic): RelicColor {
   return relicLookup.get(relic.itemId)?.color ?? relic.color;
+}
+
+function getColorName(color: RelicColor): string {
+  const colorMap: Record<RelicColor, string> = {
+    Red: '빨강',
+    Blue: '파랑',
+    Yellow: '노랑',
+    Green: '초록',
+  };
+  return colorMap[color] || color;
 }
 
 function RelicResultCard({ relic }: { relic: ParsedRelic }) {
@@ -76,27 +99,29 @@ function RelicResultCard({ relic }: { relic: ParsedRelic }) {
     <article className="option-card save-relic-card">
       <div className="option-card-header">
         <span className={`option-category relic-color-${String(color).toLowerCase()}`}>
-          {color}
+          {getColorName(color)}
         </span>
-        <span className="option-id">slot {relic.slotIndex}</span>
       </div>
       <h3>{getRelicName(relic)}</h3>
-      <div className="save-relic-id-row">
-        <span>itemId {relic.itemId}</span>
-        <span>offset {relic.raw.offset}</span>
-      </div>
+
       <div className="save-effect-list">
         {relic.effects.length ? (
           relic.effects.map((effectId) => {
+            const isDebuff = debuffEffectIds.has(String(effectId));
             const effect = effectLookup.get(effectId);
+            const debuff = isDebuff ? debuffLookup.get(String(effectId)) : null;
+            const displayName = isDebuff ? debuff?.name : effect?.name;
+            const displayDesc = isDebuff ? debuff?.desc : effect?.desc;
 
             return (
-              <div key={effectId} className="save-effect-item">
-                <strong>{effect?.name ?? `Unknown effect ${effectId}`}</strong>
-                <span>
+              <div key={effectId} className={`save-effect-item${isDebuff ? ' is-debuff' : ''}`}>
+                <strong>{displayName ?? `알 수 없는 효과 ${effectId}`}</strong>
+                {displayDesc ? <p className="save-effect-desc">{displayDesc}</p> : null}
+                <span className="save-effect-meta">
                   {effectId}
                   {effect?.category ? ` / ${effect.category}` : ''}
-                  {effect?.dn ? ' / dn' : ''}
+                  {!isDebuff && effect?.dn ? ' / dn' : ''}
+                  {isDebuff ? ' / 디버프' : ''}
                 </span>
               </div>
             );
@@ -109,13 +134,37 @@ function RelicResultCard({ relic }: { relic: ParsedRelic }) {
   );
 }
 
-function SaveParserPage() {
-  const [characterSlot, setCharacterSlot] = useState<CharacterSlot>(1);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [result, setResult] = useState<RelicScanResult | null>(null);
-  const [logs, setLogs] = useState<string[]>([]);
-  const [error, setError] = useState<string | null>(null);
-  const [isParsing, setIsParsing] = useState(false);
+type SaveParserPageProps = {
+  characterSlot: number;
+  setCharacterSlot: (slot: CharacterSlot) => void;
+  selectedFile: File | null;
+  setSelectedFile: (file: File | null) => void;
+  result: RelicScanResult | null;
+  setResult: (result: RelicScanResult | null) => void;
+  logs: string[];
+  setLogs: (logs: string[]) => void;
+  error: string | null;
+  setError: (error: string | null) => void;
+  isParsing: boolean;
+  setIsParsing: (isParsing: boolean) => void;
+  clearCache: () => void;
+};
+
+function SaveParserPage({
+  characterSlot,
+  setCharacterSlot,
+  selectedFile,
+  setSelectedFile,
+  result,
+  setResult,
+  logs,
+  setLogs,
+  error,
+  setError,
+  isParsing,
+  setIsParsing,
+  clearCache,
+}: SaveParserPageProps) {
   const [isDragOver, setIsDragOver] = useState(false);
 
   const resultJson = useMemo(
@@ -243,6 +292,16 @@ function SaveParserPage() {
             </button>
           ) : null}
 
+          {result ? (
+            <button
+              type="button"
+              className="relic-builder-reset"
+              onClick={() => clearCache()}
+            >
+              결과 초기화
+            </button>
+          ) : null}
+
           {error ? <p className="save-parser-error">{error}</p> : null}
         </div>
 
@@ -265,18 +324,18 @@ function SaveParserPage() {
                   <strong>{result.characterInfo.sigs.toLocaleString()}</strong>
                 </div>
                 <div>
-                  <span>Steam ID bytes</span>
+                  <span>Steam ID 바이트</span>
                   <strong>{formatHex(result.characterInfo.steamId)}</strong>
                 </div>
                 <div>
-                  <span>Raw slots</span>
+                  <span>원본 슬롯</span>
                   <strong>{result.totalSlots}</strong>
                 </div>
                 <div>
-                  <span>Uncertain</span>
+                  <span>불확실</span>
                   <strong>
                     {result.uncertainSlots}
-                    {result.uncertainResult ? ' / result uncertain' : ''}
+                    {result.uncertainResult ? ' / 결과 불확실' : ''}
                   </strong>
                 </div>
               </div>
