@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState, type CSSProperties, type TouchEvent, type WheelEvent } from 'react';
+import { useMemo, useRef, useState, type CSSProperties, type MouseEvent, type TouchEvent, type WheelEvent } from 'react';
 import coordsData from '../data/mapReader/coordsXY.json';
 import mapBackgroundData from '../data/mapReader/map_backgrounds.json';
 import poiData from '../data/mapReader/poi_uv_with_ids.json';
@@ -716,6 +716,15 @@ const MapPage = () => {
   const [showPoiMarkers, setShowPoiMarkers] = useState(true);
   const [mapZoom, setMapZoom] = useState(1);
   const pinchRef = useRef<{ distance: number; zoom: number } | null>(null);
+  const mapViewportRef = useRef<HTMLDivElement | null>(null);
+  const mapDragRef = useRef<{
+    startX: number;
+    startY: number;
+    scrollLeft: number;
+    scrollTop: number;
+    moved: boolean;
+  } | null>(null);
+  const suppressMapClickRef = useRef(false);
 
   const nightlordOptions = useMemo(
     () => [allNightlordsKey, ...nightlordOrder.filter((nightlord) => patternsByNightlord[nightlord])],
@@ -1007,12 +1016,45 @@ const MapPage = () => {
     setShowLabels(false);
     setShowPoiMarkers(true);
     setMapZoom(1);
+    mapViewportRef.current?.scrollTo({ left: 0, top: 0 });
   };
   const updateMapZoom = (nextZoom: number) => {
     setMapZoom(clampZoom(nextZoom));
   };
   const nudgeMapZoom = (delta: number) => {
     setMapZoom((currentZoom) => clampZoom(currentZoom + delta));
+  };
+  const startMapDrag = (clientX: number, clientY: number) => {
+    const viewport = mapViewportRef.current;
+    if (!viewport || mapZoom <= 1) {
+      return;
+    }
+    mapDragRef.current = {
+      startX: clientX,
+      startY: clientY,
+      scrollLeft: viewport.scrollLeft,
+      scrollTop: viewport.scrollTop,
+      moved: false,
+    };
+  };
+  const moveMapDrag = (clientX: number, clientY: number) => {
+    const drag = mapDragRef.current;
+    const viewport = mapViewportRef.current;
+    if (!drag || !viewport) {
+      return false;
+    }
+    const deltaX = clientX - drag.startX;
+    const deltaY = clientY - drag.startY;
+    if (Math.abs(deltaX) > 3 || Math.abs(deltaY) > 3) {
+      drag.moved = true;
+      suppressMapClickRef.current = true;
+    }
+    viewport.scrollLeft = drag.scrollLeft - deltaX;
+    viewport.scrollTop = drag.scrollTop - deltaY;
+    return true;
+  };
+  const endMapDrag = () => {
+    mapDragRef.current = null;
   };
   const handleMapWheel = (event: WheelEvent<HTMLDivElement>) => {
     if (!event.ctrlKey) {
@@ -1021,23 +1063,58 @@ const MapPage = () => {
     event.preventDefault();
     nudgeMapZoom(event.deltaY > 0 ? -0.15 : 0.15);
   };
+  const handleMapMouseDown = (event: MouseEvent<HTMLDivElement>) => {
+    if (event.button !== 0) {
+      return;
+    }
+    startMapDrag(event.clientX, event.clientY);
+  };
+  const handleMapMouseMove = (event: MouseEvent<HTMLDivElement>) => {
+    if (moveMapDrag(event.clientX, event.clientY)) {
+      event.preventDefault();
+    }
+  };
+  const handleMapMouseUp = () => {
+    endMapDrag();
+  };
+  const handleMapClickCapture = (event: MouseEvent<HTMLDivElement>) => {
+    if (!suppressMapClickRef.current) {
+      return;
+    }
+    event.preventDefault();
+    event.stopPropagation();
+    suppressMapClickRef.current = false;
+  };
   const handleMapTouchStart = (event: TouchEvent<HTMLDivElement>) => {
     const distance = touchDistance(event.touches);
     if (distance !== null) {
+      endMapDrag();
       pinchRef.current = { distance, zoom: mapZoom };
+      return;
+    }
+    const touch = event.touches[0];
+    if (touch) {
+      startMapDrag(touch.clientX, touch.clientY);
     }
   };
   const handleMapTouchMove = (event: TouchEvent<HTMLDivElement>) => {
     const distance = touchDistance(event.touches);
-    if (distance === null || !pinchRef.current) {
+    if (distance !== null && pinchRef.current) {
+      event.preventDefault();
+      updateMapZoom((pinchRef.current.zoom * distance) / pinchRef.current.distance);
       return;
     }
-    event.preventDefault();
-    updateMapZoom((pinchRef.current.zoom * distance) / pinchRef.current.distance);
+    const touch = event.touches[0];
+    if (touch && moveMapDrag(touch.clientX, touch.clientY)) {
+      event.preventDefault();
+    }
   };
   const handleMapTouchEnd = (event: TouchEvent<HTMLDivElement>) => {
     if (event.touches.length < 2) {
       pinchRef.current = null;
+    }
+    if (event.touches.length === 0) {
+      endMapDrag();
     }
   };
 
@@ -1203,11 +1280,18 @@ const MapPage = () => {
             </button>
           </div>
           <div
-            className="map-stage-viewport"
+            ref={mapViewportRef}
+            className={`map-stage-viewport${mapZoom > 1 ? ' is-draggable' : ''}`}
             onWheel={handleMapWheel}
+            onMouseDown={handleMapMouseDown}
+            onMouseMove={handleMapMouseMove}
+            onMouseUp={handleMapMouseUp}
+            onMouseLeave={handleMapMouseUp}
+            onClickCapture={handleMapClickCapture}
             onTouchStart={handleMapTouchStart}
             onTouchMove={handleMapTouchMove}
             onTouchEnd={handleMapTouchEnd}
+            onTouchCancel={handleMapTouchEnd}
           >
             <div
               className="map-stage"

@@ -222,6 +222,16 @@
   scrollbar-color: rgba(143, 174, 230, 0.3) var(--night-surface-2);
 }
 
+.map-stage-viewport.is-draggable {
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.map-stage-viewport.is-draggable:active {
+  cursor: grabbing;
+}
+
 .map-stage {
   position: relative;
   width: calc(100% * var(--map-zoom, 1));
