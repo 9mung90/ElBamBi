@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type DragEvent } from 'react';
+import { useState, type Dispatch, type DragEvent, type SetStateAction } from 'react';
 import { relicEffectsKo, relicItemColorMap, relics, relicRollAppData } from '../data/relics';
 import type { RelicColor } from '../data/relics/types';
 import {
@@ -52,6 +52,39 @@ for (const debuffTable of Object.values(relicRollAppData.debuffTables)) {
 }
 
 const debuffEffectIds = new Set(debuffLookup.keys());
+const emptyEffectId = 0xffffffff;
+const relicColorNameMap: Record<RelicColor, string> = {
+  Red: '빨강',
+  Blue: '파랑',
+  Yellow: '노랑',
+  Green: '초록',
+};
+const relicColorAdjectiveMap: Record<RelicColor, string> = {
+  Red: '불타는',
+  Blue: '촉촉한',
+  Yellow: '빛나는',
+  Green: '고요한',
+};
+const relicNameSizeWordMap: Record<string, string> = {
+  Delicate: '섬세한',
+  Polished: '단정한',
+  Grand: '웅장한',
+};
+const relicNameColorWordPattern = /불타는|촉촉한|빛나는|고요한|Burning|Drizzly|Luminous|Tranquil/g;
+
+interface EffectDisplay {
+  id: number;
+  name: string;
+  desc?: string;
+  meta: string;
+  isDebuff: boolean;
+}
+
+interface RelicEffectGroup {
+  key: string;
+  buff: EffectDisplay | null;
+  debuff: EffectDisplay | null;
+}
 
 function formatBytes(value: number) {
   if (value < 1024) return `${value} B`;
@@ -74,8 +107,21 @@ function getUnsupportedFileMessage(file: File) {
   return `${file.name}은 지원하지 않는 파일 형식입니다. .sl2, .co2, .dat 파일을 업로드해 주세요.`;
 }
 
+function normalizeRelicName(name: string, color: RelicColor) {
+  const colorAdjective = relicColorAdjectiveMap[color];
+  let normalizedName = name.replace(relicNameColorWordPattern, colorAdjective);
+
+  for (const [englishWord, koreanWord] of Object.entries(relicNameSizeWordMap)) {
+    normalizedName = normalizedName.replace(new RegExp(`\\b${englishWord}\\b`, 'g'), koreanWord);
+  }
+
+  return normalizedName.replace(/\bScene\b/g, '풍경');
+}
+
 function getRelicName(relic: ParsedRelic) {
-  return relicLookup.get(relic.itemId)?.name ?? `알 수 없는 유물 ${relic.itemId}`;
+  const color = getRelicColor(relic);
+  const name = relicLookup.get(relic.itemId)?.name ?? `알 수 없는 유물 ${relic.itemId}`;
+  return normalizeRelicName(name, color);
 }
 
 function getRelicColor(relic: ParsedRelic): RelicColor {
@@ -83,17 +129,73 @@ function getRelicColor(relic: ParsedRelic): RelicColor {
 }
 
 function getColorName(color: RelicColor): string {
-  const colorMap: Record<RelicColor, string> = {
-    Red: '빨강',
-    Blue: '파랑',
-    Yellow: '노랑',
-    Green: '초록',
+  return relicColorNameMap[color] || color;
+}
+
+function isUsableEffectId(effectId: number) {
+  return effectId !== emptyEffectId && effectId !== -1;
+}
+
+function getEffectDisplay(effectId: number): EffectDisplay {
+  const isDebuff = debuffEffectIds.has(String(effectId));
+  const effect = effectLookup.get(effectId);
+  const debuff = isDebuff ? debuffLookup.get(String(effectId)) : null;
+  const displayName = isDebuff ? debuff?.name : effect?.name;
+  const displayDesc = isDebuff ? debuff?.desc : effect?.desc;
+  const metaParts = [
+    String(effectId),
+    effect?.category,
+    !isDebuff && effect?.dn ? 'dn' : '',
+    isDebuff ? '디버프' : '',
+  ].filter(Boolean);
+
+  return {
+    id: effectId,
+    name: displayName ?? `알 수 없는 효과 ${effectId}`,
+    desc: displayDesc,
+    meta: metaParts.join(' / '),
+    isDebuff,
   };
-  return colorMap[color] || color;
+}
+
+function getRelicEffectGroups(relic: ParsedRelic): RelicEffectGroup[] {
+  const buffIds = [relic.raw.effect1Id, relic.raw.effect2Id, relic.raw.effect3Id];
+  const debuffIds = [relic.raw.effect4Id, relic.raw.effect5Id, relic.raw.effect6Id];
+  const groups = buffIds
+    .map((buffId, index) => {
+      const debuffId = debuffIds[index];
+      const buff = isUsableEffectId(buffId) ? getEffectDisplay(buffId) : null;
+      const debuff = isUsableEffectId(debuffId) ? getEffectDisplay(debuffId) : null;
+
+      if (!buff && !debuff) {
+        return null;
+      }
+
+      return {
+        key: `${buffId}-${debuffId}-${index}`,
+        buff,
+        debuff,
+      };
+    })
+    .filter((group): group is RelicEffectGroup => Boolean(group));
+
+  if (groups.length > 0) {
+    return groups;
+  }
+
+  return relic.effects.map((effectId) => {
+    const effect = getEffectDisplay(effectId);
+    return {
+      key: String(effectId),
+      buff: effect.isDebuff ? null : effect,
+      debuff: effect.isDebuff ? effect : null,
+    };
+  });
 }
 
 function RelicResultCard({ relic }: { relic: ParsedRelic }) {
   const color = getRelicColor(relic);
+  const effectGroups = getRelicEffectGroups(relic);
 
   return (
     <article className="option-card save-relic-card">
@@ -105,27 +207,29 @@ function RelicResultCard({ relic }: { relic: ParsedRelic }) {
       <h3>{getRelicName(relic)}</h3>
 
       <div className="save-effect-list">
-        {relic.effects.length ? (
-          relic.effects.map((effectId) => {
-            const isDebuff = debuffEffectIds.has(String(effectId));
-            const effect = effectLookup.get(effectId);
-            const debuff = isDebuff ? debuffLookup.get(String(effectId)) : null;
-            const displayName = isDebuff ? debuff?.name : effect?.name;
-            const displayDesc = isDebuff ? debuff?.desc : effect?.desc;
-
-            return (
-              <div key={effectId} className={`save-effect-item${isDebuff ? ' is-debuff' : ''}`}>
-                <strong>{displayName ?? `알 수 없는 효과 ${effectId}`}</strong>
-                {displayDesc ? <p className="save-effect-desc">{displayDesc}</p> : null}
-                <span className="save-effect-meta">
-                  {effectId}
-                  {effect?.category ? ` / ${effect.category}` : ''}
-                  {!isDebuff && effect?.dn ? ' / dn' : ''}
-                  {isDebuff ? ' / 디버프' : ''}
-                </span>
-              </div>
-            );
-          })
+        {effectGroups.length ? (
+          effectGroups.map((group) => (
+            <div
+              key={group.key}
+              className={`save-effect-item${group.debuff ? ' has-debuff' : ''}${!group.buff && group.debuff ? ' is-debuff' : ''}`}
+            >
+              {group.buff ? (
+                <>
+                  <strong>{group.buff.name}</strong>
+                  {group.buff.desc ? <p className="save-effect-desc">{group.buff.desc}</p> : null}
+                  <span className="save-effect-meta">{group.buff.meta}</span>
+                </>
+              ) : null}
+              {group.debuff ? (
+                <div className="save-linked-debuff">
+                  <span className="save-debuff-label">디버프</span>
+                  <strong>{group.debuff.name}</strong>
+                  {group.debuff.desc ? <p className="save-effect-desc">{group.debuff.desc}</p> : null}
+                  <span className="save-effect-meta">{group.debuff.meta}</span>
+                </div>
+              ) : null}
+            </div>
+          ))
         ) : (
           <p className="muted-text">효과 없음</p>
         )}
@@ -135,14 +239,14 @@ function RelicResultCard({ relic }: { relic: ParsedRelic }) {
 }
 
 type SaveParserPageProps = {
-  characterSlot: number;
+  characterSlot: CharacterSlot;
   setCharacterSlot: (slot: CharacterSlot) => void;
   selectedFile: File | null;
   setSelectedFile: (file: File | null) => void;
   result: RelicScanResult | null;
   setResult: (result: RelicScanResult | null) => void;
   logs: string[];
-  setLogs: (logs: string[]) => void;
+  setLogs: Dispatch<SetStateAction<string[]>>;
   error: string | null;
   setError: (error: string | null) => void;
   isParsing: boolean;
@@ -157,7 +261,7 @@ function SaveParserPage({
   setSelectedFile,
   result,
   setResult,
-  logs,
+  logs: _logs,
   setLogs,
   error,
   setError,
@@ -166,11 +270,6 @@ function SaveParserPage({
   clearCache,
 }: SaveParserPageProps) {
   const [isDragOver, setIsDragOver] = useState(false);
-
-  const resultJson = useMemo(
-    () => (result ? JSON.stringify(result.relics, null, 2) : ''),
-    [result],
-  );
 
   async function parseFile(file: File, slot: CharacterSlot) {
     if (!isSupportedSaveFile(file)) {
@@ -347,25 +446,11 @@ function SaveParserPage({
       </div>
 
       {result ? (
-        <>
-          <div className="option-card-grid save-relic-grid">
-            {result.relics.map((relic) => (
-              <RelicResultCard key={relic.id} relic={relic} />
-            ))}
-          </div>
-
-          <details className="calc-panel save-parser-details">
-            <summary>JSON 출력</summary>
-            <textarea value={resultJson} readOnly rows={12} />
-          </details>
-        </>
-      ) : null}
-
-      {logs.length ? (
-        <details className="calc-panel save-parser-details">
-          <summary>로그</summary>
-          <pre>{logs.join('\n')}</pre>
-        </details>
+        <div className="option-card-grid save-relic-grid">
+          {result.relics.map((relic) => (
+            <RelicResultCard key={relic.id} relic={relic} />
+          ))}
+        </div>
       ) : null}
     </section>
   );

@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, type FormEvent } from 'react';
 import type { RelicScanResult, CharacterSlot } from '../utils/nightreignSaveParser';
 import { ashes } from '../data/ashes';
 import AshesPage from './AshesPage';
 import BossesPage from './BossesPage';
+import BuildPage from './BuildPage';
 import {
   bossFilterOptions,
   bossTypeLabels,
@@ -39,6 +40,22 @@ import WeaponsPage, {
   type WeaponFilters,
 } from './WeaponsPage';
 import type { Category } from './pageTypes';
+import ashTopIcon from '../assets/images/top_icon/ash.webp';
+import bossTopIcon from '../assets/images/top_icon/boss.webp';
+import buildTopIcon from '../assets/images/top_icon/imgi_6_152.webp';
+import characterTopIcon from '../assets/images/top_icon/character.webp';
+import dealTopIcon from '../assets/images/top_icon/deal.png';
+import etcTopIcon from '../assets/images/top_icon/etc.webp';
+import gestureTopIcon from '../assets/images/top_icon/gesture.webp';
+import mapTopIcon from '../assets/images/top_icon/map.webp';
+import optionMakeTopIcon from '../assets/images/top_icon/optin_make.webp';
+import optionTopIcon from '../assets/images/top_icon/option.webp';
+import relicTopIcon from '../assets/images/top_icon/relic.webp';
+import saveTopIcon from '../assets/images/top_icon/save.webp';
+import spellTopIcon from '../assets/images/top_icon/ee.webp';
+import talismanTopIcon from '../assets/images/top_icon/talisman.webp';
+import vesselTopIcon from '../assets/images/top_icon/vessel.webp';
+import weaponTopIcon from '../assets/images/top_icon/weapone.webp';
 import './list_Top.css';
 
 const categories: Category[] = [
@@ -103,6 +120,12 @@ const categories: Category[] = [
     description: '맵 보기입니다.',
   },
   {
+    id: 'builds',
+    label: '빌드',
+    icon: 'D',
+    description: '빌드 공유 커뮤니티입니다.',
+  },
+  {
     id: 'relic-builder',
     label: '유물 제작',
     icon: 'B',
@@ -134,14 +157,256 @@ const categories: Category[] = [
   },
 ];
 
+const categoryIconAssets: Record<string, string> = {
+  ashes: ashTopIcon,
+  bosses: bossTopIcon,
+  builds: buildTopIcon,
+  characters: characterTopIcon,
+  gestures: gestureTopIcon,
+  items: etcTopIcon,
+  map: mapTopIcon,
+  options: optionTopIcon,
+  relics: relicTopIcon,
+  'relic-builder': optionMakeTopIcon,
+  'save-parser': saveTopIcon,
+  spells: spellTopIcon,
+  'stats-calculator': dealTopIcon,
+  talismans: talismanTopIcon,
+  vessels: vesselTopIcon,
+  weapons: weaponTopIcon,
+};
+
 function toggleFilterValue<T>(values: T[], value: T) {
   return values.includes(value)
     ? values.filter((currentValue) => currentValue !== value)
     : [...values, value];
 }
 
+type AuthView = 'login' | 'signup' | null;
+const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '');
+const authBaseUrl = (import.meta.env.VITE_AUTH_BASE_URL ?? apiBaseUrl).replace(/\/$/, '');
+const lastPageStorageKey = 'nightreign:last-page';
+const authViewStorageKey = 'nightreign:auth-view';
+const pullToRefreshThreshold = 90;
+
+function getStoredPageId() {
+  const storedId = getStoredValue(lastPageStorageKey);
+  if (storedId && categories.some((category) => category.id === storedId)) {
+    return storedId;
+  }
+  return categories[0].id;
+}
+
+function getStoredAuthView(): AuthView {
+  const storedView = getStoredValue(authViewStorageKey);
+  return storedView === 'login' || storedView === 'signup' ? storedView : null;
+}
+
+function getStoredValue(key: string) {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function setStoredValue(key: string, value: string) {
+  try {
+    localStorage.setItem(key, value);
+  } catch {
+    // Storage can be blocked in some browser modes. Refresh still works with the in-memory state.
+  }
+}
+
+function removeStoredValue(key: string) {
+  try {
+    localStorage.removeItem(key);
+  } catch {
+    // Ignore storage failures for the same reason as setStoredValue.
+  }
+}
+
+function getGoogleLoginUrl() {
+  return `${authBaseUrl}/oauth2/authorization/google`;
+}
+
+async function postAuthForm(path: string, data: Record<string, string>) {
+  const body = new URLSearchParams(data);
+  const response = await fetch(`${apiBaseUrl}${path}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+    },
+    credentials: 'include',
+    body,
+  });
+  const message = await response.text();
+
+  if (!response.ok) {
+    throw new Error(message || '요청을 처리하지 못했습니다.');
+  }
+
+  return message;
+}
+
+function AuthPage({
+  view,
+  onChangeView,
+  onLoginSuccess,
+}: {
+  view: Exclude<AuthView, null>;
+  onChangeView: (view: Exclude<AuthView, null>) => void;
+  onLoginSuccess: (loginId: string) => void;
+}) {
+  const isLogin = view === 'login';
+  const [loginId, setLoginId] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [nickname, setNickname] = useState('');
+  const [message, setMessage] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setError(null);
+    setMessage(null);
+    setIsSubmitting(true);
+
+    try {
+      if (isLogin) {
+        const result = await postAuthForm('/api/login', { loginId, password });
+        setMessage(result || '로그인되었습니다.');
+        onLoginSuccess(loginId);
+        return;
+      }
+
+      const result = await postAuthForm('/api/sign', {
+        loginId,
+        password,
+        confirmPassword,
+        email,
+        nickname,
+      });
+      setMessage(result || '회원가입이 완료되었습니다. 로그인해 주세요.');
+      setPassword('');
+      setConfirmPassword('');
+      onChangeView('login');
+    } catch (requestError) {
+      setError(requestError instanceof Error ? requestError.message : String(requestError));
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <section className="auth-page" aria-labelledby="auth-page-title">
+      <div className="auth-panel">
+        <p className="list-page-kicker">Account</p>
+        <h2 id="auth-page-title">{isLogin ? '로그인' : '회원가입'}</h2>
+
+        <form className="auth-form" onSubmit={handleSubmit}>
+          <label>
+            아이디
+            <input
+              type="text"
+              value={loginId}
+              onChange={(event) => setLoginId(event.target.value)}
+              autoComplete="username"
+              required
+            />
+          </label>
+          {!isLogin ? (
+            <label>
+              닉네임
+              <input
+                type="text"
+                value={nickname}
+                onChange={(event) => setNickname(event.target.value)}
+                autoComplete="nickname"
+                required
+              />
+            </label>
+          ) : null}
+          {!isLogin ? (
+            <label>
+              이메일
+              <input
+                type="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                autoComplete="email"
+                required
+              />
+            </label>
+          ) : null}
+          <label>
+            비밀번호
+            <input
+              type="password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              autoComplete={isLogin ? 'current-password' : 'new-password'}
+              required
+            />
+          </label>
+          {!isLogin ? (
+            <label>
+              비밀번호 확인
+              <input
+                type="password"
+                value={confirmPassword}
+                onChange={(event) => setConfirmPassword(event.target.value)}
+                autoComplete="new-password"
+                required
+              />
+            </label>
+          ) : null}
+          {!isLogin ? (
+            <p className="auth-help-text">아이디는 영문 소문자/숫자/밑줄 4~20자, 비밀번호는 영문/숫자/특수문자 포함 8~20자입니다.</p>
+          ) : null}
+          {error ? <p className="auth-message is-error">{error}</p> : null}
+          {message ? <p className="auth-message is-success">{message}</p> : null}
+          <button type="submit" className="auth-submit-button" disabled={isSubmitting}>
+            {isLogin ? '로그인' : '회원가입'}
+          </button>
+        </form>
+
+        {isLogin ? (
+          <div className="auth-oauth-area">
+            <div className="auth-divider">
+              <span>또는</span>
+            </div>
+            <a className="auth-google-button" href={getGoogleLoginUrl()}>
+              <span aria-hidden="true">G</span>
+              Google로 로그인
+            </a>
+          </div>
+        ) : null}
+
+        <div className="auth-switch-row">
+          <span>{isLogin ? '계정이 없으신가요?' : '이미 계정이 있으신가요?'}</span>
+          <button
+            type="button"
+            onClick={() => {
+              setError(null);
+              setMessage(null);
+              onChangeView(isLogin ? 'signup' : 'login');
+            }}
+          >
+            {isLogin ? '회원가입' : '로그인'}
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function ListTop() {
-  const [selectedId, setSelectedId] = useState(categories[0].id);
+  const [selectedId, setSelectedId] = useState(getStoredPageId);
+  const [authView, setAuthView] = useState<AuthView>(getStoredAuthView);
+  const [authUserId, setAuthUserId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false);
   const [weaponFilters, setWeaponFilters] = useState<WeaponFilters>(() => createEmptyWeaponFilters());
@@ -161,6 +426,75 @@ function ListTop() {
   const [isSaveParserParsing, setIsSaveParserParsing] = useState(false);
 
   const CACHE_KEY = 'nightreign_save_parser_result';
+
+  useEffect(() => {
+    setStoredValue(lastPageStorageKey, selectedId);
+  }, [selectedId]);
+
+  useEffect(() => {
+    if (authView) {
+      setStoredValue(authViewStorageKey, authView);
+      return;
+    }
+    removeStoredValue(authViewStorageKey);
+  }, [authView]);
+
+  useEffect(() => {
+    if (!window.matchMedia('(pointer: coarse)').matches && navigator.maxTouchPoints <= 0) {
+      return undefined;
+    }
+
+    let startY: number | null = null;
+    let shouldRefresh = false;
+
+    const isFormTarget = (target: EventTarget | null) => {
+      if (!(target instanceof HTMLElement)) {
+        return false;
+      }
+      return Boolean(target.closest('input, textarea, select, [contenteditable="true"]'));
+    };
+
+    const handleTouchStart = (event: TouchEvent) => {
+      if (window.scrollY > 0 || isFormTarget(event.target)) {
+        startY = null;
+        shouldRefresh = false;
+        return;
+      }
+      startY = event.touches[0]?.clientY ?? null;
+      shouldRefresh = false;
+    };
+
+    const handleTouchMove = (event: TouchEvent) => {
+      if (startY === null || window.scrollY > 0) {
+        return;
+      }
+      const currentY = event.touches[0]?.clientY;
+      if (currentY === undefined) {
+        return;
+      }
+      shouldRefresh = currentY - startY >= pullToRefreshThreshold;
+    };
+
+    const handleTouchEnd = () => {
+      if (shouldRefresh) {
+        window.location.reload();
+      }
+      startY = null;
+      shouldRefresh = false;
+    };
+
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
+    window.addEventListener('touchend', handleTouchEnd, { passive: true });
+    window.addEventListener('touchcancel', handleTouchEnd, { passive: true });
+
+    return () => {
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchend', handleTouchEnd);
+      window.removeEventListener('touchcancel', handleTouchEnd);
+    };
+  }, []);
 
   // localStorage에 결과 저장
   const setSaveParserResultWithCache = (newResult: RelicScanResult | null) => {
@@ -278,6 +612,19 @@ function ListTop() {
             N
           </div>
           <h1>Nightreign Data App</h1>
+          <button
+            type="button"
+            className={`account-icon-button${authView ? ' is-active' : ''}`}
+            aria-label={authUserId ? `${authUserId} 계정` : '로그인 페이지로 이동'}
+            title={authUserId ? `${authUserId} 로그인됨` : '로그인'}
+            onClick={() => {
+              setAuthView('login');
+              setSearchQuery('');
+              setIsFilterPanelOpen(false);
+            }}
+          >
+            &#128100;
+          </button>
         </div>
 
         <div className="search-row">
@@ -555,6 +902,7 @@ function ListTop() {
         <nav className="category-tabs" aria-label="아이템 카테고리">
           {categories.map((category) => {
             const isSelected = category.id === selectedId;
+            const iconAsset = categoryIconAssets[category.id];
 
             return (
               <button
@@ -562,6 +910,7 @@ function ListTop() {
                 type="button"
                 className={`category-tab${isSelected ? ' is-selected' : ''}`}
                 onClick={() => {
+                  setAuthView(null);
                   setSelectedId(category.id);
                   setSearchQuery('');
                   setIsFilterPanelOpen(false);
@@ -570,9 +919,13 @@ function ListTop() {
                 }}
                 aria-pressed={isSelected}
               >
-                <span className="category-icon" aria-hidden="true">
-                  {category.icon}
-                </span>
+                {iconAsset ? (
+                  <img className="category-icon category-icon-image" src={iconAsset} alt="" aria-hidden="true" />
+                ) : (
+                  <span className="category-icon" aria-hidden="true">
+                    {category.icon}
+                  </span>
+                )}
                 <span>{category.label}</span>
               </button>
             );
@@ -580,7 +933,16 @@ function ListTop() {
         </nav>
       </header>
 
-      {selectedId === 'characters' ? (
+      {authView ? (
+        <AuthPage
+          view={authView}
+          onChangeView={setAuthView}
+          onLoginSuccess={(loginId) => {
+            setAuthUserId(loginId);
+            setAuthView(null);
+          }}
+        />
+      ) : selectedId === 'characters' ? (
         <CharactersPage
           searchQuery={searchQuery}
           onSelectWeapon={(weaponGroupId) => {
@@ -622,6 +984,8 @@ function ListTop() {
         <RelicsPage searchQuery={searchQuery} />
       ) : selectedId === 'map' ? (
         <MapPage />
+      ) : selectedId === 'builds' ? (
+        <BuildPage searchQuery={searchQuery} />
       ) : selectedId === 'relic-builder' ? (
         <RelicBuilderPage searchQuery={searchQuery} />
       ) : selectedId === 'save-parser' ? (

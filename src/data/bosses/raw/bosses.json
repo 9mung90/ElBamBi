@@ -7536,6 +7536,87 @@
       "rawText": "밤의 악마 리브라\nFinal Boss\nEverdark Boss\nWEAK AGAINST\nSlash\n10%\nFire\n20%\nHoly\n35%\nSTRONG AGAINST\nMagic\n-20%\nRESISTANCES\nPoison\n154\n154 / 252 / 542 / 999\nScarlet Rot\n154\n154 / 252 / 542 / 999\nBloodloss\n252\n252 / 542 / 999\nFrostbite\n252\n252 / 542 / 999\nSleep\nImmune\nMadness\n154\n154 / 252 / 542 / 999\nDEEP OF NIGHT\n/\n:\nHP and Attack Scaling\nL1:\n1.3 / 1.3\nLevel 1\nL2:\n1.4 / 1.6\nLevel 2\nL3:\n1.6 / 1.9\nLevel 3\nL4:\n1.9 / 2.8\nLevel 4\nL5:\n2.2 / 3.3\nLevel 5\nBOSS ID:\n#907550000\nNPC ID:\n#75600020\nHP\n39,144 / 26,096 / 13,048\nTrio / Duo / Solo\nRUNES\n0 / 0 / 0\nTrio / Duo / Solo"
     },
     {
+  "name": "밤의 윤곽",
+  "bossType": "Final Boss",
+  "tags": [
+    "Final Boss"
+  ],
+  "ids": {
+    "bossId": "#907580000",
+    "npcId": "#75800000",
+    "instance": null
+  },
+  "hp": {
+    "raw": "14,952 / 9,968 / 4,984",
+    "values": [
+      14952,
+      9968,
+      4984
+    ]
+  },
+  "runes": {
+    "raw": "0 / 0 / 0",
+    "values": [
+      0,
+      0,
+      0
+    ]
+  },
+  "weakAgainst": [
+    "Slash",
+    "15%",
+    "Pierce",
+    "10%",
+    "Fire",
+    "20%",
+    "Holy",
+    "35%"
+  ],
+  "strongAgainst": [
+    "Strike",
+    "-10%"
+  ],
+  "resistances": [
+    "Poison",
+    "Immune",
+    "Scarlet Rot",
+    "252",
+    "Bloodloss",
+    "Immune",
+    "Frostbite",
+    "Immune",
+    "Sleep",
+    "542",
+    "Madness",
+    "Immune"
+  ],
+  "deepOfNight": [
+    "/",
+    ":",
+    "HP and Attack Scaling",
+    "L1:",
+    "1.3 / 1.3",
+    "Level 1",
+    "L2:",
+    "1.4 / 1.5",
+    "Level 2",
+    "L3:",
+    "1.5 / 1.8",
+    "Level 3",
+    "L4:",
+    "1.6 / 2.5",
+    "Level 4",
+    "L5:",
+    "1.7 / 2.9",
+    "Level 5",
+    "BOSS ID:",
+    "#907580000",
+    "NPC ID:",
+    "#75800000"
+  ],
+  "rawText": "밤의 윤곽\nFinal Boss\nWEAK AGAINST\nSlash\n15%\nPierce\n10%\nFire\n20%\nHoly\n35%\nSTRONG AGAINST\nStrike\n-10%\nRESISTANCES\nPoison\nImmune\nScarlet Rot\n252\nBloodloss\nImmune\nFrostbite\nImmune\nSleep\n542\nMadness\nImmune\nDEEP OF NIGHT\n/\n:\nHP and Attack Scaling\nL1:\n1.3 / 1.3\nLevel 1\nL2:\n1.4 / 1.5\nLevel 2\nL3:\n1.5 / 1.8\nLevel 3\nL4:\n1.6 / 2.5\nLevel 4\nL5:\n1.7 / 2.9\nLevel 5\nBOSS ID:\n#907580000\nNPC ID:\n#75800000\nHP\n14,952 / 9,968 / 4,984\nTrio / Duo / Solo\nRUNES\n0 / 0 / 0\nTrio / Duo / Solo"
+},
+    {
       "name": "밤의 왕 나멜레스",
       "bossType": "Final Boss",
       "ids": {
