@@ -183,8 +183,9 @@ function toggleFilterValue<T>(values: T[], value: T) {
 }
 
 type AuthView = 'login' | 'signup' | null;
-const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '');
-const authBaseUrl = (import.meta.env.VITE_AUTH_BASE_URL ?? apiBaseUrl).replace(/\/$/, '');
+const defaultApiBaseUrl = 'https://k9e297bszl.execute-api.ap-northeast-2.amazonaws.com';
+const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? defaultApiBaseUrl).replace(/\/$/, '');
+const accessTokenStorageKey = 'accessToken';
 const lastPageStorageKey = 'nightreign:last-page';
 const authViewStorageKey = 'nightreign:auth-view';
 const pullToRefreshThreshold = 90;
@@ -226,27 +227,48 @@ function removeStoredValue(key: string) {
   }
 }
 
-function getGoogleLoginUrl() {
-  return `${authBaseUrl}/oauth2/authorization/google`;
+function getMessageFromPayload(payload: unknown) {
+  if (typeof payload === 'string') return payload;
+  if (payload && typeof payload === 'object' && 'message' in payload) {
+    const message = (payload as { message?: unknown }).message;
+    if (typeof message === 'string') return message;
+  }
+  return '';
 }
 
-async function postAuthForm(path: string, data: Record<string, string>) {
+function getAccessTokenFromPayload(payload: unknown) {
+  if (!payload || typeof payload !== 'object') return null;
+  const token = (payload as { accessToken?: unknown }).accessToken;
+  return typeof token === 'string' && token ? token : null;
+}
+
+function getGoogleLoginUrl() {
+  return `${apiBaseUrl}/oauth2/authorization/google`;
+}
+
+async function postAuthForm(path: string, data: Record<string, string>): Promise<string> {
   const body = new URLSearchParams(data);
   const response = await fetch(`${apiBaseUrl}${path}`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+      'content-type': 'application/x-www-form-urlencoded;charset=UTF-8',
     },
-    credentials: 'include',
     body,
   });
-  const message = await response.text();
+  const contentType = response.headers.get('content-type') ?? '';
+  const text = await response.text();
+  const payload = contentType.includes('application/json') && text ? JSON.parse(text) : text;
+  const message = getMessageFromPayload(payload);
+  const accessToken = getAccessTokenFromPayload(payload);
+  if (accessToken) {
+    setStoredValue(accessTokenStorageKey, accessToken);
+  }
 
   if (!response.ok) {
     throw new Error(message || '요청을 처리하지 못했습니다.');
   }
 
-  return message;
+  return message || (typeof payload === 'string' ? payload : '');
 }
 
 function AuthPage({

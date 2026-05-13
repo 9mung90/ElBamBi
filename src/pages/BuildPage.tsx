@@ -5,16 +5,16 @@ type BuildPostCategory = '빌드 공유' | '공략' | '질문' | '파티 모집'
 type CategoryFilter = BuildPostCategory | '전체';
 
 type BuildImage = {
-  id: number;
-  postId: number;
+  id: string;
+  postId: string;
   imageUrl: string;
 };
 
 type BuildComment = {
-  id: number;
-  postId: number;
-  userId: number;
-  parentCommentId: number | null;
+  id: string;
+  postId: string;
+  userId: string;
+  parentCommentId: string | null;
   content: string;
   createdAt: string;
   updatedAt: string | null;
@@ -22,8 +22,8 @@ type BuildComment = {
 };
 
 type BuildPost = {
-  id: number;
-  userId: number;
+  id: string;
+  userId: string;
   title: string;
   content: string;
   viewCount: number;
@@ -83,7 +83,9 @@ type PostRelationResponse = {
 
 type ApiBodyValue = string | number | null | undefined;
 
-const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '');
+const defaultApiBaseUrl = 'https://k9e297bszl.execute-api.ap-northeast-2.amazonaws.com';
+const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? defaultApiBaseUrl).replace(/\/$/, '');
+const accessTokenStorageKey = 'accessToken';
 const allCategory = '전체';
 const categories: BuildPostCategory[] = ['빌드 공유', '공략', '질문', '파티 모집', '기타'];
 
@@ -149,6 +151,14 @@ function appendParams(params: URLSearchParams, values: Record<string, ApiBodyVal
   });
 }
 
+function getAccessToken() {
+  try {
+    return localStorage.getItem(accessTokenStorageKey);
+  } catch {
+    return null;
+  }
+}
+
 async function requestApi<T>(
   path: string,
   options: {
@@ -162,22 +172,26 @@ async function requestApi<T>(
 
   const queryString = query.toString();
   const url = `${apiBaseUrl}${path}${queryString ? `?${queryString}` : ''}`;
+  const headers = new Headers();
+  const accessToken = getAccessToken();
+  if (accessToken) {
+    headers.set('authorization', `Bearer ${accessToken}`);
+  }
+
   const init: RequestInit = {
     method: options.method ?? 'GET',
-    credentials: 'include',
+    headers,
   };
 
   if (options.body) {
     const body = new URLSearchParams();
     appendParams(body, options.body);
     init.body = body;
-    init.headers = {
-      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-    };
+    headers.set('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
   }
 
   const response = await fetch(url, init);
-  const contentType = response.headers.get('Content-Type') ?? '';
+  const contentType = response.headers.get('content-type') ?? '';
   const text = await response.text();
 
   if (!response.ok) {
@@ -202,8 +216,8 @@ async function requestOptionalList<T>(path: string) {
 
 function normalizePost(post: CommunityPostResponse): BuildPost {
   return {
-    id: getNumber(post.id),
-    userId: getNumber(post.userId),
+    id: getString(post.id),
+    userId: getString(post.userId),
     title: getString(post.title, '제목 없음'),
     content: getString(post.content),
     viewCount: getNumber(post.viewCount),
@@ -222,13 +236,13 @@ function normalizePost(post: CommunityPostResponse): BuildPost {
 
 function normalizeComment(comment: CommentResponse): BuildComment {
   return {
-    id: getNumber(comment.id),
-    postId: getNumber(comment.postId),
-    userId: getNumber(comment.userId),
+    id: getString(comment.id),
+    postId: getString(comment.postId),
+    userId: getString(comment.userId),
     parentCommentId:
       comment.parentCommentId === null || comment.parentCommentId === undefined
         ? null
-        : getNumber(comment.parentCommentId),
+        : getString(comment.parentCommentId),
     content: getString(comment.content),
     createdAt: getString(comment.createdAt, new Date().toISOString()),
     updatedAt: getNullableDate(comment.updatedAt),
@@ -241,27 +255,27 @@ function normalizeImage(image: ImageResponse): BuildImage | null {
   if (!imageUrl) return null;
 
   return {
-    id: getNumber(image.id),
-    postId: getNumber(image.postId),
+    id: getString(image.id),
+    postId: getString(image.postId),
     imageUrl,
   };
 }
 
 function getPostIdSet(relations: PostRelationResponse[]) {
-  return new Set(relations.map((relation) => getNumber(relation.postId)).filter((postId) => postId > 0));
+  return new Set(relations.map((relation) => getString(relation.postId)).filter(Boolean));
 }
 
 function getPostCountMap(relations: PostRelationResponse[]) {
-  return relations.reduce<Map<number, number>>((countMap, relation) => {
-    const postId = getNumber(relation.postId);
-    if (postId <= 0) return countMap;
+  return relations.reduce<Map<string, number>>((countMap, relation) => {
+    const postId = getString(relation.postId);
+    if (!postId) return countMap;
     countMap.set(postId, (countMap.get(postId) ?? 0) + 1);
     return countMap;
   }, new Map());
 }
 
-function groupByPostId<T extends { postId: number }>(items: T[]) {
-  return items.reduce<Map<number, T[]>>((groupMap, item) => {
+function groupByPostId<T extends { postId: string }>(items: T[]) {
+  return items.reduce<Map<string, T[]>>((groupMap, item) => {
     const currentItems = groupMap.get(item.postId) ?? [];
     currentItems.push(item);
     groupMap.set(item.postId, currentItems);
@@ -278,9 +292,13 @@ function buildPosts(
   rawMyLikes: PostRelationResponse[],
   rawMyBookmarks: PostRelationResponse[],
 ) {
-  const commentsByPostId = groupByPostId(rawComments.map(normalizeComment).filter((comment) => comment.id > 0));
+  const commentsByPostId = groupByPostId(
+    rawComments.map(normalizeComment).filter((comment) => Boolean(comment.id) && Boolean(comment.postId)),
+  );
   const imagesByPostId = groupByPostId(
-    rawImages.map(normalizeImage).filter((image): image is BuildImage => Boolean(image)),
+    rawImages
+      .map(normalizeImage)
+      .filter((image): image is BuildImage => Boolean(image) && Boolean(image?.postId)),
   );
   const likeCountByPostId = getPostCountMap(rawLikes);
   const bookmarkCountByPostId = getPostCountMap(rawBookmarks);
@@ -289,7 +307,7 @@ function buildPosts(
 
   return rawPosts
     .map(normalizePost)
-    .filter((post) => post.id > 0 && !post.deletedAt)
+    .filter((post) => Boolean(post.id) && !post.deletedAt)
     .map((post) => ({
       ...post,
       comments: commentsByPostId.get(post.id) ?? [],
@@ -349,14 +367,14 @@ async function findCreatedPostId(draft: BuildPostDraft) {
 
 function BuildPage({ searchQuery }: { searchQuery: string }) {
   const [posts, setPosts] = useState<BuildPost[]>([]);
-  const [selectedPostId, setSelectedPostId] = useState<number | null>(null);
+  const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<CategoryFilter>(allCategory);
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
   const [commentText, setCommentText] = useState('');
-  const [commentParentId, setCommentParentId] = useState<number | null>(null);
+  const [commentParentId, setCommentParentId] = useState<string | null>(null);
   const [draft, setDraft] = useState<BuildPostDraft>({
     title: '',
     category: '빌드 공유',
@@ -364,7 +382,7 @@ function BuildPage({ searchQuery }: { searchQuery: string }) {
     imageUrls: '',
   });
 
-  async function loadCommunityData(focusPostId?: number | null) {
+  async function loadCommunityData(focusPostId?: string | null) {
     const shouldShowInitialLoading = posts.length === 0;
     if (shouldShowInitialLoading) {
       setIsLoading(true);
@@ -436,7 +454,7 @@ function BuildPage({ searchQuery }: { searchQuery: string }) {
     }));
   }
 
-  async function addImages(postId: number, imageUrls: string[]) {
+  async function addImages(postId: string, imageUrls: string[]) {
     const results = await Promise.allSettled(
       imageUrls.map((imageUrl) =>
         requestApi<string>(communityApi.addImage, {
