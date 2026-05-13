@@ -255,6 +255,7 @@ const focusedFieldBossLocations: Record<string, string> = {
 };
 
 const facilityPoiMergeDistance = 3.6;
+const fieldBossPoiMergeDistance = 0.25;
 
 const facilityMarkerGroups: Array<{
   key: PatternListKey;
@@ -355,6 +356,9 @@ function detailSuffix(value: string) {
 }
 
 function slotDetails(value: string, mergedDetails: string[] = []) {
+  if (isKnownBossName(value) && mergedDetails.length > 0) {
+    return [bossKo(value), ...mergedDetails];
+  }
   if (isKnownBossName(value)) {
     return ['장소 보스', bossKo(value)];
   }
@@ -603,7 +607,7 @@ function createSlotOverlay(slotId: string, point: CoordinatePoint, value: string
     rawValue: value,
     label: slotLabel(value),
     details: slotDetails(value),
-    iconUrl: kind === 'boss' ? iconUrlForKey('empty') : (iconUrlForSlot(value) ?? iconUrlForKey('empty')),
+    iconUrl: kind === 'boss' ? iconUrlForKey('boss') : (iconUrlForSlot(value) ?? iconUrlForKey('empty')),
     kind,
   };
 }
@@ -661,6 +665,11 @@ function facilityMergeDetails(key: PatternListKey, item: PatternPoint) {
   return [`보스: ${detailSuffix(value)}`];
 }
 
+function fieldBossMergeDetails(item: PatternPoint) {
+  const boss = bossKo(item.boss);
+  return poiDetails(item, 'field').filter((detail) => detail && detail !== boss);
+}
+
 function assignFacilityPoisToSlots(slots: SlotOverlay[], pattern: PatternRow | undefined) {
   const bySlot = new Map<string, string[]>();
   const assignedPoiKeys = new Set<string>();
@@ -698,6 +707,43 @@ function assignFacilityPoisToSlots(slots: SlotOverlay[], pattern: PatternRow | u
       continue;
     }
     bySlot.set(candidate.slot.itemId, facilityMergeDetails(candidate.key, candidate.item));
+    assignedPoiKeys.add(key);
+    usedSlots.add(candidate.slot.itemId);
+  }
+
+  return { bySlot, assignedPoiKeys };
+}
+
+function assignFieldBossPoisToSlots(slots: SlotOverlay[], pattern: PatternRow | undefined) {
+  const bySlot = new Map<string, string[]>();
+  const assignedPoiKeys = new Set<string>();
+  if (!pattern) {
+    return { bySlot, assignedPoiKeys };
+  }
+
+  const candidates = (pattern.field_bosses ?? []).flatMap((item) => {
+    const position = poiPosition(item.poi_id);
+    if (!position || !item.boss) {
+      return [];
+    }
+    return slots
+      .filter((slot) => slot.kind === 'boss' && slot.rawValue === item.boss)
+      .map((slot) => ({
+        slot,
+        item,
+        distance: Math.hypot(slot.x - position.x, slot.y - position.y),
+      }));
+  })
+    .filter((candidate) => candidate.distance <= fieldBossPoiMergeDistance)
+    .sort((left, right) => left.distance - right.distance);
+
+  const usedSlots = new Set<string>();
+  for (const candidate of candidates) {
+    const key = facilityPoiKey('field_bosses', candidate.item);
+    if (usedSlots.has(candidate.slot.itemId) || assignedPoiKeys.has(key)) {
+      continue;
+    }
+    bySlot.set(candidate.slot.itemId, fieldBossMergeDetails(candidate.item));
     assignedPoiKeys.add(key);
     usedSlots.add(candidate.slot.itemId);
   }
@@ -789,13 +835,21 @@ const MapPage = () => {
     [baseSlotOverlays, currentPattern],
   );
 
+  const fieldBossPoiAssignments = useMemo(
+    () => assignFieldBossPoisToSlots(baseSlotOverlays, currentPattern),
+    [baseSlotOverlays, currentPattern],
+  );
+
   const slotOverlays = useMemo(
     () =>
       baseSlotOverlays.map((slot) => ({
         ...slot,
-        details: slotDetails(slot.rawValue, facilityPoiAssignments.bySlot.get(slot.itemId) ?? []),
+        details: slotDetails(slot.rawValue, [
+          ...(facilityPoiAssignments.bySlot.get(slot.itemId) ?? []),
+          ...(fieldBossPoiAssignments.bySlot.get(slot.itemId) ?? []),
+        ]),
       })),
-    [baseSlotOverlays, facilityPoiAssignments],
+    [baseSlotOverlays, facilityPoiAssignments, fieldBossPoiAssignments],
   );
 
   const poiMarkers = useMemo<PoiMarker[]>(() => {
@@ -863,6 +917,9 @@ const MapPage = () => {
     }
 
     for (const item of currentPattern.field_bosses ?? []) {
+      if (fieldBossPoiAssignments.assignedPoiKeys.has(facilityPoiKey('field_bosses', item))) {
+        continue;
+      }
       addMarker(
         `field-${item.poi_id}-${item.boss}`,
         item.poi_id,
@@ -920,7 +977,7 @@ const MapPage = () => {
     }
 
     return markers;
-  }, [currentPattern, facilityPoiAssignments]);
+  }, [currentPattern, facilityPoiAssignments, fieldBossPoiAssignments]);
 
   const selectedSlot = slotOverlays.find((slot) => slot.itemId === activeItemId);
   const activeSlotOptions = useMemo(() => {

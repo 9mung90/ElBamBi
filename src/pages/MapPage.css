@@ -216,6 +216,7 @@
 
 .map-stage-viewport {
   overflow: auto;
+  aspect-ratio: 1 / 1;
   border-radius: 8px;
   touch-action: pan-x pan-y;
   scrollbar-width: thin;
