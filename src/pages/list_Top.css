@@ -2232,6 +2232,36 @@
   overflow-wrap: anywhere;
 }
 
+.save-top-options {
+  display: grid;
+  gap: 6px;
+  padding: 10px;
+  border: 1px solid var(--night-border-soft);
+  border-radius: 8px;
+  background: var(--night-surface-2);
+}
+
+.save-top-options strong {
+  color: var(--night-text);
+  font-size: 13px;
+}
+
+.save-top-options span {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--night-text-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.save-top-options em {
+  flex: 0 0 auto;
+  color: var(--night-gold);
+  font-style: normal;
+  font-weight: 700;
+}
+
 .save-relic-grid {
   margin-bottom: 14px;
 }

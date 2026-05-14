@@ -149,7 +149,6 @@ function BossCard({ boss }: { boss: Boss }) {
 
       <div>
         <h3>{boss.name}</h3>
-        {boss.ids.instance ? <p className="muted-text">{boss.ids.instance}</p> : null}
       </div>
 
       <div className="option-meta-row">

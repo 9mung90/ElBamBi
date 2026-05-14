@@ -86,16 +86,18 @@ interface RelicEffectGroup {
   debuff: EffectDisplay | null;
 }
 
+type SaveRelicStats = {
+  colorCounts: Record<RelicColor, number>;
+  topOptions: Array<{ id: number; name: string; count: number }>;
+  totalOptions: number;
+  uniqueOptionCount: number;
+  debuffRelicCount: number;
+};
+
 function formatBytes(value: number) {
   if (value < 1024) return `${value} B`;
   if (value < 1024 * 1024) return `${(value / 1024).toFixed(1)} KB`;
   return `${(value / 1024 / 1024).toFixed(1)} MB`;
-}
-
-function formatHex(bytes: Uint8Array) {
-  return Array.from(bytes)
-    .map((byte) => byte.toString(16).padStart(2, '0').toUpperCase())
-    .join(' ');
 }
 
 function isSupportedSaveFile(file: File) {
@@ -193,6 +195,52 @@ function getRelicEffectGroups(relic: ParsedRelic): RelicEffectGroup[] {
   });
 }
 
+function getSaveRelicStats(parsedRelics: ParsedRelic[]): SaveRelicStats {
+  const colorCounts: Record<RelicColor, number> = {
+    Red: 0,
+    Blue: 0,
+    Yellow: 0,
+    Green: 0,
+  };
+  const optionCounts = new Map<number, { id: number; name: string; count: number }>();
+  let totalOptions = 0;
+  let debuffRelicCount = 0;
+
+  for (const relic of parsedRelics) {
+    const color = getRelicColor(relic);
+    colorCounts[color] += 1;
+
+    const effectGroups = getRelicEffectGroups(relic);
+    if (effectGroups.some((group) => group.debuff)) {
+      debuffRelicCount += 1;
+    }
+
+    for (const group of effectGroups) {
+      if (!group.buff) continue;
+
+      const current = optionCounts.get(group.buff.id) ?? {
+        id: group.buff.id,
+        name: group.buff.name,
+        count: 0,
+      };
+      current.count += 1;
+      totalOptions += 1;
+      optionCounts.set(group.buff.id, current);
+    }
+  }
+
+  return {
+    colorCounts,
+    topOptions: [...optionCounts.values()].sort((left, right) => {
+      if (right.count !== left.count) return right.count - left.count;
+      return left.name.localeCompare(right.name, 'ko');
+    }),
+    totalOptions,
+    uniqueOptionCount: optionCounts.size,
+    debuffRelicCount,
+  };
+}
+
 function RelicResultCard({ relic }: { relic: ParsedRelic }) {
   const color = getRelicColor(relic);
   const effectGroups = getRelicEffectGroups(relic);
@@ -217,7 +265,6 @@ function RelicResultCard({ relic }: { relic: ParsedRelic }) {
                 <>
                   <strong>{group.buff.name}</strong>
                   {group.buff.desc ? <p className="save-effect-desc">{group.buff.desc}</p> : null}
-                  <span className="save-effect-meta">{group.buff.meta}</span>
                 </>
               ) : null}
               {group.debuff ? (
@@ -225,7 +272,6 @@ function RelicResultCard({ relic }: { relic: ParsedRelic }) {
                   <span className="save-debuff-label">디버프</span>
                   <strong>{group.debuff.name}</strong>
                   {group.debuff.desc ? <p className="save-effect-desc">{group.debuff.desc}</p> : null}
-                  <span className="save-effect-meta">{group.debuff.meta}</span>
                 </div>
               ) : null}
             </div>
@@ -261,7 +307,6 @@ function SaveParserPage({
   setSelectedFile,
   result,
   setResult,
-  logs: _logs,
   setLogs,
   error,
   setError,
@@ -270,6 +315,7 @@ function SaveParserPage({
   clearCache,
 }: SaveParserPageProps) {
   const [isDragOver, setIsDragOver] = useState(false);
+  const saveStats = result ? getSaveRelicStats(result.relics) : null;
 
   async function parseFile(file: File, slot: CharacterSlot) {
     if (!isSupportedSaveFile(file)) {
@@ -411,33 +457,45 @@ function SaveParserPage({
             <>
               <div className="save-summary-grid">
                 <div>
-                  <span>캐릭터</span>
-                  <strong>{result.characterInfo.name}</strong>
+                  <span>전체 유물</span>
+                  <strong>{result.relics.length.toLocaleString()}개</strong>
                 </div>
-                <div>
-                  <span>Murks</span>
-                  <strong>{result.characterInfo.murks.toLocaleString()}</strong>
-                </div>
-                <div>
-                  <span>Sigs</span>
-                  <strong>{result.characterInfo.sigs.toLocaleString()}</strong>
-                </div>
-                <div>
-                  <span>Steam ID 바이트</span>
-                  <strong>{formatHex(result.characterInfo.steamId)}</strong>
-                </div>
-                <div>
-                  <span>원본 슬롯</span>
-                  <strong>{result.totalSlots}</strong>
-                </div>
-                <div>
-                  <span>불확실</span>
-                  <strong>
-                    {result.uncertainSlots}
-                    {result.uncertainResult ? ' / 결과 불확실' : ''}
-                  </strong>
-                </div>
+                {saveStats
+                  ? (Object.keys(relicColorNameMap) as RelicColor[]).map((color) => (
+                      <div key={color}>
+                        <span>{getColorName(color)} 유물</span>
+                        <strong>{saveStats.colorCounts[color].toLocaleString()}개</strong>
+                      </div>
+                    ))
+                  : null}
+                {saveStats ? (
+                  <>
+                    <div>
+                      <span>가장 많이 보유한 옵션</span>
+                      <strong>{saveStats.topOptions[0]?.name ?? '옵션 없음'}</strong>
+                    </div>
+                    <div>
+                      <span>옵션 종류</span>
+                      <strong>{saveStats.uniqueOptionCount.toLocaleString()}종</strong>
+                      <span>총 {saveStats.totalOptions.toLocaleString()}개 옵션</span>
+                    </div>
+                    <div>
+                      <span>디버프 포함 유물</span>
+                      <strong>{saveStats.debuffRelicCount.toLocaleString()}개</strong>
+                    </div>
+                  </>
+                ) : null}
               </div>
+              {saveStats?.topOptions.length ? (
+                <div className="save-top-options">
+                  <strong>보유 옵션 상위</strong>
+                  {saveStats.topOptions.slice(0, 5).map((option, index) => (
+                    <span key={option.id}>
+                      {index + 1}. {option.name} <em>{option.count.toLocaleString()}개</em>
+                    </span>
+                  ))}
+                </div>
+              ) : null}
             </>
           ) : (
             <p className="muted-text">아직 분석된 파일이 없습니다.</p>
