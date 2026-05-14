@@ -6,6 +6,7 @@ import {
   type Relic,
   type RelicEffect,
 } from '../data/relics';
+import RelicStorageSection from '../components/RelicStorageSection';
 
 const relicItemColorById = new Map(relicItemColorMap.map((entry) => [entry.itemId, entry]));
 const relicEffectById = new Map(relicEffectsKo.map((effect) => [String(effect.id), effect]));
@@ -145,7 +146,17 @@ function RelicCard({ relic }: { relic: Relic }) {
   );
 }
 
-function RelicsPage({ searchQuery }: { searchQuery: string }) {
+function RelicsPage({
+  searchQuery,
+  authUserId,
+  storageRefreshKey,
+  onRelicsChanged,
+}: {
+  searchQuery: string;
+  authUserId: string | null;
+  storageRefreshKey: number;
+  onRelicsChanged: () => void;
+}) {
   const filteredRelics = useMemo(
     () => relics.filter((relic) => matchesRelicSearch(relic, searchQuery)),
     [searchQuery],
@@ -161,6 +172,13 @@ function RelicsPage({ searchQuery }: { searchQuery: string }) {
           {filteredRelics.length} / {relics.length}
         </span>
       </div>
+
+      <RelicStorageSection
+        authUserId={authUserId}
+        searchQuery={searchQuery}
+        refreshKey={storageRefreshKey}
+        onRelicsChanged={onRelicsChanged}
+      />
 
       <div className="option-card-grid">
         {filteredRelics.map((relic) => (

@@ -186,6 +186,7 @@ type AuthView = 'login' | 'signup' | null;
 const defaultApiBaseUrl = 'https://k9e297bszl.execute-api.ap-northeast-2.amazonaws.com';
 const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? defaultApiBaseUrl).replace(/\/$/, '');
 const accessTokenStorageKey = 'accessToken';
+const authUserIdStorageKey = 'nightreign:auth-user-id';
 const lastPageStorageKey = 'nightreign:last-page';
 const authViewStorageKey = 'nightreign:auth-view';
 const pullToRefreshThreshold = 90;
@@ -201,6 +202,10 @@ function getStoredPageId() {
 function getStoredAuthView(): AuthView {
   const storedView = getStoredValue(authViewStorageKey);
   return storedView === 'login' || storedView === 'signup' ? storedView : null;
+}
+
+function getStoredAuthUserId() {
+  return getUserIdFromAccessToken(getStoredValue(accessTokenStorageKey)) ?? getStoredValue(authUserIdStorageKey);
 }
 
 function getStoredValue(key: string) {
@@ -242,6 +247,34 @@ function getAccessTokenFromPayload(payload: unknown) {
   return typeof token === 'string' && token ? token : null;
 }
 
+function decodeJwtPayload(token: string): Record<string, unknown> | null {
+  const [, encodedPayload] = token.split('.');
+  if (!encodedPayload) return null;
+
+  try {
+    const normalizedPayload = encodedPayload.replace(/-/g, '+').replace(/_/g, '/');
+    const paddedPayload = normalizedPayload.padEnd(
+      normalizedPayload.length + ((4 - (normalizedPayload.length % 4)) % 4),
+      '=',
+    );
+    const binaryPayload = atob(paddedPayload);
+    const bytes = Uint8Array.from(binaryPayload, (character) => character.charCodeAt(0));
+    return JSON.parse(new TextDecoder().decode(bytes)) as Record<string, unknown>;
+  } catch (error) {
+    console.warn('[auth] Failed to decode access token payload', error);
+    return null;
+  }
+}
+
+function getUserIdFromAccessToken(token: string | null) {
+  if (!token) return null;
+  const payload = decodeJwtPayload(token);
+  const userId = payload?.userId ?? payload?.sub;
+  if (typeof userId === 'string' && userId) return userId;
+  if (typeof userId === 'number' && Number.isFinite(userId)) return String(userId);
+  return null;
+}
+
 function getGoogleLoginUrl() {
   return `${apiBaseUrl}/oauth2/authorization/google`;
 }
@@ -260,8 +293,12 @@ async function postAuthForm(path: string, data: Record<string, string>): Promise
   const payload = contentType.includes('application/json') && text ? JSON.parse(text) : text;
   const message = getMessageFromPayload(payload);
   const accessToken = getAccessTokenFromPayload(payload);
+  const userId = getUserIdFromAccessToken(accessToken);
   if (accessToken) {
     setStoredValue(accessTokenStorageKey, accessToken);
+  }
+  if (userId) {
+    setStoredValue(authUserIdStorageKey, userId);
   }
 
   if (!response.ok) {
@@ -300,7 +337,7 @@ function AuthPage({
       if (isLogin) {
         const result = await postAuthForm('/api/login', { loginId, password });
         setMessage(result || '로그인되었습니다.');
-        onLoginSuccess(loginId);
+        onLoginSuccess(getStoredAuthUserId() ?? loginId);
         return;
       }
 
@@ -428,7 +465,8 @@ function AuthPage({
 function ListTop() {
   const [selectedId, setSelectedId] = useState(getStoredPageId);
   const [authView, setAuthView] = useState<AuthView>(getStoredAuthView);
-  const [authUserId, setAuthUserId] = useState<string | null>(null);
+  const [authUserId, setAuthUserId] = useState<string | null>(getStoredAuthUserId);
+  const [relicStorageRefreshKey, setRelicStorageRefreshKey] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
   const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false);
   const [weaponFilters, setWeaponFilters] = useState<WeaponFilters>(() => createEmptyWeaponFilters());
@@ -460,6 +498,21 @@ function ListTop() {
     }
     removeStoredValue(authViewStorageKey);
   }, [authView]);
+
+  useEffect(() => {
+    const tokenUserId = getUserIdFromAccessToken(getStoredValue(accessTokenStorageKey));
+    if (tokenUserId && tokenUserId !== authUserId) {
+      setAuthUserId(tokenUserId);
+    }
+  }, [authUserId]);
+
+  useEffect(() => {
+    if (authUserId) {
+      setStoredValue(authUserIdStorageKey, authUserId);
+      return;
+    }
+    removeStoredValue(authUserIdStorageKey);
+  }, [authUserId]);
 
   useEffect(() => {
     if (!window.matchMedia('(pointer: coarse)').matches && navigator.maxTouchPoints <= 0) {
@@ -1003,15 +1056,27 @@ function ListTop() {
       ) : selectedId === 'talismans' ? (
         <TalismansPage searchQuery={searchQuery} />
       ) : selectedId === 'relics' ? (
-        <RelicsPage searchQuery={searchQuery} />
+        <RelicsPage
+          searchQuery={searchQuery}
+          authUserId={authUserId}
+          storageRefreshKey={relicStorageRefreshKey}
+          onRelicsChanged={() => setRelicStorageRefreshKey((currentKey) => currentKey + 1)}
+        />
       ) : selectedId === 'map' ? (
         <MapPage />
       ) : selectedId === 'builds' ? (
         <BuildPage searchQuery={searchQuery} />
       ) : selectedId === 'relic-builder' ? (
-        <RelicBuilderPage searchQuery={searchQuery} />
+        <RelicBuilderPage
+          searchQuery={searchQuery}
+          authUserId={authUserId}
+          onRelicsChanged={() => setRelicStorageRefreshKey((currentKey) => currentKey + 1)}
+        />
       ) : selectedId === 'save-parser' ? (
         <SaveParserPage
+          authUserId={authUserId}
+          storageRefreshKey={relicStorageRefreshKey}
+          onRelicsChanged={() => setRelicStorageRefreshKey((currentKey) => currentKey + 1)}
           characterSlot={characterSlot}
           setCharacterSlot={setCharacterSlot}
           selectedFile={selectedFile}

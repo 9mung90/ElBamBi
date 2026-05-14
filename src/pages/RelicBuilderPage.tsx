@@ -1,7 +1,14 @@
 import { useMemo, useState } from 'react';
+import {
+  createBuilderRelic,
+  getStorageErrorMessage,
+  type StoredRelicDebuff,
+  type StoredRelicOption,
+} from '../api/storageApi';
 import { relicRollAppData, type RelicRollEffect, type RelicRollMode } from '../data/relics';
 
 type SlotSelection = [string, string, string];
+type BuilderRelicColor = 'Red' | 'Blue' | 'Yellow' | 'Green';
 type CandidateEvaluation = {
   effect: RelicRollEffect;
   reasons: string[];
@@ -9,13 +16,31 @@ type CandidateEvaluation = {
 
 const EMPTY_SELECTION: SlotSelection = ['', '', ''];
 const SLOT_LABELS = ['A', 'B', 'C'];
+const RELIC_COLOR_OPTIONS: Array<{ value: BuilderRelicColor; label: string }> = [
+  { value: 'Red', label: '빨강' },
+  { value: 'Blue', label: '파랑' },
+  { value: 'Yellow', label: '노랑' },
+  { value: 'Green', label: '초록' },
+];
 
 function getEffectName(effect: RelicRollEffect) {
   return effect.effect_kor || effect.effect;
 }
 
 function getEffectDetail(effect: RelicRollEffect) {
-  return effect.effect_detail_kor || '상세 설명이 없습니다.';
+  return effect.effect_detail_kor || '';
+}
+
+function toStoredRelicEffect(effect: RelicRollEffect | null, slotIndex: number) {
+  const effectId = Number(effect?.id);
+
+  return {
+    slot: slotIndex + 1,
+    ...(Number.isFinite(effectId) ? { effectId } : {}),
+    ...(effect?.key ? { effectKey: effect.key } : {}),
+    name: effect ? getEffectName(effect) : '',
+    detail: effect ? getEffectDetail(effect) : '',
+  };
 }
 
 function getCategoryRank(effect: RelicRollEffect, categoryOrder: number[]) {
@@ -235,7 +260,7 @@ function RelicEffectOption({
       className={`relic-builder-selected-effect${reasons.length ? ' is-invalid' : ' is-valid'}`}
     >
       <strong>{getEffectName(effect)}</strong>
-      <p>{getEffectDetail(effect)}</p>
+      {getEffectDetail(effect) ? <p>{getEffectDetail(effect)}</p> : null}
       {reasons.length ? (
         <ul className="relic-builder-reasons">
           {reasons.map((reason) => (
@@ -249,12 +274,23 @@ function RelicEffectOption({
   );
 }
 
-function RelicBuilderPage({ searchQuery }: { searchQuery: string }) {
+function RelicBuilderPage({
+  searchQuery,
+  authUserId,
+  onRelicsChanged,
+}: {
+  searchQuery: string;
+  authUserId: string | null;
+  onRelicsChanged: () => void;
+}) {
   const modes = useMemo(() => Object.values(relicRollAppData.modes), []);
   const [modeId, setModeId] = useState(modes[0]?.id ?? '');
   const [selectedKeys, setSelectedKeys] = useState<SlotSelection>(EMPTY_SELECTION);
+  const [selectedColor, setSelectedColor] = useState<BuilderRelicColor>('Red');
   const [showInvalidOptions, setShowInvalidOptions] = useState(false);
   const [selectedDebuffKeys, setSelectedDebuffKeys] = useState<SlotSelection>(EMPTY_SELECTION);
+  const [saveNotice, setSaveNotice] = useState<string | null>(null);
+  const [isSavingRelic, setIsSavingRelic] = useState(false);
 
   const mode = useMemo(
     () => modes.find((candidateMode) => candidateMode.id === modeId) ?? modes[0],
@@ -320,6 +356,70 @@ function RelicBuilderPage({ searchQuery }: { searchQuery: string }) {
     });
   }
 
+  function getBuilderRelicOptions(): StoredRelicOption[] {
+    return selectedEffects.map((effect, index) => toStoredRelicEffect(effect, index));
+  }
+
+  function getBuilderRelicDebuffs(): StoredRelicDebuff[] {
+    if (!canUseDebuffs) return [];
+
+    return selectedDebuffs.flatMap((effect, index) =>
+      selectedEffects[index]?.cursed && effect ? [toStoredRelicEffect(effect, index)] : [],
+    );
+  }
+
+  async function handleSaveRelic() {
+    setSaveNotice(null);
+
+    if (!authUserId) {
+      setSaveNotice('Login is required to save relics.');
+      return;
+    }
+
+    if (!isCompleteWithDebuff) {
+      setSaveNotice('Select all 3 options and required debuffs before saving.');
+      return;
+    }
+
+    const options = getBuilderRelicOptions();
+    const debuffs = getBuilderRelicDebuffs();
+    if (options.length !== 3 || options.some((option) => !option.name || (!option.effectId && !option.effectKey))) {
+      setSaveNotice('Select all 3 options before saving.');
+      return;
+    }
+
+    setIsSavingRelic(true);
+
+    const payload = {
+      userId: authUserId,
+      slotIndex: 0,
+      itemId: 0,
+      itemName: `${selectedColor} Builder Relic`,
+      color: selectedColor,
+      modeId: mode.id,
+      isValid: isValidComplete,
+      options,
+      debuffs,
+    };
+
+    console.info('[RelicBuilder] Saving relic payload', payload);
+
+    try {
+      const savedRelic = await createBuilderRelic(payload);
+      console.info('[RelicBuilder] Relic saved response', savedRelic);
+      setSaveNotice('Relic saved.');
+      onRelicsChanged();
+    } catch (error) {
+      console.error('[RelicBuilder] Failed to save relic', {
+        payload,
+        error,
+      });
+      setSaveNotice(getStorageErrorMessage(error, 'Failed to save relic.'));
+    } finally {
+      setIsSavingRelic(false);
+    }
+  }
+
   return (
     <section className="options-page relic-builder-page" aria-labelledby="relic-builder-title">
       <div className="options-page-heading">
@@ -360,6 +460,20 @@ function RelicBuilderPage({ searchQuery }: { searchQuery: string }) {
               초기화
             </button>
           </div>
+
+          <label className="relic-builder-color-control">
+            색상
+            <select
+              value={selectedColor}
+              onChange={(event) => setSelectedColor(event.target.value as BuilderRelicColor)}
+            >
+              {RELIC_COLOR_OPTIONS.map((colorOption) => (
+                <option key={colorOption.value} value={colorOption.value}>
+                  {colorOption.label}
+                </option>
+              ))}
+            </select>
+          </label>
 
           <label className="relic-builder-invalid-toggle">
             <input
@@ -488,13 +602,13 @@ function RelicBuilderPage({ searchQuery }: { searchQuery: string }) {
                 {effect ? (
                   <div>
                     <strong>{getEffectName(effect)}</strong>
-                    <p>{getEffectDetail(effect)}</p>
+                    {getEffectDetail(effect) ? <p>{getEffectDetail(effect)}</p> : null}
                     {!selectedReasons[index].length ? <em>가능</em> : null}
                     {canUseDebuffs && effect.cursed ? (
                       selectedDebuffs[index] ? (
                         <div className="relic-builder-result-debuff">
                           <strong>디버프: {getEffectName(selectedDebuffs[index])}</strong>
-                          <p>{getEffectDetail(selectedDebuffs[index])}</p>
+                          {getEffectDetail(selectedDebuffs[index]) ? <p>{getEffectDetail(selectedDebuffs[index])}</p> : null}
                         </div>
                       ) : (
                         <em>이 옵션은 디버프 선택이 필요합니다.</em>
@@ -537,6 +651,12 @@ function RelicBuilderPage({ searchQuery }: { searchQuery: string }) {
             추정 규칙을 앱용으로 적용합니다.
           </p>
         </section>
+        <div className="relic-builder-save-actions">
+          <button type="button" className="relic-builder-save-button" disabled={isSavingRelic} onClick={handleSaveRelic}>
+            {isSavingRelic ? 'Saving...' : '유물 저장'}
+          </button>
+          {saveNotice ? <p className="relic-builder-save-notice">{saveNotice}</p> : null}
+        </div>
       </div>
     </section>
   );

@@ -951,6 +951,11 @@
   color: var(--night-green);
 }
 
+.relic-color-builder {
+  background: var(--night-purple-bg);
+  color: var(--night-purple);
+}
+
 .option-header-icon {
   width: 24px;
   height: 24px;
@@ -1014,6 +1019,159 @@
   align-items: stretch;
   min-height: 0;
   text-align: left;
+}
+
+.relic-storage-section {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.relic-storage-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.relic-storage-heading h3 {
+  margin: 0;
+  color: var(--night-text);
+  font-size: 17px;
+}
+
+.relic-storage-heading span {
+  color: var(--night-gold);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.relic-storage-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.relic-storage-filters button,
+.stored-relic-delete-button,
+.relic-builder-save-button {
+  min-height: 34px;
+  border: 1px solid var(--night-border);
+  border-radius: 7px;
+  background: var(--night-input);
+  color: var(--night-text-soft);
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.relic-storage-filters button {
+  padding: 0 10px;
+}
+
+.relic-storage-filters button.is-selected {
+  border-color: rgba(120, 221, 255, 0.55);
+  background: var(--night-accent-bg);
+  color: var(--night-accent-bright);
+}
+
+.storage-notice,
+.relic-builder-save-notice {
+  margin: 0;
+  padding: 10px;
+  border: 1px solid var(--night-border-soft);
+  border-radius: 8px;
+  background: var(--night-surface-2);
+  color: var(--night-text-soft);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.stored-relic-card {
+  min-height: 260px;
+}
+
+.stored-relic-source {
+  color: var(--night-muted);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.stored-relic-meta {
+  margin-top: 0;
+}
+
+.stored-relic-options {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.stored-relic-options li {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr);
+  gap: 8px;
+  margin: 0;
+  padding: 8px;
+  border-radius: 7px;
+  background: var(--night-input);
+}
+
+.stored-relic-options li > span {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: var(--night-gold-bg);
+  color: var(--night-gold);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.stored-relic-options strong {
+  color: var(--night-text);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.stored-relic-options p {
+  margin: 3px 0 0;
+  color: var(--night-muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.stored-relic-debuff {
+  display: grid;
+  gap: 3px;
+  margin-top: 7px;
+  padding: 8px;
+  border-left: 2px solid rgba(255, 130, 145, 0.58);
+  border-radius: 0 6px 6px 0;
+  background: rgba(218, 80, 88, 0.1);
+}
+
+.stored-relic-debuff em {
+  color: var(--night-red);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.stored-relic-delete-button {
+  margin-top: auto;
+  color: var(--night-red);
+}
+
+.stored-relic-delete-button:disabled,
+.relic-builder-save-button:disabled {
+  cursor: wait;
+  opacity: 0.62;
 }
 
 .relic-card.is-expandable {
@@ -1805,6 +1963,14 @@
   align-items: end;
 }
 
+.relic-builder-color-control {
+  display: grid;
+  gap: 6px;
+  color: var(--night-text-soft);
+  font-size: 12px;
+  font-weight: 700;
+}
+
 .relic-builder-reset {
   min-height: 38px;
   border: 1px solid var(--night-border-strong);
@@ -2121,6 +2287,23 @@
   line-height: 1.5;
 }
 
+.relic-builder-save-actions {
+  display: grid;
+  gap: 8px;
+  grid-column: 2;
+}
+
+.relic-builder-save-button {
+  width: 100%;
+  border-color: var(--night-border-strong);
+  background: var(--night-green-bg);
+  color: var(--night-green);
+}
+
+.relic-builder-save-button:hover:not(:disabled) {
+  background: rgba(79, 184, 139, 0.24);
+}
+
 .save-parser-layout {
   display: grid;
   grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
@@ -2403,6 +2586,10 @@
   .relic-builder-result {
     grid-column: auto;
   }
+
+  .relic-builder-save-actions {
+    grid-column: auto;
+  }
 }
 
 @media (max-width: 520px) {
@@ -2461,6 +2648,10 @@
   }
 
   .relic-builder-result {
+    grid-column: auto;
+  }
+
+  .relic-builder-save-actions {
     grid-column: auto;
   }
 
