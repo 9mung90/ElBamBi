@@ -1,11 +1,28 @@
-import { useEffect, useMemo, useState, type FormEvent } from 'react';
+import { useEffect, useMemo, useRef, useState, type ChangeEvent, type FormEvent } from 'react';
 import { nightfarers, type Nightfarer } from '../data/nightfarers';
+import {
+  getStorageErrorMessage,
+  listRelicPresets,
+  listRelics,
+  type RelicPreset,
+  type RelicPresetSlotInput,
+  type StoredRelic,
+  type StoredRelicOption,
+} from '../api/storageApi';
+import {
+  relicEffectsKo,
+  relicItemColorMap,
+  relicRollAppData,
+  relics,
+  type RelicRollEffect,
+} from '../data/relics';
+import { vessels, type Vessel } from '../data/vessels';
 import './BuildPage.css';
 
 type WritableBuildPostCategory = 'Class Builds' | 'Strategy' | 'Questions' | 'Free Board';
 type BoardTabId = 'all' | 'popular' | 'class-builds' | 'strategy' | 'questions' | 'free-board';
 type SortKey = 'latest' | 'popular' | 'views';
-type BoardMode = 'list' | 'write';
+type BoardMode = 'detail' | 'list' | 'write';
 
 const nightAssetUrls = import.meta.glob('../assets/images/night/**/*.webp', {
   eager: true,
@@ -16,6 +33,24 @@ const nightAssetUrls = import.meta.glob('../assets/images/night/**/*.webp', {
 const nightAssetUrlsByLower = new Map(
   Object.entries(nightAssetUrls).map(([path, url]) => [path.toLowerCase(), url]),
 );
+
+const relicItemColorById = new Map(relicItemColorMap.map((entry) => [entry.itemId, entry]));
+const relicEffectById = new Map(relicEffectsKo.map((effect) => [String(effect.id), effect]));
+const relicCatalogById = new Map(relics.map((relic) => [relic.id, relic]));
+const relicRollEffectById = new Map<string, RelicRollEffect>();
+const relicRollDebuffById = new Map<string, RelicRollEffect>();
+
+for (const mode of Object.values(relicRollAppData.modes)) {
+  for (const effect of mode.effects) {
+    relicRollEffectById.set(String(effect.id), effect);
+  }
+}
+
+for (const debuffTable of Object.values(relicRollAppData.debuffTables)) {
+  for (const effect of debuffTable.effects) {
+    relicRollDebuffById.set(String(effect.id), effect);
+  }
+}
 
 type BuildImage = {
   id: string;
@@ -57,7 +92,26 @@ type BuildPostDraft = {
   category: WritableBuildPostCategory;
   nightfarerIndex: number | null;
   content: string;
-  imageUrls: string;
+  preset: BuildPostPreset | null;
+};
+
+type PresetSlotRelics = Array<string | null>;
+
+type BuildPostPreset = {
+  preset: RelicPreset;
+  storedRelics: StoredRelic[];
+};
+
+type BuildContentImagePayload = {
+  alt: string;
+  index: number;
+  mimeType: string;
+  sizeBytes: number | null;
+  src?: string;
+};
+
+type CreatedPostLookupDraft = Pick<BuildPostDraft, 'title' | 'category'> & {
+  content: string;
 };
 
 type CommunityPostResponse = {
@@ -65,6 +119,9 @@ type CommunityPostResponse = {
   userId?: unknown;
   title?: unknown;
   content?: unknown;
+  contentHtml?: unknown;
+  embeddedImagesJson?: unknown;
+  presetJson?: unknown;
   viewCount?: unknown;
   category?: unknown;
   createdAt?: unknown;
@@ -101,6 +158,21 @@ const defaultApiBaseUrl = 'https://k9e297bszl.execute-api.ap-northeast-2.amazona
 const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? defaultApiBaseUrl).replace(/\/$/, '');
 const accessTokenStorageKey = 'accessToken';
 const postsPerPage = 15;
+const EMPTY_PRESET_SLOTS: PresetSlotRelics = [null, null, null, null, null, null];
+const EMPTY_EFFECT_ID = 0xffffffff;
+const buildPostPresetMarkerPrefix = '[[NIGHTREIGN_BUILD_PRESET:';
+const buildPostPresetMarkerSuffix = ']]';
+const maxBuildContentImageCount = 10;
+const maxBuildContentImageSize = 20 * 1024 * 1024;
+const maxCommunityPostRequestSize = 9 * 1024 * 1024;
+const allowedBuildImageTypes = new Set([
+  'image/avif',
+  'image/bmp',
+  'image/gif',
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+]);
 const writeCategories: WritableBuildPostCategory[] = [
   'Class Builds',
   'Strategy',
@@ -205,6 +277,144 @@ function getNightfarerIconUrl(nightfarer: Nightfarer) {
   return resolveNightAssetUrl(nightfarer.nameImageUrl);
 }
 
+function normalizeRelicColor(color: string | undefined) {
+  return (color ?? '').trim().toLowerCase();
+}
+
+function getRelicColorLabel(color: string | undefined) {
+  const labels: Record<string, string> = {
+    red: '빨강',
+    blue: '파랑',
+    yellow: '노랑',
+    green: '초록',
+    white: '자유',
+    builder: '제작',
+  };
+  const normalizedColor = normalizeRelicColor(color);
+
+  return labels[normalizedColor] ?? color ?? '-';
+}
+
+function getRelicColorClass(color: string | undefined) {
+  const normalizedColor = normalizeRelicColor(color);
+  return normalizedColor ? `relic-color-${normalizedColor}` : '';
+}
+
+function splitPresetList(value: string | undefined) {
+  if (!value) return [];
+
+  return value
+    .split(/[|/]/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function getVesselColors(vessel: Vessel | undefined, colorMode: 'normal' | 'deep') {
+  if (!vessel) return [];
+
+  return splitPresetList(colorMode === 'deep' ? vessel.deepRelicColors : vessel.relicColors);
+}
+
+function getPresetVesselSlotColors(vessel: Vessel | undefined) {
+  return [...getVesselColors(vessel, 'normal'), ...getVesselColors(vessel, 'deep')];
+}
+
+function getPresetVessel(vesselIndex: number) {
+  return vessels.find((vessel) => vessel.index === vesselIndex);
+}
+
+function getPresetVesselName(vesselIndex: number) {
+  return getPresetVessel(vesselIndex)?.name ?? `현기 ${vesselIndex}`;
+}
+
+function getPresetNightfarer(characterName: string) {
+  return nightfarers.find((nightfarer) => nightfarer.name === characterName);
+}
+
+function getSavedPresetSlots(slots: RelicPresetSlotInput[]) {
+  const slotsByIndex = new Map(slots.map((slot) => [slot.slotIndex, slot]));
+
+  return EMPTY_PRESET_SLOTS.map((_, slotIndex) => slotsByIndex.get(slotIndex) ?? null);
+}
+
+function getRelicNameByItemId(itemId: number) {
+  return relicItemColorById.get(itemId)?.name ?? relicCatalogById.get(itemId)?.name ?? `유물 ${itemId}`;
+}
+
+function getRelicColorByItemId(itemId: number) {
+  return relicItemColorById.get(itemId)?.color ?? relicCatalogById.get(itemId)?.color ?? '';
+}
+
+function shouldIncludePresetDebuffs(slotIndex: number) {
+  return slotIndex >= 3;
+}
+
+function isUsableEffectId(effectId: number) {
+  return effectId !== EMPTY_EFFECT_ID && effectId !== -1;
+}
+
+function toPresetRelicOption(effectId: number, slotIndex: number): StoredRelicOption | null {
+  if (!isUsableEffectId(effectId)) return null;
+
+  const relicEffect = relicEffectById.get(String(effectId));
+  const rollEffect = relicRollEffectById.get(String(effectId));
+  const debuffEffect = relicRollDebuffById.get(String(effectId));
+  const effect = rollEffect ?? debuffEffect;
+
+  return {
+    slot: slotIndex + 1,
+    effectId,
+    ...(effect?.key ? { effectKey: effect.key } : {}),
+    name: relicEffect?.name ?? effect?.effect_kor ?? effect?.effect ?? `효과 ${effectId}`,
+    detail: relicEffect?.desc ?? effect?.effect_detail_kor ?? '',
+  };
+}
+
+function getSavePresetSlotOptionGroups(effectIds: number[], includeDebuffs = true) {
+  return [1, 2, 3]
+    .map((slot) => {
+      const option = toPresetRelicOption(effectIds[slot - 1] ?? EMPTY_EFFECT_ID, slot - 1);
+      const debuff = includeDebuffs
+        ? toPresetRelicOption(effectIds[slot + 2] ?? EMPTY_EFFECT_ID, slot - 1)
+        : null;
+
+      if (!option && !debuff) return null;
+
+      return { slot, option, debuff };
+    })
+    .filter((group): group is NonNullable<typeof group> => Boolean(group));
+}
+
+function getStoredRelicOptionGroups(relic: StoredRelic, includeDebuffs = true) {
+  return [1, 2, 3]
+    .map((slot) => {
+      const option = relic.options.find((candidate) => candidate.slot === slot);
+      const debuff = includeDebuffs
+        ? relic.debuffs?.find((candidate) => candidate.slot === slot)
+        : undefined;
+
+      if (!option && !debuff) return null;
+
+      return { slot, option, debuff };
+    })
+    .filter((group): group is NonNullable<typeof group> => Boolean(group));
+}
+
+function getPresetSlotOptionGroups(slot: RelicPresetSlotInput, relicsById: Map<string, StoredRelic>) {
+  const storedRelic = slot.relicRefType === 'stored' ? relicsById.get(slot.relicId) : undefined;
+  const includeDebuffs = shouldIncludePresetDebuffs(slot.slotIndex);
+
+  if (slot.relicRefType === 'stored' && storedRelic) {
+    return getStoredRelicOptionGroups(storedRelic, includeDebuffs);
+  }
+
+  if (slot.relicRefType === 'save') {
+    return getSavePresetSlotOptionGroups(slot.effectIds, includeDebuffs);
+  }
+
+  return [];
+}
+
 function getNullableDate(value: unknown) {
   return typeof value === 'string' && value ? value : null;
 }
@@ -227,6 +437,8 @@ function getAccessToken() {
 async function requestApi<T>(
   path: string,
   options: {
+    includeAuth?: boolean;
+    bodyAsJson?: boolean;
     method?: 'GET' | 'POST';
     query?: Record<string, ApiBodyValue>;
     body?: Record<string, ApiBodyValue>;
@@ -239,7 +451,7 @@ async function requestApi<T>(
   const url = `${apiBaseUrl}${path}${queryString ? `?${queryString}` : ''}`;
   const headers = new Headers();
   const accessToken = getAccessToken();
-  if (accessToken) {
+  if (options.includeAuth !== false && accessToken) {
     headers.set('authorization', `Bearer ${accessToken}`);
   }
 
@@ -249,10 +461,17 @@ async function requestApi<T>(
   };
 
   if (options.body) {
-    const body = new URLSearchParams();
-    appendParams(body, options.body);
-    init.body = body;
-    headers.set('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
+    if (options.bodyAsJson) {
+      init.body = JSON.stringify(
+        Object.fromEntries(Object.entries(options.body).filter(([, value]) => value !== null && value !== undefined && value !== '')),
+      );
+      headers.set('content-type', 'application/json;charset=UTF-8');
+    } else {
+      const body = new URLSearchParams();
+      appendParams(body, options.body);
+      init.body = body;
+      headers.set('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
+    }
   }
 
   const response = await fetch(url, init);
@@ -269,9 +488,9 @@ async function requestApi<T>(
   return text as T;
 }
 
-async function requestOptionalList<T>(path: string) {
+async function requestOptionalList<T>(path: string, options: { includeAuth?: boolean } = {}) {
   try {
-    const payload = await requestApi<unknown>(path);
+    const payload = await requestApi<unknown>(path, { includeAuth: options.includeAuth });
     return Array.isArray(payload) ? (payload as T[]) : [];
   } catch (error) {
     if (isApiRequestError(error) && error.status === 401) return [];
@@ -284,7 +503,7 @@ function normalizePost(post: CommunityPostResponse): BuildPost {
     id: getString(post.id),
     userId: getString(post.userId),
     title: getString(post.title, '제목 없음'),
-    content: getString(post.content),
+    content: getString(post.contentHtml, getString(post.content)),
     viewCount: getNumber(post.viewCount),
     category: getString(post.category, 'Class Builds'),
     createdAt: getString(post.createdAt, new Date().toISOString()),
@@ -397,11 +616,215 @@ function formatDate(value: string) {
   }).format(date);
 }
 
-function getImageUrls(value: string) {
+function createBuildPostPreset(preset: RelicPreset, relicsById: Map<string, StoredRelic>): BuildPostPreset {
+  const storedRelicIds = preset.slots
+    .filter((slot): slot is Extract<RelicPresetSlotInput, { relicRefType: 'stored' }> => slot.relicRefType === 'stored')
+    .map((slot) => slot.relicId);
+
+  return {
+    preset,
+    storedRelics: Array.from(new Set(storedRelicIds))
+      .map((relicId) => relicsById.get(relicId))
+      .filter((relic): relic is StoredRelic => Boolean(relic)),
+  };
+}
+
+function encodeBuildPostPreset(preset: BuildPostPreset) {
+  return `${buildPostPresetMarkerPrefix}${btoa(encodeURIComponent(JSON.stringify(preset)))}${buildPostPresetMarkerSuffix}`;
+}
+
+function decodeBuildPostPreset(value: string): BuildPostPreset | null {
+  try {
+    const parsed = JSON.parse(decodeURIComponent(atob(value))) as BuildPostPreset;
+    if (!parsed?.preset?.presetId || !Array.isArray(parsed.preset.slots)) return null;
+    return {
+      preset: parsed.preset,
+      storedRelics: Array.isArray(parsed.storedRelics) ? parsed.storedRelics : [],
+    };
+  } catch {
+    return null;
+  }
+}
+
+function getBuildPostContentParts(content: string) {
+  if (!content.startsWith(buildPostPresetMarkerPrefix)) {
+    return { preset: null as BuildPostPreset | null, content };
+  }
+
+  const markerEndIndex = content.indexOf(buildPostPresetMarkerSuffix, buildPostPresetMarkerPrefix.length);
+  if (markerEndIndex === -1) {
+    return { preset: null as BuildPostPreset | null, content };
+  }
+
+  const encodedPreset = content.slice(buildPostPresetMarkerPrefix.length, markerEndIndex);
+  const preset = decodeBuildPostPreset(encodedPreset);
+  if (!preset) {
+    return { preset: null as BuildPostPreset | null, content };
+  }
+
+  return {
+    preset,
+    content: content.slice(markerEndIndex + buildPostPresetMarkerSuffix.length).replace(/^\r?\n/, ''),
+  };
+}
+
+function escapeHtml(value: string) {
   return value
-    .split(/\r?\n|,/)
-    .map((url) => url.trim())
-    .filter(Boolean);
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function getBuildContentText(content: string) {
+  if (typeof document === 'undefined') return content;
+
+  const container = document.createElement('div');
+  container.innerHTML = content;
+  return container.textContent ?? '';
+}
+
+function getBuildContentImageCount(content: string) {
+  if (typeof document === 'undefined') return 0;
+
+  const container = document.createElement('div');
+  container.innerHTML = content;
+  return container.querySelectorAll('img').length;
+}
+
+function getDataUrlSizeBytes(src: string) {
+  const base64Match = src.match(/^data:[^;]+;base64,(.*)$/);
+  if (!base64Match) return null;
+
+  const base64 = base64Match[1].replace(/\s/g, '');
+  if (!base64) return 0;
+
+  const padding = base64.endsWith('==') ? 2 : base64.endsWith('=') ? 1 : 0;
+  return Math.max(0, Math.floor((base64.length * 3) / 4) - padding);
+}
+
+function getBuildContentImages(content: string): BuildContentImagePayload[] {
+  if (typeof document === 'undefined') return [];
+
+  const container = document.createElement('div');
+  container.innerHTML = content;
+
+  return Array.from(container.querySelectorAll('img'))
+    .map((image, index) => {
+      const src = image.getAttribute('src') ?? '';
+      const mimeType = src.match(/^data:([^;]+);/)?.[1] ?? '';
+
+      return {
+        alt: image.getAttribute('alt') ?? '',
+        index,
+        mimeType,
+        sizeBytes: getDataUrlSizeBytes(src),
+        src,
+      };
+    })
+    .filter((image) => image.src);
+}
+
+function getBuildContentImageMetadata(content: string): BuildContentImagePayload[] {
+  return getBuildContentImages(content).map(({ src: _src, ...metadata }) => metadata);
+}
+
+function isBuildContentEmpty(content: string) {
+  return !getBuildContentText(content).trim() && getBuildContentImageCount(content) === 0;
+}
+
+function sanitizeBuildPostHtml(content: string) {
+  if (typeof document === 'undefined') return escapeHtml(content);
+
+  const template = document.createElement('template');
+  template.innerHTML = content;
+  const allowedTags = new Set(['B', 'BR', 'DIV', 'EM', 'FIGCAPTION', 'FIGURE', 'I', 'IMG', 'LI', 'OL', 'P', 'SPAN', 'STRONG', 'U', 'UL']);
+
+  function cleanNode(node: Node) {
+    if (node.nodeType === Node.TEXT_NODE) return;
+
+    if (node.nodeType !== Node.ELEMENT_NODE) {
+      node.parentNode?.removeChild(node);
+      return;
+    }
+
+    const element = node as HTMLElement;
+    if (!allowedTags.has(element.tagName)) {
+      element.replaceWith(document.createTextNode(element.textContent ?? ''));
+      return;
+    }
+
+    Array.from(element.attributes).forEach((attribute) => {
+      const name = attribute.name.toLowerCase();
+      if (name.startsWith('on') || name === 'style') {
+        element.removeAttribute(attribute.name);
+      }
+    });
+
+    if (element.tagName === 'IMG') {
+      const image = element as HTMLImageElement;
+      const src = image.getAttribute('src') ?? '';
+      const isAllowedSrc = src.startsWith('data:image/') || src.startsWith('blob:') || src.startsWith('http://') || src.startsWith('https://');
+
+      if (!isAllowedSrc) {
+        image.remove();
+        return;
+      }
+
+      Array.from(image.attributes).forEach((attribute) => {
+        const name = attribute.name.toLowerCase();
+        if (!['alt', 'class', 'src'].includes(name)) {
+          image.removeAttribute(attribute.name);
+        }
+      });
+      image.classList.add('build-content-image');
+    }
+
+    Array.from(element.childNodes).forEach(cleanNode);
+  }
+
+  Array.from(template.content.childNodes).forEach(cleanNode);
+  return template.innerHTML.trim();
+}
+
+function composeBuildPostContent(draft: BuildPostDraft) {
+  const cleanContent = sanitizeBuildPostHtml(draft.content);
+  if (!draft.preset) return cleanContent;
+
+  const presetContent = encodeBuildPostPreset(draft.preset);
+  return cleanContent ? `${presetContent}\n${cleanContent}` : presetContent;
+}
+
+function getSearchableBuildContent(content: string) {
+  const contentParts = getBuildPostContentParts(content);
+  return getBuildContentText(contentParts.content);
+}
+
+function createBuildPostRequestBody(draft: BuildPostDraft, postContent: string) {
+  const cleanContentHtml = sanitizeBuildPostHtml(draft.content);
+  const embeddedImages = getBuildContentImageMetadata(cleanContentHtml);
+  const contentText = getBuildContentText(cleanContentHtml).trim();
+
+  return {
+    title: draft.title,
+    content: contentText,
+    contentHtml: postContent,
+    contentText,
+    category: draft.category,
+    presetJson: draft.preset ? JSON.stringify(draft.preset) : undefined,
+    presetId: draft.preset?.preset.presetId,
+    embeddedImagesJson: embeddedImages.length ? JSON.stringify(embeddedImages) : undefined,
+    embeddedImageCount: embeddedImages.length,
+  };
+}
+
+function getRequestBodySize(body: Record<string, ApiBodyValue>) {
+  const jsonBody = JSON.stringify(
+    Object.fromEntries(Object.entries(body).filter(([, value]) => value !== null && value !== undefined && value !== '')),
+  );
+
+  return new TextEncoder().encode(jsonBody).length;
 }
 
 function getCategoryLabel(category: string) {
@@ -416,7 +839,7 @@ function getAuthorLabel(userId: string) {
 
 function getPostNightfarer(post: BuildPost) {
   // TODO: Currently UI only. Connect this to the DB/API later.
-  const searchableText = [post.title, post.content, post.category, getCategoryLabel(post.category)]
+  const searchableText = [post.title, getSearchableBuildContent(post.content), post.category, getCategoryLabel(post.category)]
     .join(' ')
     .toLowerCase();
 
@@ -446,9 +869,13 @@ function matchesPostSearch(post: BuildPost, searchQuery: string) {
   const normalizedQuery = searchQuery.trim().toLowerCase();
   if (!normalizedQuery) return true;
 
-  return [post.title, post.content, getCategoryLabel(post.category), post.category, getAuthorLabel(post.userId)].some(
-    (value) => String(value).toLowerCase().includes(normalizedQuery),
-  );
+  return [
+    post.title,
+    getSearchableBuildContent(post.content),
+    getCategoryLabel(post.category),
+    post.category,
+    getAuthorLabel(post.userId),
+  ].some((value) => String(value).toLowerCase().includes(normalizedQuery));
 }
 
 function matchesBoardTab(post: BuildPost, selectedTab: BoardTabId) {
@@ -484,7 +911,7 @@ function getErrorMessage(error: unknown, fallback: string) {
   return fallback;
 }
 
-async function findCreatedPostId(draft: BuildPostDraft) {
+async function findCreatedPostId(draft: CreatedPostLookupDraft) {
   const userPosts = await requestApi<CommunityPostResponse[]>(communityApi.postsByUser);
   const posts = Array.isArray(userPosts) ? userPosts.map(normalizePost) : [];
   const matchedPost = posts.find(
@@ -739,13 +1166,558 @@ function BoardPagination({
   );
 }
 
+function BuildPresetVesselPreview({ vessel }: { vessel: Vessel | undefined }) {
+  const slotColors = getPresetVesselSlotColors(vessel);
+
+  return (
+    <div className="saved-preset-vessel-preview">
+      <div className="saved-preset-vessel-colors" aria-hidden="true">
+        {slotColors.slice(0, 6).map((color, colorIndex) => (
+          <span
+            key={`${color}-${colorIndex}`}
+            className={`relic-preset-color-dot ${getRelicColorClass(color)}${colorIndex === 3 ? ' is-deep-start' : ''}`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function BuildPresetOptionList({
+  optionGroups,
+}: {
+  optionGroups: ReturnType<typeof getPresetSlotOptionGroups>;
+}) {
+  if (!optionGroups.length) {
+    return <em>옵션 정보 없음</em>;
+  }
+
+  return (
+    <ol className="relic-preset-summary-options">
+      {optionGroups.map((group) => (
+        <li key={group.slot}>
+          <span>{group.slot}</span>
+          <div>
+            {group.option ? <strong>{group.option.name}</strong> : null}
+            {group.option?.detail ? <p>{group.option.detail}</p> : null}
+            {group.debuff ? (
+              <div className="relic-builder-result-debuff">
+                <em>디버프</em>
+                <strong>{group.debuff.name}</strong>
+                {group.debuff.detail ? <p>{group.debuff.detail}</p> : null}
+              </div>
+            ) : null}
+          </div>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+function BuildPresetSlotSummary({
+  onSelect,
+  relicsById,
+  slot,
+  slotIndex,
+}: {
+  onSelect: () => void;
+  relicsById: Map<string, StoredRelic>;
+  slot: RelicPresetSlotInput | null;
+  slotIndex: number;
+}) {
+  if (!slot) {
+    return <li className="saved-preset-slot is-empty" aria-label={`empty slot ${slotIndex + 1}`} />;
+  }
+
+  const storedRelic = slot.relicRefType === 'stored' ? relicsById.get(slot.relicId) : undefined;
+  const relicName =
+    slot.relicRefType === 'stored'
+      ? storedRelic?.itemName ?? `저장 유물 ${slot.relicId}`
+      : getRelicNameByItemId(slot.itemId);
+  const relicColor =
+    slot.relicRefType === 'stored' ? storedRelic?.color ?? '' : getRelicColorByItemId(slot.itemId);
+
+  return (
+    <li
+      className="saved-preset-slot"
+      role="button"
+      tabIndex={0}
+      aria-label={`${relicName} 옵션 상세`}
+      onClick={onSelect}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          onSelect();
+        }
+      }}
+    >
+      <span>{slot.slotIndex + 1}</span>
+      <div>
+        <div className="relic-preset-summary-top">
+          <strong className={getRelicColorClass(relicColor)}>{getRelicColorLabel(relicColor)}</strong>
+          <em>{slot.relicRefType === 'stored' ? '저장 유물' : '세이브 유물'}</em>
+        </div>
+        <p>{relicName}</p>
+      </div>
+    </li>
+  );
+}
+
+function BuildPresetCard({
+  onSelectPreset,
+  onSelectSlot,
+  preset,
+  relicsById,
+}: {
+  onSelectPreset?: (preset: RelicPreset) => void;
+  onSelectSlot?: (preset: RelicPreset, slotIndex: number) => void;
+  preset: RelicPreset;
+  relicsById: Map<string, StoredRelic>;
+}) {
+  const nightfarer = getPresetNightfarer(preset.characterName);
+  const nightfarerIconUrl = nightfarer ? getNightfarerIconUrl(nightfarer) : undefined;
+  const vessel = getPresetVessel(preset.vesselIndex);
+
+  return (
+    <article
+      className={`option-card saved-preset-card build-preset-card${onSelectPreset ? ' is-selectable' : ''}`}
+      role={onSelectPreset ? 'button' : undefined}
+      tabIndex={onSelectPreset ? 0 : undefined}
+      onClick={onSelectPreset ? () => onSelectPreset(preset) : undefined}
+      onKeyDown={(event) => {
+        if (!onSelectPreset || (event.key !== 'Enter' && event.key !== ' ')) return;
+        event.preventDefault();
+        onSelectPreset(preset);
+      }}
+    >
+      <div className="saved-preset-card-top">
+        <div className="saved-preset-character-icon">
+          {nightfarerIconUrl ? <img src={nightfarerIconUrl} alt="" aria-hidden="true" /> : null}
+        </div>
+        <div className="saved-preset-card-heading">
+          <h3>{preset.name}</h3>
+          <p>
+            {preset.characterName} · {vessel?.name ?? getPresetVesselName(preset.vesselIndex)}
+          </p>
+        </div>
+        <BuildPresetVesselPreview vessel={vessel} />
+      </div>
+      <ol className="relic-builder-result-list saved-preset-slot-list">
+        {getSavedPresetSlots(preset.slots).map((slot, slotIndex) => (
+          <BuildPresetSlotSummary
+            key={`${preset.presetId}-${slotIndex}`}
+            onSelect={() => (onSelectSlot ? onSelectSlot(preset, slotIndex) : onSelectPreset?.(preset))}
+            relicsById={relicsById}
+            slot={slot}
+            slotIndex={slotIndex}
+          />
+        ))}
+      </ol>
+    </article>
+  );
+}
+
+function BuildPostPresetBlock({
+  embeddedPreset,
+  onRemove,
+}: {
+  embeddedPreset: BuildPostPreset;
+  onRemove?: () => void;
+}) {
+  const [activePresetSlotKey, setActivePresetSlotKey] = useState<string | null>(null);
+  const relicsById = useMemo(
+    () => new Map(embeddedPreset.storedRelics.map((relic) => [relic.relicId, relic])),
+    [embeddedPreset.storedRelics],
+  );
+  const activePresetSlot = useMemo(() => {
+    if (!activePresetSlotKey) return null;
+
+    const savedSlots = getSavedPresetSlots(embeddedPreset.preset.slots);
+    return (
+      savedSlots.find(
+        (slot, slotIndex) => slot && activePresetSlotKey === `${embeddedPreset.preset.presetId}-${slotIndex}`,
+      ) ?? null
+    );
+  }, [activePresetSlotKey, embeddedPreset.preset]);
+  const activePresetSlotOptionGroups = useMemo(
+    () => (activePresetSlot ? getPresetSlotOptionGroups(activePresetSlot, relicsById) : []),
+    [activePresetSlot, relicsById],
+  );
+
+  useEffect(() => {
+    if (!activePresetSlotKey) return undefined;
+
+    function handleKeyDown(event: globalThis.KeyboardEvent) {
+      if (event.key === 'Escape') {
+        setActivePresetSlotKey(null);
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activePresetSlotKey]);
+
+  return (
+    <section className="build-inserted-preset">
+      <div className="build-inserted-preset-heading">
+        <strong>선택한 프리셋</strong>
+        {onRemove ? (
+          <button
+            type="button"
+            className="build-secondary-button is-danger"
+            onClick={(event) => {
+              event.stopPropagation();
+              onRemove();
+            }}
+          >
+            삭제
+          </button>
+        ) : null}
+      </div>
+      <BuildPresetCard
+        onSelectSlot={(preset, slotIndex) => setActivePresetSlotKey(`${preset.presetId}-${slotIndex}`)}
+        preset={embeddedPreset.preset}
+        relicsById={relicsById}
+      />
+
+      {activePresetSlot ? (
+        <div
+          className="saved-preset-modal-overlay"
+          role="presentation"
+          onClick={() => setActivePresetSlotKey(null)}
+        >
+          <div
+            className="saved-preset-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-label="유물 옵션 상세"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button
+              type="button"
+              className="saved-preset-modal-close"
+              aria-label="닫기"
+              onClick={() => setActivePresetSlotKey(null)}
+            >
+              x
+            </button>
+            <BuildPresetOptionList optionGroups={activePresetSlotOptionGroups} />
+          </div>
+        </div>
+      ) : null}
+    </section>
+  );
+}
+
+function BuildPresetInsertSection({
+  authUserId,
+  onSelectPreset,
+}: {
+  authUserId: string | null;
+  onSelectPreset: (preset: BuildPostPreset) => void;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [presets, setPresets] = useState<RelicPreset[]>([]);
+  const [storedRelics, setStoredRelics] = useState<StoredRelic[]>([]);
+  const [isLoadingPresets, setIsLoadingPresets] = useState(false);
+  const [presetNotice, setPresetNotice] = useState<string | null>(null);
+  const relicsById = useMemo(
+    () => new Map(storedRelics.map((relic) => [relic.relicId, relic])),
+    [storedRelics],
+  );
+
+  useEffect(() => {
+    if (!isOpen) return undefined;
+
+    let isCurrentRequest = true;
+
+    if (!authUserId) {
+      setPresets([]);
+      setStoredRelics([]);
+      setPresetNotice('로그인 후 저장된 프리셋을 불러올 수 있습니다.');
+      return () => {
+        isCurrentRequest = false;
+      };
+    }
+
+    setIsLoadingPresets(true);
+    setPresetNotice(null);
+
+    Promise.all([listRelicPresets(authUserId), listRelics(authUserId, 'all')])
+      .then(([nextPresets, nextRelics]) => {
+        if (!isCurrentRequest) return;
+
+        setPresets(Array.isArray(nextPresets) ? nextPresets : []);
+        setStoredRelics(Array.isArray(nextRelics) ? nextRelics : []);
+      })
+      .catch((error) => {
+        if (!isCurrentRequest) return;
+
+        setPresets([]);
+        setStoredRelics([]);
+        setPresetNotice(getStorageErrorMessage(error, '저장된 프리셋을 불러오지 못했습니다.'));
+      })
+      .finally(() => {
+        if (isCurrentRequest) setIsLoadingPresets(false);
+      });
+
+    return () => {
+      isCurrentRequest = false;
+    };
+  }, [authUserId, isOpen]);
+
+  return (
+    <section className="build-preset-insert">
+      <button
+        type="button"
+        className="build-secondary-button build-preset-insert-button"
+        onClick={() => setIsOpen((currentValue) => !currentValue)}
+      >
+        {isOpen ? '프리셋 닫기' : '프리셋 넣기'}
+      </button>
+
+      {isOpen ? (
+        <div className="build-preset-insert-panel">
+          <div className="build-preset-insert-heading">
+            <strong>저장된 프리셋 보기</strong>
+            <span>{presets.length}개</span>
+          </div>
+          {presetNotice ? <p className="build-notice">{presetNotice}</p> : null}
+          {isLoadingPresets ? <p className="build-preset-muted">저장된 프리셋을 불러오는 중...</p> : null}
+          {!isLoadingPresets && !presetNotice && !presets.length ? (
+            <p className="build-preset-muted">저장된 프리셋이 없습니다.</p>
+          ) : null}
+          {presets.length ? (
+            <div className="saved-preset-grid build-preset-grid">
+              {presets.map((preset) => (
+                <BuildPresetCard
+                  key={preset.presetId}
+                  onSelectPreset={(selectedPreset) => {
+                    onSelectPreset(createBuildPostPreset(selectedPreset, relicsById));
+                    setIsOpen(false);
+                  }}
+                  preset={preset}
+                  relicsById={relicsById}
+                />
+              ))}
+            </div>
+          ) : null}
+        </div>
+      ) : null}
+
+    </section>
+  );
+}
+
+function BuildRichContentEditor({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (value: string) => void;
+}) {
+  const editorRef = useRef<HTMLDivElement | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const lastSelectionRef = useRef<Range | null>(null);
+  const [imageNotice, setImageNotice] = useState<string | null>(null);
+
+  useEffect(() => {
+    const editor = editorRef.current;
+    if (!editor || document.activeElement === editor || editor.innerHTML === value) return;
+    editor.innerHTML = value;
+  }, [value]);
+
+  function saveSelection() {
+    const editor = editorRef.current;
+    const selection = window.getSelection();
+    if (!editor || !selection?.rangeCount) return;
+
+    const range = selection.getRangeAt(0);
+    if (editor.contains(range.commonAncestorContainer)) {
+      lastSelectionRef.current = range.cloneRange();
+    }
+  }
+
+  function syncEditorContent() {
+    const editor = editorRef.current;
+    if (!editor) return;
+    onChange(editor.innerHTML);
+  }
+
+  function restoreSelection() {
+    const editor = editorRef.current;
+    if (!editor) return;
+
+    editor.focus();
+    const selection = window.getSelection();
+    selection?.removeAllRanges();
+
+    if (lastSelectionRef.current) {
+      selection?.addRange(lastSelectionRef.current);
+      return;
+    }
+
+    const range = document.createRange();
+    range.selectNodeContents(editor);
+    range.collapse(false);
+    selection?.addRange(range);
+  }
+
+  function insertImage(dataUrl: string, file: File) {
+    const editor = editorRef.current;
+    if (!editor) return;
+
+    restoreSelection();
+
+    const image = document.createElement('img');
+    image.src = dataUrl;
+    image.alt = file.name;
+    image.className = 'build-content-image';
+
+    const wrapper = document.createElement('figure');
+    wrapper.className = 'build-content-image-block';
+    wrapper.appendChild(image);
+
+    const spacer = document.createElement('div');
+    spacer.appendChild(document.createElement('br'));
+
+    const selection = window.getSelection();
+    const range = selection?.rangeCount ? selection.getRangeAt(0) : null;
+    if (range) {
+      range.deleteContents();
+      range.insertNode(spacer);
+      range.insertNode(wrapper);
+      range.setStartAfter(spacer);
+      range.collapse(true);
+      selection?.removeAllRanges();
+      selection?.addRange(range);
+    } else {
+      editor.append(wrapper, spacer);
+    }
+
+    saveSelection();
+    syncEditorContent();
+  }
+
+  function readImageFile(file: File) {
+    return new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (typeof reader.result === 'string') resolve(reader.result);
+        else reject(new Error('파일을 읽지 못했습니다.'));
+      };
+      reader.onerror = () => reject(reader.error ?? new Error('파일을 읽지 못했습니다.'));
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function handleImageFiles(event: ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(event.target.files ?? []);
+    event.target.value = '';
+    if (!files.length) return;
+
+    const currentImageCount = getBuildContentImageCount(editorRef.current?.innerHTML ?? value);
+    const remainingImageCount = maxBuildContentImageCount - currentImageCount;
+    const acceptedFiles: File[] = [];
+    const rejectedMessages: string[] = [];
+
+    if (remainingImageCount <= 0) {
+      setImageNotice(`이미지는 최대 ${maxBuildContentImageCount}개까지 넣을 수 있습니다.`);
+      return;
+    }
+
+    for (const file of files) {
+      if (acceptedFiles.length >= remainingImageCount) {
+        rejectedMessages.push(`최대 ${maxBuildContentImageCount}개까지만 추가됩니다.`);
+        break;
+      }
+
+      if (!file.type.startsWith('image/') || !allowedBuildImageTypes.has(file.type)) {
+        rejectedMessages.push(`${file.name}: 지원하지 않는 이미지 형식입니다.`);
+        continue;
+      }
+
+      if (file.size > maxBuildContentImageSize) {
+        rejectedMessages.push(`${file.name}: 20MB를 넘는 이미지는 넣을 수 없습니다.`);
+        continue;
+      }
+
+      acceptedFiles.push(file);
+    }
+
+    try {
+      for (const file of acceptedFiles) {
+        const dataUrl = await readImageFile(file);
+        insertImage(dataUrl, file);
+      }
+      setImageNotice(rejectedMessages[0] ?? null);
+    } catch {
+      setImageNotice('이미지를 본문에 넣지 못했습니다.');
+    }
+  }
+
+  return (
+    <div className="build-rich-editor">
+      <div className="build-editor-toolbar">
+        <button
+          type="button"
+          className="build-secondary-button"
+          onMouseDown={saveSelection}
+          onClick={() => fileInputRef.current?.click()}
+        >
+          이미지 넣기
+        </button>
+        <span>webp, gif, png, jpg 등 이미지/움짤 최대 20MB, 최대 10개</span>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/avif,image/bmp,image/gif,image/jpeg,image/png,image/webp"
+          multiple
+          onChange={handleImageFiles}
+        />
+      </div>
+      {imageNotice ? <p className="build-preset-muted">{imageNotice}</p> : null}
+      <div
+        ref={editorRef}
+        id="build-post-content"
+        className="build-content-editor"
+        contentEditable
+        suppressContentEditableWarning
+        role="textbox"
+        aria-multiline="true"
+        aria-label="내용"
+        data-placeholder="장비, 유물 옵션, 운용법, 루트, 보스별 팁을 적어주세요."
+        onBlur={saveSelection}
+        onClick={saveSelection}
+        onInput={syncEditorContent}
+        onKeyUp={saveSelection}
+      />
+    </div>
+  );
+}
+
+function BuildPostContent({ content }: { content: string }) {
+  const hasHtml = /<\/?[a-z][\s\S]*>/i.test(content);
+  const sanitizedContent = useMemo(() => (hasHtml ? sanitizeBuildPostHtml(content) : content), [content, hasHtml]);
+
+  if (!sanitizedContent) return null;
+
+  if (!hasHtml) {
+    return <p className="build-detail-content">{sanitizedContent}</p>;
+  }
+
+  return <div className="build-detail-content" dangerouslySetInnerHTML={{ __html: sanitizedContent }} />;
+}
+
 function BuildPostWritePage({
+  authUserId,
   draft,
   isSubmitting,
   onDraftChange,
   onSubmit,
   onCancel,
 }: {
+  authUserId: string | null;
   draft: BuildPostDraft;
   isSubmitting: boolean;
   onDraftChange: <K extends keyof BuildPostDraft>(key: K, value: BuildPostDraft[K]) => void;
@@ -765,7 +1737,7 @@ function BuildPostWritePage({
       </div>
 
       <form className="build-write-form" onSubmit={onSubmit}>
-        <p className="build-session-note">작성자는 백엔드 로그인 세션에서 자동으로 사용됩니다.</p>
+        <p className="build-session-note">작성자: {authUserId ?? '로그인 필요'}</p>
         <label>
           카테고리
           <select
@@ -807,25 +1779,17 @@ function BuildPostWritePage({
             required
           />
         </label>
-        <label>
-          내용
-          <textarea
-            value={draft.content}
-            onChange={(event) => onDraftChange('content', event.target.value)}
-            placeholder="장비, 유물 옵션, 운용법, 루트, 보스별 팁을 적어주세요."
-            rows={13}
-            required
-          />
-        </label>
-        <label>
-          이미지 URL
-          <textarea
-            value={draft.imageUrls}
-            onChange={(event) => onDraftChange('imageUrls', event.target.value)}
-            placeholder="여러 개면 줄바꿈 또는 쉼표로 구분하세요."
-            rows={3}
-          />
-        </label>
+        <div className="build-write-field">
+          <label htmlFor="build-post-content">내용</label>
+          {draft.preset ? (
+            <BuildPostPresetBlock
+              embeddedPreset={draft.preset}
+              onRemove={() => onDraftChange('preset', null)}
+            />
+          ) : null}
+          <BuildRichContentEditor value={draft.content} onChange={(content) => onDraftChange('content', content)} />
+        </div>
+        <BuildPresetInsertSection authUserId={authUserId} onSelectPreset={(preset) => onDraftChange('preset', preset)} />
 
         <div className="build-write-actions">
           <button type="button" className="build-secondary-button" onClick={onCancel}>
@@ -865,6 +1829,8 @@ function BuildPostDetail({
   onDeletePost: (post: BuildPost) => void;
   onReportPost: (post: BuildPost) => void;
 }) {
+  const contentParts = useMemo(() => getBuildPostContentParts(post.content), [post.content]);
+
   return (
     <article className="build-post-detail" aria-label="선택한 빌드 글">
       <div className="build-detail-heading">
@@ -903,7 +1869,8 @@ function BuildPostDetail({
         </div>
       ) : null}
 
-      <p className="build-detail-content">{post.content}</p>
+      {contentParts.preset ? <BuildPostPresetBlock embeddedPreset={contentParts.preset} /> : null}
+      <BuildPostContent content={contentParts.content} />
 
       <section className="build-comments" aria-label="댓글">
         <div className="build-comments-heading">
@@ -956,7 +1923,13 @@ function BuildPostDetail({
   );
 }
 
-function BuildPage({ searchQuery }: { searchQuery: string }) {
+function BuildPage({
+  authUserId,
+  searchQuery,
+}: {
+  authUserId: string | null;
+  searchQuery: string;
+}) {
   const [posts, setPosts] = useState<BuildPost[]>([]);
   const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
   const [boardMode, setBoardMode] = useState<BoardMode>('list');
@@ -977,7 +1950,7 @@ function BuildPage({ searchQuery }: { searchQuery: string }) {
     category: 'Class Builds',
     nightfarerIndex: null,
     content: '',
-    imageUrls: '',
+    preset: null,
   });
 
   async function loadCommunityData(focusPostId?: string | null) {
@@ -991,11 +1964,11 @@ function BuildPage({ searchQuery }: { searchQuery: string }) {
     try {
       const [rawPosts, rawComments, rawImages, rawLikes, rawBookmarks, rawMyLikes, rawMyBookmarks] =
         await Promise.all([
-          requestApi<CommunityPostResponse[]>(communityApi.posts),
-          requestOptionalList<CommentResponse>(communityApi.comments),
-          requestOptionalList<ImageResponse>(communityApi.images),
-          requestOptionalList<PostRelationResponse>(communityApi.likes),
-          requestOptionalList<PostRelationResponse>(communityApi.bookmarks),
+          requestApi<CommunityPostResponse[]>(communityApi.posts, { includeAuth: false }),
+          requestOptionalList<CommentResponse>(communityApi.comments, { includeAuth: false }),
+          requestOptionalList<ImageResponse>(communityApi.images, { includeAuth: false }),
+          requestOptionalList<PostRelationResponse>(communityApi.likes, { includeAuth: false }),
+          requestOptionalList<PostRelationResponse>(communityApi.bookmarks, { includeAuth: false }),
           requestOptionalList<PostRelationResponse>(communityApi.myLikes),
           requestOptionalList<PostRelationResponse>(communityApi.myBookmarks),
         ]);
@@ -1061,7 +2034,7 @@ function BuildPage({ searchQuery }: { searchQuery: string }) {
 
   const pageStartIndex = (currentPage - 1) * postsPerPage;
   const pagedPosts = visiblePosts.slice(pageStartIndex, pageStartIndex + postsPerPage);
-  const selectedPost = visiblePosts.find((post) => post.id === selectedPostId) ?? pagedPosts[0] ?? null;
+  const selectedPost = selectedPostId ? posts.find((post) => post.id === selectedPostId) ?? null : null;
 
   function updateDraft<K extends keyof BuildPostDraft>(key: K, value: BuildPostDraft[K]) {
     setDraft((currentDraft) => ({
@@ -1070,60 +2043,46 @@ function BuildPage({ searchQuery }: { searchQuery: string }) {
     }));
   }
 
-  async function addImages(postId: string, imageUrls: string[]) {
-    const results = await Promise.allSettled(
-      imageUrls.map((imageUrl) =>
-        requestApi<string>(communityApi.addImage, {
-          method: 'POST',
-          body: {
-            postId,
-            imageUrl,
-          },
-        }),
-      ),
-    );
-
-    return results.some((result) => result.status === 'rejected');
-  }
-
   async function handleCreatePost(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const cleanDraft: BuildPostDraft = {
       ...draft,
       title: draft.title.trim(),
       content: draft.content.trim(),
-      imageUrls: draft.imageUrls.trim(),
     };
+    const postContent = composeBuildPostContent(cleanDraft);
 
-    if (!cleanDraft.title || !cleanDraft.content) return;
+    if (!cleanDraft.title || (!cleanDraft.preset && isBuildContentEmpty(cleanDraft.content))) return;
+
+    const requestBody = createBuildPostRequestBody(cleanDraft, postContent);
+    const requestBodySize = getRequestBodySize(requestBody);
+    if (requestBodySize > maxCommunityPostRequestSize) {
+      setNotice('이미지 용량이 너무 커서 등록할 수 없습니다. 큰 이미지는 S3 직접 업로드 방식이 필요합니다.');
+      return;
+    }
 
     setIsSubmitting(true);
 
     try {
       await requestApi<string>(communityApi.addPost, {
         method: 'POST',
-        body: {
-          title: cleanDraft.title,
-          content: cleanDraft.content,
-          category: cleanDraft.category,
-        },
+        body: requestBody,
+        bodyAsJson: true,
       });
 
-      const createdPostId = await findCreatedPostId(cleanDraft);
-      const imageUrls = getImageUrls(cleanDraft.imageUrls);
-      const hasImageFailure = createdPostId ? await addImages(createdPostId, imageUrls) : imageUrls.length > 0;
+      const createdPostId = await findCreatedPostId({ ...cleanDraft, content: postContent });
 
       setDraft({
         title: '',
         category: 'Class Builds',
         nightfarerIndex: null,
         content: '',
-        imageUrls: '',
+        preset: null,
       });
       setSelectedBoardTab('all');
       setBoardMode('list');
       await loadCommunityData(createdPostId);
-      setNotice(hasImageFailure ? '글은 등록했지만 일부 이미지를 저장하지 못했습니다.' : '빌드 글을 등록했습니다.');
+      setNotice('빌드 글을 등록했습니다.');
     } catch (error) {
       setNotice(getErrorMessage(error, '빌드 글 등록에 실패했습니다.'));
     } finally {
@@ -1133,6 +2092,7 @@ function BuildPage({ searchQuery }: { searchQuery: string }) {
 
   async function handleSelectPost(post: BuildPost) {
     setSelectedPostId(post.id);
+    setBoardMode('detail');
 
     try {
       await requestApi<string>(communityApi.addViewHistory, {
@@ -1188,6 +2148,8 @@ function BuildPage({ searchQuery }: { searchQuery: string }) {
         },
       });
       await loadCommunityData(null);
+      setSelectedPostId(null);
+      setBoardMode('list');
       setNotice('빌드 글을 삭제했습니다.');
     } catch (error) {
       setNotice(getErrorMessage(error, '빌드 글 삭제에 실패했습니다.'));
@@ -1243,12 +2205,49 @@ function BuildPage({ searchQuery }: { searchQuery: string }) {
   if (boardMode === 'write') {
     return (
       <BuildPostWritePage
+        authUserId={authUserId}
         draft={draft}
         isSubmitting={isSubmitting}
         onDraftChange={updateDraft}
         onSubmit={handleCreatePost}
         onCancel={() => setBoardMode('list')}
       />
+    );
+  }
+
+  if (boardMode === 'detail') {
+    return (
+      <section className="build-page" aria-labelledby="build-detail-page-title">
+        <div className="build-page-heading">
+          <div>
+            <p className="list-page-kicker">커뮤니티 게시판</p>
+            <h2 id="build-detail-page-title">빌드 글</h2>
+          </div>
+          <button type="button" className="build-secondary-button" onClick={() => setBoardMode('list')}>
+            목록으로
+          </button>
+        </div>
+
+        {notice ? <p className="build-notice">{notice}</p> : null}
+
+        {selectedPost ? (
+          <BuildPostDetail
+            post={selectedPost}
+            commentText={commentText}
+            commentParentId={commentParentId}
+            onCommentTextChange={setCommentText}
+            onSetCommentParentId={setCommentParentId}
+            onCreateComment={handleCreateComment}
+            onDeleteComment={handleDeleteComment}
+            onToggleLike={handleToggleLike}
+            onToggleBookmark={handleToggleBookmark}
+            onDeletePost={handleDeletePost}
+            onReportPost={handleReportPost}
+          />
+        ) : (
+          <p className="build-empty">선택한 글을 찾을 수 없습니다.</p>
+        )}
+      </section>
     );
   }
 
@@ -1295,7 +2294,7 @@ function BuildPage({ searchQuery }: { searchQuery: string }) {
         ) : (
           <BoardPostList
             posts={pagedPosts}
-            selectedPostId={selectedPost?.id ?? null}
+            selectedPostId={selectedPostId}
             totalCount={visiblePosts.length}
             pageStartIndex={pageStartIndex}
             onSelectPost={handleSelectPost}
@@ -1311,21 +2310,6 @@ function BuildPage({ searchQuery }: { searchQuery: string }) {
         </div>
       </section>
 
-      {selectedPost && !isLoading ? (
-        <BuildPostDetail
-          post={selectedPost}
-          commentText={commentText}
-          commentParentId={commentParentId}
-          onCommentTextChange={setCommentText}
-          onSetCommentParentId={setCommentParentId}
-          onCreateComment={handleCreateComment}
-          onDeleteComment={handleDeleteComment}
-          onToggleLike={handleToggleLike}
-          onToggleBookmark={handleToggleBookmark}
-          onDeletePost={handleDeletePost}
-          onReportPost={handleReportPost}
-        />
-      ) : null}
     </section>
   );
 }

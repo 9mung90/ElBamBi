@@ -10,6 +10,7 @@ import {
 } from '../data/relics';
 import RelicStorageSection from '../components/RelicStorageSection';
 import {
+  deleteRelicPreset,
   getStorageErrorMessage,
   listRelicPresets,
   listRelics,
@@ -25,7 +26,28 @@ import type { ParsedRelic, RelicScanResult } from '../utils/nightreignSaveParser
 
 type PresetColorMode = 'normal' | 'deep';
 type PresetSlotRelics = Array<string | null>;
-type RelicPageMode = 'catalog' | 'builder' | 'saved';
+type RelicPageMode = 'catalog' | 'builder' | 'saved' | 'compare';
+type ProtectedRelicPageMode = Exclude<RelicPageMode, 'catalog'>;
+
+const LOGIN_REQUIRED_MESSAGE = '로그인을 해주시길 바랍니다.';
+
+type ComparablePresetEffect = {
+  baseName: string;
+  displayName: string;
+  valueText: string;
+  numericValue: number | null;
+  isPercent: boolean;
+  slotIndex: number;
+  detail: string;
+};
+
+type PresetComparisonRow = {
+  key: string;
+  name: string;
+  presetA: ComparablePresetEffect | null;
+  presetB: ComparablePresetEffect | null;
+  differenceText: string;
+};
 
 const ALL_CHARACTER_NAME = '전체 캐릭터';
 const EMPTY_PRESET_SLOTS: PresetSlotRelics = [null, null, null, null, null, null];
@@ -407,11 +429,13 @@ function getStoredRelicImageUrl(relic: StoredRelic) {
   return resolveRelicImageUrl(relicCatalogById.get(relic.itemId)?.image);
 }
 
-function getStoredRelicOptionGroups(relic: StoredRelic) {
+function getStoredRelicOptionGroups(relic: StoredRelic, includeDebuffs = true) {
   return [1, 2, 3]
     .map((slot) => {
       const option = relic.options.find((candidate) => candidate.slot === slot);
-      const debuff = relic.debuffs?.find((candidate) => candidate.slot === slot);
+      const debuff = includeDebuffs
+        ? relic.debuffs?.find((candidate) => candidate.slot === slot)
+        : undefined;
 
       if (!option && !debuff) return null;
 
@@ -424,11 +448,13 @@ function getStoredRelicOptionGroups(relic: StoredRelic) {
     .filter((group): group is NonNullable<typeof group> => Boolean(group));
 }
 
-function getSavePresetSlotOptionGroups(effectIds: number[]) {
+function getSavePresetSlotOptionGroups(effectIds: number[], includeDebuffs = true) {
   return [1, 2, 3]
     .map((slot) => {
       const option = toCachedSaveRelicOption(effectIds[slot - 1] ?? EMPTY_EFFECT_ID, slot - 1);
-      const debuff = toCachedSaveRelicOption(effectIds[slot + 2] ?? EMPTY_EFFECT_ID, slot - 1);
+      const debuff = includeDebuffs
+        ? toCachedSaveRelicOption(effectIds[slot + 2] ?? EMPTY_EFFECT_ID, slot - 1)
+        : null;
 
       if (!option && !debuff) return null;
 
@@ -445,10 +471,16 @@ function isCachedSaveRelic(relic: StoredRelic) {
   return relic.relicId.startsWith('save-cache-');
 }
 
-function getPresetRelicEffectIds(relic: StoredRelic) {
+function shouldIncludePresetDebuffs(slotIndex: number) {
+  return slotIndex >= 3;
+}
+
+function getPresetRelicEffectIds(relic: StoredRelic, includeDebuffs: boolean) {
   const buffEffectIds = [1, 2, 3].map(
     (slot) => relic.options.find((option) => option.slot === slot)?.effectId ?? EMPTY_EFFECT_ID,
   );
+  if (!includeDebuffs) return buffEffectIds;
+
   const debuffEffectIds = [1, 2, 3].map(
     (slot) => relic.debuffs?.find((debuff) => debuff.slot === slot)?.effectId ?? EMPTY_EFFECT_ID,
   );
@@ -462,7 +494,7 @@ function toPresetSlotInput(relic: StoredRelic, slotIndex: number): RelicPresetSl
       slotIndex,
       relicRefType: 'save',
       itemId: relic.itemId,
-      effectIds: getPresetRelicEffectIds(relic),
+      effectIds: getPresetRelicEffectIds(relic, shouldIncludePresetDebuffs(slotIndex)),
     };
   }
 
@@ -479,19 +511,21 @@ function getStoredRelicSourceLabel(source: StoredRelic['source']) {
 
 function StoredRelicPresetChoice({
   disabledReason,
+  includeDebuffs,
   isDisabled,
   isSelected,
   onSelect,
   relic,
 }: {
   disabledReason: string;
+  includeDebuffs: boolean;
   isDisabled: boolean;
   isSelected: boolean;
   onSelect: (relic: StoredRelic) => void;
   relic: StoredRelic;
 }) {
   const relicImageUrl = getStoredRelicImageUrl(relic);
-  const optionGroups = getStoredRelicOptionGroups(relic);
+  const optionGroups = getStoredRelicOptionGroups(relic, includeDebuffs);
 
   return (
     <button
@@ -879,7 +913,8 @@ function RelicPresetBuilder({
   function renderSummarySlotItem(slotLabel: string, slotIndex: number) {
     const slotColor = slotColors[slotIndex];
     const placedRelic = selectedRelics[slotIndex];
-    const optionGroups = placedRelic ? getStoredRelicOptionGroups(placedRelic) : [];
+    const includeDebuffs = shouldIncludePresetDebuffs(slotIndex);
+    const optionGroups = placedRelic ? getStoredRelicOptionGroups(placedRelic, includeDebuffs) : [];
     const isExpanded = expandedSummarySlotIndex === slotIndex;
 
     return (
@@ -1158,6 +1193,7 @@ function RelicPresetBuilder({
                         relic={relic}
                         isSelected={placedRelicIds[activeSlotIndex] === relic.relicId}
                         isDisabled={false}
+                        includeDebuffs={shouldIncludePresetDebuffs(activeSlotIndex)}
                         disabledReason={
                           usedSlotIndex === -1
                             ? ''
@@ -1205,7 +1241,9 @@ function RelicPresetBuilder({
               {PRESET_SLOT_LABELS.map((slotLabel, slotIndex) => {
                 const slotColor = slotColors[slotIndex];
                 const placedRelic = selectedRelics[slotIndex];
-                const optionGroups = placedRelic ? getStoredRelicOptionGroups(placedRelic) : [];
+                const optionGroups = placedRelic
+                  ? getStoredRelicOptionGroups(placedRelic, shouldIncludePresetDebuffs(slotIndex))
+                  : [];
                 const isExpanded = expandedSummarySlotIndex === slotIndex;
 
                 return (
@@ -1279,10 +1317,681 @@ function getPresetVesselName(vesselIndex: number) {
   return vessels.find((vessel) => vessel.index === vesselIndex)?.name ?? `현기 ${vesselIndex}`;
 }
 
+function getPresetVessel(vesselIndex: number) {
+  return vessels.find((vessel) => vessel.index === vesselIndex);
+}
+
+function getPresetNightfarer(characterName: string) {
+  return nightfarers.find((nightfarer) => nightfarer.name === characterName);
+}
+
+function getSavedPresetSlots(slots: RelicPresetSlotInput[]) {
+  const slotsByIndex = new Map(slots.map((slot) => [slot.slotIndex, slot]));
+
+  return EMPTY_PRESET_SLOTS.map((_, slotIndex) => slotsByIndex.get(slotIndex) ?? null);
+}
+
+function SavedPresetVesselPreview({ vessel }: { vessel: Vessel | undefined }) {
+  const slotColors = getPresetVesselSlotColors(vessel);
+
+  return (
+    <div className="saved-preset-vessel-preview">
+      <div className="saved-preset-vessel-colors" aria-hidden="true">
+        {slotColors.slice(0, 6).map((color, colorIndex) => (
+          <span
+            key={`${color}-${colorIndex}`}
+            className={`relic-preset-color-dot ${getRelicColorClass(color)}${colorIndex === 3 ? ' is-deep-start' : ''}`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function getPresetSlotOptionGroups(slot: RelicPresetSlotInput, relicsById: Map<string, StoredRelic>) {
+  const storedRelic = slot.relicRefType === 'stored' ? relicsById.get(slot.relicId) : undefined;
+  const includeDebuffs = shouldIncludePresetDebuffs(slot.slotIndex);
+
+  if (slot.relicRefType === 'stored' && storedRelic) {
+    return getStoredRelicOptionGroups(storedRelic, includeDebuffs);
+  }
+
+  if (slot.relicRefType === 'save') {
+    return getSavePresetSlotOptionGroups(slot.effectIds, includeDebuffs);
+  }
+
+  return [];
+}
+
+function getComparisonValueMatch(text: string) {
+  const matches = [...text.matchAll(/([+-]?\d+(?:\.\d+)?)\s*(%)?/g)];
+  return matches[matches.length - 1] ?? null;
+}
+
+function cleanComparisonBaseName(value: string) {
+  return value
+    .replace(/\s+/g, ' ')
+    .replace(/[,:：，]\s*$/, '')
+    .trim();
+}
+
+function getComparablePresetEffect(
+  effect: StoredRelicOption,
+  slotIndex: number,
+): ComparablePresetEffect {
+  const name = effect.name.trim();
+  const detail = effect.detail.trim();
+  const nameMatch = getComparisonValueMatch(name);
+  const detailMatch = getComparisonValueMatch(detail);
+  const valueMatch = nameMatch ?? detailMatch;
+  const valueText = valueMatch?.[0].trim() ?? (detail || name || '-');
+  const numericValue = valueMatch ? Number(valueMatch[1]) : null;
+  const isPercent = Boolean(valueMatch?.[2] || valueText.includes('%'));
+  const baseName = cleanComparisonBaseName(
+    nameMatch
+      ? name.slice(0, nameMatch.index).trim()
+      : name || (detailMatch ? detail.slice(0, detailMatch.index).trim() : detail),
+  );
+
+  return {
+    baseName: baseName || name || detail || 'Unknown option',
+    displayName: name || detail || 'Unknown option',
+    valueText,
+    numericValue: Number.isFinite(numericValue) ? numericValue : null,
+    isPercent,
+    slotIndex,
+    detail,
+  };
+}
+
+function getComparisonKey(name: string) {
+  return name
+    .toLowerCase()
+    .normalize('NFKC')
+    .replace(/[+\-−]?\d+(?:\.\d+)?\s*%?/g, '')
+    .replace(/[\s,:：，()[\]{}]+/g, ' ')
+    .trim();
+}
+
+function formatComparisonNumber(value: number) {
+  return Number.isInteger(value) ? String(value) : String(Number(value.toFixed(2)));
+}
+
+function getComparisonDifferenceText(
+  presetA: ComparablePresetEffect | null,
+  presetB: ComparablePresetEffect | null,
+) {
+  if (!presetA) return '오른쪽 프리셋에만 포함';
+  if (!presetB) return '왼쪽 프리셋에만 포함';
+
+  if (presetA.numericValue === null || presetB.numericValue === null) {
+    return presetA.valueText === presetB.valueText
+      ? '동일한 값'
+      : '숫자 계산 불가, 값을 직접 비교';
+  }
+
+  const delta = presetB.numericValue - presetA.numericValue;
+  if (delta === 0) return '동일한 수치';
+
+  const isPercent = presetA.isPercent || presetB.isPercent;
+  const amount = isPercent
+    ? `${formatComparisonNumber(Math.abs(delta))}%p`
+    : `+${formatComparisonNumber(Math.abs(delta))}`;
+  return delta > 0 ? `오른쪽 프리셋이 ${amount} 높음` : `왼쪽 프리셋이 ${amount} 높음`;
+}
+
+function collectPresetComparableEffects(
+  preset: RelicPreset,
+  relicsById: Map<string, StoredRelic>,
+) {
+  const normalOptions: ComparablePresetEffect[] = [];
+  const debuffs: ComparablePresetEffect[] = [];
+
+  for (const slot of preset.slots) {
+    const optionGroups = getPresetSlotOptionGroups(slot, relicsById);
+    for (const group of optionGroups) {
+      if (group.option) {
+        normalOptions.push(getComparablePresetEffect(group.option, slot.slotIndex));
+      }
+      if (group.debuff) {
+        debuffs.push(getComparablePresetEffect(group.debuff, slot.slotIndex));
+      }
+    }
+  }
+
+  return { normalOptions, debuffs };
+}
+
+function buildComparisonRows(
+  presetAEffects: ComparablePresetEffect[],
+  presetBEffects: ComparablePresetEffect[],
+) {
+  const groupedA = new Map<string, ComparablePresetEffect[]>();
+  const groupedB = new Map<string, ComparablePresetEffect[]>();
+  const orderedKeys: string[] = [];
+  const namesByKey = new Map<string, string>();
+
+  function addEffect(
+    groupedEffects: Map<string, ComparablePresetEffect[]>,
+    effect: ComparablePresetEffect,
+  ) {
+    const key = getComparisonKey(effect.baseName) || effect.baseName;
+    if (!groupedA.has(key) && !groupedB.has(key) && !orderedKeys.includes(key)) {
+      orderedKeys.push(key);
+    }
+    namesByKey.set(key, namesByKey.get(key) ?? effect.baseName);
+    groupedEffects.set(key, [...(groupedEffects.get(key) ?? []), effect]);
+  }
+
+  presetAEffects.forEach((effect) => addEffect(groupedA, effect));
+  presetBEffects.forEach((effect) => addEffect(groupedB, effect));
+
+  return orderedKeys.flatMap((key): PresetComparisonRow[] => {
+    const effectsA = groupedA.get(key) ?? [];
+    const effectsB = groupedB.get(key) ?? [];
+    const rowCount = Math.max(effectsA.length, effectsB.length);
+
+    return Array.from({ length: rowCount }, (_, index) => {
+      const presetA = effectsA[index] ?? null;
+      const presetB = effectsB[index] ?? null;
+      const name = index === 0 ? namesByKey.get(key) ?? key : `${namesByKey.get(key) ?? key} ${index + 1}`;
+
+      return {
+        key: `${key}-${index}`,
+        name,
+        presetA,
+        presetB,
+        differenceText: getComparisonDifferenceText(presetA, presetB),
+      };
+    });
+  });
+}
+
+function comparePresets(
+  presetA: RelicPreset,
+  presetB: RelicPreset,
+  relicsById: Map<string, StoredRelic>,
+) {
+  const effectsA = collectPresetComparableEffects(presetA, relicsById);
+  const effectsB = collectPresetComparableEffects(presetB, relicsById);
+
+  return {
+    normalOptions: buildComparisonRows(effectsA.normalOptions, effectsB.normalOptions),
+    debuffs: buildComparisonRows(effectsA.debuffs, effectsB.debuffs),
+  };
+}
+
+function getPresetCompareLabel(preset: RelicPreset) {
+  return `${preset.name} · ${preset.characterName}`;
+}
+
+function PresetComparePresetHeader({
+  label,
+  preset,
+}: {
+  label: string;
+  preset: RelicPreset | null;
+}) {
+  const nightfarer = preset ? getPresetNightfarer(preset.characterName) : undefined;
+  const nightfarerIconUrl = nightfarer ? getNightfarerIconUrl(nightfarer) : undefined;
+
+  return (
+    <article className="preset-compare-summary-card">
+      <div className="preset-compare-summary-heading">
+        <span>{label}</span>
+        <strong>{preset?.name ?? '프리셋 선택 필요'}</strong>
+      </div>
+      {nightfarerIconUrl ? (
+        <img className="preset-compare-character-icon" src={nightfarerIconUrl} alt="" aria-hidden="true" />
+      ) : null}
+    </article>
+  );
+}
+
+function PresetCompareEffectValue({ effect }: { effect: ComparablePresetEffect }) {
+  return (
+    <div className="preset-compare-value">
+      <strong>{effect.valueText}</strong>
+      {effect.detail && effect.detail !== effect.valueText ? <p>{effect.detail}</p> : null}
+    </div>
+  );
+}
+
+function getPresetCompareSlot(
+  preset: RelicPreset | null,
+  slotIndex: number,
+) {
+  return preset ? getSavedPresetSlots(preset.slots)[slotIndex] : null;
+}
+
+function getPresetCompareGroup(
+  optionGroups: ReturnType<typeof getPresetSlotOptionGroups>,
+  optionSlot: number,
+) {
+  return optionGroups.find((group) => group.slot === optionSlot) ?? null;
+}
+
+function PresetCompareOptionCell({
+  isDebuff = false,
+  option,
+}: {
+  isDebuff?: boolean;
+  option: StoredRelicOption | null | undefined;
+}) {
+  if (!option) {
+    return <div className="preset-compare-slot-option is-empty" aria-hidden="true" />;
+  }
+
+  if (isDebuff) {
+    return (
+      <div className="preset-compare-slot-option is-debuff">
+        <div className="relic-builder-result-debuff">
+          <em>디버프</em>
+          <strong>{option.name}</strong>
+          {option.detail ? <p>{option.detail}</p> : null}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="preset-compare-slot-option">
+      <strong>{option.name}</strong>
+      {option.detail ? <p>{option.detail}</p> : null}
+    </div>
+  );
+}
+
+function PresetCompareRelicSlotPair({
+  leftSlot,
+  relicsById,
+  rightSlot,
+  slotIndex,
+}: {
+  leftSlot: RelicPresetSlotInput | null;
+  relicsById: Map<string, StoredRelic>;
+  rightSlot: RelicPresetSlotInput | null;
+  slotIndex: number;
+}) {
+  const leftGroups = leftSlot ? getPresetSlotOptionGroups(leftSlot, relicsById) : [];
+  const rightGroups = rightSlot ? getPresetSlotOptionGroups(rightSlot, relicsById) : [];
+  const isDeepSlot = shouldIncludePresetDebuffs(slotIndex);
+
+  return (
+    <article className="preset-compare-relic-slot">
+      <div className="preset-compare-slot-title">
+        <span>
+          {getPresetSlotModeLabel(slotIndex)} {getPresetSlotDisplayIndex(slotIndex)}
+        </span>
+      </div>
+      <div className="preset-compare-slot-option-list">
+        {[1, 2, 3].map((optionSlot) => {
+          const leftGroup = getPresetCompareGroup(leftGroups, optionSlot);
+          const rightGroup = getPresetCompareGroup(rightGroups, optionSlot);
+          const hasDebuff = isDeepSlot && Boolean(leftGroup?.debuff || rightGroup?.debuff);
+
+          return (
+            <div className="preset-compare-slot-option-group" key={optionSlot}>
+              <div className="preset-compare-slot-option-row">
+                <PresetCompareOptionCell option={leftGroup?.option} />
+                <PresetCompareOptionCell option={rightGroup?.option} />
+              </div>
+              {hasDebuff ? (
+                <div className="preset-compare-slot-option-row is-debuff-row">
+                  <PresetCompareOptionCell isDebuff option={leftGroup?.debuff} />
+                  <PresetCompareOptionCell isDebuff option={rightGroup?.debuff} />
+                </div>
+              ) : null}
+            </div>
+          );
+        })}
+      </div>
+    </article>
+  );
+}
+
+function PresetCompareRelicSlotSection({
+  leftPreset,
+  relicsById,
+  rightPreset,
+  slotIndexes,
+  title,
+}: {
+  leftPreset: RelicPreset | null;
+  relicsById: Map<string, StoredRelic>;
+  rightPreset: RelicPreset | null;
+  slotIndexes: number[];
+  title: string;
+}) {
+  return (
+    <section className="preset-compare-slot-section">
+      <h5>{title}</h5>
+      <div className="preset-compare-slot-list">
+        {slotIndexes.map((slotIndex) => (
+          <PresetCompareRelicSlotPair
+            key={slotIndex}
+            leftSlot={getPresetCompareSlot(leftPreset, slotIndex)}
+            rightSlot={getPresetCompareSlot(rightPreset, slotIndex)}
+            relicsById={relicsById}
+            slotIndex={slotIndex}
+          />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function PresetCompareCommonRows({
+  emptyText,
+  rows,
+  title,
+}: {
+  emptyText: string;
+  rows: PresetComparisonRow[];
+  title: string;
+}) {
+  const commonRows = rows.filter(
+    (row): row is PresetComparisonRow & {
+      presetA: ComparablePresetEffect;
+      presetB: ComparablePresetEffect;
+    } => Boolean(row.presetA && row.presetB),
+  );
+
+  return (
+    <section className="preset-compare-common-group">
+      <h5>{title}</h5>
+      {commonRows.length ? (
+        <div className="preset-compare-common-list">
+          {commonRows.map((row) => (
+            <article className="preset-compare-common-row" key={row.key}>
+              <div className="preset-compare-common-name">
+                <strong>{row.name}</strong>
+                <span>{row.differenceText}</span>
+              </div>
+              <div className="preset-compare-common-values">
+                <div>
+                  <span>왼쪽 프리셋</span>
+                  <PresetCompareEffectValue effect={row.presetA} />
+                </div>
+                <div>
+                  <span>오른쪽 프리셋</span>
+                  <PresetCompareEffectValue effect={row.presetB} />
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <p className="muted-text">{emptyText}</p>
+      )}
+    </section>
+  );
+}
+
+function PresetCompareSection({
+  authUserId,
+  storageRefreshKey,
+}: {
+  authUserId: string | null;
+  storageRefreshKey: number;
+}) {
+  const [presets, setPresets] = useState<RelicPreset[]>([]);
+  const [storedRelics, setStoredRelics] = useState<StoredRelic[]>([]);
+  const [selectedPresetAId, setSelectedPresetAId] = useState('');
+  const [selectedPresetBId, setSelectedPresetBId] = useState('');
+  const [isLoadingCompareData, setIsLoadingCompareData] = useState(false);
+  const [compareNotice, setCompareNotice] = useState<string | null>(null);
+  const relicsById = useMemo(
+    () => new Map(storedRelics.map((relic) => [relic.relicId, relic])),
+    [storedRelics],
+  );
+  const selectedPresetA = useMemo(
+    () => presets.find((preset) => preset.presetId === selectedPresetAId) ?? null,
+    [presets, selectedPresetAId],
+  );
+  const selectedPresetB = useMemo(
+    () => presets.find((preset) => preset.presetId === selectedPresetBId) ?? null,
+    [presets, selectedPresetBId],
+  );
+  const comparison = useMemo(
+    () =>
+      selectedPresetA && selectedPresetB
+        ? comparePresets(selectedPresetA, selectedPresetB, relicsById)
+        : null,
+    [relicsById, selectedPresetA, selectedPresetB],
+  );
+
+  useEffect(() => {
+    let isCurrentRequest = true;
+
+    if (!authUserId) {
+      window.alert(LOGIN_REQUIRED_MESSAGE);
+      setPresets([]);
+      setStoredRelics([]);
+      setCompareNotice('로그인이 필요합니다.');
+      setIsLoadingCompareData(false);
+      return () => {
+        isCurrentRequest = false;
+      };
+    }
+
+    setIsLoadingCompareData(true);
+    setCompareNotice(null);
+
+    Promise.all([listRelicPresets(authUserId), listRelics(authUserId, 'all')])
+      .then(([nextPresets, nextRelics]) => {
+        if (!isCurrentRequest) return;
+
+        setPresets(Array.isArray(nextPresets) ? nextPresets : []);
+        setStoredRelics(Array.isArray(nextRelics) ? nextRelics : []);
+      })
+      .catch((error) => {
+        if (!isCurrentRequest) return;
+
+        setPresets([]);
+        setStoredRelics([]);
+        setCompareNotice(getStorageErrorMessage(error, '프리셋 비교 데이터를 불러오지 못했습니다.'));
+      })
+      .finally(() => {
+        if (isCurrentRequest) setIsLoadingCompareData(false);
+      });
+
+    return () => {
+      isCurrentRequest = false;
+    };
+  }, [authUserId, storageRefreshKey]);
+
+  useEffect(() => {
+    if (selectedPresetAId && !presets.some((preset) => preset.presetId === selectedPresetAId)) {
+      setSelectedPresetAId('');
+    }
+    if (selectedPresetBId && !presets.some((preset) => preset.presetId === selectedPresetBId)) {
+      setSelectedPresetBId('');
+    }
+  }, [presets, selectedPresetAId, selectedPresetBId]);
+
+  return (
+    <section className="calc-panel preset-compare-section" aria-labelledby="preset-compare-title">
+      <div className="relic-builder-result-heading">
+        <div>
+          <h4 id="preset-compare-title">프리셋 비교</h4>
+        </div>
+        <span className={comparison ? 'is-valid' : 'is-pending'}>
+          {comparison ? '비교 가능' : '2개 선택'}
+        </span>
+      </div>
+
+      {compareNotice ? <p className="storage-notice">{compareNotice}</p> : null}
+      {isLoadingCompareData ? <p className="muted-text">저장된 프리셋을 불러오는 중...</p> : null}
+
+      <div className="preset-compare-selectors">
+        <label>
+          <span>왼쪽 프리셋</span>
+          <select
+            value={selectedPresetAId}
+            disabled={!authUserId || isLoadingCompareData}
+            onChange={(event) => {
+              const nextPresetId = event.target.value;
+              setSelectedPresetAId(nextPresetId);
+              if (nextPresetId && nextPresetId === selectedPresetBId) {
+                setSelectedPresetBId('');
+              }
+            }}
+          >
+            <option value="">프리셋 선택</option>
+            {presets.map((preset) => (
+              <option key={preset.presetId} value={preset.presetId} disabled={preset.presetId === selectedPresetBId}>
+                {getPresetCompareLabel(preset)}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          <span>오른쪽 프리셋</span>
+          <select
+            value={selectedPresetBId}
+            disabled={!authUserId || isLoadingCompareData}
+            onChange={(event) => {
+              const nextPresetId = event.target.value;
+              setSelectedPresetBId(nextPresetId);
+              if (nextPresetId && nextPresetId === selectedPresetAId) {
+                setSelectedPresetAId('');
+              }
+            }}
+          >
+            <option value="">프리셋 선택</option>
+            {presets.map((preset) => (
+              <option key={preset.presetId} value={preset.presetId} disabled={preset.presetId === selectedPresetAId}>
+                {getPresetCompareLabel(preset)}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
+
+      {!comparison && presets.length < 2 && !isLoadingCompareData ? (
+        <p className="muted-text">비교하려면 저장된 프리셋이 2개 이상 필요합니다.</p>
+      ) : null}
+      {!comparison && presets.length >= 2 ? (
+        <p className="muted-text">비교할 프리셋 2개를 선택하세요.</p>
+      ) : null}
+
+      {comparison ? (
+        <div className="preset-compare-results">
+          <div className="preset-compare-sides">
+            <PresetComparePresetHeader
+              label="왼쪽 프리셋"
+              preset={selectedPresetA}
+            />
+            <PresetComparePresetHeader
+              label="오른쪽 프리셋"
+              preset={selectedPresetB}
+            />
+          </div>
+
+          <PresetCompareRelicSlotSection
+            title="일반 유물"
+            leftPreset={selectedPresetA}
+            rightPreset={selectedPresetB}
+            relicsById={relicsById}
+            slotIndexes={[0, 1, 2]}
+          />
+          <PresetCompareRelicSlotSection
+            title="심도 유물"
+            leftPreset={selectedPresetA}
+            rightPreset={selectedPresetB}
+            relicsById={relicsById}
+            slotIndexes={[3, 4, 5]}
+          />
+
+          <section className="preset-compare-common">
+            <div className="preset-compare-common-heading">
+              <span>공통 옵션</span>
+              <h5>겹치는 옵션 상세 비교</h5>
+            </div>
+            <PresetCompareCommonRows
+              title="일반 옵션"
+              rows={comparison.normalOptions}
+              emptyText="두 프리셋에 함께 들어간 일반 옵션이 없습니다."
+            />
+            <PresetCompareCommonRows
+              title="디버프"
+              rows={comparison.debuffs}
+              emptyText="두 프리셋에 함께 들어간 디버프가 없습니다."
+            />
+          </section>
+        </div>
+      ) : null}
+    </section>
+  );
+}
+
+function RelicPresetOptionList({
+  optionGroups,
+}: {
+  optionGroups: ReturnType<typeof getPresetSlotOptionGroups>;
+}) {
+  if (!optionGroups.length) {
+    return <em>옵션 정보 없음</em>;
+  }
+
+  return (
+    <ol className="relic-preset-summary-options">
+      {optionGroups.map((group) => (
+        <li key={group.slot}>
+          <span>{group.slot}</span>
+          <div>
+            {group.option ? <strong>{group.option.name}</strong> : null}
+            {group.option?.detail ? <p>{group.option.detail}</p> : null}
+            {group.debuff ? (
+              <div className="relic-builder-result-debuff">
+                <em>디버프</em>
+                <strong>{group.debuff.name}</strong>
+                {group.debuff.detail ? <p>{group.debuff.detail}</p> : null}
+              </div>
+            ) : null}
+          </div>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+function SavedPresetSlotSummary({
+  isPopoverOpen,
+  onTogglePopover,
+  relicsById,
+  slot,
+  slotIndex,
+}: {
+  isPopoverOpen: boolean;
+  onTogglePopover: () => void;
+  relicsById: Map<string, StoredRelic>;
+  slot: RelicPresetSlotInput | null;
+  slotIndex: number;
+}) {
+  if (!slot) {
+    return <li className="saved-preset-slot is-empty" aria-label={`empty slot ${slotIndex + 1}`} />;
+  }
+
+  return (
+    <RelicPresetSlotSummary
+      isPopoverOpen={isPopoverOpen}
+      onTogglePopover={onTogglePopover}
+      relicsById={relicsById}
+      slot={slot}
+    />
+  );
+}
+
 function RelicPresetSlotSummary({
+  isPopoverOpen = false,
+  onTogglePopover,
   relicsById,
   slot,
 }: {
+  isPopoverOpen?: boolean;
+  onTogglePopover?: () => void;
   relicsById: Map<string, StoredRelic>;
   slot: RelicPresetSlotInput;
 }) {
@@ -1293,15 +2002,23 @@ function RelicPresetSlotSummary({
       : getRelicNameByItemId(slot.itemId);
   const relicColor =
     slot.relicRefType === 'stored' ? storedRelic?.color ?? '' : getRelicColorByItemId(slot.itemId);
-  const optionGroups =
-    slot.relicRefType === 'stored' && storedRelic
-      ? getStoredRelicOptionGroups(storedRelic)
-      : slot.relicRefType === 'save'
-        ? getSavePresetSlotOptionGroups(slot.effectIds)
-        : [];
+  const optionGroups = getPresetSlotOptionGroups(slot, relicsById);
 
   return (
-    <li className="saved-preset-slot">
+    <li
+      className={`saved-preset-slot${isPopoverOpen ? ' is-popover-open' : ''}`}
+      role={onTogglePopover ? 'button' : undefined}
+      tabIndex={onTogglePopover ? 0 : undefined}
+      aria-expanded={onTogglePopover ? isPopoverOpen : undefined}
+      onClick={onTogglePopover}
+      onKeyDown={(event) => {
+        if (!onTogglePopover) return;
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          onTogglePopover();
+        }
+      }}
+    >
       <span>{slot.slotIndex + 1}</span>
       <div>
         <div className="relic-preset-summary-top">
@@ -1332,6 +2049,33 @@ function RelicPresetSlotSummary({
           <em>옵션 정보 없음</em>
         )}
       </div>
+      {isPopoverOpen ? (
+        <div className="saved-preset-slot-popover" onClick={(event) => event.stopPropagation()}>
+          <strong>{relicName}</strong>
+          {optionGroups.length ? (
+            <ol className="relic-preset-summary-options">
+              {optionGroups.map((group) => (
+                <li key={group.slot}>
+                  <span>{group.slot}</span>
+                  <div>
+                    {group.option ? <strong>{group.option.name}</strong> : null}
+                    {group.option?.detail ? <p>{group.option.detail}</p> : null}
+                    {group.debuff ? (
+                      <div className="relic-builder-result-debuff">
+                        <em>디버프</em>
+                        <strong>{group.debuff.name}</strong>
+                        {group.debuff.detail ? <p>{group.debuff.detail}</p> : null}
+                      </div>
+                    ) : null}
+                  </div>
+                </li>
+              ))}
+            </ol>
+          ) : (
+            <em>옵션 정보 없음</em>
+          )}
+        </div>
+      ) : null}
     </li>
   );
 }
@@ -1347,12 +2091,33 @@ function SavedRelicPresetsView({
   const [storedRelics, setStoredRelics] = useState<StoredRelic[]>([]);
   const [isLoadingPresets, setIsLoadingPresets] = useState(false);
   const [presetNotice, setPresetNotice] = useState<string | null>(null);
+  const [activePresetSlotKey, setActivePresetSlotKey] = useState<string | null>(null);
+  const [deletingPresetId, setDeletingPresetId] = useState<string | null>(null);
   const relicsById = useMemo(
     () => new Map(storedRelics.map((relic) => [relic.relicId, relic])),
     [storedRelics],
   );
+  const activePresetSlot = useMemo(() => {
+    if (!activePresetSlotKey) return null;
+
+    for (const preset of presets) {
+      const savedSlots = getSavedPresetSlots(preset.slots);
+      const activeSlot = savedSlots.find(
+        (slot, slotIndex) => slot && activePresetSlotKey === `${preset.presetId}-${slotIndex}`,
+      );
+      if (activeSlot) return activeSlot;
+    }
+
+    return null;
+  }, [activePresetSlotKey, presets]);
+  const activePresetSlotOptionGroups = useMemo(
+    () => (activePresetSlot ? getPresetSlotOptionGroups(activePresetSlot, relicsById) : []),
+    [activePresetSlot, relicsById],
+  );
 
   function refreshPresets() {
+    setActivePresetSlotKey(null);
+
     if (!authUserId) {
       setPresets([]);
       setStoredRelics([]);
@@ -1377,9 +2142,45 @@ function SavedRelicPresetsView({
       .finally(() => setIsLoadingPresets(false));
   }
 
+  async function handleDeletePreset(preset: RelicPreset) {
+    if (!authUserId || deletingPresetId) return;
+    if (!window.confirm(`${preset.name || '이 프리셋'}을 삭제할까요?`)) return;
+
+    setDeletingPresetId(preset.presetId);
+    setPresetNotice(null);
+
+    try {
+      await deleteRelicPreset(authUserId, preset.presetId);
+      setPresets((currentPresets) =>
+        currentPresets.filter((currentPreset) => currentPreset.presetId !== preset.presetId),
+      );
+      setActivePresetSlotKey((currentKey) =>
+        currentKey?.startsWith(`${preset.presetId}-`) ? null : currentKey,
+      );
+      setPresetNotice('프리셋을 삭제했습니다.');
+    } catch (error) {
+      setPresetNotice(getStorageErrorMessage(error, '프리셋을 삭제하지 못했습니다.'));
+    } finally {
+      setDeletingPresetId(null);
+    }
+  }
+
   useEffect(() => {
     refreshPresets();
   }, [authUserId, storageRefreshKey]);
+
+  useEffect(() => {
+    if (!activePresetSlotKey) return undefined;
+
+    function handleKeyDown(event: globalThis.KeyboardEvent) {
+      if (event.key === 'Escape') {
+        setActivePresetSlotKey(null);
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activePresetSlotKey]);
 
   return (
     <section className="relic-saved-presets" aria-labelledby="saved-relic-presets-title">
@@ -1408,6 +2209,31 @@ function SavedRelicPresetsView({
       <div className="saved-preset-grid">
         {presets.map((preset) => (
           <article className="option-card saved-preset-card" key={preset.presetId}>
+              <div className="saved-preset-card-top">
+                <div className="saved-preset-character-icon">
+                  {(() => {
+                    const nightfarer = getPresetNightfarer(preset.characterName);
+                    const nightfarerIconUrl = nightfarer ? getNightfarerIconUrl(nightfarer) : undefined;
+
+                  return nightfarerIconUrl ? <img src={nightfarerIconUrl} alt="" aria-hidden="true" /> : null;
+                })()}
+              </div>
+              <div className="saved-preset-card-heading">
+                <h3>{preset.name}</h3>
+                <p>
+                  {preset.characterName} 쨌 {getPresetVessel(preset.vesselIndex)?.name ?? getPresetVesselName(preset.vesselIndex)}
+                </p>
+              </div>
+              <SavedPresetVesselPreview vessel={getPresetVessel(preset.vesselIndex)} />
+              <button
+                type="button"
+                className="saved-preset-delete-button"
+                disabled={deletingPresetId === preset.presetId}
+                onClick={() => handleDeletePreset(preset)}
+              >
+                {deletingPresetId === preset.presetId ? '삭제 중' : '삭제'}
+              </button>
+            </div>
             <div className="option-card-header">
               <span className="option-category">
                 {preset.slots.length > 3 ? '일반 + 깊은 밤' : preset.colorMode === 'deep' ? '깊은 밤' : '일반'}
@@ -1420,19 +2246,49 @@ function SavedRelicPresetsView({
               </p>
             </div>
             <ol className="relic-builder-result-list saved-preset-slot-list">
-              {[...preset.slots]
-                .sort((left, right) => left.slotIndex - right.slotIndex)
-                .map((slot) => (
-                  <RelicPresetSlotSummary
-                    key={`${preset.presetId}-${slot.slotIndex}`}
-                    slot={slot}
-                    relicsById={relicsById}
-                  />
-                ))}
+              {getSavedPresetSlots(preset.slots).map((slot, slotIndex) => (
+                <SavedPresetSlotSummary
+                  key={`${preset.presetId}-${slotIndex}`}
+                  isPopoverOpen={false}
+                  onTogglePopover={() => {
+                    const slotKey = `${preset.presetId}-${slotIndex}`;
+                    setActivePresetSlotKey((currentKey) => (currentKey === slotKey ? null : slotKey));
+                  }}
+                  slot={slot}
+                  slotIndex={slotIndex}
+                  relicsById={relicsById}
+                />
+              ))}
             </ol>
           </article>
         ))}
       </div>
+
+      {activePresetSlot ? (
+        <div
+          className="saved-preset-modal-overlay"
+          role="presentation"
+          onClick={() => setActivePresetSlotKey(null)}
+        >
+          <div
+            className="saved-preset-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-label="유물 옵션 상세"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button
+              type="button"
+              className="saved-preset-modal-close"
+              aria-label="닫기"
+              onClick={() => setActivePresetSlotKey(null)}
+            >
+              ×
+            </button>
+            <RelicPresetOptionList optionGroups={activePresetSlotOptionGroups} />
+          </div>
+        </div>
+      ) : null}
     </section>
   );
 }
@@ -1528,6 +2384,26 @@ function RelicsPage({
 
   const isPresetBuilderOpen = activeMode === 'builder';
   const isSavedPresetsOpen = activeMode === 'saved';
+  const isPresetCompareOpen = activeMode === 'compare';
+
+  useEffect(() => {
+    if (!authUserId && activeMode !== 'catalog') {
+      setActiveMode('catalog');
+    }
+  }, [activeMode, authUserId]);
+
+  function toggleProtectedMode(nextMode: ProtectedRelicPageMode) {
+    setActiveMode((currentMode) => {
+      if (currentMode === nextMode) return 'catalog';
+
+      if (!authUserId) {
+        window.alert(LOGIN_REQUIRED_MESSAGE);
+        return currentMode;
+      }
+
+      return nextMode;
+    });
+  }
 
   return (
     <section className="options-page" aria-labelledby="relics-title">
@@ -1540,7 +2416,7 @@ function RelicsPage({
             type="button"
             className={`relic-preset-toggle-button${isPresetBuilderOpen ? ' is-active' : ''}`}
             aria-expanded={isPresetBuilderOpen}
-            onClick={() => setActiveMode((mode) => (mode === 'builder' ? 'catalog' : 'builder'))}
+            onClick={() => toggleProtectedMode('builder')}
           >
             {isPresetBuilderOpen ? '프리셋 닫기' : '프리셋 만들기'}
           </button>
@@ -1548,9 +2424,17 @@ function RelicsPage({
             type="button"
             className={`relic-preset-toggle-button${isSavedPresetsOpen ? ' is-active' : ''}`}
             aria-expanded={isSavedPresetsOpen}
-            onClick={() => setActiveMode((mode) => (mode === 'saved' ? 'catalog' : 'saved'))}
+            onClick={() => toggleProtectedMode('saved')}
           >
             {isSavedPresetsOpen ? '저장된 프리셋 닫기' : '저장된 프리셋 보기'}
+          </button>
+          <button
+            type="button"
+            className={`relic-preset-toggle-button${isPresetCompareOpen ? ' is-active' : ''}`}
+            aria-expanded={isPresetCompareOpen}
+            onClick={() => toggleProtectedMode('compare')}
+          >
+            {isPresetCompareOpen ? '프리셋 비교 닫기' : '프리셋 비교'}
           </button>
           <span className="option-count">
             {filteredRelics.length} / {relics.length}
@@ -1566,6 +2450,8 @@ function RelicsPage({
         />
       ) : activeMode === 'saved' ? (
         <SavedRelicPresetsView authUserId={authUserId} storageRefreshKey={storageRefreshKey} />
+      ) : activeMode === 'compare' ? (
+        <PresetCompareSection authUserId={authUserId} storageRefreshKey={storageRefreshKey} />
       ) : (
         <>
           <RelicStorageSection

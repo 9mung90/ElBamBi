@@ -431,6 +431,9 @@ function SaveParserPage({
                 ? `${selectedFile.name} (${formatBytes(selectedFile.size)})`
                 : '파일을 선택하거나 여기로 끌어오면 바로 분석합니다.'}
             </span>
+            <span>
+              세이브 파일은 서버에 저장되지 않습니다.
+            </span>
           </label>
 
           {selectedFile ? (

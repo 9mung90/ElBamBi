@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { characterNames, characterStats, type CharacterStats } from '../data/characters';
 import { nightfarers, type Nightfarer } from '../data/nightfarers';
 import { relicEffectsKo, relicWeapons, type RelicEffect, type RelicWeapon } from '../data/relics';
@@ -10,7 +10,7 @@ type CombatMetric = 'attack' | 'reduction';
 
 type StatMap = Record<StatKey, number>;
 type ResourceAdjustment = Record<ResourceKey, { flat: number; percent: number }>;
-type SelectedEffect = { id: string | number; valueIndex: number };
+type SelectedEffect = { entryId: number; id: string | number; valueIndex: number };
 type CombatModifier = {
   metric: CombatMetric;
   targets: string[];
@@ -33,6 +33,7 @@ const resourceBarMaxValues: Record<ResourceKey, number> = {
   FP: 1500,
   Stamina: 1000,
 };
+const maxSelectedEffectCount = 25;
 
 const statLabels: Record<StatKey, string> = {
   STR: '근력',
@@ -573,6 +574,7 @@ function StatsCalculatorPage({ searchQuery }: { searchQuery: string }) {
   const [selectedLevel, setSelectedLevel] = useState(1);
   const [effectQuery, setEffectQuery] = useState('');
   const [selectedEffectEntries, setSelectedEffectEntries] = useState<SelectedEffect[]>([]);
+  const nextSelectedEffectEntryId = useRef(1);
   const [weaponQuery, setWeaponQuery] = useState('');
   const [manualStats, setManualStats] = useState<Record<StatKey, number | null>>(() => {
     const stats: Record<string, number | null> = {};
@@ -588,10 +590,13 @@ function StatsCalculatorPage({ searchQuery }: { searchQuery: string }) {
     () =>
       selectedEffectEntries
         .map((entry) => ({
+          entryId: entry.entryId,
           effect: relicEffectsKo.find((effect) => effect.id === entry.id),
           valueIndex: entry.valueIndex,
         }))
-        .filter((entry): entry is { effect: RelicEffect; valueIndex: number } => Boolean(entry.effect)),
+        .filter((entry): entry is { entryId: number; effect: RelicEffect; valueIndex: number } =>
+          Boolean(entry.effect),
+        ),
     [selectedEffectEntries],
   );
   const selectedRelicEffects = useMemo(
@@ -653,44 +658,30 @@ function StatsCalculatorPage({ searchQuery }: { searchQuery: string }) {
 
   const addEffect = (effect: RelicEffect) => {
     setSelectedEffectEntries((current) => {
-      if (current.some((entry) => entry.id === effect.id)) return current;
+      if (current.length >= maxSelectedEffectCount) return current;
 
-      const stackGroup = getEffectStackGroup(effect);
-      if (
-        isSameOptionStackBlocked(effect) &&
-        current.some((entry) => {
-          const selected = relicEffectsKo.find((candidate) => candidate.id === entry.id);
-          return selected && isSameOptionStackBlocked(selected) && getEffectStackGroup(selected) === stackGroup;
-        })
-      ) {
-        return current;
-      }
+      const entryId = nextSelectedEffectEntryId.current;
+      nextSelectedEffectEntryId.current += 1;
 
-      return [...current, { id: effect.id, valueIndex: 0 }];
+      return [...current, { entryId, id: effect.id, valueIndex: 0 }];
     });
   };
 
-  const removeEffect = (effectId: string | number) => {
-    setSelectedEffectEntries((current) => current.filter((entry) => entry.id !== effectId));
+  const removeEffect = (entryId: number) => {
+    setSelectedEffectEntries((current) => current.filter((entry) => entry.entryId !== entryId));
   };
 
-  const updateEffectValue = (effectId: string | number, valueIndex: number) => {
+  const updateEffectValue = (entryId: number, valueIndex: number) => {
     setSelectedEffectEntries((current) =>
-      current.map((entry) => (entry.id === effectId ? { ...entry, valueIndex } : entry)),
+      current.map((entry) => (entry.entryId === entryId ? { ...entry, valueIndex } : entry)),
     );
   };
 
   const getDisabledReason = (effect: RelicEffect) => {
-    if (selectedEffectEntries.some((entry) => entry.id === effect.id)) return '선택됨';
-    if (!isSameOptionStackBlocked(effect)) return '';
+    void getEffectStackGroup(effect);
+    void isSameOptionStackBlocked(effect);
 
-    const stackGroup = getEffectStackGroup(effect);
-    const blocked = selectedEffectEntries.some((entry) => {
-      const selected = relicEffectsKo.find((candidate) => candidate.id === entry.id);
-      return selected && isSameOptionStackBlocked(selected) && getEffectStackGroup(selected) === stackGroup;
-    });
-
-    return blocked ? '중첩 불가' : '';
+    return selectedEffectEntries.length >= maxSelectedEffectCount ? `최대 ${maxSelectedEffectCount}개` : '';
   };
 
   return (
@@ -855,19 +846,19 @@ function StatsCalculatorPage({ searchQuery }: { searchQuery: string }) {
 
             <div className="calc-active-effects">
               {selectedEffects.length ? (
-                selectedEffects.map(({ effect, valueIndex }) => {
+                selectedEffects.map(({ entryId, effect, valueIndex }) => {
                   const valueCount = getCombatModifierValueCount(effect);
 
                   return (
-                    <div className="calc-active-effect-card" key={effect.id}>
-                      <button type="button" onClick={() => removeEffect(effect.id)}>
+                    <div className="calc-active-effect-card" key={entryId}>
+                      <button type="button" onClick={() => removeEffect(entryId)}>
                         {effect.name}
                         <span>삭제</span>
                       </button>
                       {valueCount > 1 ? (
                         <select
                           value={valueIndex}
-                          onChange={(event) => updateEffectValue(effect.id, Number(event.target.value))}
+                          onChange={(event) => updateEffectValue(entryId, Number(event.target.value))}
                         >
                           {Array.from({ length: valueCount }, (_, index) => (
                             <option key={index} value={index}>

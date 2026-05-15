@@ -16,6 +16,7 @@ type CandidateEvaluation = {
 
 const EMPTY_SELECTION: SlotSelection = ['', '', ''];
 const SLOT_LABELS = ['A', 'B', 'C'];
+const LOGIN_REQUIRED_MESSAGE = '로그인을 해주시길 바랍니다.';
 const RELIC_COLOR_OPTIONS: Array<{ value: BuilderRelicColor; label: string }> = [
   { value: 'Red', label: '빨강' },
   { value: 'Blue', label: '파랑' },
@@ -383,7 +384,7 @@ function RelicBuilderPage({
     setSaveNotice(null);
 
     if (!authUserId) {
-      setSaveNotice('Login is required to save relics.');
+      window.alert(LOGIN_REQUIRED_MESSAGE);
       return;
     }
 

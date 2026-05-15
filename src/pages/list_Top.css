@@ -2858,18 +2858,101 @@
 
 .saved-preset-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: 1fr;
   gap: 12px;
 }
 
 .saved-preset-card {
   display: grid;
-  gap: 12px;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  min-height: auto;
+  align-items: start;
+}
+
+.saved-preset-card > .option-card-header,
+.saved-preset-card > .saved-preset-card-heading {
+  display: none;
+}
+
+.saved-preset-card-top {
+  display: grid;
+  grid-template-columns: 62px minmax(0, 1fr) auto auto;
+  gap: 8px;
+  align-items: center;
+}
+
+.saved-preset-character-icon {
+  display: grid;
+  place-items: center;
+  width: 62px;
+  aspect-ratio: 1;
+  border: 1px solid rgba(143, 174, 230, 0.2);
+  border-radius: 8px;
+  background: rgba(9, 15, 29, 0.44);
+  overflow: hidden;
+}
+
+.saved-preset-character-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.saved-preset-vessel-preview {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 0;
+  margin-right: 8px;
+}
+
+.saved-preset-vessel-colors {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.saved-preset-vessel-colors .relic-preset-color-dot {
+  width: 13px;
+  height: 13px;
+  min-width: 13px;
+  border-radius: 50%;
+  font-size: 0;
+}
+
+.saved-preset-vessel-colors .relic-preset-color-dot.is-deep-start {
+  margin-left: 10px;
+}
+
+.saved-preset-delete-button {
+  min-width: 56px;
+  min-height: 34px;
+  padding: 0 10px;
+  border: 1px solid rgba(255, 130, 145, 0.34);
+  border-radius: 7px;
+  background: rgba(218, 80, 88, 0.1);
+  color: var(--night-red);
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.saved-preset-delete-button:hover:not(:disabled) {
+  background: rgba(218, 80, 88, 0.18);
+}
+
+.saved-preset-delete-button:disabled {
+  cursor: wait;
+  opacity: 0.62;
 }
 
 .saved-preset-card-heading {
   display: grid;
   gap: 4px;
+  align-content: start;
+  min-width: 0;
 }
 
 .saved-preset-card-heading h3 {
@@ -2887,14 +2970,489 @@
 }
 
 .saved-preset-slot-list {
-  gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
 }
 
 .saved-preset-slot {
+  position: relative;
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: 8px;
+  align-items: start;
+  min-height: 74px;
   padding: 8px;
   border: 1px solid rgba(143, 174, 230, 0.16);
   border-radius: 8px;
   background: rgba(9, 15, 29, 0.34);
+}
+
+.saved-preset-slot:not(.is-empty) {
+  cursor: pointer;
+}
+
+.saved-preset-slot:not(.is-empty):hover,
+.saved-preset-slot.is-popover-open {
+  border-color: rgba(120, 221, 255, 0.38);
+  background: rgba(120, 221, 255, 0.07);
+}
+
+.saved-preset-slot:focus-visible {
+  outline: 2px solid rgba(120, 221, 255, 0.72);
+  outline-offset: 3px;
+}
+
+.saved-preset-slot.is-empty {
+  display: block;
+  border-style: dashed;
+  background: rgba(9, 15, 29, 0.18);
+}
+
+.saved-preset-slot > div > .relic-preset-summary-options {
+  display: none;
+}
+
+.saved-preset-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(2, 5, 12, 0.68);
+}
+
+.saved-preset-modal {
+  position: relative;
+  display: grid;
+  gap: 10px;
+  width: min(520px, 100%);
+  max-height: min(620px, calc(100vh - 40px));
+  padding: 18px;
+  border: 1px solid rgba(143, 174, 230, 0.34);
+  border-radius: 8px;
+  background: rgba(10, 16, 31, 0.98);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.58);
+  overflow: auto;
+}
+
+.saved-preset-modal-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(143, 174, 230, 0.28);
+  border-radius: 7px;
+  background: rgba(9, 15, 29, 0.76);
+  color: var(--night-text);
+  cursor: pointer;
+  font: inherit;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.saved-preset-modal-close:hover {
+  background: rgba(120, 221, 255, 0.12);
+}
+
+.saved-preset-modal .relic-preset-summary-options {
+  display: grid;
+  padding-right: 28px;
+}
+
+.preset-compare-section {
+  display: grid;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.preset-compare-section h4,
+.preset-compare-section h5 {
+  margin: 0;
+  color: var(--night-text);
+}
+
+.preset-compare-section h4 {
+  font-size: 15px;
+}
+
+.preset-compare-section h5 {
+  font-size: 13px;
+}
+
+.preset-compare-selectors {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.preset-compare-selectors label {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  color: var(--night-text-soft);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.preset-compare-selectors select {
+  width: 100%;
+  min-height: 38px;
+  padding: 0 10px;
+  border: 1px solid rgba(143, 174, 230, 0.24);
+  border-radius: 7px;
+  background: var(--night-input);
+  color: var(--night-text);
+  box-sizing: border-box;
+  font: inherit;
+}
+
+.preset-compare-results {
+  display: grid;
+  gap: 12px;
+}
+
+.preset-compare-sides {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.preset-compare-summary-card,
+.preset-compare-common {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid rgba(143, 174, 230, 0.16);
+  border-radius: 8px;
+  background: rgba(9, 15, 29, 0.34);
+}
+
+.preset-compare-summary-card {
+  grid-template-columns: minmax(0, 1fr) 48px;
+  align-items: center;
+}
+
+.preset-compare-summary-heading {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.preset-compare-summary-heading span,
+.preset-compare-common-heading span,
+.preset-compare-effect-list span,
+.preset-compare-side-option span,
+.preset-compare-common-values span {
+  color: var(--night-muted);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.preset-compare-summary-heading strong {
+  color: var(--night-text);
+  font-size: 15px;
+  overflow-wrap: anywhere;
+}
+
+.preset-compare-summary-heading em {
+  color: var(--night-text-soft);
+  font-style: normal;
+  font-size: 12px;
+}
+
+.preset-compare-character-icon {
+  width: 48px;
+  aspect-ratio: 1;
+  border: 1px solid rgba(143, 174, 230, 0.2);
+  border-radius: 8px;
+  background: rgba(9, 15, 29, 0.44);
+  object-fit: cover;
+}
+
+.preset-compare-effect-group,
+.preset-compare-common-group,
+.preset-compare-aligned-group {
+  display: grid;
+  gap: 8px;
+}
+
+.preset-compare-effect-list,
+.preset-compare-common-list,
+.preset-compare-aligned-list {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  gap: 8px;
+}
+
+.preset-compare-effect-list li,
+.preset-compare-common-row {
+  min-width: 0;
+  padding: 8px;
+  border: 1px solid rgba(143, 174, 230, 0.14);
+  border-radius: 7px;
+  background: rgba(3, 8, 18, 0.28);
+}
+
+.preset-compare-effect-list li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 4px;
+  align-items: start;
+}
+
+.preset-compare-effect-list div,
+.preset-compare-common-name {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+.preset-compare-effect-list strong,
+.preset-compare-common-name strong {
+  color: var(--night-text);
+  font-size: 13px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.preset-compare-effect-list em {
+  color: var(--night-gold);
+  font-style: normal;
+  font-size: 13px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.preset-compare-effect-list p {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--night-text-soft);
+  font-size: 12px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.preset-compare-slot-section {
+  display: grid;
+  gap: 8px;
+}
+
+.preset-compare-slot-list {
+  display: grid;
+  gap: 10px;
+}
+
+.preset-compare-relic-slot {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid rgba(143, 174, 230, 0.14);
+  border-radius: 8px;
+  background: rgba(3, 8, 18, 0.22);
+}
+
+.preset-compare-slot-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--night-muted);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.preset-compare-slot-option-list,
+.preset-compare-slot-option-group {
+  display: grid;
+  gap: 6px;
+}
+
+.preset-compare-slot-option-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  align-items: stretch;
+}
+
+.preset-compare-slot-option-row.is-debuff-row {
+  padding-left: 18px;
+}
+
+.preset-compare-slot-option {
+  display: grid;
+  align-content: start;
+  gap: 4px;
+  min-width: 0;
+  min-height: 42px;
+  padding: 8px;
+  border: 1px solid rgba(143, 174, 230, 0.14);
+  border-radius: 7px;
+  background: rgba(9, 15, 29, 0.36);
+}
+
+.preset-compare-slot-option strong {
+  color: var(--night-text);
+  font-size: 13px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.preset-compare-slot-option p {
+  margin: 0;
+  color: var(--night-text-soft);
+  font-size: 12px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.preset-compare-slot-option.is-empty {
+  border-style: dashed;
+  background: transparent;
+  opacity: 0.42;
+}
+
+.preset-compare-slot-option.is-debuff {
+  border-color: rgba(255, 130, 145, 0.2);
+  background: rgba(218, 80, 88, 0.05);
+}
+
+.preset-compare-slot-option.is-debuff .relic-builder-result-debuff {
+  margin-top: 0;
+}
+
+.preset-compare-slot-option.is-debuff .relic-builder-result-debuff em {
+  display: none;
+}
+
+.preset-compare-aligned-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  align-items: stretch;
+}
+
+.preset-compare-side-option {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 4px 8px;
+  align-content: start;
+  min-width: 0;
+  min-height: 100%;
+  padding: 8px;
+  border: 1px solid rgba(143, 174, 230, 0.14);
+  border-radius: 7px;
+  background: rgba(3, 8, 18, 0.28);
+}
+
+.preset-compare-side-option.is-text-only {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.preset-compare-side-option > div {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+.preset-compare-side-option strong {
+  color: var(--night-text);
+  font-size: 13px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.preset-compare-side-option em {
+  color: var(--night-gold);
+  font-style: normal;
+  font-size: 13px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.preset-compare-side-option p {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--night-text-soft);
+  font-size: 12px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.preset-compare-missing {
+  display: grid;
+  place-items: center;
+  min-height: 100%;
+  padding: 8px;
+  border: 1px dashed rgba(143, 174, 230, 0.14);
+  border-radius: 7px;
+  background: rgba(3, 8, 18, 0.18);
+  color: var(--night-muted);
+  font-style: normal;
+  font-size: 12px;
+}
+
+.preset-compare-value {
+  display: grid;
+  gap: 3px;
+}
+
+.preset-compare-value strong {
+  color: var(--night-text);
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.preset-compare-value p {
+  margin: 0;
+  color: var(--night-text-soft);
+  font-size: 12px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.preset-compare-common-heading {
+  display: grid;
+  gap: 3px;
+}
+
+.preset-compare-common-heading h5 {
+  color: var(--night-gold);
+}
+
+.preset-compare-common-row {
+  display: grid;
+  gap: 10px;
+}
+
+.preset-compare-common-name span {
+  color: var(--night-text-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.preset-compare-common-values {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.preset-compare-common-values > div {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  padding: 8px;
+  border-radius: 7px;
+  background: rgba(120, 221, 255, 0.05);
 }
 
 .relic-builder-selected-effect.is-valid {
@@ -3266,6 +3824,29 @@
   .relic-builder-save-actions {
     grid-column: auto;
   }
+
+  .saved-preset-card {
+    grid-template-columns: 1fr;
+  }
+
+  .saved-preset-card-top {
+    grid-template-columns: 58px minmax(0, 1fr) auto auto;
+  }
+
+  .saved-preset-slot-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .preset-compare-sides,
+  .preset-compare-aligned-row,
+  .preset-compare-slot-option-row,
+  .preset-compare-common-values {
+    grid-template-columns: 1fr;
+  }
+
+  .preset-compare-slot-option-row.is-debuff-row {
+    padding-left: 10px;
+  }
 }
 
 @media (max-width: 520px) {
@@ -3303,8 +3884,32 @@
 
   .relic-preset-layout,
   .relic-preset-slots,
+  .saved-preset-slot-list,
   .character-card-grid {
     grid-template-columns: 1fr;
+  }
+
+  .saved-preset-card-top {
+    grid-template-columns: 54px minmax(0, 1fr) auto;
+  }
+
+  .saved-preset-vessel-preview {
+    grid-column: 2 / -1;
+    grid-row: 2;
+    justify-content: flex-start;
+  }
+
+  .saved-preset-delete-button {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  .preset-compare-selectors {
+    grid-template-columns: 1fr;
+  }
+
+  .saved-preset-character-icon {
+    width: 54px;
   }
 
   .catalog-card-grid {

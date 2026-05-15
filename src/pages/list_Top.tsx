@@ -1067,7 +1067,7 @@ function ListTop() {
       ) : selectedId === 'map' ? (
         <MapPage />
       ) : selectedId === 'builds' ? (
-        <BuildPage searchQuery={searchQuery} />
+        <BuildPage searchQuery={searchQuery} authUserId={authUserId} />
       ) : selectedId === 'relic-builder' ? (
         <RelicBuilderPage
           searchQuery={searchQuery}
