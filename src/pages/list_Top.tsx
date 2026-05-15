@@ -44,7 +44,7 @@ import ashTopIcon from '../assets/images/top_icon/ash.webp';
 import bossTopIcon from '../assets/images/top_icon/boss.webp';
 import buildTopIcon from '../assets/images/top_icon/imgi_6_152.webp';
 import characterTopIcon from '../assets/images/top_icon/character.webp';
-import dealTopIcon from '../assets/images/top_icon/deal.png';
+import dealTopIcon from '../assets/images/top_icon/deal.webp';
 import etcTopIcon from '../assets/images/top_icon/etc.webp';
 import gestureTopIcon from '../assets/images/top_icon/gesture.webp';
 import mapTopIcon from '../assets/images/top_icon/map.webp';
@@ -56,6 +56,8 @@ import spellTopIcon from '../assets/images/top_icon/ee.webp';
 import talismanTopIcon from '../assets/images/top_icon/talisman.webp';
 import vesselTopIcon from '../assets/images/top_icon/vessel.webp';
 import weaponTopIcon from '../assets/images/top_icon/weapone.webp';
+import logoImage from '../assets/images/top_icon/logo.png';
+import loginImage from '../assets/images/top_icon/login.webp';
 import './list_Top.css';
 
 const categories: Category[] = [
@@ -684,9 +686,9 @@ function ListTop() {
       <header className="list-top-header">
         <div className="game-title-row">
           <div className="game-title-icon" aria-hidden="true">
-            N
+            <img className="game-title-logo-image" src={logoImage} alt="" />
           </div>
-          <h1>Nightreign Data App</h1>
+          <h1>엘밤 비</h1>
           <button
             type="button"
             className={`account-icon-button${authView ? ' is-active' : ''}`}
@@ -698,7 +700,7 @@ function ListTop() {
               setIsFilterPanelOpen(false);
             }}
           >
-            &#128100;
+           <img className="account-icon-image" src={loginImage} alt="" aria-hidden="true" />
           </button>
         </div>
 

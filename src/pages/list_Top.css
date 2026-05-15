@@ -81,6 +81,14 @@
   line-height: 1.2;
 }
 
+
+.account-icon-button:hover,
+.account-icon-button.is-active {
+  border-color: transparent;
+  background: transparent;
+  color: inherit;
+}
+
 .account-icon-button {
   display: grid;
   place-items: center;
@@ -517,6 +525,7 @@
 
 .heading-actions {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 10px;
   flex: 0 0 auto;
@@ -1228,6 +1237,205 @@
   align-items: end;
 }
 
+.relic-preset-current-character,
+.relic-preset-save-panel,
+.relic-preset-choice-section {
+  display: grid;
+  gap: 7px;
+  min-width: 0;
+}
+
+.relic-preset-current-character > span,
+.relic-preset-save-panel label,
+.relic-preset-choice-section > span {
+  color: var(--night-text-soft);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.relic-preset-save-panel {
+  padding: 10px;
+  border: 1px solid rgba(143, 174, 230, 0.2);
+  border-radius: 8px;
+  background: rgba(9, 15, 29, 0.28);
+}
+
+.relic-preset-save-panel label {
+  display: grid;
+  gap: 6px;
+}
+
+.relic-preset-save-panel input {
+  min-height: 38px;
+  padding: 0 10px;
+  border: 1px solid rgba(143, 174, 230, 0.24);
+  border-radius: 7px;
+  background: var(--night-input);
+  color: var(--night-text);
+  font: inherit;
+  font-size: 13px;
+}
+
+.relic-preset-save-panel input:focus {
+  border-color: rgba(120, 221, 255, 0.55);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(120, 221, 255, 0.12);
+}
+
+.relic-preset-current-character strong {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 38px;
+  padding: 0 10px;
+  border: 1px solid rgba(143, 174, 230, 0.24);
+  border-radius: 7px;
+  background: var(--night-input);
+  color: var(--night-text);
+  font-size: 13px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.relic-preset-current-character img {
+  width: 26px;
+  height: 26px;
+  border: 1px solid rgba(214, 189, 120, 0.28);
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.22);
+  object-fit: cover;
+}
+
+.relic-preset-character-grid,
+.relic-preset-vessel-grid {
+  display: grid;
+  gap: 7px;
+}
+
+.relic-preset-character-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.relic-preset-vessel-grid {
+  max-height: 260px;
+  overflow-y: auto;
+  padding-right: 3px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(143, 174, 230, 0.3) transparent;
+}
+
+.relic-preset-character-choice,
+.relic-preset-vessel-choice {
+  min-width: 0;
+  border: 1px solid var(--night-border);
+  border-radius: 7px;
+  background: var(--night-input);
+  color: var(--night-text-soft);
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.relic-preset-character-choice {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 4px 8px;
+}
+
+.relic-preset-character-choice img {
+  width: 24px;
+  height: 24px;
+  border-radius: 5px;
+  object-fit: cover;
+}
+
+.relic-preset-character-choice span,
+.relic-preset-vessel-choice strong {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.relic-preset-vessel-choice {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto;
+  gap: 9px;
+  align-items: center;
+  min-height: 58px;
+  padding: 7px;
+  text-align: left;
+}
+
+.relic-preset-vessel-choice > img {
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(157, 190, 255, 0.3);
+  border-radius: 8px;
+  background: var(--night-bg-deep);
+  object-fit: contain;
+}
+
+.relic-preset-vessel-choice > span:not(.relic-preset-vessel-choice-colors) {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.relic-preset-vessel-choice em {
+  color: var(--night-gold);
+  font-size: 11px;
+  font-style: normal;
+}
+
+.relic-preset-vessel-choice-colors {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.relic-preset-mini-color-dot {
+  width: 12px;
+  height: 12px;
+  border: 1px solid rgba(238, 246, 255, 0.42);
+  border-radius: 50%;
+}
+
+.relic-preset-mini-color-dot.relic-color-red,
+.relic-preset-color-dot.relic-color-red {
+  background: rgba(214, 75, 64, 0.46);
+  color: #ffdeda;
+}
+
+.relic-preset-mini-color-dot.relic-color-blue,
+.relic-preset-color-dot.relic-color-blue {
+  background: rgba(70, 131, 214, 0.44);
+  color: #dceaff;
+}
+
+.relic-preset-mini-color-dot.relic-color-yellow,
+.relic-preset-color-dot.relic-color-yellow {
+  background: rgba(214, 189, 120, 0.45);
+  color: #fff2bf;
+}
+
+.relic-preset-mini-color-dot.relic-color-green,
+.relic-preset-color-dot.relic-color-green {
+  background: rgba(73, 166, 111, 0.44);
+  color: #d9f8e7;
+}
+
+.relic-preset-character-choice:hover,
+.relic-preset-character-choice.is-selected,
+.relic-preset-vessel-choice:hover,
+.relic-preset-vessel-choice.is-selected {
+  border-color: var(--night-border-strong);
+  background: var(--night-accent-bg);
+  color: var(--night-accent-bright);
+}
+
 .relic-preset-select-label {
   display: grid;
   gap: 6px;
@@ -1321,6 +1529,32 @@
   display: grid;
   gap: 10px;
   min-width: 0;
+}
+
+.is-legacy-hidden {
+  display: none !important;
+}
+
+.relic-preset-slot-groups,
+.relic-preset-summary-groups,
+.relic-preset-vessel-color-groups {
+  display: grid;
+  gap: 12px;
+}
+
+.relic-preset-slot-section,
+.relic-preset-summary-group,
+.relic-preset-vessel-color-groups > div {
+  display: grid;
+  gap: 8px;
+}
+
+.relic-preset-slot-section h4,
+.relic-preset-summary-group h4 {
+  margin: 0;
+  color: var(--night-gold);
+  font-size: 13px;
+  line-height: 1.35;
 }
 
 .relic-preset-slots {
@@ -1485,6 +1719,14 @@
   overflow-wrap: anywhere;
 }
 
+.relic-preset-choice-debuff {
+  display: block;
+  margin-top: 2px;
+  color: var(--night-red);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
 .relic-preset-choice em {
   color: var(--night-gold);
   font-size: 12px;
@@ -1493,7 +1735,8 @@
 }
 
 .relic-preset-clear-slot {
-  justify-self: start;
+  flex: 0 0 auto;
+  justify-self: end;
   min-height: 28px;
   padding: 0 9px;
   color: var(--night-red);
@@ -2506,6 +2749,22 @@
   margin: 0;
 }
 
+.relic-preset-summary-slot.is-expandable {
+  cursor: pointer;
+}
+
+.relic-preset-summary-slot.is-expandable:hover,
+.relic-preset-summary-slot.is-expanded {
+  border-radius: 8px;
+  background: rgba(120, 221, 255, 0.06);
+}
+
+.relic-preset-summary-slot.is-expandable:focus-visible {
+  border-radius: 8px;
+  outline: 2px solid rgba(120, 221, 255, 0.72);
+  outline-offset: 3px;
+}
+
 .relic-builder-result-list > li > span {
   display: grid;
   place-items: center;
@@ -2523,6 +2782,14 @@
   gap: 3px;
   min-width: 0;
   width: 100%;
+}
+
+.relic-preset-summary-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
 }
 
 .relic-builder-result-list strong {
@@ -2546,6 +2813,88 @@
   padding: 8px;
   border-left: 2px solid rgba(255, 130, 145, 0.58);
   background: rgba(218, 80, 88, 0.1);
+}
+
+.relic-preset-summary-options {
+  display: grid;
+  gap: 5px;
+  margin: 5px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.relic-preset-summary-options li {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr);
+  gap: 6px;
+  min-width: 0;
+  padding: 6px;
+  border-radius: 7px;
+  background: rgba(9, 15, 29, 0.56);
+}
+
+.relic-preset-summary-options > li > span {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  background: rgba(143, 174, 230, 0.12);
+  color: var(--night-muted);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.relic-preset-summary-options > li > div {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.relic-saved-presets {
+  display: grid;
+  gap: 14px;
+}
+
+.saved-preset-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 12px;
+}
+
+.saved-preset-card {
+  display: grid;
+  gap: 12px;
+}
+
+.saved-preset-card-heading {
+  display: grid;
+  gap: 4px;
+}
+
+.saved-preset-card-heading h3 {
+  margin: 0;
+  color: var(--night-text);
+  font-size: 16px;
+  line-height: 1.35;
+}
+
+.saved-preset-card-heading p {
+  margin: 0;
+  color: var(--night-text-soft);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.saved-preset-slot-list {
+  gap: 10px;
+}
+
+.saved-preset-slot {
+  padding: 8px;
+  border: 1px solid rgba(143, 174, 230, 0.16);
+  border-radius: 8px;
+  background: rgba(9, 15, 29, 0.34);
 }
 
 .relic-builder-selected-effect.is-valid {
@@ -2998,4 +3347,45 @@
     width: 60px;
     height: 60px;
   }
+
+}
+
+/* 상단 왼쪽 로고 박스 제거 */
+.game-title-row .game-title-icon {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+/* 상단 로그인 아이콘 박스 제거 */
+.game-title-row .account-icon-button {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+}
+
+/* hover / active 때도 박스 안 나오게 */
+.game-title-row .account-icon-button:hover,
+.game-title-row .account-icon-button.is-active {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* 이미지 자체 크기 */
+.game-title-logo-image {
+  display: block;
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+}
+
+.account-icon-image {
+  display: block;
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
 }

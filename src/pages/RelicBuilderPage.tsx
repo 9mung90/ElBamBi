@@ -23,6 +23,17 @@ const RELIC_COLOR_OPTIONS: Array<{ value: BuilderRelicColor; label: string }> = 
   { value: 'Green', label: '초록' },
 ];
 
+const BUILDER_RELIC_COLOR_LABELS: Record<BuilderRelicColor, string> = {
+  Red: '빨강',
+  Blue: '파랑',
+  Yellow: '노랑',
+  Green: '초록',
+};
+
+function getBuilderRelicName(color: BuilderRelicColor) {
+  return `제작 유물(${BUILDER_RELIC_COLOR_LABELS[color]})`;
+}
+
 function getEffectName(effect: RelicRollEffect) {
   return effect.effect_kor || effect.effect;
 }
@@ -394,7 +405,7 @@ function RelicBuilderPage({
       userId: authUserId,
       slotIndex: 0,
       itemId: 0,
-      itemName: `${selectedColor} Builder Relic`,
+      itemName: getBuilderRelicName(selectedColor),
       color: selectedColor,
       modeId: mode.id,
       isValid: isValidComplete,

@@ -34,6 +34,37 @@ export type StoredRelic = {
   updatedAt: string;
 };
 
+export type RelicPresetColorMode = 'normal' | 'deep';
+
+export type RelicPresetSlotInput =
+  | {
+      slotIndex: number;
+      relicRefType: 'stored';
+      relicId: string;
+    }
+  | {
+      slotIndex: number;
+      relicRefType: 'save';
+      itemId: number;
+      effectIds: number[];
+    };
+
+export type RelicPresetInput = {
+  presetId?: string;
+  userId: string;
+  name: string;
+  characterName: string;
+  vesselIndex: number;
+  colorMode: RelicPresetColorMode;
+  slots: RelicPresetSlotInput[];
+};
+
+export type RelicPreset = RelicPresetInput & {
+  presetId: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type BuilderRelicInput = {
   userId: string;
   slotIndex: number;
@@ -174,6 +205,26 @@ export function createBuilderRelic(input: BuilderRelicInput) {
   return requestStorageApi<StoredRelic>('/api/mi/relics', {
     method: 'POST',
     json: input,
+  });
+}
+
+export function saveRelicPreset(input: RelicPresetInput) {
+  return requestStorageApi<RelicPreset>('/api/mi/presets', {
+    method: 'POST',
+    json: input,
+  });
+}
+
+export function listRelicPresets(userId: string) {
+  return requestStorageApi<RelicPreset[]>('/api/mi/presets', {
+    query: { userId },
+  });
+}
+
+export function deleteRelicPreset(userId: string, presetId: string) {
+  return requestStorageApi<string>('/api/mi/deletePreset', {
+    method: 'POST',
+    query: { userId, presetId },
   });
 }
 

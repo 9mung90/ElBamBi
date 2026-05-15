@@ -8,10 +8,27 @@ import {
 } from '../api/storageApi';
 
 const sourceFilters: Array<{ id: StoredRelicSourceFilter; label: string }> = [
-  { id: 'all', label: 'All relics' },
-  { id: 'save', label: 'Save-imported' },
-  { id: 'builder', label: 'Builder-created' },
+  { id: 'all', label: '전체 유물' },
+  { id: 'save', label: '세이브 유물' },
+  { id: 'builder', label: '제작 유물' },
 ];
+
+function getRelicColorLabel(color: string | undefined) {
+  const labels: Record<string, string> = {
+    red: '빨강',
+    blue: '파랑',
+    yellow: '노랑',
+    green: '초록',
+    white: '자유',
+  };
+  const normalizedColor = (color ?? '').trim().toLowerCase();
+
+  return labels[normalizedColor] ?? color ?? '-';
+}
+
+function getStoredRelicSourceLabel(source: StoredRelic['source']) {
+  return source === 'builder' ? '제작' : '세이브';
+}
 
 function formatStorageDate(value: string) {
   const date = new Date(value);
@@ -57,14 +74,16 @@ function RelicStorageCard({
   return (
     <article className="option-card stored-relic-card">
       <div className="option-card-header">
-        <span className={`option-category relic-color-${relic.color.toLowerCase()}`}>{relic.color}</span>
-        <span className="stored-relic-source">{relic.source}</span>
+        <span className={`option-category relic-color-${relic.color.toLowerCase()}`}>
+          {getRelicColorLabel(relic.color)}
+        </span>
+        <span className="stored-relic-source">{getStoredRelicSourceLabel(relic.source)}</span>
       </div>
 
-      <h3>{relic.itemName || `Relic ${relic.itemId}`}</h3>
+      <h3>{relic.itemName || `유물 ${relic.itemId}`}</h3>
 
       <div className="option-meta-row stored-relic-meta">
-        <span>{relic.isValid ? 'Valid' : 'Invalid'}</span>
+        <span>{relic.isValid ? '사용 가능' : '사용 불가'}</span>
         <span>{formatStorageDate(updatedAt)}</span>
       </div>
 
@@ -90,7 +109,7 @@ function RelicStorageCard({
                 </div>
               ) : (
                 <div>
-                  <strong>No option</strong>
+                  <strong>옵션 없음</strong>
                   {debuff ? (
                     <div className="stored-relic-debuff">
                       <em>디버프</em>
@@ -111,7 +130,7 @@ function RelicStorageCard({
         disabled={isDeleting}
         onClick={() => onDelete(relic)}
       >
-        {isDeleting ? 'Deleting...' : 'Delete'}
+        {isDeleting ? '삭제 중...' : '삭제'}
       </button>
     </article>
   );
@@ -157,7 +176,7 @@ function RelicStorageSection({
     } catch (error) {
       setRelics([]);
       setAllRelicCount(0);
-      setNotice(getStorageErrorMessage(error, 'Failed to load stored relics.'));
+      setNotice(getStorageErrorMessage(error, '저장된 유물을 불러오지 못했습니다.'));
     } finally {
       setIsLoading(false);
     }
@@ -174,17 +193,17 @@ function RelicStorageSection({
   );
 
   async function handleDeleteRelic(relic: StoredRelic) {
-    if (!authUserId || !window.confirm(`Delete ${relic.itemName || 'this relic'}?`)) return;
+    if (!authUserId || !window.confirm(`${relic.itemName || '이 유물'}을 삭제할까요?`)) return;
 
     setDeletingRelicId(relic.relicId);
 
     try {
       await deleteRelic(authUserId, relic.relicId);
-      setNotice('Relic deleted.');
+      setNotice('유물을 삭제했습니다.');
       await loadRelicStorage();
       onRelicsChanged?.();
     } catch (error) {
-      setNotice(getStorageErrorMessage(error, 'Failed to delete relic.'));
+      setNotice(getStorageErrorMessage(error, '유물을 삭제하지 못했습니다.'));
     } finally {
       setDeletingRelicId(null);
     }
@@ -194,17 +213,17 @@ function RelicStorageSection({
     <section className="relic-storage-section" aria-labelledby="relic-storage-title">
       <div className="relic-storage-heading">
         <div>
-          <p className="list-page-kicker">Storage</p>
-          <h3 id="relic-storage-title">Relic Storage</h3>
+          <p className="list-page-kicker">보관함</p>
+          <h3 id="relic-storage-title">유물 보관함</h3>
         </div>
         <span className="option-count">{allRelicCount} / 50</span>
       </div>
 
       {!authUserId ? (
-        <p className="storage-notice">Login is required to view stored relics.</p>
+        <p className="storage-notice">저장된 유물을 보려면 로그인이 필요합니다.</p>
       ) : (
         <>
-          <div className="relic-storage-filters" aria-label="Stored relic filters">
+          <div className="relic-storage-filters" aria-label="저장 유물 필터">
             {sourceFilters.map((filter) => (
               <button
                 key={filter.id}
@@ -221,7 +240,7 @@ function RelicStorageSection({
           {notice ? <p className="storage-notice">{notice}</p> : null}
 
           {isLoading ? (
-            <p className="muted-text">Loading stored relics...</p>
+            <p className="muted-text">저장된 유물을 불러오는 중...</p>
           ) : visibleRelics.length ? (
             <div className="option-card-grid stored-relic-grid">
               {visibleRelics.map((relic) => (
@@ -234,7 +253,7 @@ function RelicStorageSection({
               ))}
             </div>
           ) : (
-            <p className="muted-text">No stored relics found.</p>
+            <p className="muted-text">저장된 유물이 없습니다.</p>
           )}
         </>
       )}
