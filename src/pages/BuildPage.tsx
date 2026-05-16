@@ -120,6 +120,7 @@ type CommunityPostResponse = {
   title?: unknown;
   content?: unknown;
   contentHtml?: unknown;
+  contentText?: unknown;
   embeddedImagesJson?: unknown;
   presetJson?: unknown;
   viewCount?: unknown;
@@ -144,6 +145,12 @@ type ImageResponse = {
   id?: unknown;
   postId?: unknown;
   imageUrl?: unknown;
+};
+
+type PresignedImageUploadResponse = {
+  uploadUrl?: unknown;
+  publicUrl?: unknown;
+  objectKey?: unknown;
 };
 
 type PostRelationResponse = {
@@ -227,6 +234,7 @@ const communityApi = {
   deleteComment: '/api/deleteComment',
   images: '/api/postImages',
   addImage: '/api/addPostImage',
+  presignImage: '/api/communityPosts/images/presign',
   likes: '/api/postLikes',
   myLikes: '/api/userPostLikes',
   addLike: '/api/addPostLike',
@@ -503,7 +511,7 @@ function normalizePost(post: CommunityPostResponse): BuildPost {
     id: getString(post.id),
     userId: getString(post.userId),
     title: getString(post.title, '제목 없음'),
-    content: getString(post.contentHtml, getString(post.content)),
+    content: normalizePostContent(post),
     viewCount: getNumber(post.viewCount),
     category: getString(post.category, 'Class Builds'),
     createdAt: getString(post.createdAt, new Date().toISOString()),
@@ -516,6 +524,17 @@ function normalizePost(post: CommunityPostResponse): BuildPost {
     comments: [],
     images: [],
   };
+}
+
+function normalizePostContent(post: CommunityPostResponse) {
+  const content = getString(post.contentHtml, getString(post.content));
+  const presetJson = getString(post.presetJson);
+  if (!presetJson || content.startsWith(buildPostPresetMarkerPrefix)) return content;
+
+  const preset = decodeBuildPostPresetJson(presetJson);
+  if (!preset) return content;
+
+  return content ? `${encodeBuildPostPreset(preset)}\n${content}` : encodeBuildPostPreset(preset);
 }
 
 function normalizeComment(comment: CommentResponse): BuildComment {
@@ -646,6 +665,19 @@ function decodeBuildPostPreset(value: string): BuildPostPreset | null {
   }
 }
 
+function decodeBuildPostPresetJson(value: string): BuildPostPreset | null {
+  try {
+    const parsed = JSON.parse(value) as BuildPostPreset;
+    if (!parsed?.preset?.presetId || !Array.isArray(parsed.preset.slots)) return null;
+    return {
+      preset: parsed.preset,
+      storedRelics: Array.isArray(parsed.storedRelics) ? parsed.storedRelics : [],
+    };
+  } catch {
+    return null;
+  }
+}
+
 function getBuildPostContentParts(content: string) {
   if (!content.startsWith(buildPostPresetMarkerPrefix)) {
     return { preset: null as BuildPostPreset | null, content };
@@ -702,6 +734,41 @@ function getDataUrlSizeBytes(src: string) {
 
   const padding = base64.endsWith('==') ? 2 : base64.endsWith('=') ? 1 : 0;
   return Math.max(0, Math.floor((base64.length * 3) / 4) - padding);
+}
+
+function getDataUrlContentType(src: string) {
+  return src.match(/^data:([^;]+);base64,/)?.[1] ?? '';
+}
+
+function getSafeUploadFileName(fileName: string, fallbackIndex: number, contentType: string) {
+  const trimmedName = fileName.trim();
+  if (trimmedName) return trimmedName;
+
+  const extensionByType: Record<string, string> = {
+    'image/avif': 'avif',
+    'image/bmp': 'bmp',
+    'image/gif': 'gif',
+    'image/jpeg': 'jpg',
+    'image/png': 'png',
+    'image/webp': 'webp',
+  };
+
+  return `build-image-${fallbackIndex + 1}.${extensionByType[contentType] ?? 'png'}`;
+}
+
+function dataUrlToBlob(src: string) {
+  const match = src.match(/^data:([^;]+);base64,(.*)$/);
+  if (!match) throw new Error('이미지 데이터를 읽을 수 없습니다.');
+
+  const contentType = match[1];
+  const binary = window.atob(match[2].replace(/\s/g, ''));
+  const bytes = new Uint8Array(binary.length);
+
+  for (let index = 0; index < binary.length; index += 1) {
+    bytes[index] = binary.charCodeAt(index);
+  }
+
+  return new Blob([bytes], { type: contentType });
 }
 
 function getBuildContentImages(content: string): BuildContentImagePayload[] {
@@ -817,6 +884,96 @@ function createBuildPostRequestBody(draft: BuildPostDraft, postContent: string) 
     embeddedImagesJson: embeddedImages.length ? JSON.stringify(embeddedImages) : undefined,
     embeddedImageCount: embeddedImages.length,
   };
+}
+
+async function presignBuildPostImageUpload({
+  contentType,
+  fileName,
+  sizeBytes,
+  userId,
+}: {
+  contentType: string;
+  fileName: string;
+  sizeBytes: number;
+  userId: string;
+}) {
+  const response = await requestApi<PresignedImageUploadResponse>(communityApi.presignImage, {
+    method: 'POST',
+    bodyAsJson: true,
+    body: {
+      userId,
+      fileName,
+      contentType,
+      sizeBytes,
+    },
+  });
+  const uploadUrl = getString(response.uploadUrl);
+  const publicUrl = getString(response.publicUrl);
+
+  if (!uploadUrl || !publicUrl) {
+    throw new Error('이미지 업로드 URL을 발급받지 못했습니다.');
+  }
+
+  return {
+    objectKey: getString(response.objectKey),
+    publicUrl,
+    uploadUrl,
+  };
+}
+
+async function uploadBuildPostImageToS3({
+  contentType,
+  file,
+  uploadUrl,
+}: {
+  contentType: string;
+  file: Blob;
+  uploadUrl: string;
+}) {
+  const response = await fetch(uploadUrl, {
+    method: 'PUT',
+    headers: {
+      'content-type': contentType,
+    },
+    body: file,
+  });
+
+  if (!response.ok) {
+    throw new Error(`이미지 업로드 실패: ${response.status} ${response.statusText}`);
+  }
+}
+
+async function uploadEmbeddedBuildImages(content: string, userId: string) {
+  if (typeof document === 'undefined') return content;
+
+  const template = document.createElement('template');
+  template.innerHTML = sanitizeBuildPostHtml(content);
+  const images = Array.from(template.content.querySelectorAll('img')).filter((image) =>
+    (image.getAttribute('src') ?? '').startsWith('data:image/'),
+  );
+
+  for (const [index, image] of images.entries()) {
+    const src = image.getAttribute('src') ?? '';
+    const contentType = getDataUrlContentType(src);
+    const sizeBytes = getDataUrlSizeBytes(src) ?? 0;
+    const fileName = getSafeUploadFileName(image.getAttribute('alt') ?? '', index, contentType);
+    const file = dataUrlToBlob(src);
+    const { publicUrl, uploadUrl } = await presignBuildPostImageUpload({
+      contentType,
+      fileName,
+      sizeBytes,
+      userId,
+    });
+
+    await uploadBuildPostImageToS3({
+      contentType,
+      file,
+      uploadUrl,
+    });
+    image.setAttribute('src', publicUrl);
+  }
+
+  return template.innerHTML.trim();
 }
 
 function getRequestBodySize(body: Record<string, ApiBodyValue>) {
@@ -2050,13 +2207,21 @@ function BuildPage({
       title: draft.title.trim(),
       content: draft.content.trim(),
     };
-    const postContent = composeBuildPostContent(cleanDraft);
+    const hasEmbeddedDataImages = getBuildContentImages(cleanDraft.content).some((image) =>
+      image.src?.startsWith('data:image/'),
+    );
 
     if (!cleanDraft.title || (!cleanDraft.preset && isBuildContentEmpty(cleanDraft.content))) return;
 
-    const requestBody = createBuildPostRequestBody(cleanDraft, postContent);
+    if (hasEmbeddedDataImages && !authUserId) {
+      setNotice('이미지를 업로드하려면 로그인이 필요합니다.');
+      return;
+    }
+
+    let postContent = composeBuildPostContent(cleanDraft);
+    let requestBody = createBuildPostRequestBody(cleanDraft, postContent);
     const requestBodySize = getRequestBodySize(requestBody);
-    if (requestBodySize > maxCommunityPostRequestSize) {
+    if (!hasEmbeddedDataImages && requestBodySize > maxCommunityPostRequestSize) {
       setNotice('이미지 용량이 너무 커서 등록할 수 없습니다. 큰 이미지는 S3 직접 업로드 방식이 필요합니다.');
       return;
     }
@@ -2064,6 +2229,24 @@ function BuildPage({
     setIsSubmitting(true);
 
     try {
+      if (hasEmbeddedDataImages && authUserId) {
+        setNotice('이미지를 업로드하는 중입니다...');
+        const uploadedContent = await uploadEmbeddedBuildImages(cleanDraft.content, authUserId);
+        const uploadDraft = {
+          ...cleanDraft,
+          content: uploadedContent,
+        };
+
+        postContent = composeBuildPostContent(uploadDraft);
+        requestBody = createBuildPostRequestBody(uploadDraft, postContent);
+
+        if (getRequestBodySize(requestBody) > maxCommunityPostRequestSize) {
+          setNotice('게시글 내용이 너무 커서 등록할 수 없습니다.');
+          setIsSubmitting(false);
+          return;
+        }
+      }
+
       await requestApi<string>(communityApi.addPost, {
         method: 'POST',
         body: requestBody,
