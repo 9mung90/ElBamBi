@@ -9,6 +9,7 @@ import {
 
 const sourceFilters: Array<{ id: StoredRelicSourceFilter; label: string }> = [
   { id: 'all', label: '전체 유물' },
+  { id: 'save', label: '기본 유물' },
   { id: 'builder', label: '제작 유물' },
 ];
 

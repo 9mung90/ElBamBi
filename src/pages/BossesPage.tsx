@@ -1,5 +1,5 @@
 import { useMemo, useState, type KeyboardEvent } from 'react';
-import { bosses, bossesData, type Boss } from '../data/bosses';
+import { bosses, type Boss } from '../data/bosses';
 import { formatBossType, type BossFilters } from './bossFilters';
 
 const tokenLabels: Record<string, string> = {
@@ -193,7 +193,7 @@ function BossesPage({ searchQuery, filters }: { searchQuery: string; filters: Bo
           <h2 id="bosses-title">보스</h2>
         </div>
         <span className="option-count">
-          {filteredBosses.length} / {bossesData.count}
+          {filteredBosses.length} / {bosses.length}
         </span>
       </div>
 
