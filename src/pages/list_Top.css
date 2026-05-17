@@ -261,6 +261,183 @@
   font-weight: 900;
 }
 
+.my-page {
+  display: grid;
+  gap: 18px;
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 28px 0 44px;
+}
+
+.my-page-heading,
+.my-page-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.my-page-heading h2,
+.my-page-card h3 {
+  margin: 0;
+  color: var(--night-text);
+}
+
+.my-page-heading h2 {
+  font-size: 26px;
+}
+
+.my-page-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.my-page-card {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid var(--night-border-soft);
+  border-radius: 8px;
+  background: rgba(12, 19, 36, 0.9);
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.24);
+}
+
+.my-page-profile-card {
+  grid-column: 1 / -1;
+}
+
+.my-page-profile-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+}
+
+.my-page-profile-list div {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--night-border-soft);
+  border-radius: 7px;
+  background: var(--night-input);
+}
+
+.my-page-profile-list dt {
+  margin-bottom: 5px;
+  color: var(--night-muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.my-page-profile-list dd {
+  margin: 0;
+  overflow: hidden;
+  color: var(--night-text);
+  font-size: 14px;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.my-page-item-list {
+  display: grid;
+  gap: 8px;
+}
+
+.my-page-list-item {
+  display: grid;
+  gap: 5px;
+  width: 100%;
+  min-width: 0;
+  padding: 11px 12px;
+  border: 1px solid var(--night-border-soft);
+  border-radius: 7px;
+  background: rgba(5, 8, 20, 0.52);
+  color: inherit;
+  text-align: left;
+}
+
+.my-page-list-item.is-clickable {
+  cursor: pointer;
+}
+
+.my-page-list-item.is-clickable:hover {
+  border-color: var(--night-border-strong);
+  background: var(--night-accent-bg);
+}
+
+.my-page-list-item:disabled {
+  cursor: default;
+  opacity: 0.75;
+}
+
+.my-page-list-item strong,
+.my-page-list-item span,
+.my-page-list-item small {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.my-page-list-item strong {
+  color: var(--night-text);
+  font-size: 14px;
+}
+
+.my-page-list-item span {
+  color: var(--night-text-soft);
+  font-size: 12px;
+}
+
+.my-page-list-item small {
+  color: var(--night-muted);
+  font-size: 12px;
+}
+
+.my-page-more-button,
+.my-page-logout-button {
+  border: 1px solid var(--night-border-strong);
+  border-radius: 7px;
+  background: var(--night-accent-bg);
+  color: var(--night-text);
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 8px 11px;
+}
+
+.my-page-logout-button {
+  border-color: rgba(255, 155, 145, 0.42);
+  background: var(--night-red-bg);
+  color: var(--night-red);
+}
+
+.my-page-muted,
+.my-page-message {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.my-page-muted {
+  color: var(--night-muted);
+}
+
+.my-page-message {
+  padding: 10px 11px;
+  border-radius: 7px;
+}
+
+.my-page-message.is-error {
+  border: 1px solid rgba(218, 80, 88, 0.28);
+  background: var(--night-red-bg);
+  color: var(--night-red);
+}
+
 .auth-switch-row {
   display: flex;
   align-items: center;
@@ -273,6 +450,38 @@
 .auth-switch-row button {
   flex: 0 0 auto;
   padding: 8px 11px;
+}
+
+.nickname-shell {
+  display: grid;
+  place-items: center;
+}
+
+.nickname-page {
+  display: grid;
+  place-items: center;
+  width: min(100%, 520px);
+  min-height: 100vh;
+  padding: 24px 16px;
+  box-sizing: border-box;
+}
+
+.nickname-panel {
+  width: min(100%, 440px);
+}
+
+.nickname-panel h1 {
+  margin: 0;
+  color: var(--night-text);
+  font-size: 26px;
+  line-height: 1.25;
+}
+
+.nickname-description {
+  margin: 0;
+  color: var(--night-text-soft);
+  font-size: 13px;
+  line-height: 1.55;
 }
 
 .search-row {
@@ -3807,7 +4016,8 @@
 @media (max-width: 760px) {
   .relic-preset-layout,
   .relic-builder-layout,
-  .save-parser-layout {
+  .save-parser-layout,
+  .my-page-grid {
     grid-template-columns: 1fr;
   }
 
@@ -3905,6 +4115,19 @@
   }
 
   .preset-compare-selectors {
+    grid-template-columns: 1fr;
+  }
+
+  .my-page {
+    width: min(100% - 24px, 1180px);
+    padding-top: 20px;
+  }
+
+  .my-page-heading {
+    align-items: flex-start;
+  }
+
+  .my-page-profile-list {
     grid-template-columns: 1fr;
   }
 

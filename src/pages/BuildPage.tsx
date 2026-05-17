@@ -22,7 +22,7 @@ import './BuildPage.css';
 type WritableBuildPostCategory = 'Class Builds' | 'Strategy' | 'Questions' | 'Free Board';
 type BoardTabId = 'all' | 'popular' | 'class-builds' | 'strategy' | 'questions' | 'free-board';
 type SortKey = 'latest' | 'popular' | 'views';
-type BoardMode = 'detail' | 'list' | 'write';
+type BoardMode = 'detail' | 'edit' | 'list' | 'write';
 
 const nightAssetUrls = import.meta.glob('../assets/images/night/**/*.webp', {
   eager: true,
@@ -62,6 +62,7 @@ type BuildComment = {
   id: string;
   postId: string;
   userId: string;
+  authorNickname: string;
   parentCommentId: string | null;
   content: string;
   createdAt: string;
@@ -72,6 +73,7 @@ type BuildComment = {
 type BuildPost = {
   id: string;
   userId: string;
+  authorNickname: string;
   title: string;
   content: string;
   viewCount: number;
@@ -117,6 +119,14 @@ type CreatedPostLookupDraft = Pick<BuildPostDraft, 'title' | 'category'> & {
 type CommunityPostResponse = {
   id?: unknown;
   userId?: unknown;
+  nickname?: unknown;
+  authorNickname?: unknown;
+  userNickname?: unknown;
+  writerNickname?: unknown;
+  memberNickname?: unknown;
+  user?: unknown;
+  author?: unknown;
+  writer?: unknown;
   title?: unknown;
   content?: unknown;
   contentHtml?: unknown;
@@ -134,6 +144,14 @@ type CommentResponse = {
   id?: unknown;
   postId?: unknown;
   userId?: unknown;
+  nickname?: unknown;
+  authorNickname?: unknown;
+  userNickname?: unknown;
+  writerNickname?: unknown;
+  memberNickname?: unknown;
+  user?: unknown;
+  author?: unknown;
+  writer?: unknown;
   parentCommentId?: unknown;
   content?: unknown;
   createdAt?: unknown;
@@ -159,11 +177,19 @@ type PostRelationResponse = {
   postId?: unknown;
 };
 
+type AuthUserProfile = {
+  nickname: string;
+  userId: string;
+};
+
 type ApiBodyValue = string | number | null | undefined;
 
 const defaultApiBaseUrl = 'https://k9e297bszl.execute-api.ap-northeast-2.amazonaws.com';
 const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? defaultApiBaseUrl).replace(/\/$/, '');
 const accessTokenStorageKey = 'accessToken';
+const authUserIdStorageKey = 'nightreign:auth-user-id';
+const authNicknameStorageKey = 'nightreign:auth-nickname';
+const authNicknameUserIdStorageKey = 'nightreign:auth-nickname-user-id';
 const postsPerPage = 15;
 const EMPTY_PRESET_SLOTS: PresetSlotRelics = [null, null, null, null, null, null];
 const EMPTY_EFFECT_ID = 0xffffffff;
@@ -272,6 +298,43 @@ function getString(value: unknown, fallback = '') {
   if (typeof value === 'string') return value;
   if (typeof value === 'number') return String(value);
   return fallback;
+}
+
+function getRecord(value: unknown): Record<string, unknown> | null {
+  return value && typeof value === 'object' ? (value as Record<string, unknown>) : null;
+}
+
+function getAuthorNickname(value: {
+  author?: unknown;
+  authorNickname?: unknown;
+  memberNickname?: unknown;
+  nickname?: unknown;
+  user?: unknown;
+  userNickname?: unknown;
+  writer?: unknown;
+  writerNickname?: unknown;
+}) {
+  const directNickname =
+    getString(value.authorNickname) ||
+    getString(value.nickname) ||
+    getString(value.userNickname) ||
+    getString(value.writerNickname) ||
+    getString(value.memberNickname);
+
+  if (directNickname) return directNickname;
+
+  const user = getRecord(value.user);
+  const author = getRecord(value.author);
+  const writer = getRecord(value.writer);
+
+  return (
+    getString(user?.nickname) ||
+    getString(user?.userNickname) ||
+    getString(author?.nickname) ||
+    getString(author?.authorNickname) ||
+    getString(writer?.nickname) ||
+    getString(writer?.writerNickname)
+  );
 }
 
 function resolveNightAssetUrl(url: string) {
@@ -442,6 +505,74 @@ function getAccessToken() {
   }
 }
 
+function getStoredValue(key: string) {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function decodeJwtPayload(token: string): Record<string, unknown> | null {
+  const [, encodedPayload] = token.split('.');
+  if (!encodedPayload) return null;
+
+  try {
+    const normalizedPayload = encodedPayload.replace(/-/g, '+').replace(/_/g, '/');
+    const paddedPayload = normalizedPayload.padEnd(
+      normalizedPayload.length + ((4 - (normalizedPayload.length % 4)) % 4),
+      '=',
+    );
+    const binaryPayload = atob(paddedPayload);
+    const bytes = Uint8Array.from(binaryPayload, (character) => character.charCodeAt(0));
+    return JSON.parse(new TextDecoder().decode(bytes)) as Record<string, unknown>;
+  } catch (error) {
+    console.warn('[build] Failed to decode access token payload', error);
+    return null;
+  }
+}
+
+function getAuthUserProfile(): AuthUserProfile | null {
+  const accessToken = getAccessToken();
+  const storedUserId = getStoredValue(authUserIdStorageKey);
+  const storedNickname = getStoredValue(authNicknameStorageKey);
+  const storedNicknameUserId = getStoredValue(authNicknameUserIdStorageKey);
+
+  if (!accessToken) {
+    if (storedUserId && storedNickname && storedNicknameUserId === storedUserId) {
+      return { nickname: storedNickname, userId: storedUserId };
+    }
+
+    return null;
+  }
+
+  const payload = decodeJwtPayload(accessToken);
+  if (!payload) {
+    if (storedUserId && storedNickname && storedNicknameUserId === storedUserId) {
+      return { nickname: storedNickname, userId: storedUserId };
+    }
+
+    return null;
+  }
+
+  const userId = getString(payload.userId) || getString(payload.sub) || getString(payload.id) || storedUserId || '';
+  const nickname =
+    getString(payload.nickname) ||
+    getString(payload.nickName) ||
+    getString(payload.userNickname) ||
+    getString(payload.authorNickname) ||
+    (storedNicknameUserId === userId ? storedNickname ?? '' : '');
+
+  if (!userId || !nickname) return null;
+
+  return { nickname, userId };
+}
+
+function isPostAuthor(post: BuildPost, authUserId: string | null) {
+  const authUserProfile = getAuthUserProfile();
+  return Boolean(post.userId && (post.userId === authUserId || post.userId === authUserProfile?.userId));
+}
+
 async function requestApi<T>(
   path: string,
   options: {
@@ -510,6 +641,7 @@ function normalizePost(post: CommunityPostResponse): BuildPost {
   return {
     id: getString(post.id),
     userId: getString(post.userId),
+    authorNickname: getAuthorNickname(post),
     title: getString(post.title, '제목 없음'),
     content: normalizePostContent(post),
     viewCount: getNumber(post.viewCount),
@@ -542,6 +674,7 @@ function normalizeComment(comment: CommentResponse): BuildComment {
     id: getString(comment.id),
     postId: getString(comment.postId),
     userId: getString(comment.userId),
+    authorNickname: getAuthorNickname(comment),
     parentCommentId:
       comment.parentCommentId === null || comment.parentCommentId === undefined
         ? null
@@ -620,6 +753,25 @@ function buildPosts(
       likedByMe: likedPostIds.has(post.id),
       bookmarkedByMe: bookmarkedPostIds.has(post.id),
     }));
+}
+
+function applyCurrentUserNickname(posts: BuildPost[], authUserProfile: AuthUserProfile | null) {
+  if (!authUserProfile) return posts;
+
+  return posts.map((post) => ({
+    ...post,
+    authorNickname:
+      post.authorNickname || post.userId !== authUserProfile.userId
+        ? post.authorNickname
+        : authUserProfile.nickname,
+    comments: post.comments.map((comment) => ({
+      ...comment,
+      authorNickname:
+        comment.authorNickname || comment.userId !== authUserProfile.userId
+          ? comment.authorNickname
+          : authUserProfile.nickname,
+    })),
+  }));
 }
 
 function formatDate(value: string) {
@@ -868,7 +1020,7 @@ function getSearchableBuildContent(content: string) {
   return getBuildContentText(contentParts.content);
 }
 
-function createBuildPostRequestBody(draft: BuildPostDraft, postContent: string) {
+function createBuildPostRequestBody(draft: BuildPostDraft, postContent: string, authorNickname = '') {
   const cleanContentHtml = sanitizeBuildPostHtml(draft.content);
   const embeddedImages = getBuildContentImageMetadata(cleanContentHtml);
   const contentText = getBuildContentText(cleanContentHtml).trim();
@@ -881,6 +1033,8 @@ function createBuildPostRequestBody(draft: BuildPostDraft, postContent: string) 
     category: draft.category,
     presetJson: draft.preset ? JSON.stringify(draft.preset) : undefined,
     presetId: draft.preset?.preset.presetId,
+    nickname: authorNickname || undefined,
+    authorNickname: authorNickname || undefined,
     embeddedImagesJson: embeddedImages.length ? JSON.stringify(embeddedImages) : undefined,
     embeddedImageCount: embeddedImages.length,
   };
@@ -990,7 +1144,16 @@ function getCategoryLabel(category: string) {
   return categoryDisplayLabels[normalizedCategory] ?? categoryDisplayLabels[cleanCategory] ?? (normalizedCategory || '캐릭터 빌드');
 }
 
-function getAuthorLabel(userId: string) {
+function getWritableCategory(category: string): WritableBuildPostCategory {
+  const normalizedCategory = legacyCategoryLabels[category.trim()] ?? category.trim();
+  return writeCategories.includes(normalizedCategory as WritableBuildPostCategory)
+    ? (normalizedCategory as WritableBuildPostCategory)
+    : 'Free Board';
+}
+
+function getAuthorLabel(userId: string, nickname = '') {
+  const cleanNickname = nickname.trim();
+  if (cleanNickname) return cleanNickname;
   return userId ? `사용자 #${userId}` : '알 수 없음';
 }
 
@@ -1001,6 +1164,18 @@ function getPostNightfarer(post: BuildPost) {
     .toLowerCase();
 
   return nightfarers.find((nightfarer) => searchableText.includes(nightfarer.name.toLowerCase())) ?? null;
+}
+
+function createDraftFromPost(post: BuildPost): BuildPostDraft {
+  const contentParts = getBuildPostContentParts(post.content);
+
+  return {
+    title: post.title,
+    category: getWritableCategory(post.category),
+    nightfarerIndex: getPostNightfarer(post)?.index ?? null,
+    content: contentParts.content,
+    preset: contentParts.preset,
+  };
 }
 
 function matchesNightfarerFilter(post: BuildPost, selectedNightfarerIndex: number | null) {
@@ -1031,7 +1206,7 @@ function matchesPostSearch(post: BuildPost, searchQuery: string) {
     getSearchableBuildContent(post.content),
     getCategoryLabel(post.category),
     post.category,
-    getAuthorLabel(post.userId),
+    getAuthorLabel(post.userId, post.authorNickname),
   ].some((value) => String(value).toLowerCase().includes(normalizedQuery));
 }
 
@@ -1063,6 +1238,7 @@ function sortPosts(posts: BuildPost[], sortKey: SortKey) {
 function getErrorMessage(error: unknown, fallback: string) {
   if (isApiRequestError(error)) {
     if (error.status === 401) return '로그인이 필요합니다.';
+    if (error.status === 403) return '이 글을 수정할 권한이 없습니다.';
     return error.message || fallback;
   }
   return fallback;
@@ -1245,7 +1421,7 @@ function BoardPostList({
                       {isPopularPost(post) ? <em>인기</em> : null}
                     </button>
                   </td>
-                  <td>{getAuthorLabel(post.userId)}</td>
+                  <td>{getAuthorLabel(post.userId, post.authorNickname)}</td>
                   <td>{formatDate(post.createdAt)}</td>
                   <td>{post.viewCount}</td>
                   <td>
@@ -1870,6 +2046,7 @@ function BuildPostWritePage({
   authUserId,
   draft,
   isSubmitting,
+  mode = 'create',
   onDraftChange,
   onSubmit,
   onCancel,
@@ -1877,19 +2054,22 @@ function BuildPostWritePage({
   authUserId: string | null;
   draft: BuildPostDraft;
   isSubmitting: boolean;
+  mode?: 'create' | 'edit';
   onDraftChange: <K extends keyof BuildPostDraft>(key: K, value: BuildPostDraft[K]) => void;
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
   onCancel: () => void;
 }) {
+  const isEdit = mode === 'edit';
+
   return (
     <section className="build-page build-write-page" aria-labelledby="build-write-title">
       <div className="build-page-heading">
         <div>
           <p className="list-page-kicker">커뮤니티</p>
-          <h2 id="build-write-title">글쓰기</h2>
+          <h2 id="build-write-title">{isEdit ? '글 수정' : '글쓰기'}</h2>
         </div>
         <button type="button" className="build-secondary-button" onClick={onCancel}>
-          게시판으로 돌아가기
+          {isEdit ? '글로 돌아가기' : '게시판으로 돌아가기'}
         </button>
       </div>
 
@@ -1953,7 +2133,7 @@ function BuildPostWritePage({
             취소
           </button>
           <button type="submit" className="build-primary-button" disabled={isSubmitting}>
-            {isSubmitting ? '등록 중' : '등록'}
+            {isSubmitting ? (isEdit ? '저장 중' : '등록 중') : isEdit ? '저장' : '등록'}
           </button>
         </div>
       </form>
@@ -1962,6 +2142,7 @@ function BuildPostWritePage({
 }
 
 function BuildPostDetail({
+  canEdit,
   post,
   commentText,
   commentParentId,
@@ -1972,8 +2153,10 @@ function BuildPostDetail({
   onToggleLike,
   onToggleBookmark,
   onDeletePost,
+  onEditPost,
   onReportPost,
 }: {
+  canEdit: boolean;
   post: BuildPost;
   commentText: string;
   commentParentId: string | null;
@@ -1984,6 +2167,7 @@ function BuildPostDetail({
   onToggleLike: (post: BuildPost) => void;
   onToggleBookmark: (post: BuildPost) => void;
   onDeletePost: (post: BuildPost) => void;
+  onEditPost: (post: BuildPost) => void;
   onReportPost: (post: BuildPost) => void;
 }) {
   const contentParts = useMemo(() => getBuildPostContentParts(post.content), [post.content]);
@@ -1996,13 +2180,18 @@ function BuildPostDetail({
           <h3>{post.title}</h3>
         </div>
         <div className="build-post-meta">
-          <span>{getAuthorLabel(post.userId)}</span>
+          <span>{getAuthorLabel(post.userId, post.authorNickname)}</span>
           <span>조회 {post.viewCount}</span>
           <span>추천 {post.likeCount}</span>
           <span>댓글 {post.comments.length}</span>
           <span>{formatDate(post.createdAt)}</span>
         </div>
         <div className="build-detail-tools">
+          {canEdit ? (
+            <button type="button" onClick={() => onEditPost(post)}>
+              수정
+            </button>
+          ) : null}
           <button type="button" onClick={() => onToggleLike(post)}>
             {post.likedByMe ? '추천 취소' : '추천'} {post.likeCount}
           </button>
@@ -2038,7 +2227,7 @@ function BuildPostDetail({
           post.comments.map((comment) => (
             <div key={comment.id} className={`build-comment${comment.parentCommentId ? ' is-reply' : ''}`}>
               <div>
-                <strong>{getAuthorLabel(comment.userId)}</strong>
+                <strong>{getAuthorLabel(comment.userId, comment.authorNickname)}</strong>
                 <span>{formatDate(comment.createdAt)}</span>
               </div>
               <p>{comment.content}</p>
@@ -2082,9 +2271,11 @@ function BuildPostDetail({
 
 function BuildPage({
   authUserId,
+  focusPostId,
   searchQuery,
 }: {
   authUserId: string | null;
+  focusPostId?: string | null;
   searchQuery: string;
 }) {
   const [posts, setPosts] = useState<BuildPost[]>([]);
@@ -2130,14 +2321,17 @@ function BuildPage({
           requestOptionalList<PostRelationResponse>(communityApi.myBookmarks),
         ]);
 
-      const nextPosts = buildPosts(
-        Array.isArray(rawPosts) ? rawPosts : [],
-        rawComments,
-        rawImages,
-        rawLikes,
-        rawBookmarks,
-        rawMyLikes,
-        rawMyBookmarks,
+      const nextPosts = applyCurrentUserNickname(
+        buildPosts(
+          Array.isArray(rawPosts) ? rawPosts : [],
+          rawComments,
+          rawImages,
+          rawLikes,
+          rawBookmarks,
+          rawMyLikes,
+          rawMyBookmarks,
+        ),
+        getAuthUserProfile(),
       );
 
       setPosts(nextPosts);
@@ -2156,9 +2350,12 @@ function BuildPage({
   }
 
   useEffect(() => {
-    loadCommunityData();
+    loadCommunityData(focusPostId);
+    if (focusPostId) {
+      setBoardMode('detail');
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [focusPostId]);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -2218,8 +2415,9 @@ function BuildPage({
       return;
     }
 
+    const authUserProfile = getAuthUserProfile();
     let postContent = composeBuildPostContent(cleanDraft);
-    let requestBody = createBuildPostRequestBody(cleanDraft, postContent);
+    let requestBody = createBuildPostRequestBody(cleanDraft, postContent, authUserProfile?.nickname);
     const requestBodySize = getRequestBodySize(requestBody);
     if (!hasEmbeddedDataImages && requestBodySize > maxCommunityPostRequestSize) {
       setNotice('이미지 용량이 너무 커서 등록할 수 없습니다. 큰 이미지는 S3 직접 업로드 방식이 필요합니다.');
@@ -2238,7 +2436,7 @@ function BuildPage({
         };
 
         postContent = composeBuildPostContent(uploadDraft);
-        requestBody = createBuildPostRequestBody(uploadDraft, postContent);
+        requestBody = createBuildPostRequestBody(uploadDraft, postContent, authUserProfile?.nickname);
 
         if (getRequestBodySize(requestBody) > maxCommunityPostRequestSize) {
           setNotice('게시글 내용이 너무 커서 등록할 수 없습니다.');
@@ -2268,6 +2466,85 @@ function BuildPage({
       setNotice('빌드 글을 등록했습니다.');
     } catch (error) {
       setNotice(getErrorMessage(error, '빌드 글 등록에 실패했습니다.'));
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
+  async function handleEditPost(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const selected = selectedPost;
+    if (!selected) return;
+
+    const cleanDraft: BuildPostDraft = {
+      ...draft,
+      title: draft.title.trim(),
+      content: draft.content.trim(),
+    };
+    const hasEmbeddedDataImages = getBuildContentImages(cleanDraft.content).some((image) =>
+      image.src?.startsWith('data:image/'),
+    );
+
+    if (!cleanDraft.title || (!cleanDraft.preset && isBuildContentEmpty(cleanDraft.content))) {
+      setNotice('제목과 내용을 입력해 주세요.');
+      return;
+    }
+
+    if (!isPostAuthor(selected, authUserId)) {
+      setNotice('이 글을 수정할 권한이 없습니다.');
+      return;
+    }
+
+    if (hasEmbeddedDataImages && !authUserId) {
+      setNotice('이미지를 업로드하려면 로그인이 필요합니다.');
+      return;
+    }
+
+    const authUserProfile = getAuthUserProfile();
+    let postContent = composeBuildPostContent(cleanDraft);
+    let requestBody = createBuildPostRequestBody(cleanDraft, postContent, authUserProfile?.nickname);
+    const requestBodySize = getRequestBodySize({ ...requestBody, id: selected.id });
+
+    if (!hasEmbeddedDataImages && requestBodySize > maxCommunityPostRequestSize) {
+      setNotice('이미지 용량이 너무 커서 수정할 수 없습니다. 큰 이미지는 S3 직접 업로드 방식이 필요합니다.');
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      if (hasEmbeddedDataImages && authUserId) {
+        setNotice('이미지를 업로드하는 중입니다...');
+        const uploadedContent = await uploadEmbeddedBuildImages(cleanDraft.content, authUserId);
+        const uploadDraft = {
+          ...cleanDraft,
+          content: uploadedContent,
+        };
+
+        postContent = composeBuildPostContent(uploadDraft);
+        requestBody = createBuildPostRequestBody(uploadDraft, postContent, authUserProfile?.nickname);
+
+        if (getRequestBodySize({ ...requestBody, id: selected.id }) > maxCommunityPostRequestSize) {
+          setNotice('게시글 내용이 너무 커서 수정할 수 없습니다.');
+          setIsSubmitting(false);
+          return;
+        }
+      }
+
+      await requestApi<string>(communityApi.editPost, {
+        method: 'POST',
+        body: {
+          ...requestBody,
+          id: selected.id,
+        },
+        bodyAsJson: true,
+      });
+
+      await loadCommunityData(selected.id);
+      setBoardMode('detail');
+      setNotice('빌드 글을 수정했습니다.');
+    } catch (error) {
+      setNotice(getErrorMessage(error, '빌드 글 수정에 실패했습니다.'));
     } finally {
       setIsSubmitting(false);
     }
@@ -2339,6 +2616,18 @@ function BuildPage({
     }
   }
 
+  function handleStartEditPost(post: BuildPost) {
+    if (!isPostAuthor(post, authUserId)) {
+      setNotice('이 글을 수정할 권한이 없습니다.');
+      return;
+    }
+
+    setSelectedPostId(post.id);
+    setDraft(createDraftFromPost(post));
+    setNotice(null);
+    setBoardMode('edit');
+  }
+
   function handleReportPost(post: BuildPost) {
     // TODO: Currently UI only. Connect this to the DB/API later.
     setNotice(`신고 기능은 아직 연결되지 않았습니다. "${post.title}" 글은 신고되지 않았습니다.`);
@@ -2351,12 +2640,15 @@ function BuildPage({
     if (!selected || !content) return;
 
     try {
+      const authUserProfile = getAuthUserProfile();
       await requestApi<string>(communityApi.addComment, {
         method: 'POST',
         body: {
           postId: selected.id,
           parentCommentId: commentParentId,
           content,
+          nickname: authUserProfile?.nickname,
+          authorNickname: authUserProfile?.nickname,
         },
       });
       setCommentText('');
@@ -2398,6 +2690,20 @@ function BuildPage({
     );
   }
 
+  if (boardMode === 'edit') {
+    return (
+      <BuildPostWritePage
+        authUserId={authUserId}
+        draft={draft}
+        isSubmitting={isSubmitting}
+        mode="edit"
+        onDraftChange={updateDraft}
+        onSubmit={handleEditPost}
+        onCancel={() => setBoardMode('detail')}
+      />
+    );
+  }
+
   if (boardMode === 'detail') {
     return (
       <section className="build-page" aria-labelledby="build-detail-page-title">
@@ -2415,6 +2721,7 @@ function BuildPage({
 
         {selectedPost ? (
           <BuildPostDetail
+            canEdit={isPostAuthor(selectedPost, authUserId)}
             post={selectedPost}
             commentText={commentText}
             commentParentId={commentParentId}
@@ -2425,6 +2732,7 @@ function BuildPage({
             onToggleLike={handleToggleLike}
             onToggleBookmark={handleToggleBookmark}
             onDeletePost={handleDeletePost}
+            onEditPost={handleStartEditPost}
             onReportPost={handleReportPost}
           />
         ) : (

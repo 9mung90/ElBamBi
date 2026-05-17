@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type FormEvent } from 'react';
+import { useEffect, useMemo, useState, type FormEvent, type ReactNode } from 'react';
 import type { RelicScanResult, CharacterSlot } from '../utils/nightreignSaveParser';
 import { ashes } from '../data/ashes';
 import AshesPage from './AshesPage';
@@ -185,13 +185,26 @@ function toggleFilterValue<T>(values: T[], value: T) {
 }
 
 type AuthView = 'login' | 'signup' | null;
+type MyPageView = 'overview' | 'posts' | 'comments' | 'relics' | 'presets';
 const defaultApiBaseUrl = 'https://k9e297bszl.execute-api.ap-northeast-2.amazonaws.com';
 const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? defaultApiBaseUrl).replace(/\/$/, '');
 const accessTokenStorageKey = 'accessToken';
 const authUserIdStorageKey = 'nightreign:auth-user-id';
+const authNicknameStorageKey = 'nightreign:auth-nickname';
+const authNicknameUserIdStorageKey = 'nightreign:auth-nickname-user-id';
 const lastPageStorageKey = 'nightreign:last-page';
 const authViewStorageKey = 'nightreign:auth-view';
 const pullToRefreshThreshold = 90;
+const nicknameRoutePath = '/nick';
+const mainRoutePath = '/main';
+
+type MyPageOverviewData = {
+  profile: Record<string, unknown> | null;
+  posts: Record<string, unknown>[];
+  comments: Record<string, unknown>[];
+  relics: Record<string, unknown>[];
+  presets: Record<string, unknown>[];
+};
 
 function getStoredPageId() {
   const storedId = getStoredValue(lastPageStorageKey);
@@ -243,6 +256,87 @@ function getMessageFromPayload(payload: unknown) {
   return '';
 }
 
+function getErrorMessageFromPayload(payload: unknown) {
+  if (typeof payload === 'string') return payload;
+  if (payload && typeof payload === 'object') {
+    const record = payload as { message?: unknown; error?: unknown };
+    if (typeof record.message === 'string') return record.message;
+    if (typeof record.error === 'string') return record.error;
+  }
+  return '';
+}
+
+function getRecord(value: unknown): Record<string, unknown> | null {
+  return value && typeof value === 'object' && !Array.isArray(value)
+    ? (value as Record<string, unknown>)
+    : null;
+}
+
+function getStringValue(value: unknown, fallback = '') {
+  if (typeof value === 'string') return value;
+  if (typeof value === 'number' && Number.isFinite(value)) return String(value);
+  return fallback;
+}
+
+function getNumberValue(value: unknown, fallback = 0) {
+  if (typeof value === 'number' && Number.isFinite(value)) return value;
+  if (typeof value === 'string') {
+    const parsed = Number(value);
+    if (Number.isFinite(parsed)) return parsed;
+  }
+  return fallback;
+}
+
+function getFirstString(record: Record<string, unknown> | null, keys: string[], fallback = '') {
+  if (!record) return fallback;
+  for (const key of keys) {
+    const value = getStringValue(record[key]);
+    if (value) return value;
+  }
+  return fallback;
+}
+
+function getFirstRecord(record: Record<string, unknown> | null, keys: string[]) {
+  if (!record) return null;
+  for (const key of keys) {
+    const value = getRecord(record[key]);
+    if (value) return value;
+  }
+  return null;
+}
+
+function getArrayFromPayload(payload: unknown, keys: string[]) {
+  if (Array.isArray(payload)) return payload.filter(getRecord);
+
+  const record = getRecord(payload);
+  if (!record) return [];
+
+  for (const key of keys) {
+    const value = record[key];
+    if (Array.isArray(value)) return value.filter(getRecord);
+
+    const nestedRecord = getRecord(value);
+    const nestedItems = nestedRecord?.items ?? nestedRecord?.content ?? nestedRecord?.data;
+    if (Array.isArray(nestedItems)) return nestedItems.filter(getRecord);
+  }
+
+  const fallbackItems = record.items ?? record.content ?? record.data;
+  return Array.isArray(fallbackItems) ? fallbackItems.filter(getRecord) : [];
+}
+
+function formatMyPageDate(value: unknown) {
+  const rawValue = getStringValue(value);
+  if (!rawValue) return '';
+
+  const date = new Date(rawValue);
+  if (Number.isNaN(date.getTime())) return rawValue;
+
+  return new Intl.DateTimeFormat('ko-KR', {
+    dateStyle: 'short',
+    timeStyle: 'short',
+  }).format(date);
+}
+
 function getAccessTokenFromPayload(payload: unknown) {
   if (!payload || typeof payload !== 'object') return null;
   const token = (payload as { accessToken?: unknown }).accessToken;
@@ -277,8 +371,58 @@ function getUserIdFromAccessToken(token: string | null) {
   return null;
 }
 
+function getAccessTokenFromLocationSearch() {
+  const params = new URLSearchParams(window.location.search);
+  const accessToken = params.get('accessToken') ?? params.get('access_token') ?? params.get('token');
+  return accessToken && accessToken.trim() ? accessToken : null;
+}
+
+function getNeedsNicknameFromLocationSearch() {
+  return new URLSearchParams(window.location.search).get('needsNickname') === 'true';
+}
+
+function hasOAuthRedirectParams() {
+  const params = new URLSearchParams(window.location.search);
+  return (
+    params.has('accessToken') ||
+    params.has('access_token') ||
+    params.has('token') ||
+    params.has('needsNickname')
+  );
+}
+
 function getGoogleLoginUrl() {
   return `${apiBaseUrl}/oauth2/authorization/google`;
+}
+
+async function postNicknameForm(nickname: string, accessTokenOverride?: string | null): Promise<string> {
+  const body = new URLSearchParams({ nickname });
+  const headers = new Headers({
+    'content-type': 'application/x-www-form-urlencoded;charset=UTF-8',
+  });
+  const accessToken =
+    accessTokenOverride ?? getStoredValue(accessTokenStorageKey) ?? getAccessTokenFromLocationSearch();
+
+  if (accessToken) {
+    headers.set('authorization', `Bearer ${accessToken}`);
+  }
+
+  const response = await fetch(`${apiBaseUrl}/api/inputNick`, {
+    method: 'POST',
+    headers,
+    body,
+    credentials: 'include',
+  });
+  const contentType = response.headers.get('content-type') ?? '';
+  const text = await response.text();
+  const payload = contentType.includes('application/json') && text ? JSON.parse(text) : text;
+  const message = getMessageFromPayload(payload) || (typeof payload === 'string' ? payload : '');
+
+  if (!response.ok) {
+    throw new Error(message || '닉네임 저장에 실패했습니다.');
+  }
+
+  return message || '닉네임이 저장되었습니다.';
 }
 
 async function postAuthForm(path: string, data: Record<string, string>): Promise<string> {
@@ -308,6 +452,110 @@ async function postAuthForm(path: string, data: Record<string, string>): Promise
   }
 
   return message || (typeof payload === 'string' ? payload : '');
+}
+
+async function requestMyPageApi<T>(path: string): Promise<T> {
+  const accessToken = getStoredValue(accessTokenStorageKey);
+  if (!accessToken) {
+    throw new Error('로그인이 필요합니다.');
+  }
+
+  const response = await fetch(`${apiBaseUrl}${path}`, {
+    headers: {
+      authorization: `Bearer ${accessToken}`,
+    },
+  });
+  const contentType = response.headers.get('content-type') ?? '';
+  const text = await response.text();
+  const payload = contentType.includes('application/json') && text ? JSON.parse(text) : text;
+
+  if (!response.ok) {
+    const message = getErrorMessageFromPayload(payload);
+    if (response.status === 401) throw new Error('로그인이 필요합니다.');
+    throw new Error(message || `${response.status} ${response.statusText}`);
+  }
+
+  return payload as T;
+}
+
+function NicknamePage({
+  accessToken,
+  onComplete,
+}: {
+  accessToken?: string | null;
+  onComplete: () => void;
+}) {
+  const [nickname, setNickname] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const trimmedNickname = nickname.trim();
+  const isNicknameValid = /^[A-Za-z0-9가-힣]{1,10}$/.test(trimmedNickname);
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setError(null);
+
+    if (!isNicknameValid) {
+      setError('닉네임은 한글, 영문, 숫자만 사용해서 1~10자로 입력해 주세요.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    let didComplete = false;
+
+    try {
+      await postNicknameForm(trimmedNickname, accessToken);
+      const userId = getUserIdFromAccessToken(accessToken ?? getStoredValue(accessTokenStorageKey));
+      setStoredValue(authNicknameStorageKey, trimmedNickname);
+      if (userId) {
+        setStoredValue(authNicknameUserIdStorageKey, userId);
+      }
+      didComplete = true;
+      onComplete();
+    } catch (requestError) {
+      setError(requestError instanceof Error ? requestError.message : String(requestError));
+    } finally {
+      if (!didComplete) {
+        setIsSubmitting(false);
+      }
+    }
+  };
+
+  return (
+    <main className="list-top-shell nickname-shell">
+      <section className="nickname-page" aria-labelledby="nickname-page-title">
+        <div className="auth-panel nickname-panel">
+          <p className="list-page-kicker">Google OAuth</p>
+          <h1 id="nickname-page-title">닉네임 설정</h1>
+          <p className="nickname-description">
+            처음 로그인한 계정입니다. 서비스에서 사용할 닉네임을 입력해 주세요.
+          </p>
+
+          <form className="auth-form" onSubmit={handleSubmit}>
+            <label>
+              닉네임
+              <input
+                type="text"
+                value={nickname}
+                onChange={(event) => setNickname(event.target.value)}
+                autoComplete="nickname"
+                maxLength={10}
+                pattern="[A-Za-z0-9가-힣]{1,10}"
+                required
+                autoFocus
+              />
+            </label>
+            <p className="auth-help-text">한글, 영문, 숫자만 사용할 수 있습니다. 최대 10자까지 입력해 주세요.</p>
+            {error ? <p className="auth-message is-error">{error}</p> : null}
+            <button type="submit" className="auth-submit-button" disabled={isSubmitting}>
+              {isSubmitting ? '저장 중...' : '저장하고 시작하기'}
+            </button>
+          </form>
+        </div>
+      </section>
+    </main>
+  );
 }
 
 function AuthPage({
@@ -464,10 +712,455 @@ function AuthPage({
   );
 }
 
+function getMyPageProfileLabel(profile: Record<string, unknown> | null, authUserId: string | null) {
+  return {
+    nickname: getFirstString(profile, ['nickname', 'nickName', 'userNickname'], '닉네임 없음'),
+    loginId: getFirstString(profile, ['loginId', 'username', 'email', 'userId', 'id'], authUserId ?? '-'),
+    provider: getFirstString(profile, ['provider', 'providerName'], 'local'),
+  };
+}
+
+function getMyPagePostId(item: Record<string, unknown>) {
+  return getFirstString(item, ['postId', 'communityPostId', 'id']);
+}
+
+function getMyPagePostTitle(item: Record<string, unknown>) {
+  return getFirstString(item, ['postTitle', 'title'], '제목 없음');
+}
+
+function getMyPageCommentPostLabel(item: Record<string, unknown>) {
+  const postTitle = getFirstString(item, ['postTitle', 'title']);
+  if (postTitle) return postTitle;
+
+  const postId = getMyPagePostId(item);
+  return postId ? `postId: ${postId}` : '';
+}
+
+function getMyPageRelicTitle(item: Record<string, unknown>) {
+  return getFirstString(item, ['itemName', 'name', 'relicName', 'title'], '이름 없는 유물');
+}
+
+function getMyPagePresetTitle(item: Record<string, unknown>) {
+  return getFirstString(item, ['name', 'presetName', 'title'], '이름 없는 프리셋');
+}
+
+function getMyPageItemDate(item: Record<string, unknown>) {
+  return formatMyPageDate(item.createdAt ?? item.updatedAt);
+}
+
+function MyPageSection({
+  title,
+  emptyMessage,
+  isLoading,
+  error,
+  children,
+  onMore,
+}: {
+  title: string;
+  emptyMessage: string;
+  isLoading: boolean;
+  error: string | null;
+  children: ReactNode;
+  onMore?: () => void;
+}) {
+  return (
+    <section className="my-page-card" aria-label={title}>
+      <div className="my-page-card-header">
+        <h3>{title}</h3>
+        {onMore ? (
+          <button type="button" className="my-page-more-button" onClick={onMore}>
+            더보기
+          </button>
+        ) : null}
+      </div>
+      {isLoading ? <p className="my-page-muted">불러오는 중...</p> : null}
+      {!isLoading && error ? <p className="my-page-message is-error">{error}</p> : null}
+      {!isLoading && !error ? children : null}
+      {!isLoading && !error && !children ? <p className="my-page-muted">{emptyMessage}</p> : null}
+    </section>
+  );
+}
+
+function MyPageItemList({
+  items,
+  emptyMessage,
+  renderItem,
+}: {
+  items: Record<string, unknown>[];
+  emptyMessage: string;
+  renderItem: (item: Record<string, unknown>, index: number) => React.ReactNode;
+}) {
+  if (items.length === 0) {
+    return <p className="my-page-muted">{emptyMessage}</p>;
+  }
+
+  return <div className="my-page-item-list">{items.map(renderItem)}</div>;
+}
+
+function MyPagePostItem({
+  item,
+  onOpenPost,
+}: {
+  item: Record<string, unknown>;
+  onOpenPost: (postId: string) => void;
+}) {
+  const postId = getMyPagePostId(item);
+  const createdAt = getMyPageItemDate(item);
+
+  return (
+    <button
+      type="button"
+      className="my-page-list-item is-clickable"
+      disabled={!postId}
+      onClick={() => postId && onOpenPost(postId)}
+    >
+      <strong>{getMyPagePostTitle(item)}</strong>
+      <span>
+        {getFirstString(item, ['category']) || '분류 없음'}
+        {createdAt ? ` · ${createdAt}` : ''}
+      </span>
+      <small>
+        조회 {getNumberValue(item.viewCount)} · 추천 {getNumberValue(item.likeCount)} · 댓글{' '}
+        {getNumberValue(item.commentCount)}
+      </small>
+    </button>
+  );
+}
+
+function MyPageCommentItem({
+  item,
+  onOpenPost,
+}: {
+  item: Record<string, unknown>;
+  onOpenPost: (postId: string) => void;
+}) {
+  const postId = getMyPagePostId(item);
+  const postLabel = getMyPageCommentPostLabel(item);
+  const createdAt = getMyPageItemDate(item);
+
+  return (
+    <button
+      type="button"
+      className="my-page-list-item is-clickable"
+      disabled={!postId}
+      onClick={() => postId && onOpenPost(postId)}
+    >
+      <strong>{getFirstString(item, ['content', 'comment', 'commentText'], '내용 없음')}</strong>
+      {postLabel ? <span>{postLabel}</span> : null}
+      {createdAt ? <small>{createdAt}</small> : null}
+    </button>
+  );
+}
+
+function MyPageRelicItem({ item }: { item: Record<string, unknown> }) {
+  const options = getArrayFromPayload(item.options, ['options']);
+  const createdAt = getMyPageItemDate(item);
+
+  return (
+    <article className="my-page-list-item">
+      <strong>{getMyPageRelicTitle(item)}</strong>
+      <span>
+        {getFirstString(item, ['color'], '색상 없음')} · {getFirstString(item, ['source'], 'source 없음')}
+        {createdAt ? ` · ${createdAt}` : ''}
+      </span>
+      {options.length ? (
+        <small>{options.map((option) => getFirstString(option, ['name', 'effectName'])).filter(Boolean).join(' / ')}</small>
+      ) : null}
+    </article>
+  );
+}
+
+function MyPagePresetItem({ item }: { item: Record<string, unknown> }) {
+  const slots = getArrayFromPayload(item.slots, ['slots']);
+  const createdAt = getMyPageItemDate(item);
+
+  return (
+    <article className="my-page-list-item">
+      <strong>{getMyPagePresetTitle(item)}</strong>
+      <span>
+        {getFirstString(item, ['characterName'], '캐릭터 없음')} · 현기{' '}
+        {getStringValue(item.vesselIndex, '-')}
+        {createdAt ? ` · ${createdAt}` : ''}
+      </span>
+      <small>
+        {getFirstString(item, ['colorMode'], 'normal')} · 슬롯 {slots.length || getNumberValue(item.slotCount)}
+      </small>
+    </article>
+  );
+}
+
+function MyPage({
+  authUserId,
+  onLogout,
+  onOpenPost,
+}: {
+  authUserId: string | null;
+  onLogout: () => void;
+  onOpenPost: (postId: string) => void;
+}) {
+  const [view, setView] = useState<MyPageView>('overview');
+  const [overviewData, setOverviewData] = useState<MyPageOverviewData | null>(null);
+  const [overviewLoading, setOverviewLoading] = useState(false);
+  const [overviewError, setOverviewError] = useState<string | null>(null);
+  const [detailItems, setDetailItems] = useState<Record<string, unknown>[]>([]);
+  const [detailLoading, setDetailLoading] = useState(false);
+  const [detailError, setDetailError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (view !== 'overview') return;
+
+    let isMounted = true;
+    setOverviewLoading(true);
+    setOverviewError(null);
+
+    Promise.all([
+      requestMyPageApi<unknown>('/api/me'),
+      requestMyPageApi<unknown>('/api/me/summary?limit=5'),
+    ])
+      .then(([mePayload, summaryPayload]) => {
+        if (!isMounted) return;
+
+        const summary = getRecord(summaryPayload);
+        const profile =
+          getFirstRecord(summary, ['profile', 'account', 'me', 'user']) ??
+          getFirstRecord(getRecord(mePayload), ['profile', 'account', 'me', 'user']) ??
+          getRecord(mePayload);
+
+        setOverviewData({
+          profile,
+          posts: getArrayFromPayload(summaryPayload, ['posts', 'recentPosts', 'communityPosts', 'myPosts']),
+          comments: getArrayFromPayload(summaryPayload, ['comments', 'recentComments', 'myComments']),
+          relics: getArrayFromPayload(summaryPayload, ['relics', 'recentRelics', 'myRelics']),
+          presets: getArrayFromPayload(summaryPayload, ['presets', 'recentPresets', 'myPresets']),
+        });
+      })
+      .catch((error) => {
+        if (!isMounted) return;
+        setOverviewError(error instanceof Error ? error.message : String(error));
+      })
+      .finally(() => {
+        if (isMounted) setOverviewLoading(false);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [view]);
+
+  useEffect(() => {
+    if (view === 'overview') return;
+
+    const pathByView: Record<Exclude<MyPageView, 'overview'>, string> = {
+      posts: '/api/me/posts?limit=20',
+      comments: '/api/me/comments?limit=20',
+      relics: '/api/me/relics?source=builder',
+      presets: '/api/me/presets',
+    };
+    const keysByView: Record<Exclude<MyPageView, 'overview'>, string[]> = {
+      posts: ['posts', 'communityPosts', 'myPosts'],
+      comments: ['comments', 'myComments'],
+      relics: ['relics', 'myRelics'],
+      presets: ['presets', 'myPresets'],
+    };
+    const detailView = view;
+    let isMounted = true;
+
+    setDetailLoading(true);
+    setDetailError(null);
+    setDetailItems([]);
+
+    requestMyPageApi<unknown>(pathByView[detailView])
+      .then((payload) => {
+        if (isMounted) setDetailItems(getArrayFromPayload(payload, keysByView[detailView]));
+      })
+      .catch((error) => {
+        if (isMounted) setDetailError(error instanceof Error ? error.message : String(error));
+      })
+      .finally(() => {
+        if (isMounted) setDetailLoading(false);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [view]);
+
+  const profile = getMyPageProfileLabel(overviewData?.profile ?? null, authUserId);
+  const detailTitle: Record<MyPageView, string> = {
+    overview: '마이페이지',
+    posts: '내가 쓴 글',
+    comments: '내가 쓴 댓글',
+    relics: '내 유물',
+    presets: '내 프리셋',
+  };
+  const emptyMessages: Record<Exclude<MyPageView, 'overview'>, string> = {
+    posts: '작성한 글이 없습니다.',
+    comments: '작성한 댓글이 없습니다.',
+    relics: '저장된 유물이 없습니다.',
+    presets: '저장된 프리셋이 없습니다.',
+  };
+
+  const renderDetailItem = (item: Record<string, unknown>, index: number) => {
+    const key = getFirstString(item, ['id', 'postId', 'commentId', 'relicId', 'presetId'], String(index));
+    if (view === 'posts') return <MyPagePostItem key={key} item={item} onOpenPost={onOpenPost} />;
+    if (view === 'comments') return <MyPageCommentItem key={key} item={item} onOpenPost={onOpenPost} />;
+    if (view === 'relics') return <MyPageRelicItem key={key} item={item} />;
+    return <MyPagePresetItem key={key} item={item} />;
+  };
+
+  if (view !== 'overview') {
+    return (
+      <section className="my-page" aria-labelledby="my-page-detail-title">
+        <div className="my-page-heading">
+          <div>
+            <p className="list-page-kicker">Account</p>
+            <h2 id="my-page-detail-title">{detailTitle[view]}</h2>
+          </div>
+          <button type="button" className="my-page-more-button" onClick={() => setView('overview')}>
+            돌아가기
+          </button>
+        </div>
+
+        <section className="my-page-card">
+          {detailLoading ? <p className="my-page-muted">불러오는 중...</p> : null}
+          {!detailLoading && detailError ? <p className="my-page-message is-error">{detailError}</p> : null}
+          {!detailLoading && !detailError ? (
+            <MyPageItemList
+              items={detailItems}
+              emptyMessage={emptyMessages[view]}
+              renderItem={renderDetailItem}
+            />
+          ) : null}
+        </section>
+      </section>
+    );
+  }
+
+  return (
+    <section className="my-page" aria-labelledby="my-page-title">
+      <div className="my-page-heading">
+        <div>
+          <p className="list-page-kicker">Account</p>
+          <h2 id="my-page-title">마이페이지</h2>
+        </div>
+        <button type="button" className="my-page-logout-button" onClick={onLogout}>
+          로그아웃
+        </button>
+      </div>
+
+      <div className="my-page-grid">
+        <section className="my-page-card my-page-profile-card" aria-label="내 정보">
+          <div className="my-page-card-header">
+            <h3>내 정보</h3>
+          </div>
+          {overviewLoading ? <p className="my-page-muted">불러오는 중...</p> : null}
+          {!overviewLoading && overviewError ? <p className="my-page-message is-error">{overviewError}</p> : null}
+          {!overviewLoading && !overviewError ? (
+            <dl className="my-page-profile-list">
+              <div>
+                <dt>닉네임</dt>
+                <dd>{profile.nickname}</dd>
+              </div>
+              <div>
+                <dt>계정</dt>
+                <dd>{profile.loginId}</dd>
+              </div>
+              <div>
+                <dt>provider</dt>
+                <dd>{profile.provider}</dd>
+              </div>
+            </dl>
+          ) : null}
+        </section>
+
+        <MyPageSection
+          title="최근 작성한 글"
+          emptyMessage="작성한 글이 없습니다."
+          isLoading={overviewLoading}
+          error={overviewError}
+          onMore={() => setView('posts')}
+        >
+          <MyPageItemList
+            items={overviewData?.posts ?? []}
+            emptyMessage="작성한 글이 없습니다."
+            renderItem={(item, index) => (
+              <MyPagePostItem
+                key={getFirstString(item, ['id', 'postId'], String(index))}
+                item={item}
+                onOpenPost={onOpenPost}
+              />
+            )}
+          />
+        </MyPageSection>
+
+        <MyPageSection
+          title="최근 작성한 댓글"
+          emptyMessage="작성한 댓글이 없습니다."
+          isLoading={overviewLoading}
+          error={overviewError}
+          onMore={() => setView('comments')}
+        >
+          <MyPageItemList
+            items={overviewData?.comments ?? []}
+            emptyMessage="작성한 댓글이 없습니다."
+            renderItem={(item, index) => (
+              <MyPageCommentItem
+                key={getFirstString(item, ['id', 'commentId'], String(index))}
+                item={item}
+                onOpenPost={onOpenPost}
+              />
+            )}
+          />
+        </MyPageSection>
+
+        <MyPageSection
+          title="내 유물"
+          emptyMessage="저장된 유물이 없습니다."
+          isLoading={overviewLoading}
+          error={overviewError}
+          onMore={() => setView('relics')}
+        >
+          <MyPageItemList
+            items={overviewData?.relics ?? []}
+            emptyMessage="저장된 유물이 없습니다."
+            renderItem={(item, index) => (
+              <MyPageRelicItem key={getFirstString(item, ['id', 'relicId'], String(index))} item={item} />
+            )}
+          />
+        </MyPageSection>
+
+        <MyPageSection
+          title="내 프리셋"
+          emptyMessage="저장된 프리셋이 없습니다."
+          isLoading={overviewLoading}
+          error={overviewError}
+          onMore={() => setView('presets')}
+        >
+          <MyPageItemList
+            items={overviewData?.presets ?? []}
+            emptyMessage="저장된 프리셋이 없습니다."
+            renderItem={(item, index) => (
+              <MyPagePresetItem key={getFirstString(item, ['id', 'presetId'], String(index))} item={item} />
+            )}
+          />
+        </MyPageSection>
+      </div>
+    </section>
+  );
+}
+
 function ListTop() {
   const [selectedId, setSelectedId] = useState(getStoredPageId);
   const [authView, setAuthView] = useState<AuthView>(getStoredAuthView);
   const [authUserId, setAuthUserId] = useState<string | null>(getStoredAuthUserId);
+  const [isMyPageOpen, setIsMyPageOpen] = useState(false);
+  const [buildFocusPostId, setBuildFocusPostId] = useState<string | null>(null);
+  const [isNicknameRoute, setIsNicknameRoute] = useState(
+    () =>
+      window.location.pathname === nicknameRoutePath ||
+      Boolean(getAccessTokenFromLocationSearch() && getNeedsNicknameFromLocationSearch()),
+  );
+  const [nicknameAccessToken, setNicknameAccessToken] = useState(() => getAccessTokenFromLocationSearch());
   const [relicStorageRefreshKey, setRelicStorageRefreshKey] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
   const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false);
@@ -515,6 +1208,55 @@ function ListTop() {
     }
     removeStoredValue(authUserIdStorageKey);
   }, [authUserId]);
+
+  useEffect(() => {
+    const handlePopState = () => {
+      setIsNicknameRoute(window.location.pathname === nicknameRoutePath);
+      setNicknameAccessToken(getAccessTokenFromLocationSearch());
+    };
+
+    window.addEventListener('popstate', handlePopState);
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!hasOAuthRedirectParams()) return;
+
+    const currentPath = window.location.pathname;
+    const accessToken = getAccessTokenFromLocationSearch();
+    const needsNickname = getNeedsNicknameFromLocationSearch();
+
+    if (accessToken) {
+      setStoredValue(accessTokenStorageKey, accessToken);
+      setNicknameAccessToken(accessToken);
+
+      const userId = getUserIdFromAccessToken(accessToken);
+      if (userId) {
+        setAuthUserId(userId);
+        setStoredValue(authUserIdStorageKey, userId);
+      }
+    }
+
+    if (needsNickname || currentPath === nicknameRoutePath) {
+      setAuthView(null);
+      setSearchQuery('');
+      setIsFilterPanelOpen(false);
+      setIsNicknameRoute(true);
+      window.history.replaceState(null, '', nicknameRoutePath);
+      return;
+    }
+
+    setSelectedId('characters');
+    setAuthView(null);
+    setSearchQuery('');
+    setIsFilterPanelOpen(false);
+    setIsNicknameRoute(false);
+    setStoredValue(lastPageStorageKey, 'characters');
+    window.history.replaceState(null, '', mainRoutePath);
+  }, []);
 
   useEffect(() => {
     if (!window.matchMedia('(pointer: coarse)').matches && navigator.maxTouchPoints <= 0) {
@@ -681,6 +1423,46 @@ function ListTop() {
     }));
   };
 
+  const closeOverlayPages = () => {
+    setAuthView(null);
+    setIsMyPageOpen(false);
+  };
+
+  const handleLogout = () => {
+    removeStoredValue(accessTokenStorageKey);
+    removeStoredValue(authUserIdStorageKey);
+    removeStoredValue(authNicknameStorageKey);
+    removeStoredValue(authNicknameUserIdStorageKey);
+    setAuthUserId(null);
+    setIsMyPageOpen(false);
+    setAuthView('login');
+  };
+
+  const handleOpenMyPagePost = (postId: string) => {
+    setBuildFocusPostId(postId);
+    setSelectedId('builds');
+    closeOverlayPages();
+    setSearchQuery('');
+    setIsFilterPanelOpen(false);
+  };
+
+  if (isNicknameRoute) {
+    return (
+      <NicknamePage
+        accessToken={nicknameAccessToken}
+        onComplete={() => {
+          setSelectedId('characters');
+          setAuthView(null);
+          setSearchQuery('');
+          setIsFilterPanelOpen(false);
+          setIsNicknameRoute(false);
+          window.history.replaceState(null, '', mainRoutePath);
+          setStoredValue(lastPageStorageKey, 'characters');
+        }}
+      />
+    );
+  }
+
   return (
     <main className="list-top-shell">
       <header className="list-top-header">
@@ -691,11 +1473,17 @@ function ListTop() {
           <h1>엘밤 비</h1>
           <button
             type="button"
-            className={`account-icon-button${authView ? ' is-active' : ''}`}
+            className={`account-icon-button${authView || isMyPageOpen ? ' is-active' : ''}`}
             aria-label={authUserId ? `${authUserId} 계정` : '로그인 페이지로 이동'}
             title={authUserId ? `${authUserId} 로그인됨` : '로그인'}
             onClick={() => {
-              setAuthView('login');
+              if (getStoredValue(accessTokenStorageKey)) {
+                setAuthView(null);
+                setIsMyPageOpen(true);
+              } else {
+                setIsMyPageOpen(false);
+                setAuthView('login');
+              }
               setSearchQuery('');
               setIsFilterPanelOpen(false);
             }}
@@ -988,9 +1776,11 @@ function ListTop() {
                 className={`category-tab${isSelected ? ' is-selected' : ''}`}
                 onClick={() => {
                   setAuthView(null);
+                  setIsMyPageOpen(false);
                   setSelectedId(category.id);
                   setSearchQuery('');
                   setIsFilterPanelOpen(false);
+                  setBuildFocusPostId(null);
                   setSelectedWeaponGroupId(null);
                   setFocusedWeaponGroupId(null);
                 }}
@@ -1017,8 +1807,11 @@ function ListTop() {
           onLoginSuccess={(loginId) => {
             setAuthUserId(loginId);
             setAuthView(null);
+            setIsMyPageOpen(false);
           }}
         />
+      ) : isMyPageOpen ? (
+        <MyPage authUserId={authUserId} onLogout={handleLogout} onOpenPost={handleOpenMyPagePost} />
       ) : selectedId === 'characters' ? (
         <CharactersPage
           searchQuery={searchQuery}
@@ -1067,7 +1860,7 @@ function ListTop() {
       ) : selectedId === 'map' ? (
         <MapPage />
       ) : selectedId === 'builds' ? (
-        <BuildPage searchQuery={searchQuery} authUserId={authUserId} />
+        <BuildPage searchQuery={searchQuery} authUserId={authUserId} focusPostId={buildFocusPostId} />
       ) : selectedId === 'relic-builder' ? (
         <RelicBuilderPage
           searchQuery={searchQuery}
