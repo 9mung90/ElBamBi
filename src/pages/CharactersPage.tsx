@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState, type KeyboardEvent } from 'react';
 import { nightfarers, type Nightfarer } from '../data/nightfarers';
 import { getWeaponGroupIdByName } from './WeaponsPage';
 
@@ -17,11 +17,46 @@ const nightAssetUrlsByLower = new Map(
   Object.entries(nightAssetUrls).map(([path, url]) => [path.toLowerCase(), url]),
 );
 
+const skinAssetUrls = import.meta.glob('../assets/images/skins/**/*.png', {
+  eager: true,
+  import: 'default',
+  query: '?url',
+}) as Record<string, string>;
+
+const skinNames: Record<number, string> = {
+  0: '일반',
+  1: '여명',
+  2: '암흑',
+  3: '추억',
+  4: '임시',
+  5: '임시',
+};
+
 function resolveNightAssetUrl(url: string) {
   if (!url.startsWith('/assets/images/night/')) return url;
 
   const assetPath = url.replace('/assets/images/night/', '../assets/images/night/');
   return nightAssetUrls[assetPath] ?? nightAssetUrlsByLower.get(assetPath.toLowerCase()) ?? url;
+}
+
+function getSkinEntries(nightfarerIndex: number) {
+  return Object.entries(skinAssetUrls)
+    .map(([path, imageUrl]) => {
+      const match = path.match(/\/skins\/(\d+)\/(\d+)\.png$/);
+      if (!match) return null;
+
+      const characterIndex = Number(match[1]);
+      const skinIndex = Number(match[2]);
+      if (characterIndex !== nightfarerIndex) return null;
+
+      return {
+        imageUrl,
+        index: skinIndex,
+        name: skinNames[skinIndex] ?? '임시',
+      };
+    })
+    .filter((entry): entry is { imageUrl: string; index: number; name: string } => Boolean(entry))
+    .sort((left, right) => left.index - right.index);
 }
 
 function splitUrls(urls: string) {
@@ -87,10 +122,51 @@ function matchesCharacterSearch(nightfarer: Nightfarer, query: string) {
 }
 
 function CharactersPage({ searchQuery, onSelectWeapon }: CharactersPageProps) {
+  const [selectedNightfarerIndex, setSelectedNightfarerIndex] = useState<number | null>(null);
   const filteredCharacters = useMemo(
     () => nightfarers.filter((nightfarer) => matchesCharacterSearch(nightfarer, searchQuery)),
     [searchQuery],
   );
+  const selectedNightfarer =
+    selectedNightfarerIndex === null
+      ? null
+      : nightfarers.find((nightfarer) => nightfarer.index === selectedNightfarerIndex) ?? null;
+  const selectedSkins = useMemo(
+    () => (selectedNightfarer ? getSkinEntries(selectedNightfarer.index) : []),
+    [selectedNightfarer],
+  );
+
+  function handleCharacterCardKeyDown(event: KeyboardEvent<HTMLElement>, nightfarerIndex: number) {
+    if (event.target !== event.currentTarget) return;
+    if (event.key !== 'Enter' && event.key !== ' ') return;
+
+    event.preventDefault();
+    setSelectedNightfarerIndex(nightfarerIndex);
+  }
+
+  if (selectedNightfarer) {
+    return (
+      <section className="options-page" aria-labelledby="character-skins-title">
+        <div className="options-page-heading">
+          <div>
+            <h2 id="character-skins-title">{selectedNightfarer.name} 스킨</h2>
+          </div>
+          <button type="button" className="skin-back-button" onClick={() => setSelectedNightfarerIndex(null)}>
+            캐릭터 목록
+          </button>
+        </div>
+
+        <div className="skin-card-grid">
+          {selectedSkins.map((skin) => (
+            <article className="skin-card" key={`${selectedNightfarer.index}-${skin.index}`}>
+              <img src={skin.imageUrl} alt={`${selectedNightfarer.name} ${skin.name}`} />
+              <span className="skin-card-name">{skin.name}</span>
+            </article>
+          ))}
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="options-page" aria-labelledby="characters-title">
@@ -106,7 +182,14 @@ function CharactersPage({ searchQuery, onSelectWeapon }: CharactersPageProps) {
           const equipment = getEquipmentEntries(nightfarer);
 
           return (
-            <article className="character-card" key={nightfarer.index}>
+            <article
+              className="character-card character-card-button"
+              key={nightfarer.index}
+              role="button"
+              tabIndex={0}
+              onClick={() => setSelectedNightfarerIndex(nightfarer.index)}
+              onKeyDown={(event) => handleCharacterCardKeyDown(event, nightfarer.index)}
+            >
               <div className="character-card-top">
                 <img
                   src={resolveNightAssetUrl(nightfarer.nameImageUrl)}
@@ -154,7 +237,10 @@ function CharactersPage({ searchQuery, onSelectWeapon }: CharactersPageProps) {
                           type="button"
                           className="equipment-pill equipment-pill-button"
                           key={item.name}
-                          onClick={() => onSelectWeapon(weaponGroupId)}
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            onSelectWeapon(weaponGroupId);
+                          }}
                         >
                           {content}
                         </button>

@@ -61,102 +61,22 @@ import loginImage from '../assets/images/top_icon/login.webp';
 import './list_Top.css';
 
 const categories: Category[] = [
-  {
-    id: 'characters',
-    label: '캐릭터',
-    icon: 'C',
-    description: '캐릭터 목록입니다.',
-  },
-  {
-    id: 'weapons',
-    label: '무기',
-    icon: 'W',
-    description: '무기 목록 페이지 임시 영역입니다.',
-  },
-  {
-    id: 'options',
-    label: '옵션',
-    icon: 'O',
-    description: '유물 옵션 목록입니다.',
-  },
-  {
-    id: 'stats-calculator',
-    label: '계산기',
-    icon: 'A',
-    description: '스탯과 공격력 계산기입니다.',
-  },
-  {
-    id: 'ashes',
-    label: '전회',
-    icon: 'S',
-    description: '전회 목록 페이지 임시 영역입니다.',
-  },
-  {
-    id: 'bosses',
-    label: '보스',
-    icon: 'B',
-    description: '보스 목록입니다.',
-  },
-  {
-    id: 'spells',
-    label: '마술,기도',
-    icon: 'M',
-    description: '마술과 기도 목록 페이지 임시 영역입니다.',
-  },
-  {
-    id: 'talismans',
-    label: '탈리스만',
-    icon: 'T',
-    description: '탈리스만 목록 페이지 임시 영역입니다.',
-  },
-  {
-    id: 'relics',
-    label: '유물',
-    icon: 'R',
-    description: '유물 목록입니다.',
-  },
-  {
-    id: 'map',
-    label: '맵',
-    icon: 'M',
-    description: '맵 보기입니다.',
-  },
-  {
-    id: 'builds',
-    label: '빌드',
-    icon: 'D',
-    description: '빌드 공유 커뮤니티입니다.',
-  },
-  {
-    id: 'relic-builder',
-    label: '유물 제작',
-    icon: 'B',
-    description: '유물 옵션 3개를 규칙에 맞춰 조합합니다.',
-  },
-  {
-    id: 'save-parser',
-    label: 'Save',
-    icon: 'P',
-    description: 'Nightreign save relic parser test page.',
-  },
-  {
-    id: 'vessels',
-    label: '현기',
-    icon: 'V',
-    description: '현기 목록입니다.',
-  },
-  {
-    id: 'items',
-    label: '기타',
-    icon: 'E',
-    description: '기타 아이템 목록 페이지 임시 영역입니다.',
-  },
-  {
-    id: 'gestures',
-    label: '제스처',
-    icon: 'G',
-    description: '제스처 목록 페이지 임시 영역입니다.',
-  },
+  { id: 'characters', label: '캐릭터', icon: 'C', description: '캐릭터 목록입니다.' },
+  { id: 'weapons', label: '무기', icon: 'W', description: '무기 목록 페이지입니다.' },
+  { id: 'options', label: '옵션', icon: 'O', description: '유물 옵션 목록입니다.' },
+  { id: 'stats-calculator', label: '계산기', icon: 'A', description: '스탯과 공격력 계산기입니다.' },
+  { id: 'ashes', label: '전회', icon: 'S', description: '전회 목록 페이지입니다.' },
+  { id: 'bosses', label: '보스', icon: 'B', description: '보스 목록입니다.' },
+  { id: 'spells', label: '마술,기도', icon: 'M', description: '마술과 기도 목록 페이지입니다.' },
+  { id: 'talismans', label: '탈리스만', icon: 'T', description: '탈리스만 목록 페이지입니다.' },
+  { id: 'relics', label: '유물', icon: 'R', description: '유물 목록입니다.' },
+  { id: 'map', label: '맵', icon: 'M', description: '맵 보기입니다.' },
+  { id: 'builds', label: '빌드', icon: 'D', description: '빌드 공유 커뮤니티입니다.' },
+  { id: 'relic-builder', label: '유물 제작', icon: 'B', description: '유물 옵션 3개를 규칙에 맞춰 조합합니다.' },
+  { id: 'save-parser', label: 'Save', icon: 'P', description: 'Nightreign save relic parser test page.' },
+  { id: 'vessels', label: '그릇', icon: 'V', description: '그릇 목록입니다.' },
+  { id: 'items', label: '기타', icon: 'E', description: '기타 아이템 목록 페이지입니다.' },
+  { id: 'gestures', label: '제스처', icon: 'G', description: '제스처 목록 페이지입니다.' },
 ];
 
 const categoryIconAssets: Record<string, string> = {
@@ -185,7 +105,8 @@ function toggleFilterValue<T>(values: T[], value: T) {
 }
 
 type AuthView = 'login' | 'signup' | null;
-type MyPageView = 'overview' | 'posts' | 'comments' | 'relics' | 'presets';
+type MyPageView = 'overview' | 'posts' | 'comments' | 'bookmarks' | 'relics' | 'presets';
+type AuthRole = 'USER' | 'ADMIN';
 const defaultApiBaseUrl = 'https://k9e297bszl.execute-api.ap-northeast-2.amazonaws.com';
 const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? defaultApiBaseUrl).replace(/\/$/, '');
 const accessTokenStorageKey = 'accessToken';
@@ -202,9 +123,36 @@ type MyPageOverviewData = {
   profile: Record<string, unknown> | null;
   posts: Record<string, unknown>[];
   comments: Record<string, unknown>[];
+  bookmarks: Record<string, unknown>[];
   relics: Record<string, unknown>[];
   presets: Record<string, unknown>[];
 };
+type MyPageProfileForm = {
+  nickname: string;
+  currentPassword: string;
+  newPassword: string;
+  confirmNewPassword: string;
+};
+
+type MyPageUpdateResponse = {
+  accessToken?: string;
+  userId?: string;
+  loginId?: string;
+  nickname?: string;
+  role?: string;
+  expiresIn?: number;
+};
+
+type MyPageMeResponse = {
+  userId?: string;
+  loginId?: string;
+  email?: string;
+  nickname?: string;
+  provider?: string;
+  role?: string;
+};
+
+class LoginRequiredError extends Error {}
 
 function getStoredPageId() {
   const storedId = getStoredValue(lastPageStorageKey);
@@ -343,6 +291,55 @@ function getAccessTokenFromPayload(payload: unknown) {
   return typeof token === 'string' && token ? token : null;
 }
 
+function isLoginRequiredMessage(message: string) {
+  return message.trim().toLowerCase() === 'login required';
+}
+
+function getProfileEmail(profile: Record<string, unknown> | null) {
+  return getFirstString(profile, ['email', 'userEmail']);
+}
+
+function getProfileNickname(profile: Record<string, unknown> | null) {
+  return getFirstString(profile, ['nickname', 'nickName', 'userNickname']);
+}
+
+function getProfileLoginId(profile: Record<string, unknown> | null) {
+  return getFirstString(profile, ['loginId', 'username', 'userId', 'id']);
+}
+
+function getProfileProvider(profile: Record<string, unknown> | null) {
+  return getFirstString(profile, ['provider', 'providerName', 'oauthProvider', 'socialProvider'], 'local');
+}
+
+function normalizeAuthRole(role: unknown): AuthRole {
+  return role === 'ADMIN' ? 'ADMIN' : 'USER';
+}
+
+function getProfileRole(profile: Record<string, unknown> | null): AuthRole {
+  return normalizeAuthRole(profile?.role);
+}
+
+function isSocialLoginProfile(profile: Record<string, unknown> | null) {
+  const provider = getProfileProvider(profile).trim().toLowerCase();
+  const loginType = getFirstString(profile, ['loginType', 'accountType', 'type']).trim().toLowerCase();
+  const isSocial = profile?.socialLogin ?? profile?.isSocialLogin ?? profile?.oauthLogin;
+
+  return (
+    isSocial === true ||
+    loginType.includes('social') ||
+    loginType.includes('oauth') ||
+    Boolean(provider && provider !== 'local')
+  );
+}
+
+function isValidProfileNickname(nickname: string) {
+  return /^[A-Za-z0-9가-힣]{1,10}$/.test(nickname);
+}
+
+function isValidProfilePassword(password: string) {
+  return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,20}$/.test(password);
+}
+
 function decodeJwtPayload(token: string): Record<string, unknown> | null {
   const [, encodedPayload] = token.split('.');
   if (!encodedPayload) return null;
@@ -424,7 +421,6 @@ async function postNicknameForm(nickname: string, accessTokenOverride?: string |
 
   return message || '닉네임이 저장되었습니다.';
 }
-
 async function postAuthForm(path: string, data: Record<string, string>): Promise<string> {
   const body = new URLSearchParams(data);
   const response = await fetch(`${apiBaseUrl}${path}`, {
@@ -454,24 +450,43 @@ async function postAuthForm(path: string, data: Record<string, string>): Promise
   return message || (typeof payload === 'string' ? payload : '');
 }
 
-async function requestMyPageApi<T>(path: string): Promise<T> {
+async function requestMyPageApi<T>(
+  path: string,
+  options: {
+    method?: 'GET' | 'PATCH' | 'DELETE';
+    form?: Record<string, string>;
+  } = {},
+): Promise<T> {
   const accessToken = getStoredValue(accessTokenStorageKey);
   if (!accessToken) {
-    throw new Error('로그인이 필요합니다.');
+    throw new LoginRequiredError('Login required');
+  }
+
+  const headers = new Headers({
+    authorization: `Bearer ${accessToken}`,
+  });
+  const init: RequestInit = {
+    method: options.method ?? 'GET',
+    headers,
+  };
+
+  if (options.form !== undefined) {
+    headers.set('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
+    init.body = new URLSearchParams(options.form);
   }
 
   const response = await fetch(`${apiBaseUrl}${path}`, {
-    headers: {
-      authorization: `Bearer ${accessToken}`,
-    },
+    ...init,
   });
   const contentType = response.headers.get('content-type') ?? '';
   const text = await response.text();
   const payload = contentType.includes('application/json') && text ? JSON.parse(text) : text;
 
   if (!response.ok) {
-    const message = getErrorMessageFromPayload(payload);
-    if (response.status === 401) throw new Error('로그인이 필요합니다.');
+    const message = getErrorMessageFromPayload(payload) || text;
+    if (response.status === 401 && (!message || isLoginRequiredMessage(message))) {
+      throw new LoginRequiredError('Login required');
+    }
     throw new Error(message || `${response.status} ${response.statusText}`);
   }
 
@@ -557,7 +572,6 @@ function NicknamePage({
     </main>
   );
 }
-
 function AuthPage({
   view,
   onChangeView,
@@ -711,12 +725,13 @@ function AuthPage({
     </section>
   );
 }
-
 function getMyPageProfileLabel(profile: Record<string, unknown> | null, authUserId: string | null) {
   return {
-    nickname: getFirstString(profile, ['nickname', 'nickName', 'userNickname'], '닉네임 없음'),
-    loginId: getFirstString(profile, ['loginId', 'username', 'email', 'userId', 'id'], authUserId ?? '-'),
-    provider: getFirstString(profile, ['provider', 'providerName'], 'local'),
+    nickname: getProfileNickname(profile) || '닉네임 없음',
+    loginId: getProfileLoginId(profile) || getProfileEmail(profile) || (authUserId ?? '-'),
+    email: getProfileEmail(profile) || '-',
+    provider: getProfileProvider(profile),
+    role: getProfileRole(profile),
   };
 }
 
@@ -726,6 +741,14 @@ function getMyPagePostId(item: Record<string, unknown>) {
 
 function getMyPagePostTitle(item: Record<string, unknown>) {
   return getFirstString(item, ['postTitle', 'title'], '제목 없음');
+}
+
+function getMyPagePostPreview(item: Record<string, unknown>) {
+  return getFirstString(item, ['contentText', 'content', 'commentText']);
+}
+
+function getMyPageBookmarkPost(item: Record<string, unknown>) {
+  return getRecord(item.post) ?? item;
 }
 
 function getMyPageCommentPostLabel(item: Record<string, unknown>) {
@@ -746,6 +769,19 @@ function getMyPagePresetTitle(item: Record<string, unknown>) {
 
 function getMyPageItemDate(item: Record<string, unknown>) {
   return formatMyPageDate(item.createdAt ?? item.updatedAt);
+}
+
+function formatMyPageSlotSummary(slot: Record<string, unknown>) {
+  const slotIndex = getStringValue(slot.slotIndex, '-');
+  const relicRefType = getFirstString(slot, ['relicRefType'], 'slot');
+  const relicId = getFirstString(slot, ['relicId']);
+  const itemId = getStringValue(slot.itemId);
+  const effectIds = Array.isArray(slot.effectIds) ? slot.effectIds.filter(Boolean).join('/') : '';
+  const refText = relicId || itemId ? `${relicId || `item ${itemId}`}` : '';
+
+  return [`${slotIndex}`, relicRefType, refText, effectIds ? `effects ${effectIds}` : '']
+    .filter(Boolean)
+    .join(' · ');
 }
 
 function MyPageSection({
@@ -788,7 +824,7 @@ function MyPageItemList({
 }: {
   items: Record<string, unknown>[];
   emptyMessage: string;
-  renderItem: (item: Record<string, unknown>, index: number) => React.ReactNode;
+  renderItem: (item: Record<string, unknown>, index: number) => ReactNode;
 }) {
   if (items.length === 0) {
     return <p className="my-page-muted">{emptyMessage}</p>;
@@ -806,6 +842,7 @@ function MyPagePostItem({
 }) {
   const postId = getMyPagePostId(item);
   const createdAt = getMyPageItemDate(item);
+  const preview = getMyPagePostPreview(item);
 
   return (
     <button
@@ -823,6 +860,42 @@ function MyPagePostItem({
         조회 {getNumberValue(item.viewCount)} · 추천 {getNumberValue(item.likeCount)} · 댓글{' '}
         {getNumberValue(item.commentCount)}
       </small>
+      {preview ? <small>{preview}</small> : null}
+    </button>
+  );
+}
+
+function MyPageBookmarkItem({
+  item,
+  onOpenPost,
+}: {
+  item: Record<string, unknown>;
+  onOpenPost: (postId: string) => void;
+}) {
+  const post = getMyPageBookmarkPost(item);
+  const postId = getMyPagePostId(post);
+  const createdAt = formatMyPageDate(post.createdAt);
+  const bookmarkedAt = formatMyPageDate(item.bookmarkedAt);
+  const preview = getMyPagePostPreview(post);
+
+  return (
+    <button
+      type="button"
+      className="my-page-list-item is-clickable"
+      disabled={!postId}
+      onClick={() => postId && onOpenPost(postId)}
+    >
+      <strong>{getMyPagePostTitle(post)}</strong>
+      <span>
+        {getFirstString(post, ['category']) || '분류 없음'}
+        {createdAt ? ` · 작성 ${createdAt}` : ''}
+        {bookmarkedAt ? ` · 북마크 ${bookmarkedAt}` : ''}
+      </span>
+      <small>
+        조회 {getNumberValue(post.viewCount)} · 추천 {getNumberValue(post.likeCount)} · 북마크{' '}
+        {getNumberValue(post.bookmarkCount)} · 댓글 {getNumberValue(post.commentCount)}
+      </small>
+      {preview ? <small>{preview}</small> : null}
     </button>
   );
 }
@@ -854,18 +927,27 @@ function MyPageCommentItem({
 
 function MyPageRelicItem({ item }: { item: Record<string, unknown> }) {
   const options = getArrayFromPayload(item.options, ['options']);
-  const createdAt = getMyPageItemDate(item);
+  const debuffs = getArrayFromPayload(item.debuffs, ['debuffs']);
+  const updatedAt = formatMyPageDate(item.updatedAt);
+  const optionSummary = options
+    .map((option) => {
+      const name = getFirstString(option, ['name', 'effectName']);
+      const detail = getFirstString(option, ['detail', 'desc']);
+      return [name, detail].filter(Boolean).join(': ');
+    })
+    .filter(Boolean)
+    .join(' / ');
 
   return (
     <article className="my-page-list-item">
       <strong>{getMyPageRelicTitle(item)}</strong>
       <span>
-        {getFirstString(item, ['color'], '색상 없음')} · {getFirstString(item, ['source'], 'source 없음')}
-        {createdAt ? ` · ${createdAt}` : ''}
+        {getFirstString(item, ['color'], '색상 없음')} · {getFirstString(item, ['modeId'], 'mode 없음')} · 슬롯{' '}
+        {getStringValue(item.slotIndex, '-')} · {item.isValid === false ? '사용 불가' : '사용 가능'}
+        {updatedAt ? ` · ${updatedAt}` : ''}
       </span>
-      {options.length ? (
-        <small>{options.map((option) => getFirstString(option, ['name', 'effectName'])).filter(Boolean).join(' / ')}</small>
-      ) : null}
+      {optionSummary ? <small>{optionSummary}</small> : null}
+      {debuffs.length ? <small>디버프 {debuffs.map((debuff) => getFirstString(debuff, ['name'])).filter(Boolean).join(' / ')}</small> : null}
     </article>
   );
 }
@@ -873,28 +955,37 @@ function MyPageRelicItem({ item }: { item: Record<string, unknown> }) {
 function MyPagePresetItem({ item }: { item: Record<string, unknown> }) {
   const slots = getArrayFromPayload(item.slots, ['slots']);
   const createdAt = getMyPageItemDate(item);
+  const updatedAt = formatMyPageDate(item.updatedAt);
+  const slotSummary = slots.slice(0, 3).map(formatMyPageSlotSummary).filter(Boolean).join(' / ');
 
   return (
     <article className="my-page-list-item">
       <strong>{getMyPagePresetTitle(item)}</strong>
       <span>
-        {getFirstString(item, ['characterName'], '캐릭터 없음')} · 현기{' '}
-        {getStringValue(item.vesselIndex, '-')}
-        {createdAt ? ` · ${createdAt}` : ''}
+        {getFirstString(item, ['characterName'], '캐릭터 없음')} · 그릇{' '}
+        {getStringValue(item.vesselIndex, '-')} · {getFirstString(item, ['colorMode'], 'normal')}
       </span>
       <small>
-        {getFirstString(item, ['colorMode'], 'normal')} · 슬롯 {slots.length || getNumberValue(item.slotCount)}
+        {createdAt ? `작성 ${createdAt}` : ''}
+        {updatedAt ? `${createdAt ? ' · ' : ''}수정 ${updatedAt}` : ''}
       </small>
+      <small>{slotSummary || `슬롯 ${slots.length || getNumberValue(item.slotCount)}`}</small>
     </article>
   );
 }
 
 function MyPage({
   authUserId,
+  onAuthUpdated,
+  onAccountDeleted,
+  onLoginRequired,
   onLogout,
   onOpenPost,
 }: {
   authUserId: string | null;
+  onAuthUpdated: (response: MyPageUpdateResponse) => void;
+  onAccountDeleted: () => void;
+  onLoginRequired: () => void;
   onLogout: () => void;
   onOpenPost: (postId: string) => void;
 }) {
@@ -905,6 +996,19 @@ function MyPage({
   const [detailItems, setDetailItems] = useState<Record<string, unknown>[]>([]);
   const [detailLoading, setDetailLoading] = useState(false);
   const [detailError, setDetailError] = useState<string | null>(null);
+  const [profileForm, setProfileForm] = useState<MyPageProfileForm>({
+    nickname: '',
+    currentPassword: '',
+    newPassword: '',
+    confirmNewPassword: '',
+  });
+  const [profileMessage, setProfileMessage] = useState<string | null>(null);
+  const [profileError, setProfileError] = useState<string | null>(null);
+  const [isProfileSaving, setIsProfileSaving] = useState(false);
+  const [deleteCurrentPassword, setDeleteCurrentPassword] = useState('');
+  const [deleteConfirmText, setDeleteConfirmText] = useState('');
+  const [deleteMessage, setDeleteMessage] = useState<string | null>(null);
+  const [isDeletingAccount, setIsDeletingAccount] = useState(false);
 
   useEffect(() => {
     if (view !== 'overview') return;
@@ -915,7 +1019,7 @@ function MyPage({
 
     Promise.all([
       requestMyPageApi<unknown>('/api/me'),
-      requestMyPageApi<unknown>('/api/me/summary?limit=5'),
+      requestMyPageApi<unknown>('/api/me/summary?limit=6'),
     ])
       .then(([mePayload, summaryPayload]) => {
         if (!isMounted) return;
@@ -930,12 +1034,17 @@ function MyPage({
           profile,
           posts: getArrayFromPayload(summaryPayload, ['posts', 'recentPosts', 'communityPosts', 'myPosts']),
           comments: getArrayFromPayload(summaryPayload, ['comments', 'recentComments', 'myComments']),
+          bookmarks: getArrayFromPayload(summaryPayload, ['bookmarks', 'recentBookmarks', 'myBookmarks']),
           relics: getArrayFromPayload(summaryPayload, ['relics', 'recentRelics', 'myRelics']),
           presets: getArrayFromPayload(summaryPayload, ['presets', 'recentPresets', 'myPresets']),
         });
       })
       .catch((error) => {
         if (!isMounted) return;
+        if (error instanceof LoginRequiredError) {
+          onLoginRequired();
+          return;
+        }
         setOverviewError(error instanceof Error ? error.message : String(error));
       })
       .finally(() => {
@@ -945,7 +1054,7 @@ function MyPage({
     return () => {
       isMounted = false;
     };
-  }, [view]);
+  }, [onLoginRequired, view]);
 
   useEffect(() => {
     if (view === 'overview') return;
@@ -953,12 +1062,14 @@ function MyPage({
     const pathByView: Record<Exclude<MyPageView, 'overview'>, string> = {
       posts: '/api/me/posts?limit=20',
       comments: '/api/me/comments?limit=20',
+      bookmarks: '/api/me/bookmarks?limit=20',
       relics: '/api/me/relics?source=builder',
       presets: '/api/me/presets',
     };
     const keysByView: Record<Exclude<MyPageView, 'overview'>, string[]> = {
       posts: ['posts', 'communityPosts', 'myPosts'],
       comments: ['comments', 'myComments'],
+      bookmarks: ['bookmarks', 'myBookmarks'],
       relics: ['relics', 'myRelics'],
       presets: ['presets', 'myPresets'],
     };
@@ -974,6 +1085,10 @@ function MyPage({
         if (isMounted) setDetailItems(getArrayFromPayload(payload, keysByView[detailView]));
       })
       .catch((error) => {
+        if (error instanceof LoginRequiredError) {
+          onLoginRequired();
+          return;
+        }
         if (isMounted) setDetailError(error instanceof Error ? error.message : String(error));
       })
       .finally(() => {
@@ -983,27 +1098,178 @@ function MyPage({
     return () => {
       isMounted = false;
     };
-  }, [view]);
+  }, [onLoginRequired, view]);
 
-  const profile = getMyPageProfileLabel(overviewData?.profile ?? null, authUserId);
+  useEffect(() => {
+    const profile = overviewData?.profile ?? null;
+    setProfileForm((currentForm) => ({
+      ...currentForm,
+      nickname: getProfileNickname(profile),
+      currentPassword: '',
+      newPassword: '',
+      confirmNewPassword: '',
+    }));
+    setProfileMessage(null);
+    setProfileError(null);
+  }, [overviewData?.profile]);
+
+  const profileRecord = overviewData?.profile ?? null;
+  const isSocialLogin = isSocialLoginProfile(profileRecord);
+  const profile = getMyPageProfileLabel(profileRecord, authUserId);
+
+  function updateProfileForm(field: keyof MyPageProfileForm, value: string) {
+    setProfileForm((currentForm) => ({
+      ...currentForm,
+      [field]: value,
+    }));
+  }
+
+  async function handleSaveProfile(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setProfileMessage(null);
+    setProfileError(null);
+
+    const nickname = profileForm.nickname.trim();
+    const currentPassword = profileForm.currentPassword;
+    const newPassword = profileForm.newPassword;
+    const confirmNewPassword = profileForm.confirmNewPassword;
+
+    if (nickname && !isValidProfileNickname(nickname)) {
+      setProfileError('닉네임은 한글, 영문, 숫자 1~10자여야 합니다.');
+      return;
+    }
+
+    if (!isSocialLogin && (newPassword || confirmNewPassword)) {
+      if (newPassword !== confirmNewPassword) {
+        setProfileError('새 비밀번호와 확인 값이 일치하지 않습니다.');
+        return;
+      }
+
+      if (!isValidProfilePassword(newPassword)) {
+        setProfileError('비밀번호는 영문, 숫자, 특수문자를 포함해 8~20자여야 합니다.');
+        return;
+      }
+
+      if (!currentPassword) {
+        setProfileError('현재 비밀번호를 입력해 주세요.');
+        return;
+      }
+    }
+
+    const body: Record<string, string> = {};
+    if (nickname && nickname !== getProfileNickname(profileRecord)) body.nickname = nickname;
+    if (!isSocialLogin && newPassword) {
+      body.currentPassword = currentPassword;
+      body.newPassword = newPassword;
+    }
+
+    if (Object.keys(body).length === 0) {
+      setProfileError('변경할 정보를 입력해 주세요.');
+      return;
+    }
+
+    setIsProfileSaving(true);
+
+    try {
+      const response = await requestMyPageApi<MyPageUpdateResponse>('/api/me', {
+        method: 'PATCH',
+        form: body,
+      });
+      onAuthUpdated(response);
+      setProfileMessage('프로필을 저장했습니다.');
+      setProfileForm((currentForm) => ({
+        ...currentForm,
+        currentPassword: '',
+        newPassword: '',
+        confirmNewPassword: '',
+        nickname: response.nickname ?? currentForm.nickname,
+      }));
+      setOverviewData((currentData) => {
+        if (!currentData) return currentData;
+        const nextEmail = getProfileEmail(currentData.profile);
+        const nextNickname = response.nickname ?? body.nickname ?? getProfileNickname(currentData.profile);
+
+        return {
+          ...currentData,
+          profile: {
+            ...(currentData.profile ?? {}),
+            email: nextEmail,
+            ...(response.loginId ? { loginId: response.loginId } : {}),
+            ...(nextNickname ? { nickname: nextNickname } : {}),
+            ...(response.userId ? { userId: response.userId } : {}),
+          },
+        };
+      });
+    } catch (error) {
+      if (error instanceof LoginRequiredError) {
+        onLoginRequired();
+        return;
+      }
+      setProfileError(error instanceof Error ? error.message : String(error));
+    } finally {
+      setIsProfileSaving(false);
+    }
+  }
+
+  async function handleDeleteAccount(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setDeleteMessage(null);
+
+    if (deleteConfirmText !== 'DELETE') {
+      setDeleteMessage('삭제하려면 DELETE를 입력해 주세요.');
+      return;
+    }
+
+    if (!isSocialLogin && !deleteCurrentPassword) {
+      setDeleteMessage('현재 비밀번호를 입력해 주세요.');
+      return;
+    }
+
+    if (!window.confirm('계정을 영구 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) {
+      return;
+    }
+
+    setIsDeletingAccount(true);
+
+    try {
+      await requestMyPageApi<string>('/api/me', {
+        method: 'DELETE',
+        form: isSocialLogin ? {} : { currentPassword: deleteCurrentPassword },
+      });
+      window.alert('계정이 삭제되었습니다.');
+      onAccountDeleted();
+    } catch (error) {
+      if (error instanceof LoginRequiredError) {
+        onLoginRequired();
+        return;
+      }
+      setDeleteMessage(error instanceof Error ? error.message : String(error));
+    } finally {
+      setIsDeletingAccount(false);
+    }
+  }
+
   const detailTitle: Record<MyPageView, string> = {
     overview: '마이페이지',
     posts: '내가 쓴 글',
     comments: '내가 쓴 댓글',
-    relics: '내 유물',
+    bookmarks: '북마크한 글',
+    relics: '내 제작 유물',
     presets: '내 프리셋',
   };
   const emptyMessages: Record<Exclude<MyPageView, 'overview'>, string> = {
     posts: '작성한 글이 없습니다.',
     comments: '작성한 댓글이 없습니다.',
-    relics: '저장된 유물이 없습니다.',
+    bookmarks: '북마크한 글이 없습니다.',
+    relics: '제작한 유물이 없습니다.',
     presets: '저장된 프리셋이 없습니다.',
   };
 
   const renderDetailItem = (item: Record<string, unknown>, index: number) => {
-    const key = getFirstString(item, ['id', 'postId', 'commentId', 'relicId', 'presetId'], String(index));
+    const key = getFirstString(item, ['bookmarkId', 'id', 'postId', 'commentId', 'relicId', 'presetId'], String(index));
     if (view === 'posts') return <MyPagePostItem key={key} item={item} onOpenPost={onOpenPost} />;
     if (view === 'comments') return <MyPageCommentItem key={key} item={item} onOpenPost={onOpenPost} />;
+    if (view === 'bookmarks') return <MyPageBookmarkItem key={key} item={item} onOpenPost={onOpenPost} />;
     if (view === 'relics') return <MyPageRelicItem key={key} item={item} />;
     return <MyPagePresetItem key={key} item={item} />;
   };
@@ -1013,7 +1279,6 @@ function MyPage({
       <section className="my-page" aria-labelledby="my-page-detail-title">
         <div className="my-page-heading">
           <div>
-            <p className="list-page-kicker">Account</p>
             <h2 id="my-page-detail-title">{detailTitle[view]}</h2>
           </div>
           <button type="button" className="my-page-more-button" onClick={() => setView('overview')}>
@@ -1040,7 +1305,6 @@ function MyPage({
     <section className="my-page" aria-labelledby="my-page-title">
       <div className="my-page-heading">
         <div>
-          <p className="list-page-kicker">Account</p>
           <h2 id="my-page-title">마이페이지</h2>
         </div>
         <button type="button" className="my-page-logout-button" onClick={onLogout}>
@@ -1066,6 +1330,10 @@ function MyPage({
                 <dd>{profile.loginId}</dd>
               </div>
               <div>
+                <dt>이메일</dt>
+                <dd>{profile.email}</dd>
+              </div>
+              <div>
                 <dt>provider</dt>
                 <dd>{profile.provider}</dd>
               </div>
@@ -1074,7 +1342,7 @@ function MyPage({
         </section>
 
         <MyPageSection
-          title="최근 작성한 글"
+          title="내가 쓴 글"
           emptyMessage="작성한 글이 없습니다."
           isLoading={overviewLoading}
           error={overviewError}
@@ -1094,7 +1362,7 @@ function MyPage({
         </MyPageSection>
 
         <MyPageSection
-          title="최근 작성한 댓글"
+          title="내가 쓴 댓글"
           emptyMessage="작성한 댓글이 없습니다."
           isLoading={overviewLoading}
           error={overviewError}
@@ -1114,17 +1382,37 @@ function MyPage({
         </MyPageSection>
 
         <MyPageSection
-          title="내 유물"
-          emptyMessage="저장된 유물이 없습니다."
+          title="북마크한 글"
+          emptyMessage="북마크한 글이 없습니다."
+          isLoading={overviewLoading}
+          error={overviewError}
+          onMore={() => setView('bookmarks')}
+        >
+          <MyPageItemList
+            items={overviewData?.bookmarks ?? []}
+            emptyMessage="북마크한 글이 없습니다."
+            renderItem={(item, index) => (
+              <MyPageBookmarkItem
+                key={getFirstString(item, ['bookmarkId', 'id'], String(index))}
+                item={item}
+                onOpenPost={onOpenPost}
+              />
+            )}
+          />
+        </MyPageSection>
+
+        <MyPageSection
+          title="내 제작 유물"
+          emptyMessage="제작한 유물이 없습니다."
           isLoading={overviewLoading}
           error={overviewError}
           onMore={() => setView('relics')}
         >
           <MyPageItemList
             items={overviewData?.relics ?? []}
-            emptyMessage="저장된 유물이 없습니다."
+            emptyMessage="제작한 유물이 없습니다."
             renderItem={(item, index) => (
-              <MyPageRelicItem key={getFirstString(item, ['id', 'relicId'], String(index))} item={item} />
+              <MyPageRelicItem key={getFirstString(item, ['relicId', 'id'], String(index))} item={item} />
             )}
           />
         </MyPageSection>
@@ -1140,19 +1428,116 @@ function MyPage({
             items={overviewData?.presets ?? []}
             emptyMessage="저장된 프리셋이 없습니다."
             renderItem={(item, index) => (
-              <MyPagePresetItem key={getFirstString(item, ['id', 'presetId'], String(index))} item={item} />
+              <MyPagePresetItem key={getFirstString(item, ['presetId', 'id'], String(index))} item={item} />
             )}
           />
         </MyPageSection>
+
+        <section className="my-page-card my-page-edit-card" aria-labelledby="my-page-edit-title">
+          <div className="my-page-card-header">
+            <h3 id="my-page-edit-title">프로필 수정</h3>
+          </div>
+          <form className="my-page-form" onSubmit={handleSaveProfile}>
+            <label>
+              닉네임
+              <input
+                type="text"
+                value={profileForm.nickname}
+                onChange={(event) => updateProfileForm('nickname', event.target.value)}
+                maxLength={10}
+                autoComplete="nickname"
+              />
+            </label>
+
+            {isSocialLogin ? (
+              <p className="my-page-muted">소셜 로그인 계정은 비밀번호를 변경할 수 없습니다.</p>
+            ) : (
+              <div className="my-page-password-fields">
+                <label>
+                  현재 비밀번호
+                  <input
+                    type="password"
+                    value={profileForm.currentPassword}
+                    onChange={(event) => updateProfileForm('currentPassword', event.target.value)}
+                    autoComplete="current-password"
+                  />
+                </label>
+                <label>
+                  새 비밀번호
+                  <input
+                    type="password"
+                    value={profileForm.newPassword}
+                    onChange={(event) => updateProfileForm('newPassword', event.target.value)}
+                    autoComplete="new-password"
+                  />
+                </label>
+                <label>
+                  새 비밀번호 확인
+                  <input
+                    type="password"
+                    value={profileForm.confirmNewPassword}
+                    onChange={(event) => updateProfileForm('confirmNewPassword', event.target.value)}
+                    autoComplete="new-password"
+                  />
+                </label>
+              </div>
+            )}
+
+            {profileError ? <p className="my-page-message is-error">{profileError}</p> : null}
+            {profileMessage ? <p className="my-page-message is-success">{profileMessage}</p> : null}
+            <button type="submit" className="my-page-submit-button" disabled={isProfileSaving}>
+              {isProfileSaving ? '저장 중...' : '변경 저장'}
+            </button>
+          </form>
+        </section>
+
+        <section className="my-page-card my-page-danger-card" aria-labelledby="my-page-danger-title">
+          <div className="my-page-card-header">
+            <h3 id="my-page-danger-title">계정 삭제</h3>
+          </div>
+          <form className="my-page-form" onSubmit={handleDeleteAccount}>
+            <p className="my-page-muted">
+              계정을 삭제하면 프로필, 게시글, 댓글, 저장 유물, 프리셋 등 소유 데이터가 영구 삭제됩니다.
+            </p>
+            {!isSocialLogin ? (
+              <label>
+                현재 비밀번호
+                <input
+                  type="password"
+                  value={deleteCurrentPassword}
+                  onChange={(event) => setDeleteCurrentPassword(event.target.value)}
+                  autoComplete="current-password"
+                />
+              </label>
+            ) : null}
+            <label>
+              확인 문구
+              <input
+                type="text"
+                value={deleteConfirmText}
+                onChange={(event) => setDeleteConfirmText(event.target.value)}
+                placeholder="DELETE"
+              />
+            </label>
+            {deleteMessage ? <p className="my-page-message is-error">{deleteMessage}</p> : null}
+            <button
+              type="submit"
+              className="my-page-delete-button"
+              disabled={isDeletingAccount || deleteConfirmText !== 'DELETE' || (!isSocialLogin && !deleteCurrentPassword)}
+            >
+              {isDeletingAccount ? '삭제 중...' : '계정 영구 삭제'}
+            </button>
+          </form>
+        </section>
       </div>
     </section>
   );
 }
-
 function ListTop() {
   const [selectedId, setSelectedId] = useState(getStoredPageId);
   const [authView, setAuthView] = useState<AuthView>(getStoredAuthView);
   const [authUserId, setAuthUserId] = useState<string | null>(getStoredAuthUserId);
+  const [authRole, setAuthRole] = useState<AuthRole>('USER');
   const [isMyPageOpen, setIsMyPageOpen] = useState(false);
   const [buildFocusPostId, setBuildFocusPostId] = useState<string | null>(null);
   const [isNicknameRoute, setIsNicknameRoute] = useState(
@@ -1207,6 +1592,47 @@ function ListTop() {
       return;
     }
     removeStoredValue(authUserIdStorageKey);
+  }, [authUserId]);
+
+  useEffect(() => {
+    if (!getStoredValue(accessTokenStorageKey)) {
+      setAuthRole('USER');
+      return;
+    }
+
+    let isMounted = true;
+
+    requestMyPageApi<MyPageMeResponse>('/api/me')
+      .then((me) => {
+        if (!isMounted) return;
+
+        setAuthRole(normalizeAuthRole(me.role));
+        if (me.userId) {
+          setAuthUserId(me.userId);
+          setStoredValue(authUserIdStorageKey, me.userId);
+        }
+        if (me.nickname) {
+          setStoredValue(authNicknameStorageKey, me.nickname);
+          if (me.userId) setStoredValue(authNicknameUserIdStorageKey, me.userId);
+        }
+      })
+      .catch((error) => {
+        if (!isMounted) return;
+        setAuthRole('USER');
+        if (error instanceof LoginRequiredError) {
+          removeStoredValue(accessTokenStorageKey);
+          removeStoredValue(authUserIdStorageKey);
+          removeStoredValue(authNicknameStorageKey);
+          removeStoredValue(authNicknameUserIdStorageKey);
+          setAuthUserId(null);
+          return;
+        }
+        console.warn('[auth] Failed to load current user role', error);
+      });
+
+    return () => {
+      isMounted = false;
+    };
   }, [authUserId]);
 
   useEffect(() => {
@@ -1428,12 +1854,57 @@ function ListTop() {
     setIsMyPageOpen(false);
   };
 
-  const handleLogout = () => {
+  const clearAuthState = () => {
     removeStoredValue(accessTokenStorageKey);
     removeStoredValue(authUserIdStorageKey);
     removeStoredValue(authNicknameStorageKey);
     removeStoredValue(authNicknameUserIdStorageKey);
     setAuthUserId(null);
+    setAuthRole('USER');
+  };
+
+  const handleLogout = () => {
+    clearAuthState();
+    setIsMyPageOpen(false);
+    setAuthView('login');
+  };
+
+  const handleAuthUpdated = (response: MyPageUpdateResponse) => {
+    if (response.accessToken) {
+      setStoredValue(accessTokenStorageKey, response.accessToken);
+    }
+
+    const nextUserId =
+      response.userId ??
+      getUserIdFromAccessToken(response.accessToken ?? getStoredValue(accessTokenStorageKey));
+
+    if (nextUserId) {
+      setAuthUserId(nextUserId);
+      setStoredValue(authUserIdStorageKey, nextUserId);
+    }
+
+    if (response.nickname) {
+      setStoredValue(authNicknameStorageKey, response.nickname);
+      if (nextUserId) setStoredValue(authNicknameUserIdStorageKey, nextUserId);
+    }
+
+    if (response.role) {
+      setAuthRole(normalizeAuthRole(response.role));
+    }
+  };
+
+  const handleAccountDeleted = () => {
+    clearAuthState();
+    setIsMyPageOpen(false);
+    setAuthView('login');
+    setSelectedId('characters');
+    setSearchQuery('');
+    setIsFilterPanelOpen(false);
+    setStoredValue(lastPageStorageKey, 'characters');
+  };
+
+  const handleLoginRequired = () => {
+    clearAuthState();
     setIsMyPageOpen(false);
     setAuthView('login');
   };
@@ -1470,7 +1941,7 @@ function ListTop() {
           <div className="game-title-icon" aria-hidden="true">
             <img className="game-title-logo-image" src={logoImage} alt="" />
           </div>
-          <h1>엘밤 비</h1>
+          <h1>나이트레인 빌드</h1>
           <button
             type="button"
             className={`account-icon-button${authView || isMyPageOpen ? ' is-active' : ''}`}
@@ -1535,7 +2006,7 @@ function ListTop() {
             </div>
 
             <div className="filter-group">
-              <span>Level</span>
+              <span>레벨</span>
               <div className="filter-chip-row">
                 {weaponFilterOptions.levels.map((level) => (
                   <button
@@ -1551,23 +2022,7 @@ function ListTop() {
             </div>
 
             <div className="filter-group">
-              <span>Type</span>
-              <div className="filter-chip-row">
-                {weaponFilterOptions.types.map((type) => (
-                  <button
-                    key={type}
-                    type="button"
-                    className={`filter-chip${weaponFilters.types.includes(type) ? ' is-selected' : ''}`}
-                    onClick={() => updateWeaponTextFilter('types', type)}
-                  >
-                    {type}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="filter-group">
-              <span>Genre</span>
+              <span>종류</span>
               <div className="filter-chip-row">
                 {weaponFilterOptions.genres.map((genre) => (
                   <button
@@ -1577,6 +2032,22 @@ function ListTop() {
                     onClick={() => updateWeaponTextFilter('genres', genre)}
                   >
                     {genre}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="filter-group">
+              <span>무기군</span>
+              <div className="filter-chip-row">
+                {weaponFilterOptions.types.map((type) => (
+                  <button
+                    key={type}
+                    type="button"
+                    className={`filter-chip${weaponFilters.types.includes(type) ? ' is-selected' : ''}`}
+                    onClick={() => updateWeaponTextFilter('types', type)}
+                  >
+                    {type}
                   </button>
                 ))}
               </div>
@@ -1811,7 +2282,14 @@ function ListTop() {
           }}
         />
       ) : isMyPageOpen ? (
-        <MyPage authUserId={authUserId} onLogout={handleLogout} onOpenPost={handleOpenMyPagePost} />
+        <MyPage
+          authUserId={authUserId}
+          onAuthUpdated={handleAuthUpdated}
+          onAccountDeleted={handleAccountDeleted}
+          onLoginRequired={handleLoginRequired}
+          onLogout={handleLogout}
+          onOpenPost={handleOpenMyPagePost}
+        />
       ) : selectedId === 'characters' ? (
         <CharactersPage
           searchQuery={searchQuery}
@@ -1860,7 +2338,12 @@ function ListTop() {
       ) : selectedId === 'map' ? (
         <MapPage />
       ) : selectedId === 'builds' ? (
-        <BuildPage searchQuery={searchQuery} authUserId={authUserId} focusPostId={buildFocusPostId} />
+        <BuildPage
+          searchQuery={searchQuery}
+          authUserId={authUserId}
+          authRole={authRole}
+          focusPostId={buildFocusPostId}
+        />
       ) : selectedId === 'relic-builder' ? (
         <RelicBuilderPage
           searchQuery={searchQuery}
@@ -1900,3 +2383,5 @@ function ListTop() {
 }
 
 export default ListTop;
+
+

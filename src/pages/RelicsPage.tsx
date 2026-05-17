@@ -28,6 +28,7 @@ type PresetColorMode = 'normal' | 'deep';
 type PresetSlotRelics = Array<string | null>;
 type RelicPageMode = 'catalog' | 'builder' | 'saved' | 'compare';
 type ProtectedRelicPageMode = Exclude<RelicPageMode, 'catalog'>;
+type RelicCollectionMode = 'catalog' | 'crafted';
 
 const LOGIN_REQUIRED_MESSAGE = '로그인을 해주시길 바랍니다.';
 
@@ -2354,7 +2355,6 @@ function RelicCard({ relic }: { relic: Relic }) {
             <li key={effect.id}>
               <div>
                 <strong>{effect.name}</strong>
-                {effect.category ? <span>{effect.category}</span> : null}
               </div>
               {effect.desc ? <p>{effect.desc}</p> : null}
             </li>
@@ -2377,6 +2377,7 @@ function RelicsPage({
   onRelicsChanged: () => void;
 }) {
   const [activeMode, setActiveMode] = useState<RelicPageMode>('catalog');
+  const [collectionMode, setCollectionMode] = useState<RelicCollectionMode>('catalog');
   const filteredRelics = useMemo(
     () => relics.filter((relic) => matchesRelicSearch(relic, searchQuery)),
     [searchQuery],
@@ -2392,6 +2393,12 @@ function RelicsPage({
     }
   }, [activeMode, authUserId]);
 
+  useEffect(() => {
+    if (!authUserId && collectionMode === 'crafted') {
+      setCollectionMode('catalog');
+    }
+  }, [authUserId, collectionMode]);
+
   function toggleProtectedMode(nextMode: ProtectedRelicPageMode) {
     setActiveMode((currentMode) => {
       if (currentMode === nextMode) return 'catalog';
@@ -2405,6 +2412,17 @@ function RelicsPage({
     });
   }
 
+  function selectCollectionMode(nextMode: RelicCollectionMode) {
+    setActiveMode('catalog');
+
+    if (nextMode === 'crafted' && !authUserId) {
+      window.alert(LOGIN_REQUIRED_MESSAGE);
+      return;
+    }
+
+    setCollectionMode(nextMode);
+  }
+
   return (
     <section className="options-page" aria-labelledby="relics-title">
       <div className="options-page-heading">
@@ -2412,6 +2430,22 @@ function RelicsPage({
           <h2 id="relics-title">유물</h2>
         </div>
         <div className="heading-actions">
+          <button
+            type="button"
+            className={`relic-preset-toggle-button${collectionMode === 'catalog' && activeMode === 'catalog' ? ' is-active' : ''}`}
+            aria-pressed={collectionMode === 'catalog' && activeMode === 'catalog'}
+            onClick={() => selectCollectionMode('catalog')}
+          >
+            기본 유물
+          </button>
+          <button
+            type="button"
+            className={`relic-preset-toggle-button${collectionMode === 'crafted' && activeMode === 'catalog' ? ' is-active' : ''}`}
+            aria-pressed={collectionMode === 'crafted' && activeMode === 'catalog'}
+            onClick={() => selectCollectionMode('crafted')}
+          >
+            제작 유물
+          </button>
           <button
             type="button"
             className={`relic-preset-toggle-button${isPresetBuilderOpen ? ' is-active' : ''}`}
@@ -2436,9 +2470,11 @@ function RelicsPage({
           >
             {isPresetCompareOpen ? '프리셋 비교 닫기' : '프리셋 비교'}
           </button>
-          <span className="option-count">
-            {filteredRelics.length} / {relics.length}
-          </span>
+          {activeMode === 'catalog' && collectionMode === 'catalog' ? (
+            <span className="option-count">
+              {filteredRelics.length} / {relics.length}
+            </span>
+          ) : null}
         </div>
       </div>
 
@@ -2452,21 +2488,22 @@ function RelicsPage({
         <SavedRelicPresetsView authUserId={authUserId} storageRefreshKey={storageRefreshKey} />
       ) : activeMode === 'compare' ? (
         <PresetCompareSection authUserId={authUserId} storageRefreshKey={storageRefreshKey} />
+      ) : collectionMode === 'crafted' ? (
+        <RelicStorageSection
+          authUserId={authUserId}
+          searchQuery={searchQuery}
+          refreshKey={storageRefreshKey}
+          sourceFilter="builder"
+          showSourceFilters={false}
+          emptyText="제작된 유물이 없습니다."
+          onRelicsChanged={onRelicsChanged}
+        />
       ) : (
-        <>
-          <RelicStorageSection
-            authUserId={authUserId}
-            searchQuery={searchQuery}
-            refreshKey={storageRefreshKey}
-            onRelicsChanged={onRelicsChanged}
-          />
-
-          <div className="option-card-grid">
-            {filteredRelics.map((relic) => (
-              <RelicCard key={relic.id} relic={relic} />
-            ))}
-          </div>
-        </>
+        <div className="option-card-grid">
+          {filteredRelics.map((relic) => (
+            <RelicCard key={relic.id} relic={relic} />
+          ))}
+        </div>
       )}
     </section>
   );

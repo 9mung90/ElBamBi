@@ -140,14 +140,21 @@ function RelicStorageSection({
   authUserId,
   searchQuery = '',
   refreshKey = 0,
+  sourceFilter: controlledSourceFilter,
+  showSourceFilters = true,
+  emptyText = '저장된 유물이 없습니다.',
   onRelicsChanged,
 }: {
   authUserId: string | null;
   searchQuery?: string;
   refreshKey?: number;
+  sourceFilter?: StoredRelicSourceFilter;
+  showSourceFilters?: boolean;
+  emptyText?: string;
   onRelicsChanged?: () => void;
 }) {
-  const [sourceFilter, setSourceFilter] = useState<StoredRelicSourceFilter>('all');
+  const [internalSourceFilter, setInternalSourceFilter] = useState<StoredRelicSourceFilter>('all');
+  const sourceFilter = controlledSourceFilter ?? internalSourceFilter;
   const [relics, setRelics] = useState<StoredRelic[]>([]);
   const [allRelicCount, setAllRelicCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -223,19 +230,21 @@ function RelicStorageSection({
         <p className="storage-notice">저장된 유물을 보려면 로그인이 필요합니다.</p>
       ) : (
         <>
-          <div className="relic-storage-filters" aria-label="저장 유물 필터">
-            {sourceFilters.map((filter) => (
-              <button
-                key={filter.id}
-                type="button"
-                className={sourceFilter === filter.id ? 'is-selected' : ''}
-                aria-pressed={sourceFilter === filter.id}
-                onClick={() => setSourceFilter(filter.id)}
-              >
-                {filter.label}
-              </button>
-            ))}
-          </div>
+          {showSourceFilters ? (
+            <div className="relic-storage-filters" aria-label="저장 유물 필터">
+              {sourceFilters.map((filter) => (
+                <button
+                  key={filter.id}
+                  type="button"
+                  className={sourceFilter === filter.id ? 'is-selected' : ''}
+                  aria-pressed={sourceFilter === filter.id}
+                  onClick={() => setInternalSourceFilter(filter.id)}
+                >
+                  {filter.label}
+                </button>
+              ))}
+            </div>
+          ) : null}
 
           {notice ? <p className="storage-notice">{notice}</p> : null}
 
@@ -253,7 +262,7 @@ function RelicStorageSection({
               ))}
             </div>
           ) : (
-            <p className="muted-text">저장된 유물이 없습니다.</p>
+            <p className="muted-text">{emptyText}</p>
           )}
         </>
       )}

@@ -633,6 +633,23 @@ function facilityPoiKey(key: PatternListKey, item: PatternPoint) {
   return `${key}-${item.poi_id ?? 'none'}-${item.value ?? item.boss ?? item.event ?? ''}`;
 }
 
+function removeForsakenHollowsNight2OverlappingSlots(
+  slots: SlotOverlay[],
+  mapType: string,
+  pattern: PatternRow | undefined,
+) {
+  if (mapType !== 'Forsaken Hollows') {
+    return slots;
+  }
+
+  const night2Position = poiPosition(pattern?.night2?.poi_id);
+  if (!night2Position) {
+    return slots;
+  }
+
+  return slots.filter((slot) => Math.hypot(slot.x - night2Position.x, slot.y - night2Position.y) >= 0.2);
+}
+
 function slotBasesForFacility(key: PatternListKey) {
   const bases: Partial<Record<PatternListKey, string[]>> = {
     churches: ['church', 'church_spawn'],
@@ -841,15 +858,17 @@ const MapPage = () => {
   );
 
   const slotOverlays = useMemo(
-    () =>
-      baseSlotOverlays.map((slot) => ({
+    () => {
+      const slots = baseSlotOverlays.map((slot) => ({
         ...slot,
         details: slotDetails(slot.rawValue, [
           ...(facilityPoiAssignments.bySlot.get(slot.itemId) ?? []),
           ...(fieldBossPoiAssignments.bySlot.get(slot.itemId) ?? []),
         ]),
-      })),
-    [baseSlotOverlays, facilityPoiAssignments, fieldBossPoiAssignments],
+      }));
+      return removeForsakenHollowsNight2OverlappingSlots(slots, currentMapType, currentPattern);
+    },
+    [baseSlotOverlays, currentMapType, currentPattern, facilityPoiAssignments, fieldBossPoiAssignments],
   );
 
   const poiMarkers = useMemo<PoiMarker[]>(() => {

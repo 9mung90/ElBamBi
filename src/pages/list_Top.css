@@ -311,7 +311,7 @@
 
 .my-page-profile-list {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 10px;
   margin: 0;
 }
@@ -398,7 +398,9 @@
 }
 
 .my-page-more-button,
-.my-page-logout-button {
+.my-page-logout-button,
+.my-page-submit-button,
+.my-page-delete-button {
   border: 1px solid var(--night-border-strong);
   border-radius: 7px;
   background: var(--night-accent-bg);
@@ -411,6 +413,58 @@
 }
 
 .my-page-logout-button {
+  border-color: rgba(255, 155, 145, 0.42);
+  background: var(--night-red-bg);
+  color: var(--night-red);
+}
+
+.my-page-edit-card,
+.my-page-danger-card {
+  grid-column: span 1;
+}
+
+.my-page-form,
+.my-page-password-fields {
+  display: grid;
+  gap: 10px;
+}
+
+.my-page-form label {
+  display: grid;
+  gap: 6px;
+  color: var(--night-text-soft);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.my-page-form input {
+  width: 100%;
+  min-height: 38px;
+  padding: 0 10px;
+  border: 1px solid rgba(143, 174, 230, 0.24);
+  border-radius: 7px;
+  background: var(--night-input);
+  color: var(--night-text);
+  box-sizing: border-box;
+  font: inherit;
+}
+
+.my-page-form input::placeholder {
+  color: var(--night-muted);
+}
+
+.my-page-submit-button,
+.my-page-delete-button {
+  justify-self: start;
+}
+
+.my-page-submit-button:disabled,
+.my-page-delete-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.my-page-delete-button {
   border-color: rgba(255, 155, 145, 0.42);
   background: var(--night-red-bg);
   color: var(--night-red);
@@ -436,6 +490,12 @@
   border: 1px solid rgba(218, 80, 88, 0.28);
   background: var(--night-red-bg);
   color: var(--night-red);
+}
+
+.my-page-message.is-success {
+  border: 1px solid rgba(87, 190, 120, 0.28);
+  background: var(--night-green-bg);
+  color: var(--night-green);
 }
 
 .auth-switch-row {
@@ -999,6 +1059,23 @@
   box-sizing: border-box;
 }
 
+.character-card-button {
+  width: 100%;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.character-card-button:hover {
+  border-color: rgba(157, 190, 255, 0.55);
+  background: rgba(34, 53, 91, 0.9);
+}
+
+.character-card-button:focus-visible {
+  outline: 2px solid rgba(120, 221, 255, 0.72);
+  outline-offset: 2px;
+}
+
 .character-card-top {
   display: grid;
   grid-template-columns: 74px minmax(0, 1fr);
@@ -1107,6 +1184,60 @@
   border-color: rgba(157, 190, 255, 0.55);
   background: rgba(34, 53, 91, 0.72);
   color: var(--night-text);
+}
+
+.skin-back-button {
+  min-height: 38px;
+  padding: 0 14px;
+  border: 1px solid var(--night-border);
+  border-radius: 8px;
+  background: var(--night-surface-3);
+  color: var(--night-text-soft);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 800;
+}
+
+.skin-back-button:hover {
+  border-color: rgba(157, 190, 255, 0.55);
+  background: rgba(34, 53, 91, 0.72);
+  color: var(--night-text);
+}
+
+.skin-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.skin-card {
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid var(--night-border-soft);
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgba(17, 26, 48, 0.98), rgba(9, 15, 29, 0.98));
+  box-sizing: border-box;
+}
+
+.skin-card img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  display: block;
+  object-fit: contain;
+}
+
+.skin-card-name {
+  position: absolute;
+  left: 12px;
+  bottom: 10px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: rgba(5, 9, 18, 0.72);
+  color: var(--night-text);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
 }
 
 .weapon-card-button {
@@ -4021,6 +4152,10 @@
     grid-template-columns: 1fr;
   }
 
+  .my-page-profile-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .relic-preset-controls,
   .relic-builder-controls,
   .save-parser-controls {
@@ -4085,6 +4220,10 @@
   }
 
   .option-card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .my-page-profile-list {
     grid-template-columns: 1fr;
   }
 

@@ -348,10 +348,28 @@ function RelicBuilderPage({
   const duplicateDebuffKeys = selectedDebuffKeys.filter(
     (key, index) => key && selectedDebuffKeys.indexOf(key) !== index,
   );
+  const duplicateDebuffKeySet = new Set(duplicateDebuffKeys);
   const debuffReasons = [
     ...missingDebuffIndexes.map((index) => `${SLOT_LABELS[index]} 슬롯 옵션은 디버프가 필요합니다.`),
-    ...[...new Set(duplicateDebuffKeys)].map(() => '같은 디버프를 두 번 선택할 수 없습니다.'),
+    ...[...duplicateDebuffKeySet].map(() => '같은 디버프를 두 번 선택할 수 없습니다.'),
   ];
+  const invalidSlotReasonLines = selectedReasons
+    .map((reasons, index) => {
+      const slotReasons = [...reasons];
+
+      if (missingDebuffIndexes.includes(index)) {
+        slotReasons.push('디버프가 필요합니다.');
+      }
+
+      if (selectedDebuffKeys[index] && duplicateDebuffKeySet.has(selectedDebuffKeys[index])) {
+        slotReasons.push('같은 디버프를 두 번 선택할 수 없습니다.');
+      }
+
+      return slotReasons.length
+        ? `${SLOT_LABELS[index]} 슬롯: ${[...new Set(slotReasons)].join(' / ')}`
+        : '';
+    })
+    .filter(Boolean);
   const isCompleteWithDebuff = isComplete && missingDebuffIndexes.length === 0;
   const isValidComplete = isCompleteWithDebuff && resultReasons.length === 0 && debuffReasons.length === 0;
 
@@ -640,10 +658,10 @@ function RelicBuilderPage({
           <div className="relic-builder-overall">
             <strong>종합 판정</strong>
             {isCompleteWithDebuff ? (
-              resultReasons.length || debuffReasons.length ? (
+              invalidSlotReasonLines.length ? (
                 <ul className="relic-builder-reasons">
-                  {[...new Set([...resultReasons, ...debuffReasons])].map((reason) => (
-                    <li key={reason}>{reason}</li>
+                  {invalidSlotReasonLines.map((reasonLine) => (
+                    <li key={reasonLine}>{reasonLine}</li>
                   ))}
                 </ul>
               ) : (
@@ -657,11 +675,6 @@ function RelicBuilderPage({
               </span>
             )}
           </div>
-
-          <p className="relic-builder-limit-note">
-            데이터 원문 기준 검증 코드는 완전히 복원되지 않았으므로, 이 페이지는 JSON에 들어 있는
-            추정 규칙을 앱용으로 적용합니다.
-          </p>
         </section>
         <div className="relic-builder-save-actions">
           <button type="button" className="relic-builder-save-button" disabled={isSavingRelic} onClick={handleSaveRelic}>

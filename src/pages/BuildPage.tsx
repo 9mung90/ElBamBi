@@ -23,6 +23,7 @@ type WritableBuildPostCategory = 'Class Builds' | 'Strategy' | 'Questions' | 'Fr
 type BoardTabId = 'all' | 'popular' | 'class-builds' | 'strategy' | 'questions' | 'free-board';
 type SortKey = 'latest' | 'popular' | 'views';
 type BoardMode = 'detail' | 'edit' | 'list' | 'write';
+type AuthRole = 'USER' | 'ADMIN';
 
 const nightAssetUrls = import.meta.glob('../assets/images/night/**/*.webp', {
   eager: true,
@@ -254,10 +255,12 @@ const communityApi = {
   addPost: '/api/addCommunityPost',
   editPost: '/api/editCommunityPost',
   deletePost: '/api/deleteCommunityPost',
+  adminPosts: '/api/admin/posts',
   comments: '/api/comments',
   postComments: '/api/postComments',
   addComment: '/api/addComment',
   deleteComment: '/api/deleteComment',
+  adminComments: '/api/admin/comments',
   images: '/api/postImages',
   addImage: '/api/addPostImage',
   presignImage: '/api/communityPosts/images/presign',
@@ -573,12 +576,20 @@ function isPostAuthor(post: BuildPost, authUserId: string | null) {
   return Boolean(post.userId && (post.userId === authUserId || post.userId === authUserProfile?.userId));
 }
 
+function getAdminPostPath(postId: string) {
+  return `${communityApi.adminPosts}/${encodeURIComponent(postId)}`;
+}
+
+function getAdminCommentPath(commentId: string) {
+  return `${communityApi.adminComments}/${encodeURIComponent(commentId)}`;
+}
+
 async function requestApi<T>(
   path: string,
   options: {
     includeAuth?: boolean;
     bodyAsJson?: boolean;
-    method?: 'GET' | 'POST';
+    method?: 'DELETE' | 'GET' | 'POST';
     query?: Record<string, ApiBodyValue>;
     body?: Record<string, ApiBodyValue>;
   } = {},
@@ -1244,6 +1255,15 @@ function getErrorMessage(error: unknown, fallback: string) {
   return fallback;
 }
 
+function getAdminDeleteErrorMessage(error: unknown, fallback: string) {
+  if (isApiRequestError(error)) {
+    if (error.status === 401) return '로그인이 필요합니다.';
+    if (error.status === 403) return '관리자 권한이 없습니다.';
+    return error.message || fallback;
+  }
+  return fallback;
+}
+
 async function findCreatedPostId(draft: CreatedPostLookupDraft) {
   const userPosts = await requestApi<CommunityPostResponse[]>(communityApi.postsByUser);
   const posts = Array.isArray(userPosts) ? userPosts.map(normalizePost) : [];
@@ -1360,18 +1380,22 @@ function BoardSearchBar({
 }
 
 function BoardPostList({
+  isAdmin,
   posts,
   selectedPostId,
   totalCount,
   pageStartIndex,
   onSelectPost,
+  onAdminDeletePost,
   onToggleLike,
 }: {
+  isAdmin: boolean;
   posts: BuildPost[];
   selectedPostId: string | null;
   totalCount: number;
   pageStartIndex: number;
   onSelectPost: (post: BuildPost) => void;
+  onAdminDeletePost: (post: BuildPost) => void;
   onToggleLike: (post: BuildPost) => void;
 }) {
   return (
@@ -1388,6 +1412,7 @@ function BoardPostList({
             <th>조회</th>
             <th>추천</th>
             <th>댓글</th>
+            {isAdmin ? <th>관리</th> : null}
           </tr>
         </thead>
         <tbody>
@@ -1434,12 +1459,23 @@ function BoardPostList({
                     </button>
                   </td>
                   <td>{post.comments.length}</td>
+                  {isAdmin ? (
+                    <td>
+                      <button
+                        type="button"
+                        className="build-admin-delete-button is-danger"
+                        onClick={() => onAdminDeletePost(post)}
+                      >
+                        관리자 삭제
+                      </button>
+                    </td>
+                  ) : null}
                 </tr>
               );
             })
           ) : (
             <tr>
-              <td colSpan={9} className="build-table-empty">
+              <td colSpan={isAdmin ? 10 : 9} className="build-table-empty">
                 조건에 맞는 빌드 글이 없습니다.
               </td>
             </tr>
@@ -2143,12 +2179,15 @@ function BuildPostWritePage({
 
 function BuildPostDetail({
   canEdit,
+  isAdmin,
   post,
   commentText,
   commentParentId,
   onCommentTextChange,
   onSetCommentParentId,
   onCreateComment,
+  onAdminDeleteComment,
+  onAdminDeletePost,
   onDeleteComment,
   onToggleLike,
   onToggleBookmark,
@@ -2157,12 +2196,15 @@ function BuildPostDetail({
   onReportPost,
 }: {
   canEdit: boolean;
+  isAdmin: boolean;
   post: BuildPost;
   commentText: string;
   commentParentId: string | null;
   onCommentTextChange: (value: string) => void;
   onSetCommentParentId: (commentId: string | null) => void;
   onCreateComment: (event: FormEvent<HTMLFormElement>) => void;
+  onAdminDeleteComment: (comment: BuildComment) => void;
+  onAdminDeletePost: (post: BuildPost) => void;
   onDeleteComment: (comment: BuildComment) => void;
   onToggleLike: (post: BuildPost) => void;
   onToggleBookmark: (post: BuildPost) => void;
@@ -2204,6 +2246,11 @@ function BuildPostDetail({
           <button type="button" className="is-danger" onClick={() => onDeletePost(post)}>
             삭제
           </button>
+          {isAdmin ? (
+            <button type="button" className="is-danger" onClick={() => onAdminDeletePost(post)}>
+              관리자 삭제
+            </button>
+          ) : null}
         </div>
       </div>
 
@@ -2238,6 +2285,11 @@ function BuildPostDetail({
                 <button type="button" className="is-danger" onClick={() => onDeleteComment(comment)}>
                   삭제
                 </button>
+                {isAdmin ? (
+                  <button type="button" className="is-danger" onClick={() => onAdminDeleteComment(comment)}>
+                    관리자 삭제
+                  </button>
+                ) : null}
               </div>
             </div>
           ))
@@ -2270,10 +2322,12 @@ function BuildPostDetail({
 }
 
 function BuildPage({
+  authRole,
   authUserId,
   focusPostId,
   searchQuery,
 }: {
+  authRole?: AuthRole;
   authUserId: string | null;
   focusPostId?: string | null;
   searchQuery: string;
@@ -2389,6 +2443,7 @@ function BuildPage({
   const pageStartIndex = (currentPage - 1) * postsPerPage;
   const pagedPosts = visiblePosts.slice(pageStartIndex, pageStartIndex + postsPerPage);
   const selectedPost = selectedPostId ? posts.find((post) => post.id === selectedPostId) ?? null : null;
+  const isAdmin = authRole === 'ADMIN';
 
   function updateDraft<K extends keyof BuildPostDraft>(key: K, value: BuildPostDraft[K]) {
     setDraft((currentDraft) => ({
@@ -2616,6 +2671,24 @@ function BuildPage({
     }
   }
 
+  async function handleAdminDeletePost(post: BuildPost) {
+    if (!window.confirm('관리자 권한으로 이 게시글을 삭제하시겠습니까?')) return;
+
+    try {
+      await requestApi<string>(getAdminPostPath(post.id), {
+        method: 'DELETE',
+      });
+      setPosts((currentPosts) => currentPosts.filter((currentPost) => currentPost.id !== post.id));
+      if (selectedPostId === post.id) {
+        setSelectedPostId(null);
+        setBoardMode('list');
+      }
+      setNotice('게시글이 관리자 권한으로 삭제되었습니다.');
+    } catch (error) {
+      setNotice(getAdminDeleteErrorMessage(error, '게시글 관리자 삭제에 실패했습니다.'));
+    }
+  }
+
   function handleStartEditPost(post: BuildPost) {
     if (!isPostAuthor(post, authUserId)) {
       setNotice('이 글을 수정할 권한이 없습니다.');
@@ -2677,6 +2750,25 @@ function BuildPage({
     }
   }
 
+  async function handleAdminDeleteComment(comment: BuildComment) {
+    if (!window.confirm('관리자 권한으로 이 댓글을 삭제하시겠습니까?')) return;
+
+    try {
+      await requestApi<string>(getAdminCommentPath(comment.id), {
+        method: 'DELETE',
+      });
+      setPosts((currentPosts) =>
+        currentPosts.map((post) => ({
+          ...post,
+          comments: post.comments.filter((currentComment) => currentComment.id !== comment.id),
+        })),
+      );
+      setNotice('댓글이 관리자 권한으로 삭제되었습니다.');
+    } catch (error) {
+      setNotice(getAdminDeleteErrorMessage(error, '댓글 관리자 삭제에 실패했습니다.'));
+    }
+  }
+
   if (boardMode === 'write') {
     return (
       <BuildPostWritePage
@@ -2722,12 +2814,15 @@ function BuildPage({
         {selectedPost ? (
           <BuildPostDetail
             canEdit={isPostAuthor(selectedPost, authUserId)}
+            isAdmin={isAdmin}
             post={selectedPost}
             commentText={commentText}
             commentParentId={commentParentId}
             onCommentTextChange={setCommentText}
             onSetCommentParentId={setCommentParentId}
             onCreateComment={handleCreateComment}
+            onAdminDeleteComment={handleAdminDeleteComment}
+            onAdminDeletePost={handleAdminDeletePost}
             onDeleteComment={handleDeleteComment}
             onToggleLike={handleToggleLike}
             onToggleBookmark={handleToggleBookmark}
@@ -2784,11 +2879,13 @@ function BuildPage({
           <p className="build-empty">빌드 글을 불러오는 중입니다.</p>
         ) : (
           <BoardPostList
+            isAdmin={isAdmin}
             posts={pagedPosts}
             selectedPostId={selectedPostId}
             totalCount={visiblePosts.length}
             pageStartIndex={pageStartIndex}
             onSelectPost={handleSelectPost}
+            onAdminDeletePost={handleAdminDeletePost}
             onToggleLike={handleToggleLike}
           />
         )}
