@@ -117,7 +117,9 @@ const lastPageStorageKey = 'nightreign:last-page';
 const authViewStorageKey = 'nightreign:auth-view';
 const pullToRefreshThreshold = 90;
 const nicknameRoutePath = '/nick';
+const verifyEmailRoutePath = '/verify-email';
 const mainRoutePath = '/main';
+const verifyingEmailTokens = new Map<string, Promise<unknown>>();
 
 type MyPageOverviewData = {
   profile: Record<string, unknown> | null;
@@ -153,6 +155,19 @@ type MyPageMeResponse = {
 };
 
 class LoginRequiredError extends Error {}
+
+class AuthRequestError extends Error {
+  code: string;
+  status: number;
+  payload: unknown;
+
+  constructor(status: number, message: string, code: string, payload: unknown) {
+    super(message);
+    this.status = status;
+    this.code = code;
+    this.payload = payload;
+  }
+}
 
 function getStoredPageId() {
   const storedId = getStoredValue(lastPageStorageKey);
@@ -212,6 +227,12 @@ function getErrorMessageFromPayload(payload: unknown) {
     if (typeof record.error === 'string') return record.error;
   }
   return '';
+}
+
+function getCodeFromPayload(payload: unknown) {
+  if (!payload || typeof payload !== 'object') return '';
+  const code = (payload as { code?: unknown }).code;
+  return typeof code === 'string' ? code : '';
 }
 
 function getRecord(value: unknown): Record<string, unknown> | null {
@@ -369,6 +390,7 @@ function getUserIdFromAccessToken(token: string | null) {
 }
 
 function getAccessTokenFromLocationSearch() {
+  if (window.location.pathname === verifyEmailRoutePath) return null;
   const params = new URLSearchParams(window.location.search);
   const accessToken = params.get('accessToken') ?? params.get('access_token') ?? params.get('token');
   return accessToken && accessToken.trim() ? accessToken : null;
@@ -379,6 +401,7 @@ function getNeedsNicknameFromLocationSearch() {
 }
 
 function hasOAuthRedirectParams() {
+  if (window.location.pathname === verifyEmailRoutePath) return false;
   const params = new URLSearchParams(window.location.search);
   return (
     params.has('accessToken') ||
@@ -420,7 +443,50 @@ async function postNicknameForm(nickname: string, accessTokenOverride?: string |
 
   return message || '닉네임이 저장되었습니다.';
 }
-async function postAuthForm(path: string, data: Record<string, string>): Promise<string> {
+
+async function readResponsePayload(response: Response) {
+  const contentType = response.headers.get('content-type') ?? '';
+  const text = await response.text();
+  if (!text) return undefined;
+  return contentType.includes('application/json') ? JSON.parse(text) : text;
+}
+
+async function postPublicJson(path: string, data: Record<string, string>): Promise<unknown> {
+  const response = await fetch(`${apiBaseUrl}${path}`, {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json;charset=UTF-8',
+    },
+    body: JSON.stringify(data),
+  });
+  const payload = await readResponsePayload(response);
+  const message = getErrorMessageFromPayload(payload);
+
+  if (!response.ok) {
+    throw new AuthRequestError(
+      response.status,
+      message || '요청을 처리하지 못했습니다.',
+      getCodeFromPayload(payload),
+      payload,
+    );
+  }
+
+  return payload;
+}
+
+function postVerifyEmail(token: string) {
+  return postPublicJson('/api/auth/verify-email', { token });
+}
+
+function postResendVerification(email: string) {
+  return postPublicJson('/api/auth/resend-verification', { email });
+}
+
+async function postAuthForm(
+  path: string,
+  data: Record<string, string>,
+  options: { storeAuth?: boolean } = {},
+): Promise<string> {
   const body = new URLSearchParams(data);
   const response = await fetch(`${apiBaseUrl}${path}`, {
     method: 'POST',
@@ -429,21 +495,26 @@ async function postAuthForm(path: string, data: Record<string, string>): Promise
     },
     body,
   });
-  const contentType = response.headers.get('content-type') ?? '';
-  const text = await response.text();
-  const payload = contentType.includes('application/json') && text ? JSON.parse(text) : text;
+  const payload = await readResponsePayload(response);
   const message = getMessageFromPayload(payload);
+  const code = getCodeFromPayload(payload);
   const accessToken = getAccessTokenFromPayload(payload);
   const userId = getUserIdFromAccessToken(accessToken);
-  if (accessToken) {
-    setStoredValue(accessTokenStorageKey, accessToken);
-  }
-  if (userId) {
-    setStoredValue(authUserIdStorageKey, userId);
+
+  if (!response.ok || code === 'EMAIL_NOT_VERIFIED') {
+    throw new AuthRequestError(
+      response.status,
+      getErrorMessageFromPayload(payload) || message || '요청을 처리하지 못했습니다.',
+      code,
+      payload,
+    );
   }
 
-  if (!response.ok) {
-    throw new Error(message || '요청을 처리하지 못했습니다.');
+  if ((options.storeAuth ?? true) && accessToken) {
+    setStoredValue(accessTokenStorageKey, accessToken);
+  }
+  if ((options.storeAuth ?? true) && userId) {
+    setStoredValue(authUserIdStorageKey, userId);
   }
 
   return message || (typeof payload === 'string' ? payload : '');
@@ -571,6 +642,80 @@ function NicknamePage({
     </main>
   );
 }
+
+function VerifyEmailPage({ onGoToLogin }: { onGoToLogin: () => void }) {
+  const [status, setStatus] = useState<'missing' | 'loading' | 'success' | 'error'>(() => {
+    const token = new URLSearchParams(window.location.search).get('token')?.trim();
+    return token ? 'loading' : 'missing';
+  });
+
+  useEffect(() => {
+    const token = new URLSearchParams(window.location.search).get('token')?.trim();
+    if (!token) {
+      setStatus('missing');
+      return;
+    }
+
+    let isMounted = true;
+    setStatus('loading');
+
+    const request = verifyingEmailTokens.get(token) ?? postVerifyEmail(token);
+    verifyingEmailTokens.set(token, request);
+
+    request
+      .then(() => {
+        if (isMounted) setStatus('success');
+      })
+      .catch(() => {
+        verifyingEmailTokens.delete(token);
+        if (isMounted) setStatus('error');
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const title =
+    status === 'success'
+      ? '이메일 인증 완료'
+      : status === 'loading'
+        ? '이메일 인증 중'
+        : '이메일 인증 실패';
+  const message =
+    status === 'success'
+      ? '이메일 인증이 완료되었습니다.'
+      : status === 'loading'
+        ? '이메일 인증을 확인하고 있습니다.'
+        : status === 'missing'
+          ? '인증 토큰이 없습니다. 이메일의 인증 링크를 다시 확인해주세요.'
+          : '인증 링크가 만료되었거나 올바르지 않습니다.';
+
+  return (
+    <main className="list-top-shell verify-email-shell">
+      <section className="auth-page" aria-labelledby="verify-email-title">
+        <div className="auth-panel verify-email-panel">
+          <p className="list-page-kicker">Email Verification</p>
+          <h1 id="verify-email-title">{title}</h1>
+          <p className={`auth-message ${status === 'success' ? 'is-success' : status === 'loading' ? '' : 'is-error'}`}>
+            {message}
+          </p>
+          {status !== 'loading' ? (
+            <button type="button" className="auth-submit-button" onClick={onGoToLogin}>
+              로그인 페이지로 이동
+            </button>
+          ) : null}
+          {status === 'error' ? (
+            <p className="auth-help-text">
+              로그인 페이지에서 계정 정보를 입력한 뒤 인증 메일을 다시 받을 수 있습니다.
+            </p>
+          ) : null}
+        </div>
+      </section>
+    </main>
+  );
+}
+
 function AuthPage({
   view,
   onChangeView,
@@ -589,11 +734,21 @@ function AuthPage({
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [needsEmailVerification, setNeedsEmailVerification] = useState(false);
+  const [verificationEmail, setVerificationEmail] = useState('');
+  const [resendMessage, setResendMessage] = useState<string | null>(null);
+  const [resendError, setResendError] = useState<string | null>(null);
+  const [isResendingVerification, setIsResendingVerification] = useState(false);
+
+  const resendEmail = verificationEmail.trim() || (loginId.includes('@') ? loginId.trim() : '');
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError(null);
     setMessage(null);
+    setResendMessage(null);
+    setResendError(null);
+    setNeedsEmailVerification(false);
     setIsSubmitting(true);
 
     try {
@@ -604,21 +759,52 @@ function AuthPage({
         return;
       }
 
-      const result = await postAuthForm('/api/sign', {
+      await postAuthForm('/api/sign', {
         loginId,
         password,
         confirmPassword,
         email,
         nickname,
-      });
-      setMessage(result || '회원가입이 완료되었습니다. 로그인해 주세요.');
+      }, { storeAuth: false });
+      setMessage(
+        '회원가입이 완료되었습니다. 이메일 인증 후 로그인할 수 있습니다. 메일함과 스팸함을 확인해주세요.',
+      );
       setPassword('');
       setConfirmPassword('');
-      onChangeView('login');
+      setEmail('');
+      setNickname('');
     } catch (requestError) {
+      if (isLogin && requestError instanceof AuthRequestError && requestError.code === 'EMAIL_NOT_VERIFIED') {
+        setNeedsEmailVerification(true);
+        setVerificationEmail(loginId.includes('@') ? loginId : '');
+        setError('이메일 인증 후 로그인할 수 있습니다.');
+        return;
+      }
       setError(requestError instanceof Error ? requestError.message : String(requestError));
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleResendVerification = async () => {
+    setResendError(null);
+    setResendMessage(null);
+    const emailToSend = resendEmail;
+
+    if (!emailToSend) {
+      setResendError('인증 메일을 받을 이메일을 입력해주세요.');
+      return;
+    }
+
+    setIsResendingVerification(true);
+
+    try {
+      await postResendVerification(emailToSend);
+      setResendMessage('인증 메일을 다시 보냈습니다. 메일함을 확인해주세요.');
+    } catch (requestError) {
+      setResendError(requestError instanceof Error ? requestError.message : String(requestError));
+    } finally {
+      setIsResendingVerification(false);
     }
   };
 
@@ -691,9 +877,34 @@ function AuthPage({
           {error ? <p className="auth-message is-error">{error}</p> : null}
           {message ? <p className="auth-message is-success">{message}</p> : null}
           <button type="submit" className="auth-submit-button" disabled={isSubmitting}>
-            {isLogin ? '로그인' : '회원가입'}
+            {isSubmitting ? '처리 중...' : isLogin ? '로그인' : '회원가입'}
           </button>
         </form>
+
+        {isLogin && needsEmailVerification ? (
+          <div className="auth-resend-box">
+            <label>
+              이메일
+              <input
+                type="email"
+                value={verificationEmail}
+                onChange={(event) => setVerificationEmail(event.target.value)}
+                placeholder={loginId.includes('@') ? loginId : '가입한 이메일'}
+                autoComplete="email"
+              />
+            </label>
+            <button
+              type="button"
+              className="auth-secondary-button"
+              disabled={isResendingVerification}
+              onClick={handleResendVerification}
+            >
+              {isResendingVerification ? '전송 중...' : '인증 메일 다시 보내기'}
+            </button>
+            {resendMessage ? <p className="auth-message is-success">{resendMessage}</p> : null}
+            {resendError ? <p className="auth-message is-error">{resendError}</p> : null}
+          </div>
+        ) : null}
 
         {isLogin ? (
           <div className="auth-oauth-area">
@@ -714,6 +925,9 @@ function AuthPage({
             onClick={() => {
               setError(null);
               setMessage(null);
+              setNeedsEmailVerification(false);
+              setResendMessage(null);
+              setResendError(null);
               onChangeView(isLogin ? 'signup' : 'login');
             }}
           >
@@ -1544,6 +1758,9 @@ function ListTop() {
       window.location.pathname === nicknameRoutePath ||
       Boolean(getAccessTokenFromLocationSearch() && getNeedsNicknameFromLocationSearch()),
   );
+  const [isVerifyEmailRoute, setIsVerifyEmailRoute] = useState(
+    () => window.location.pathname === verifyEmailRoutePath,
+  );
   const [nicknameAccessToken, setNicknameAccessToken] = useState(() => getAccessTokenFromLocationSearch());
   const [relicStorageRefreshKey, setRelicStorageRefreshKey] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
@@ -1637,6 +1854,7 @@ function ListTop() {
   useEffect(() => {
     const handlePopState = () => {
       setIsNicknameRoute(window.location.pathname === nicknameRoutePath);
+      setIsVerifyEmailRoute(window.location.pathname === verifyEmailRoutePath);
       setNicknameAccessToken(getAccessTokenFromLocationSearch());
     };
 
@@ -1908,6 +2126,16 @@ function ListTop() {
     setAuthView('login');
   };
 
+  const openLoginPage = () => {
+    setIsVerifyEmailRoute(false);
+    setIsNicknameRoute(false);
+    setIsMyPageOpen(false);
+    setAuthView('login');
+    setSearchQuery('');
+    setIsFilterPanelOpen(false);
+    window.history.replaceState(null, '', mainRoutePath);
+  };
+
   const handleOpenMyPagePost = (postId: string) => {
     setBuildFocusPostId(postId);
     setSelectedId('builds');
@@ -1915,6 +2143,10 @@ function ListTop() {
     setSearchQuery('');
     setIsFilterPanelOpen(false);
   };
+
+  if (isVerifyEmailRoute) {
+    return <VerifyEmailPage onGoToLogin={openLoginPage} />;
+  }
 
   if (isNicknameRoute) {
     return (
@@ -2379,4 +2611,3 @@ function ListTop() {
 }
 
 export default ListTop;
-
