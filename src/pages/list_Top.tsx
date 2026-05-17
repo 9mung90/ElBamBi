@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type FormEvent, type ReactNode } from 'react';
+﻿import { useEffect, useMemo, useState, type FormEvent, type ReactNode } from 'react';
 import type { RelicScanResult, CharacterSlot } from '../utils/nightreignSaveParser';
 import { ashes } from '../data/ashes';
 import AshesPage from './AshesPage';
@@ -408,7 +408,6 @@ async function postNicknameForm(nickname: string, accessTokenOverride?: string |
     method: 'POST',
     headers,
     body,
-    credentials: 'include',
   });
   const contentType = response.headers.get('content-type') ?? '';
   const text = await response.text();
