@@ -1198,7 +1198,6 @@ const MapPage = () => {
     <section className="map-page" aria-label="Nightreign 맵">
       <header className="map-page-heading">
         <div>
-          <p className="list-page-kicker">Nightreign Map</p>
           <h2>맵 식별 도구</h2>
         </div>
         <div className="map-summary-pills" aria-label="현재 맵 요약">

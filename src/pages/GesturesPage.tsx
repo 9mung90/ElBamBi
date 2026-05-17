@@ -1,5 +1,8 @@
 import { useMemo } from 'react';
 import { gestures, type Gesture } from '../data/gestures';
+import { isCatalogItemVisibleByName } from './catalogVisibility';
+
+const visibleGestures = gestures.filter((gesture) => isCatalogItemVisibleByName(gesture));
 
 function matchesGestureSearch(gesture: Gesture, query: string) {
   const normalizedQuery = query.trim().toLowerCase();
@@ -12,7 +15,7 @@ function matchesGestureSearch(gesture: Gesture, query: string) {
 
 function GestureCard({ gesture }: { gesture: Gesture }) {
   return (
-    <article className="catalog-card compact-catalog-card">
+    <article className="catalog-card compact-catalog-card gesture-card">
       <div className="catalog-card-header">
         <img src={gesture.img} alt="" className="catalog-icon-image" />
         <div>
@@ -26,7 +29,7 @@ function GestureCard({ gesture }: { gesture: Gesture }) {
 
 function GesturesPage({ searchQuery }: { searchQuery: string }) {
   const filteredGestures = useMemo(
-    () => gestures.filter((gesture) => matchesGestureSearch(gesture, searchQuery)),
+    () => visibleGestures.filter((gesture) => matchesGestureSearch(gesture, searchQuery)),
     [searchQuery],
   );
 
@@ -37,7 +40,7 @@ function GesturesPage({ searchQuery }: { searchQuery: string }) {
           <h2 id="gestures-title">제스처</h2>
         </div>
         <span className="option-count">
-          {filteredGestures.length} / {gestures.length}
+          {filteredGestures.length} / {visibleGestures.length}
         </span>
       </div>
 

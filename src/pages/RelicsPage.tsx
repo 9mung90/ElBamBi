@@ -261,9 +261,17 @@ function getPresetSlotDisplayIndex(slotIndex: number) {
   return (slotIndex % 3) + 1;
 }
 
-function canRelicFitSlot(relic: StoredRelic, slotColor: string | undefined) {
+function isDeepNightPresetRelic(relic: StoredRelic) {
+  const modeId = relic.modeId.toLowerCase();
+  return modeId.includes('deep') || modeId.includes('dn') || Boolean(relic.debuffs?.length);
+}
+
+function canRelicFitSlot(relic: StoredRelic, slotColor: string | undefined, slotIndex?: number) {
   const normalizedSlotColor = normalizeRelicColor(slotColor);
   if (!normalizedSlotColor) return false;
+  if (slotIndex !== undefined && isDeepNightPresetRelic(relic) !== shouldIncludePresetDebuffs(slotIndex)) {
+    return false;
+  }
   if (normalizedSlotColor === 'white') return true;
 
   return normalizeRelicColor(relic.color) === normalizedSlotColor;
@@ -280,7 +288,7 @@ function sanitizePresetSlots(
       : null;
     const slotColor = nextSlotColors[slotIndex];
 
-    return relic && canRelicFitSlot(relic, slotColor) ? relicId : null;
+    return relic && canRelicFitSlot(relic, slotColor, slotIndex) ? relicId : null;
   }) as PresetSlotRelics;
 }
 
@@ -426,7 +434,20 @@ function mergePresetRelics(storedRelics: StoredRelic[], cachedSaveRelics: Stored
   return [...relicsById.values()];
 }
 
+function isQuestRelicItem(itemId: number) {
+  const itemColorEntry = relicItemColorById.get(itemId);
+  const catalogEntry = relicCatalogById.get(itemId);
+  const typeText = [itemColorEntry?.type, catalogEntry?.type, catalogEntry?.raw]
+    .filter(Boolean)
+    .join(' ')
+    .toLowerCase();
+
+  return typeText.includes('quest') || typeText.includes('퀘스트');
+}
+
 function getStoredRelicImageUrl(relic: StoredRelic) {
+  if (!isQuestRelicItem(relic.itemId)) return undefined;
+
   return resolveRelicImageUrl(relicCatalogById.get(relic.itemId)?.image);
 }
 
@@ -696,7 +717,7 @@ function RelicPresetBuilder({
   );
   const placedRelicCount = selectedRelics.filter(Boolean).length;
   const activeSlotCandidateCount = activeSlotColor
-    ? ownedRelics.filter((relic) => canRelicFitSlot(relic, activeSlotColor)).length
+    ? ownedRelics.filter((relic) => canRelicFitSlot(relic, activeSlotColor, activeSlotIndex ?? undefined)).length
     : 0;
   const visibleCandidateRelics = useMemo(
     () =>
@@ -704,7 +725,7 @@ function RelicPresetBuilder({
         ? ownedRelics.filter((relic) => {
             const isCurrentSlotRelic = relic.relicId === placedRelicIds[activeSlotIndex];
             return (
-              canRelicFitSlot(relic, activeSlotColor) &&
+              canRelicFitSlot(relic, activeSlotColor, activeSlotIndex) &&
               (isCurrentSlotRelic || matchesStoredRelicPresetSearch(relic, searchQuery))
             );
           })
@@ -768,6 +789,7 @@ function RelicPresetBuilder({
 
   function handleSelectRelic(relic: StoredRelic) {
     if (activeSlotIndex === null) return;
+    if (!canRelicFitSlot(relic, activeSlotColor, activeSlotIndex)) return;
 
     const slotIndexToUpdate = activeSlotIndex;
 

@@ -2351,9 +2351,6 @@ function ListTop() {
         />
       ) : selectedId === 'save-parser' ? (
         <SaveParserPage
-          authUserId={authUserId}
-          storageRefreshKey={relicStorageRefreshKey}
-          onRelicsChanged={() => setRelicStorageRefreshKey((currentKey) => currentKey + 1)}
           characterSlot={characterSlot}
           setCharacterSlot={setCharacterSlot}
           selectedFile={selectedFile}
@@ -2382,5 +2379,4 @@ function ListTop() {
 }
 
 export default ListTop;
-
 

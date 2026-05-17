@@ -13,6 +13,7 @@ import holyIcon from '../assets/images/attribute/holy.png';
 import lightningIcon from '../assets/images/attribute/lightning.png';
 import magicIcon from '../assets/images/attribute/magic.png';
 import poisonIcon from '../assets/images/attribute/poison.png';
+import { isCatalogItemVisibleByName } from './catalogVisibility';
 
 type WeaponGroup = {
   id: number;
@@ -90,8 +91,11 @@ const nightAssetUrlsByLower = new Map(
 const nightfarerEquipmentImageByName = buildNightfarerEquipmentImageMap();
 const nightfarerDefaultEquipmentImages = buildNightfarerDefaultEquipmentImages();
 
-const weaponGroups = buildWeaponGroups(relicWeapons);
-export const weaponFilterOptions = buildWeaponFilterOptions(relicWeapons);
+const visibleRelicWeapons = relicWeapons.filter(
+  (weapon) => isCatalogItemVisibleByName(weapon) && isCatalogItemVisibleByName(getWeaponCatalogItem(weapon.name)),
+);
+const weaponGroups = buildWeaponGroups(visibleRelicWeapons);
+export const weaponFilterOptions = buildWeaponFilterOptions(visibleRelicWeapons);
 const weaponGroupIdAliases = new Map(
   [
     ["Raider's Greataxe", 23750000],

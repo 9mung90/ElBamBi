@@ -711,16 +711,30 @@ function StatsCalculatorPage({ searchQuery }: { searchQuery: string }) {
                 ))}
               </select>
             </label>
-            <label>
-              레벨
-              <input
-                type="number"
-                min={1}
-                max={15}
-                value={selectedLevel}
-                onChange={(event) => setSelectedLevel(Math.max(1, Math.min(15, Number(event.target.value))))}
-              />
-            </label>
+            <div className="calc-level-control">
+              <span>레벨</span>
+              <div className="calc-level-stepper" aria-label="레벨 선택">
+                <span>{selectedLevel}</span>
+                <div className="calc-level-stepper-buttons">
+                  <button
+                    type="button"
+                    aria-label="레벨 올리기"
+                    disabled={selectedLevel >= 15}
+                    onClick={() => setSelectedLevel((level) => Math.min(15, level + 1))}
+                  >
+                    ▲
+                  </button>
+                  <button
+                    type="button"
+                    aria-label="레벨 내리기"
+                    disabled={selectedLevel <= 1}
+                    onClick={() => setSelectedLevel((level) => Math.max(1, level - 1))}
+                  >
+                    ▼
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div className="calc-toggle-row">

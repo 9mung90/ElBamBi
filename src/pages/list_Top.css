@@ -887,6 +887,11 @@
   min-height: 150px;
 }
 
+.gesture-card {
+  min-height: 72px;
+  padding: 8px 10px;
+}
+
 .spell-card,
 .ash-card {
   gap: 6px;
@@ -1218,6 +1223,11 @@
   border-radius: 8px;
   background: linear-gradient(180deg, rgba(17, 26, 48, 0.98), rgba(9, 15, 29, 0.98));
   box-sizing: border-box;
+  transition:
+    border-color 0.18s ease,
+    background 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
 }
 
 .skin-card img {
@@ -1225,6 +1235,22 @@
   aspect-ratio: 3 / 4;
   display: block;
   object-fit: contain;
+  transform: translateY(-20px);
+  transition:
+    filter 0.18s ease,
+    transform 0.18s ease;
+}
+
+.skin-card:hover {
+  border-color: rgba(157, 190, 255, 0.55);
+  background: rgba(34, 53, 91, 0.9);
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.26);
+  transform: translateY(-3px);
+}
+
+.skin-card:hover img {
+  filter: brightness(1.12);
+  transform: translateY(-24px);
 }
 
 .skin-card-name {
@@ -2096,6 +2122,10 @@
   outline-offset: 2px;
 }
 
+.relic-card .option-meta-row {
+  margin-top: 0;
+}
+
 .relic-card-main {
   display: grid;
   grid-template-columns: 62px minmax(0, 1fr);
@@ -2428,12 +2458,69 @@
 }
 
 .calc-control-grid label,
+.calc-level-control,
 .calc-section-heading label {
   display: grid;
   gap: 6px;
   color: var(--night-text-soft);
   font-size: 12px;
   font-weight: 700;
+}
+
+.calc-level-stepper {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 30px;
+  min-height: 36px;
+  overflow: hidden;
+  border: 1px solid rgba(143, 174, 230, 0.24);
+  border-radius: 7px;
+  background: var(--night-input);
+  box-sizing: border-box;
+}
+
+.calc-level-stepper > span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  color: var(--night-text);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.calc-level-stepper-buttons {
+  display: grid;
+  border-left: 1px solid rgba(143, 174, 230, 0.18);
+}
+
+.calc-level-stepper-buttons button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: var(--night-surface-3);
+  color: var(--night-text-soft);
+  cursor: pointer;
+  font: inherit;
+  font-size: 9px;
+  line-height: 1;
+}
+
+.calc-level-stepper-buttons button + button {
+  border-top: 1px solid rgba(143, 174, 230, 0.18);
+}
+
+.calc-level-stepper-buttons button:hover:not(:disabled) {
+  background: rgba(34, 53, 91, 0.72);
+  color: var(--night-text);
+}
+
+.calc-level-stepper-buttons button:disabled {
+  cursor: not-allowed;
+  opacity: 0.42;
 }
 
 .calc-control-grid select,

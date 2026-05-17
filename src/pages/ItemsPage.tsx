@@ -5,6 +5,9 @@ import gradeFrame2 from '../assets/images/grade/2.webp';
 import gradeFrame3 from '../assets/images/grade/3.webp';
 import wendingGraceImage from '../assets/images/items/grace.webp';
 import { consumables, items, type ConsumableItem, type EtcItem } from '../data/items';
+import { isCatalogItemVisibleByName } from './catalogVisibility';
+
+const visibleConsumables = consumables.filter((item) => isCatalogItemVisibleByName(item));
 
 function matchesItemSearch(item: ConsumableItem, query: string) {
   const normalizedQuery = query.trim().toLowerCase();
@@ -77,7 +80,7 @@ function ItemsPage({ searchQuery }: { searchQuery: string }) {
   );
 
   const filteredItems = useMemo(
-    () => consumables.filter((item) => matchesItemSearch(item, searchQuery)),
+    () => visibleConsumables.filter((item) => matchesItemSearch(item, searchQuery)),
     [searchQuery],
   );
 
@@ -88,7 +91,7 @@ function ItemsPage({ searchQuery }: { searchQuery: string }) {
           <h2 id="items-title">기타</h2>
         </div>
         <span className="option-count">
-          {filteredItems.length} / {consumables.length}
+          {filteredItems.length} / {visibleConsumables.length}
         </span>
       </div>
 

@@ -1,5 +1,4 @@
 import { useState, type Dispatch, type DragEvent, type SetStateAction } from 'react';
-import RelicStorageSection from '../components/RelicStorageSection';
 import { relicEffectsKo, relicItemColorMap, relics, relicRollAppData } from '../data/relics';
 import type { RelicColor } from '../data/relics/types';
 import {
@@ -286,9 +285,6 @@ function RelicResultCard({ relic }: { relic: ParsedRelic }) {
 }
 
 type SaveParserPageProps = {
-  authUserId: string | null;
-  storageRefreshKey: number;
-  onRelicsChanged: () => void;
   characterSlot: CharacterSlot;
   setCharacterSlot: (slot: CharacterSlot) => void;
   selectedFile: File | null;
@@ -305,9 +301,6 @@ type SaveParserPageProps = {
 };
 
 function SaveParserPage({
-  authUserId,
-  storageRefreshKey,
-  onRelicsChanged,
   characterSlot,
   setCharacterSlot,
   selectedFile,
@@ -512,12 +505,6 @@ function SaveParserPage({
           )}
         </div>
       </div>
-
-      <RelicStorageSection
-        authUserId={authUserId}
-        refreshKey={storageRefreshKey}
-        onRelicsChanged={onRelicsChanged}
-      />
 
       {result ? (
         <div className="option-card-grid save-relic-grid">
