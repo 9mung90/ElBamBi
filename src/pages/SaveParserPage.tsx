@@ -1,4 +1,5 @@
 import { useState, type Dispatch, type DragEvent, type SetStateAction } from 'react';
+import ResponsiveSelect from '../components/ResponsiveSelect';
 import { relicEffectsKo, relicItemColorMap, relics, relicRollAppData } from '../data/relics';
 import type { RelicColor } from '../data/relics/types';
 import {
@@ -387,20 +388,20 @@ function SaveParserPage({
         <div className="calc-panel save-parser-controls">
           <label>
             캐릭터 슬롯
-            <select
-              value={characterSlot}
-              onChange={(event) => {
-                const nextSlot = Number(event.target.value) as CharacterSlot;
+            <ResponsiveSelect
+              value={String(characterSlot)}
+              ariaLabel="캐릭터 슬롯"
+              sheetTitle="캐릭터 슬롯 선택"
+              options={characterSlots.map((slot) => ({
+                value: String(slot),
+                label: `Slot ${slot}`,
+              }))}
+              onChange={(nextCharacterSlot) => {
+                const nextSlot = Number(nextCharacterSlot) as CharacterSlot;
                 setCharacterSlot(nextSlot);
                 if (selectedFile) void parseFile(selectedFile, nextSlot);
               }}
-            >
-              {characterSlots.map((slot) => (
-                <option key={slot} value={slot}>
-                  Slot {slot}
-                </option>
-              ))}
-            </select>
+            />
           </label>
 
           <label

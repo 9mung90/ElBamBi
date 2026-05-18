@@ -52,7 +52,7 @@ function ItemCard({ item, imageLookup }: { item: ConsumableItem; imageLookup: Ma
   const description = item.description_kor || item.description;
 
   return (
-    <article className="catalog-card">
+    <article className="catalog-card item-card">
       <div className="catalog-card-header">
         {image ? (
           <span className="catalog-image-frame" aria-hidden="true">

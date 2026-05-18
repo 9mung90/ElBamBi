@@ -2,6 +2,7 @@ import { useMemo, useRef, useState } from 'react';
 import { characterNames, characterStats, type CharacterStats } from '../data/characters';
 import { nightfarers, type Nightfarer } from '../data/nightfarers';
 import { relicEffectsKo, relicWeapons, type RelicEffect, type RelicWeapon } from '../data/relics';
+import ResponsiveSelect from '../components/ResponsiveSelect';
 
 type StatKey = 'STR' | 'DEX' | 'INT' | 'FAI' | 'ARC' | 'VIG' | 'MND' | 'END';
 type DamageKey = 'Phys' | 'Magic' | 'Fire' | 'Lightning' | 'Holy';
@@ -695,21 +696,22 @@ function StatsCalculatorPage({ searchQuery }: { searchQuery: string }) {
       <div className="calc-layout">
         <aside className="calc-panel">
           <div className="calc-control-grid">
-            <label>
+            <label className="calc-character-control">
               캐릭터
-              <select
+              <ResponsiveSelect
+                className="calc-character-select"
                 value={selectedCharacter}
-                onChange={(event) => {
-                  setSelectedCharacter(event.target.value);
+                ariaLabel="캐릭터"
+                sheetTitle="캐릭터 선택"
+                options={characterNames.map((name) => ({
+                  value: name,
+                  label: getCharacterDisplay(name),
+                }))}
+                onChange={(nextCharacter) => {
+                  setSelectedCharacter(nextCharacter);
                   setWeaponQuery('');
                 }}
-              >
-                {characterNames.map((name) => (
-                  <option key={name} value={name}>
-                    {getCharacterDisplay(name)}
-                  </option>
-                ))}
-              </select>
+              />
             </label>
             <div className="calc-level-control">
               <span>레벨</span>
@@ -870,16 +872,16 @@ function StatsCalculatorPage({ searchQuery }: { searchQuery: string }) {
                         <span>삭제</span>
                       </button>
                       {valueCount > 1 ? (
-                        <select
-                          value={valueIndex}
-                          onChange={(event) => updateEffectValue(entryId, Number(event.target.value))}
-                        >
-                          {Array.from({ length: valueCount }, (_, index) => (
-                            <option key={index} value={index}>
-                              {getEffectImpactSummary(effect, index)}
-                            </option>
-                          ))}
-                        </select>
+                        <ResponsiveSelect
+                          value={String(valueIndex)}
+                          ariaLabel={`${effect.name} 수치 선택`}
+                          sheetTitle="옵션 수치 선택"
+                          options={Array.from({ length: valueCount }, (_, index) => ({
+                            value: String(index),
+                            label: getEffectImpactSummary(effect, index),
+                          }))}
+                          onChange={(nextValueIndex) => updateEffectValue(entryId, Number(nextValueIndex))}
+                        />
                       ) : null}
                       <small>{getEffectImpactSummary(effect, valueIndex)}</small>
                     </div>

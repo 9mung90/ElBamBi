@@ -1,4 +1,12 @@
-import { useMemo, useRef, useState, type CSSProperties, type MouseEvent, type TouchEvent, type WheelEvent } from 'react';
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+  type MouseEvent,
+  type TouchEvent,
+} from 'react';
 import coordsData from '../data/mapReader/coordsXY.json';
 import mapBackgroundData from '../data/mapReader/map_backgrounds.json';
 import poiData from '../data/mapReader/poi_uv_with_ids.json';
@@ -21,6 +29,7 @@ import eventLabels from '../data/mapReader/locales/ko/events_labels.json';
 import nightlordLabels from '../data/mapReader/locales/ko/nightlords.json';
 import poiValueLabels from '../data/mapReader/locales/ko/overlay_poi_values.json';
 import shiftingEarthLabels from '../data/mapReader/locales/ko/shifting_earth_labels.json';
+import ResponsiveSelect from '../components/ResponsiveSelect';
 import './MapPage.css';
 
 const mapImages = import.meta.glob('../assets/images/mapReader/mapTypes/*.webp', {
@@ -779,7 +788,10 @@ const MapPage = () => {
   const [showPoiMarkers, setShowPoiMarkers] = useState(true);
   const [mapZoom, setMapZoom] = useState(1);
   const pinchRef = useRef<{ distance: number; zoom: number } | null>(null);
+  const gestureStartZoomRef = useRef(1);
+  const mapStagePanelRef = useRef<HTMLDivElement | null>(null);
   const mapViewportRef = useRef<HTMLDivElement | null>(null);
+  const [mapFitSize, setMapFitSize] = useState<number | null>(null);
   const mapDragRef = useRef<{
     startX: number;
     startY: number;
@@ -815,6 +827,38 @@ const MapPage = () => {
   const currentSeed = solvedCandidate?.seed;
   const currentLayoutNumber = currentPattern?.layout_number ?? '';
   const backgroundUrl = mapImageUrl(currentMapType);
+
+  useEffect(() => {
+    const panel = mapStagePanelRef.current;
+    if (!panel) return;
+
+    const updateMapFitSize = () => {
+      const visualViewport = window.visualViewport;
+      const viewportWidth = visualViewport?.width ?? window.innerWidth;
+      const viewportHeight = visualViewport?.height ?? window.innerHeight;
+      const panelWidth = panel.getBoundingClientRect().width;
+      const panelInnerWidth = Math.max(240, panelWidth - 20);
+      const mobileViewportHeightLimit = viewportWidth <= 780 ? Math.max(260, viewportHeight - 160) : Number.POSITIVE_INFINITY;
+      const nextSize = Math.floor(Math.min(panelInnerWidth, viewportWidth - 24, mobileViewportHeightLimit));
+
+      setMapFitSize((currentSize) => (currentSize === nextSize ? currentSize : nextSize));
+    };
+
+    updateMapFitSize();
+
+    const resizeObserver = new ResizeObserver(updateMapFitSize);
+    resizeObserver.observe(panel);
+    window.addEventListener('resize', updateMapFitSize);
+    window.visualViewport?.addEventListener('resize', updateMapFitSize);
+    window.visualViewport?.addEventListener('scroll', updateMapFitSize);
+
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener('resize', updateMapFitSize);
+      window.visualViewport?.removeEventListener('resize', updateMapFitSize);
+      window.visualViewport?.removeEventListener('scroll', updateMapFitSize);
+    };
+  }, []);
 
   const baseSlotOverlays = useMemo<SlotOverlay[]>(() => {
     const coordinates = coordsByMap[currentMapType] ?? coordsByMap.Default ?? [];
@@ -1100,6 +1144,50 @@ const MapPage = () => {
   const nudgeMapZoom = (delta: number) => {
     setMapZoom((currentZoom) => clampZoom(currentZoom + delta));
   };
+
+  useEffect(() => {
+    const viewport = mapViewportRef.current;
+    if (!viewport) return;
+
+    const preventBrowserZoom = (event: Event) => {
+      event.preventDefault();
+    };
+    const handleNativeWheel = (event: globalThis.WheelEvent) => {
+      if (!event.ctrlKey) return;
+      event.preventDefault();
+      setMapZoom((currentZoom) => clampZoom(currentZoom + (event.deltaY > 0 ? -0.15 : 0.15)));
+    };
+    const handleNativeTouchMove = (event: globalThis.TouchEvent) => {
+      if (event.touches.length < 2) return;
+      event.preventDefault();
+    };
+    const handleNativeGestureStart = (event: Event) => {
+      event.preventDefault();
+      gestureStartZoomRef.current = mapZoom;
+    };
+    const handleNativeGestureChange = (event: Event) => {
+      event.preventDefault();
+      const scale = (event as Event & { scale?: number }).scale ?? 1;
+      setMapZoom(clampZoom(gestureStartZoomRef.current * scale));
+    };
+
+    viewport.addEventListener('wheel', handleNativeWheel, { passive: false });
+    viewport.addEventListener('touchmove', handleNativeTouchMove, { passive: false });
+    viewport.addEventListener('gesturestart', handleNativeGestureStart, { passive: false });
+    viewport.addEventListener('gesturechange', handleNativeGestureChange, { passive: false });
+    document.addEventListener('gesturestart', preventBrowserZoom, { passive: false });
+    document.addEventListener('gesturechange', preventBrowserZoom, { passive: false });
+
+    return () => {
+      viewport.removeEventListener('wheel', handleNativeWheel);
+      viewport.removeEventListener('touchmove', handleNativeTouchMove);
+      viewport.removeEventListener('gesturestart', handleNativeGestureStart);
+      viewport.removeEventListener('gesturechange', handleNativeGestureChange);
+      document.removeEventListener('gesturestart', preventBrowserZoom);
+      document.removeEventListener('gesturechange', preventBrowserZoom);
+    };
+  }, [mapZoom]);
+
   const startMapDrag = (clientX: number, clientY: number) => {
     const viewport = mapViewportRef.current;
     if (!viewport || mapZoom <= 1) {
@@ -1131,13 +1219,6 @@ const MapPage = () => {
   };
   const endMapDrag = () => {
     mapDragRef.current = null;
-  };
-  const handleMapWheel = (event: WheelEvent<HTMLDivElement>) => {
-    if (!event.ctrlKey) {
-      return;
-    }
-    event.preventDefault();
-    nudgeMapZoom(event.deltaY > 0 ? -0.15 : 0.15);
   };
   const handleMapMouseDown = (event: MouseEvent<HTMLDivElement>) => {
     if (event.button !== 0) {
@@ -1212,10 +1293,15 @@ const MapPage = () => {
         <aside className="map-control-panel">
           <label>
             <span>밤의 왕</span>
-            <select
+            <ResponsiveSelect
               value={selectedNightlord}
-              onChange={(event) => {
-                const nextNightlord = event.target.value;
+              ariaLabel="밤의 왕"
+              sheetTitle="밤의 왕 선택"
+              options={nightlordOptions.map((nightlord) => ({
+                value: nightlord,
+                label: tr('nightlords', nightlord),
+              }))}
+              onChange={(nextNightlord) => {
                 const nextMapTypes = mapTypesForNightlord(nextNightlord);
                 setSelectedNightlord(nextNightlord);
                 setSelectedMapType(nextMapTypes.includes(selectedMapType) ? selectedMapType : (nextMapTypes[0] ?? 'Default'));
@@ -1224,33 +1310,27 @@ const MapPage = () => {
                 setActiveItemId(null);
                 setHoveredItemId(null);
               }}
-            >
-              {nightlordOptions.map((nightlord) => (
-                <option key={nightlord} value={nightlord}>
-                  {tr('nightlords', nightlord)}
-                </option>
-              ))}
-            </select>
+            />
           </label>
 
           <label>
             <span>맵 타입</span>
-            <select
+            <ResponsiveSelect
               value={currentMapType}
-              onChange={(event) => {
-                setSelectedMapType(event.target.value);
+              ariaLabel="맵 타입"
+              sheetTitle="맵 타입 선택"
+              options={mapTypeOptions.map((mapType) => ({
+                value: mapType,
+                label: mapTypeLabel(mapType),
+              }))}
+              onChange={(nextMapType) => {
+                setSelectedMapType(nextMapType);
                 setSelectedCandidateKey(null);
                 setSelectedSlotValues({});
                 setActiveItemId(null);
                 setHoveredItemId(null);
               }}
-            >
-              {mapTypeOptions.map((mapType) => (
-                <option key={mapType} value={mapType}>
-                  {mapTypeLabel(mapType)}
-                </option>
-              ))}
-            </select>
+            />
           </label>
 
           <div className="map-candidate-card">
@@ -1342,7 +1422,11 @@ const MapPage = () => {
 ) : null}
         </aside>
 
-        <div className="map-stage-panel">
+        <div
+          ref={mapStagePanelRef}
+          className="map-stage-panel"
+          style={mapFitSize ? ({ '--map-fit-size': `${mapFitSize}px` } as CSSProperties) : undefined}
+        >
           <div className="map-zoom-control" aria-label="지도 확대 조절">
             <button type="button" onClick={() => nudgeMapZoom(0.25)} aria-label="지도 확대">
               +
@@ -1357,7 +1441,6 @@ const MapPage = () => {
           <div
             ref={mapViewportRef}
             className={`map-stage-viewport${mapZoom > 1 ? ' is-draggable' : ''}`}
-            onWheel={handleMapWheel}
             onMouseDown={handleMapMouseDown}
             onMouseMove={handleMapMouseMove}
             onMouseUp={handleMapMouseUp}

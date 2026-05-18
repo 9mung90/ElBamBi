@@ -641,6 +641,12 @@
   line-height: 1.5;
 }
 
+.build-reply-mention {
+  margin-right: 6px;
+  color: var(--night-gold);
+  font-weight: 700;
+}
+
 .build-comment-form {
   display: grid;
   gap: 10px;

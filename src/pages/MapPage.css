@@ -211,14 +211,19 @@
 
 .map-stage-panel {
   position: relative;
+  min-width: 0;
+  overflow: hidden;
   padding: 10px;
 }
 
 .map-stage-viewport {
+  width: min(100%, var(--map-fit-size, 100%));
+  max-width: 100%;
   overflow: auto;
   aspect-ratio: 1 / 1;
   border-radius: 8px;
-  touch-action: pan-x pan-y;
+  touch-action: none;
+  overscroll-behavior: contain;
   scrollbar-width: thin;
   scrollbar-color: rgba(143, 174, 230, 0.3) var(--night-surface-2);
 }
@@ -235,7 +240,7 @@
 
 .map-stage {
   position: relative;
-  width: calc(100% * var(--map-zoom, 1));
+  width: calc(var(--map-fit-size, 100%) * var(--map-zoom, 1));
   aspect-ratio: 1 / 1;
   overflow: hidden;
   border: 1px solid var(--night-border-strong);
@@ -615,10 +620,5 @@
 
   .map-control-panel {
     position: static;
-  }
-
-  .map-stage {
-    width: calc(min(760px, 92vw) * var(--map-zoom, 1));
-    min-width: calc(560px * var(--map-zoom, 1));
   }
 }

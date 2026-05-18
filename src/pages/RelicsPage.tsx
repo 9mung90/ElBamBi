@@ -22,6 +22,7 @@ import {
 } from '../api/storageApi';
 import { nightfarers } from '../data/nightfarers';
 import { vessels, type Vessel } from '../data/vessels';
+import ResponsiveSelect from '../components/ResponsiveSelect';
 import type { ParsedRelic, RelicScanResult } from '../utils/nightreignSaveParser';
 
 type PresetColorMode = 'normal' | 'deep';
@@ -1336,10 +1337,6 @@ function RelicPresetBuilder({
   );
 }
 
-function getPresetVesselName(vesselIndex: number) {
-  return vessels.find((vessel) => vessel.index === vesselIndex)?.name ?? `현기 ${vesselIndex}`;
-}
-
 function getPresetVessel(vesselIndex: number) {
   return vessels.find((vessel) => vessel.index === vesselIndex);
 }
@@ -1850,45 +1847,49 @@ function PresetCompareSection({
       <div className="preset-compare-selectors">
         <label>
           <span>왼쪽 프리셋</span>
-          <select
+          <ResponsiveSelect
             value={selectedPresetAId}
             disabled={!authUserId || isLoadingCompareData}
-            onChange={(event) => {
-              const nextPresetId = event.target.value;
+            ariaLabel="왼쪽 프리셋"
+            sheetTitle="왼쪽 프리셋 선택"
+            options={[
+              { value: '', label: '프리셋 선택' },
+              ...presets.map((preset) => ({
+                value: preset.presetId,
+                label: getPresetCompareLabel(preset),
+                disabled: preset.presetId === selectedPresetBId,
+              })),
+            ]}
+            onChange={(nextPresetId) => {
               setSelectedPresetAId(nextPresetId);
               if (nextPresetId && nextPresetId === selectedPresetBId) {
                 setSelectedPresetBId('');
               }
             }}
-          >
-            <option value="">프리셋 선택</option>
-            {presets.map((preset) => (
-              <option key={preset.presetId} value={preset.presetId} disabled={preset.presetId === selectedPresetBId}>
-                {getPresetCompareLabel(preset)}
-              </option>
-            ))}
-          </select>
+          />
         </label>
         <label>
           <span>오른쪽 프리셋</span>
-          <select
+          <ResponsiveSelect
             value={selectedPresetBId}
             disabled={!authUserId || isLoadingCompareData}
-            onChange={(event) => {
-              const nextPresetId = event.target.value;
+            ariaLabel="오른쪽 프리셋"
+            sheetTitle="오른쪽 프리셋 선택"
+            options={[
+              { value: '', label: '프리셋 선택' },
+              ...presets.map((preset) => ({
+                value: preset.presetId,
+                label: getPresetCompareLabel(preset),
+                disabled: preset.presetId === selectedPresetAId,
+              })),
+            ]}
+            onChange={(nextPresetId) => {
               setSelectedPresetBId(nextPresetId);
               if (nextPresetId && nextPresetId === selectedPresetAId) {
                 setSelectedPresetAId('');
               }
             }}
-          >
-            <option value="">프리셋 선택</option>
-            {presets.map((preset) => (
-              <option key={preset.presetId} value={preset.presetId} disabled={preset.presetId === selectedPresetAId}>
-                {getPresetCompareLabel(preset)}
-              </option>
-            ))}
-          </select>
+          />
         </label>
       </div>
 
@@ -2243,9 +2244,6 @@ function SavedRelicPresetsView({
               </div>
               <div className="saved-preset-card-heading">
                 <h3>{preset.name}</h3>
-                <p>
-                  {preset.characterName} 쨌 {getPresetVessel(preset.vesselIndex)?.name ?? getPresetVesselName(preset.vesselIndex)}
-                </p>
               </div>
               <SavedPresetVesselPreview vessel={getPresetVessel(preset.vesselIndex)} />
               <button
@@ -2264,9 +2262,6 @@ function SavedRelicPresetsView({
             </div>
             <div className="saved-preset-card-heading">
               <h3>{preset.name}</h3>
-              <p>
-                {preset.characterName} · {getPresetVesselName(preset.vesselIndex)}
-              </p>
             </div>
             <ol className="relic-builder-result-list saved-preset-slot-list">
               {getSavedPresetSlots(preset.slots).map((slot, slotIndex) => (

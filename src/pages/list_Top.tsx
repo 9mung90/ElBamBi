@@ -1,5 +1,10 @@
 ﻿import { useEffect, useMemo, useState, type FormEvent, type ReactNode } from 'react';
 import type { RelicScanResult, CharacterSlot } from '../utils/nightreignSaveParser';
+import { useCallback, type MouseEvent } from 'react';
+import { App } from '@capacitor/app';
+import { Browser } from '@capacitor/browser';
+import { Capacitor } from '@capacitor/core';
+import { useRef, type TouchEvent as ReactTouchEvent } from 'react';
 import { ashes } from '../data/ashes';
 import AshesPage from './AshesPage';
 import BossesPage from './BossesPage';
@@ -83,7 +88,7 @@ const categories: Category[] = [
   { id: 'map', label: '맵', icon: 'M', description: '맵 보기입니다.' },
   { id: 'builds', label: '빌드', icon: 'D', description: '빌드 공유 커뮤니티입니다.' },
   { id: 'relic-builder', label: '유물 제작', icon: 'B', description: '유물 옵션 3개를 규칙에 맞춰 조합합니다.' },
-  { id: 'save-parser', label: 'Save', icon: 'P', description: 'Nightreign save relic parser test page.' },
+  { id: 'save-parser', label: '세이브', icon: 'P', description: 'Nightreign save relic parser test page.' },
   { id: 'vessels', label: '그릇', icon: 'V', description: '그릇 목록입니다.' },
   { id: 'items', label: '기타', icon: 'E', description: '기타 아이템 목록 페이지입니다.' },
   { id: 'gestures', label: '제스처', icon: 'G', description: '제스처 목록 페이지입니다.' },
@@ -121,6 +126,7 @@ const defaultApiBaseUrl = 'https://k9e297bszl.execute-api.ap-northeast-2.amazona
 const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? defaultApiBaseUrl).replace(/\/$/, '');
 const lastPageStorageKey = 'nightreign:last-page';
 const authViewStorageKey = 'nightreign:auth-view';
+const emailVerifiedSignalStorageKey = 'nightreign:email-verified-at';
 const pullToRefreshThreshold = 90;
 const nicknameRoutePath = '/nick';
 const verifyEmailRoutePath = '/verify-email';
@@ -373,20 +379,25 @@ function isValidProfilePassword(password: string) {
   return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,20}$/.test(password);
 }
 
-function getAccessTokenFromLocationSearch() {
-  if (window.location.pathname === verifyEmailRoutePath) return null;
-  const params = new URLSearchParams(window.location.search);
+function getAccessTokenFromParams(params: URLSearchParams) {
   const accessToken = params.get('accessToken') ?? params.get('access_token') ?? params.get('token');
   return accessToken && accessToken.trim() ? accessToken : null;
 }
 
-function getNeedsNicknameFromLocationSearch() {
-  return new URLSearchParams(window.location.search).get('needsNickname') === 'true';
+function getAccessTokenFromLocationSearch() {
+  if (window.location.pathname === verifyEmailRoutePath) return null;
+  return getAccessTokenFromParams(new URLSearchParams(window.location.search));
 }
 
-function hasOAuthRedirectParams() {
-  if (window.location.pathname === verifyEmailRoutePath) return false;
-  const params = new URLSearchParams(window.location.search);
+function getNeedsNicknameFromParams(params: URLSearchParams) {
+  return params.get('needsNickname') === 'true';
+}
+
+function getNeedsNicknameFromLocationSearch() {
+  return getNeedsNicknameFromParams(new URLSearchParams(window.location.search));
+}
+
+function hasOAuthRedirectParamsInSearch(params: URLSearchParams) {
   return (
     params.has('oauthError') ||
     params.has('accessToken') ||
@@ -396,8 +407,19 @@ function hasOAuthRedirectParams() {
   );
 }
 
+function hasOAuthRedirectParams() {
+  if (window.location.pathname === verifyEmailRoutePath) return false;
+  return hasOAuthRedirectParamsInSearch(new URLSearchParams(window.location.search));
+}
+
 function getGoogleLoginUrl() {
   return `${apiBaseUrl}/oauth2/authorization/google`;
+}
+
+function getAndroidGoogleLoginUrl() {
+  const url = new URL(getGoogleLoginUrl());
+  url.searchParams.set('redirectTarget', 'android');
+  return url.toString();
 }
 
 async function postNicknameForm(nickname: string, accessTokenOverride?: string | null): Promise<string> {
@@ -650,7 +672,10 @@ function VerifyEmailPage({ onGoToLogin }: { onGoToLogin: () => void }) {
 
     request
       .then(() => {
-        if (isMounted) setStatus('success');
+        if (isMounted) {
+          setStoredValue(emailVerifiedSignalStorageKey, String(Date.now()));
+          setStatus('success');
+        }
       })
       .catch(() => {
         verifyingEmailTokens.delete(token);
@@ -706,11 +731,13 @@ function AuthPage({
   initialError,
   view,
   onChangeView,
+  onGoogleLoginClick,
   onLoginSuccess,
 }: {
   initialError?: string | null;
   view: Exclude<AuthView, null>;
   onChangeView: (view: Exclude<AuthView, null>) => void;
+  onGoogleLoginClick: (event: MouseEvent<HTMLAnchorElement>) => void;
   onLoginSuccess: (loginId: string) => void;
 }) {
   const isLogin = view === 'login';
@@ -733,6 +760,21 @@ function AuthPage({
   useEffect(() => {
     if (initialError) setError(initialError);
   }, [initialError]);
+
+  useEffect(() => {
+    const handleEmailVerified = (event: StorageEvent) => {
+      if (event.key !== emailVerifiedSignalStorageKey || !event.newValue) return;
+
+      setError(null);
+      setResendError(null);
+      setNeedsEmailVerification(false);
+      setMessage('이메일 인증이 완료되었습니다. 로그인해 주세요.');
+      onChangeView('login');
+    };
+
+    window.addEventListener('storage', handleEmailVerified);
+    return () => window.removeEventListener('storage', handleEmailVerified);
+  }, [onChangeView]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -758,13 +800,13 @@ function AuthPage({
         email,
         nickname,
       }, { storeAuth: false });
+      setNeedsEmailVerification(true);
+      setVerificationEmail(email);
       setMessage(
-        '회원가입이 완료되었습니다. 이메일 인증 후 로그인할 수 있습니다. 메일함과 스팸함을 확인해주세요.',
+        '회원가입이 완료되었습니다. 이메일 인증 링크를 확인해주세요. 메일이 없다면 아래에서 다시 받을 수 있습니다.',
       );
       setPassword('');
       setConfirmPassword('');
-      setEmail('');
-      setNickname('');
     } catch (requestError) {
       if (isLogin && requestError instanceof AuthRequestError && requestError.code === 'EMAIL_NOT_VERIFIED') {
         setNeedsEmailVerification(true);
@@ -873,8 +915,11 @@ function AuthPage({
           </button>
         </form>
 
-        {isLogin && needsEmailVerification ? (
+        {needsEmailVerification ? (
           <div className="auth-resend-box">
+            <p className="auth-help-text">
+              인증 메일을 받지 못했다면 이메일 주소를 확인한 뒤 다시 전송하세요.
+            </p>
             <label>
               이메일
               <input
@@ -903,7 +948,7 @@ function AuthPage({
             <div className="auth-divider">
               <span>또는</span>
             </div>
-            <a className="auth-google-button" href={getGoogleLoginUrl()}>
+            <a className="auth-google-button" href={getGoogleLoginUrl()} onClick={onGoogleLoginClick}>
               <span aria-hidden="true">G</span>
               Google로 로그인
             </a>
@@ -1166,10 +1211,6 @@ function MyPagePresetItem({ item }: { item: Record<string, unknown> }) {
   return (
     <article className="my-page-list-item">
       <strong>{getMyPagePresetTitle(item)}</strong>
-      <span>
-        {getFirstString(item, ['characterName'], '캐릭터 없음')} · 그릇{' '}
-        {getStringValue(item.vesselIndex, '-')} · {getFirstString(item, ['colorMode'], 'normal')}
-      </span>
       <small>
         {createdAt ? `작성 ${createdAt}` : ''}
         {updatedAt ? `${createdAt ? ' · ' : ''}수정 ${updatedAt}` : ''}
@@ -1765,6 +1806,23 @@ function ListTop() {
   const [selectedWeaponGroupId, setSelectedWeaponGroupId] = useState<number | null>(null);
   const [focusedWeaponGroupId, setFocusedWeaponGroupId] = useState<number | null>(null);
   const [ashProperty, setAshProperty] = useState<string | null>(null);
+  const categoryTabsRef = useRef<HTMLElement | null>(null);
+  const pageSwipeStartRef = useRef<{
+    x: number;
+    y: number;
+    id: string;
+    width: number;
+    time: number;
+  } | null>(null);
+  const [pageSwipe, setPageSwipe] = useState<{
+    targetId: string | null;
+    offset: number;
+    isAnimating: boolean;
+  }>({
+    targetId: null,
+    offset: 0,
+    isAnimating: false,
+  });
 
   // SaveParserPage state
   const [characterSlot, setCharacterSlot] = useState<CharacterSlot>(1);
@@ -1859,50 +1917,121 @@ function ListTop() {
     };
   }, []);
 
+  const handleOAuthRedirectParams = useCallback(
+    (params: URLSearchParams, currentPath = mainRoutePath) => {
+      if (!hasOAuthRedirectParamsInSearch(params)) {
+        return { handled: false, success: false, route: currentPath || mainRoutePath };
+      }
+
+      const routeAfterError =
+        currentPath === nicknameRoutePath ? mainRoutePath : currentPath || mainRoutePath;
+      const oauthError = params.get('oauthError');
+      const accessToken = getAccessTokenFromParams(params);
+      const needsNickname = getNeedsNicknameFromParams(params);
+
+      if (oauthError) {
+        setAuthInitialError('구글 로그인에 실패했습니다. 다시 시도해 주세요.');
+        setAuthView('login');
+        setIsMyPageOpen(false);
+        return { handled: true, success: false, route: routeAfterError };
+      }
+
+      if (accessToken) {
+        setStoredValue(accessTokenStorageKey, accessToken);
+        setNicknameAccessToken(accessToken);
+
+        const userId = getUserIdFromAccessToken(accessToken);
+        if (userId) {
+          setAuthUserId(userId);
+          setStoredValue(authUserIdStorageKey, userId);
+        }
+      }
+
+      if (needsNickname || currentPath === nicknameRoutePath) {
+        setAuthView(null);
+        setIsMyPageOpen(false);
+        setSearchQuery('');
+        setIsFilterPanelOpen(false);
+        setIsVerifyEmailRoute(false);
+        setIsNicknameRoute(true);
+        return { handled: true, success: true, route: nicknameRoutePath };
+      }
+
+      setSelectedId('characters');
+      setAuthView(null);
+      setIsMyPageOpen(false);
+      setSearchQuery('');
+      setIsFilterPanelOpen(false);
+      setIsVerifyEmailRoute(false);
+      setIsNicknameRoute(false);
+      setStoredValue(lastPageStorageKey, 'characters');
+      return { handled: true, success: true, route: mainRoutePath };
+    },
+    [],
+  );
+
   useEffect(() => {
     if (!hasOAuthRedirectParams()) return;
 
-    const currentPath = window.location.pathname;
-    const params = new URLSearchParams(window.location.search);
-    const oauthError = params.get('oauthError');
-    const accessToken = getAccessTokenFromLocationSearch();
-    const needsNickname = getNeedsNicknameFromLocationSearch();
-
-    if (oauthError) {
-      setAuthInitialError('구글 로그인에 실패했습니다. 다시 시도해 주세요.');
-      setAuthView('login');
-      setIsMyPageOpen(false);
-      window.history.replaceState(null, '', currentPath === nicknameRoutePath ? mainRoutePath : currentPath || mainRoutePath);
-      return;
+    const result = handleOAuthRedirectParams(
+      new URLSearchParams(window.location.search),
+      window.location.pathname,
+    );
+    if (result.handled) {
+      window.history.replaceState(null, '', result.route);
     }
+  }, [handleOAuthRedirectParams]);
 
-    if (accessToken) {
-      setStoredValue(accessTokenStorageKey, accessToken);
-      setNicknameAccessToken(accessToken);
+  useEffect(() => {
+    if (!Capacitor.isNativePlatform()) return undefined;
 
-      const userId = getUserIdFromAccessToken(accessToken);
-      if (userId) {
-        setAuthUserId(userId);
-        setStoredValue(authUserIdStorageKey, userId);
+    let removeListener: (() => Promise<void>) | null = null;
+    let isMounted = true;
+
+    const handleAppUrlOpen = (url: string) => {
+      let params: URLSearchParams;
+      try {
+        params = new URL(url).searchParams;
+      } catch {
+        return;
       }
-    }
 
-    if (needsNickname || currentPath === nicknameRoutePath) {
-      setAuthView(null);
-      setSearchQuery('');
-      setIsFilterPanelOpen(false);
-      setIsNicknameRoute(true);
-      window.history.replaceState(null, '', nicknameRoutePath);
-      return;
-    }
+      const result = handleOAuthRedirectParams(params, window.location.pathname || mainRoutePath);
+      if (result.success) {
+        void Browser.close();
+      }
+      if (result.handled) {
+        window.history.replaceState(null, '', result.route);
+      }
+    };
 
-    setSelectedId('characters');
-    setAuthView(null);
-    setSearchQuery('');
-    setIsFilterPanelOpen(false);
-    setIsNicknameRoute(false);
-    setStoredValue(lastPageStorageKey, 'characters');
-    window.history.replaceState(null, '', mainRoutePath);
+    void App.addListener('appUrlOpen', ({ url }) => {
+      handleAppUrlOpen(url);
+    }).then((listener) => {
+      if (!isMounted) {
+        void listener.remove();
+        return;
+      }
+      removeListener = () => listener.remove();
+    });
+
+    void App.getLaunchUrl().then((launchUrl) => {
+      if (isMounted && launchUrl?.url) {
+        handleAppUrlOpen(launchUrl.url);
+      }
+    });
+
+    return () => {
+      isMounted = false;
+      if (removeListener) void removeListener();
+    };
+  }, [handleOAuthRedirectParams]);
+
+  const handleGoogleLoginClick = useCallback((event: MouseEvent<HTMLAnchorElement>) => {
+    if (!Capacitor.isNativePlatform() || Capacitor.getPlatform() !== 'android') return;
+
+    event.preventDefault();
+    void Browser.open({ url: getAndroidGoogleLoginUrl() });
   }, []);
 
   useEffect(() => {
@@ -2003,6 +2132,13 @@ function ListTop() {
     () => categories.find((category) => category.id === selectedId) ?? categories[0],
     [selectedId],
   );
+
+  useEffect(() => {
+    const currentTab = categoryTabsRef.current?.querySelector<HTMLElement>(
+      `[data-category-id="${selectedId}"]`,
+    );
+    currentTab?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  }, [selectedId]);
   const hasActiveWeaponFilters =
     weaponFilters.levels.length > 0 ||
     weaponFilters.types.length > 0 ||
@@ -2073,6 +2209,111 @@ function ListTop() {
   const closeOverlayPages = () => {
     setAuthView(null);
     setIsMyPageOpen(false);
+  };
+
+  const selectCategory = (categoryId: string) => {
+    closeOverlayPages();
+    setSelectedId(categoryId);
+    setSearchQuery('');
+    setIsFilterPanelOpen(false);
+    setBuildFocusPostId(null);
+    setSelectedWeaponGroupId(null);
+    setFocusedWeaponGroupId(null);
+  };
+
+  const isPageSwipeTarget = (target: EventTarget | null) => {
+    if (!(target instanceof HTMLElement)) return false;
+    return !target.closest(
+      'input, textarea, select, button, a, [contenteditable="true"], .map-stage-viewport, .responsive-select-overlay',
+    );
+  };
+
+  const handlePageSwipeStart = (event: ReactTouchEvent<HTMLDivElement>) => {
+    if (
+      event.touches.length !== 1 ||
+      authView ||
+      isMyPageOpen ||
+      pageSwipe.isAnimating ||
+      !isPageSwipeTarget(event.target)
+    ) {
+      pageSwipeStartRef.current = null;
+      return;
+    }
+
+    const touch = event.touches[0];
+    pageSwipeStartRef.current = {
+      x: touch.clientX,
+      y: touch.clientY,
+      id: selectedId,
+      width: event.currentTarget.clientWidth,
+      time: performance.now(),
+    };
+    setPageSwipe({ targetId: null, offset: 0, isAnimating: false });
+  };
+
+  const handlePageSwipeMove = (event: ReactTouchEvent<HTMLDivElement>) => {
+    const start = pageSwipeStartRef.current;
+    if (!start || start.id !== selectedId || event.touches.length !== 1) return;
+
+    const touch = event.touches[0];
+    const deltaX = touch.clientX - start.x;
+    const deltaY = touch.clientY - start.y;
+    if (Math.abs(deltaX) < 12 || Math.abs(deltaX) <= Math.abs(deltaY)) return;
+
+    const currentIndex = categories.findIndex((category) => category.id === selectedId);
+    const targetIndex =
+      deltaX < 0
+        ? Math.min(categories.length - 1, currentIndex + 1)
+        : Math.max(0, currentIndex - 1);
+    const targetCategory = categories[targetIndex];
+    if (!targetCategory || targetCategory.id === selectedId) {
+      setPageSwipe({ targetId: null, offset: deltaX * 0.18, isAnimating: false });
+      return;
+    }
+
+    event.preventDefault();
+    const limit = Math.max(1, start.width);
+    const offset = Math.max(-limit, Math.min(limit, deltaX));
+    setPageSwipe({ targetId: targetCategory.id, offset, isAnimating: false });
+  };
+
+  const handlePageSwipeEnd = (event: ReactTouchEvent<HTMLDivElement>) => {
+    const start = pageSwipeStartRef.current;
+    pageSwipeStartRef.current = null;
+    if (!start || start.id !== selectedId) {
+      setPageSwipe({ targetId: null, offset: 0, isAnimating: false });
+      return;
+    }
+
+    const touch = event.changedTouches[0];
+    if (!touch) {
+      setPageSwipe({ targetId: null, offset: 0, isAnimating: false });
+      return;
+    }
+
+    const deltaX = touch.clientX - start.x;
+    const deltaY = touch.clientY - start.y;
+    const elapsed = Math.max(1, performance.now() - start.time);
+    const velocity = Math.abs(deltaX) / elapsed;
+    const shouldCommitSwipe =
+      Boolean(pageSwipe.targetId) &&
+      Math.abs(deltaY) <= 72 &&
+      (Math.abs(deltaX) >= Math.min(110, start.width * 0.24) || velocity >= 0.45);
+
+    if (!shouldCommitSwipe || !pageSwipe.targetId) {
+      setPageSwipe({ targetId: null, offset: 0, isAnimating: true });
+      window.setTimeout(() => setPageSwipe({ targetId: null, offset: 0, isAnimating: false }), 260);
+      return;
+    }
+
+    const targetId = pageSwipe.targetId;
+    const targetOffset = pageSwipe.offset < 0 ? -start.width : start.width;
+    setPageSwipe({ targetId, offset: targetOffset, isAnimating: true });
+
+    window.setTimeout(() => {
+      selectCategory(targetId);
+      setPageSwipe({ targetId: null, offset: 0, isAnimating: false });
+    }, 280);
   };
 
   const clearAuthState = () => {
@@ -2166,6 +2407,142 @@ function ListTop() {
     );
   }
 
+  const renderPageContent = (categoryId: string): ReactNode => {
+    if (authView) {
+      return (
+        <AuthPage
+          initialError={authInitialError}
+          view={authView}
+          onChangeView={(nextView) => {
+            setAuthInitialError(null);
+            setAuthView(nextView);
+          }}
+          onGoogleLoginClick={handleGoogleLoginClick}
+          onLoginSuccess={(loginId) => {
+            setAuthInitialError(null);
+            setAuthUserId(loginId);
+            setAuthView(null);
+            setIsMyPageOpen(false);
+          }}
+        />
+      );
+    }
+
+    if (isMyPageOpen) {
+      return (
+        <MyPage
+          authUserId={authUserId}
+          onAuthUpdated={handleAuthUpdated}
+          onAccountDeleted={handleAccountDeleted}
+          onLoginRequired={handleLoginRequired}
+          onLogout={handleLogout}
+          onOpenPost={handleOpenMyPagePost}
+        />
+      );
+    }
+
+    if (categoryId === 'characters') {
+      return (
+        <CharactersPage
+          searchQuery={searchQuery}
+          onSelectWeapon={(weaponGroupId) => {
+            setSelectedId('weapons');
+            setSelectedWeaponGroupId(null);
+            setFocusedWeaponGroupId(weaponGroupId);
+            setSearchQuery('');
+          }}
+        />
+      );
+    }
+    if (categoryId === 'weapons') {
+      return (
+        <WeaponsPage
+          searchQuery={searchQuery}
+          filters={weaponFilters}
+          selectedGroupId={selectedWeaponGroupId}
+          focusedGroupId={focusedWeaponGroupId}
+          onSelectGroup={(groupId) => {
+            setSelectedWeaponGroupId(groupId);
+            setFocusedWeaponGroupId(null);
+            setSearchQuery('');
+          }}
+          onBack={() => {
+            setSelectedWeaponGroupId(null);
+            setFocusedWeaponGroupId(null);
+          }}
+        />
+      );
+    }
+    if (categoryId === 'options') return <OptionsPage searchQuery={searchQuery} filters={optionFilters} />;
+    if (categoryId === 'stats-calculator') return <StatsCalculatorPage searchQuery={searchQuery} />;
+    if (categoryId === 'ashes') return <AshesPage searchQuery={searchQuery} ashProperty={ashProperty} />;
+    if (categoryId === 'bosses') return <BossesPage searchQuery={searchQuery} filters={bossFilters} />;
+    if (categoryId === 'spells') return <SpellsPage searchQuery={searchQuery} filters={spellFilters} />;
+    if (categoryId === 'talismans') return <TalismansPage searchQuery={searchQuery} />;
+    if (categoryId === 'relics') {
+      return (
+        <RelicsPage
+          searchQuery={searchQuery}
+          authUserId={authUserId}
+          storageRefreshKey={relicStorageRefreshKey}
+          onRelicsChanged={() => setRelicStorageRefreshKey((currentKey) => currentKey + 1)}
+        />
+      );
+    }
+    if (categoryId === 'map') return <MapPage />;
+    if (categoryId === 'builds') {
+      return (
+        <BuildPage
+          searchQuery={searchQuery}
+          authUserId={authUserId}
+          authRole={authRole}
+          focusPostId={buildFocusPostId}
+          onLoginRequired={handleLoginRequired}
+        />
+      );
+    }
+    if (categoryId === 'relic-builder') {
+      return (
+        <RelicBuilderPage
+          searchQuery={searchQuery}
+          authUserId={authUserId}
+          onRelicsChanged={() => setRelicStorageRefreshKey((currentKey) => currentKey + 1)}
+        />
+      );
+    }
+    if (categoryId === 'save-parser') {
+      return (
+        <SaveParserPage
+          characterSlot={characterSlot}
+          setCharacterSlot={setCharacterSlot}
+          selectedFile={selectedFile}
+          setSelectedFile={setSelectedFile}
+          result={saveParserResult}
+          setResult={setSaveParserResultWithCache}
+          logs={saveParserLogs}
+          setLogs={setSaveParserLogs}
+          error={saveParserError}
+          setError={setSaveParserError}
+          isParsing={isSaveParserParsing}
+          setIsParsing={setIsSaveParserParsing}
+          clearCache={clearSaveParserCache}
+        />
+      );
+    }
+    if (categoryId === 'vessels') return <VesselsPage searchQuery={searchQuery} />;
+    if (categoryId === 'items') return <ItemsPage searchQuery={searchQuery} />;
+    if (categoryId === 'gestures') return <GesturesPage searchQuery={searchQuery} />;
+
+    return <PlaceholderPage category={selectedCategory} searchQuery={searchQuery} />;
+  };
+
+  const isSwipingToPrevious = Boolean(pageSwipe.targetId && pageSwipe.offset > 0);
+  const swipeTrackTransform = pageSwipe.targetId
+    ? isSwipingToPrevious
+      ? `calc(-100% + ${pageSwipe.offset}px)`
+      : `${pageSwipe.offset}px`
+    : '0px';
+
   return (
     <main className="list-top-shell">
       <header className="list-top-header">
@@ -2173,7 +2550,7 @@ function ListTop() {
           <div className="game-title-icon" aria-hidden="true">
             <img className="game-title-logo-image" src={logoImage} alt="" />
           </div>
-          <h1>나이트레인 빌드</h1>
+          <h1>엘밤 비</h1>
           <button
             type="button"
             className={`account-icon-button${authView || isMyPageOpen ? ' is-active' : ''}`}
@@ -2467,7 +2844,7 @@ function ListTop() {
           </section>
         ) : null}
 
-        <nav className="category-tabs" aria-label="아이템 카테고리">
+        <nav ref={categoryTabsRef} className="category-tabs" aria-label="아이템 카테고리">
           {categories.map((category) => {
             const isSelected = category.id === selectedId;
             const iconAsset = categoryIconAssets[category.id];
@@ -2476,17 +2853,9 @@ function ListTop() {
               <button
                 key={category.id}
                 type="button"
+                data-category-id={category.id}
                 className={`category-tab${isSelected ? ' is-selected' : ''}`}
-                onClick={() => {
-                  setAuthView(null);
-                  setIsMyPageOpen(false);
-                  setSelectedId(category.id);
-                  setSearchQuery('');
-                  setIsFilterPanelOpen(false);
-                  setBuildFocusPostId(null);
-                  setSelectedWeaponGroupId(null);
-                  setFocusedWeaponGroupId(null);
-                }}
+                onClick={() => selectCategory(category.id)}
                 aria-pressed={isSelected}
               >
                 {iconAsset ? (
@@ -2503,116 +2872,33 @@ function ListTop() {
         </nav>
       </header>
 
-      {authView ? (
-        <AuthPage
-          initialError={authInitialError}
-          view={authView}
-          onChangeView={(nextView) => {
-            setAuthInitialError(null);
-            setAuthView(nextView);
-          }}
-          onLoginSuccess={(loginId) => {
-            setAuthInitialError(null);
-            setAuthUserId(loginId);
-            setAuthView(null);
-            setIsMyPageOpen(false);
-          }}
-        />
-      ) : isMyPageOpen ? (
-        <MyPage
-          authUserId={authUserId}
-          onAuthUpdated={handleAuthUpdated}
-          onAccountDeleted={handleAccountDeleted}
-          onLoginRequired={handleLoginRequired}
-          onLogout={handleLogout}
-          onOpenPost={handleOpenMyPagePost}
-        />
-      ) : selectedId === 'characters' ? (
-        <CharactersPage
-          searchQuery={searchQuery}
-          onSelectWeapon={(weaponGroupId) => {
-            setSelectedId('weapons');
-            setSelectedWeaponGroupId(null);
-            setFocusedWeaponGroupId(weaponGroupId);
-            setSearchQuery('');
-          }}
-        />
-      ) : selectedId === 'weapons' ? (
-        <WeaponsPage
-          searchQuery={searchQuery}
-          filters={weaponFilters}
-          selectedGroupId={selectedWeaponGroupId}
-          focusedGroupId={focusedWeaponGroupId}
-          onSelectGroup={(groupId) => {
-            setSelectedWeaponGroupId(groupId);
-            setFocusedWeaponGroupId(null);
-            setSearchQuery('');
-          }}
-          onBack={() => {
-            setSelectedWeaponGroupId(null);
-            setFocusedWeaponGroupId(null);
-          }}
-        />
-      ) : selectedId === 'options' ? (
-        <OptionsPage searchQuery={searchQuery} filters={optionFilters} />
-      ) : selectedId === 'stats-calculator' ? (
-        <StatsCalculatorPage searchQuery={searchQuery} />
-      ) : selectedId === 'ashes' ? (
-        <AshesPage searchQuery={searchQuery} ashProperty={ashProperty} />
-      ) : selectedId === 'bosses' ? (
-        <BossesPage searchQuery={searchQuery} filters={bossFilters} />
-      ) : selectedId === 'spells' ? (
-        <SpellsPage searchQuery={searchQuery} filters={spellFilters} />
-      ) : selectedId === 'talismans' ? (
-        <TalismansPage searchQuery={searchQuery} />
-      ) : selectedId === 'relics' ? (
-        <RelicsPage
-          searchQuery={searchQuery}
-          authUserId={authUserId}
-          storageRefreshKey={relicStorageRefreshKey}
-          onRelicsChanged={() => setRelicStorageRefreshKey((currentKey) => currentKey + 1)}
-        />
-      ) : selectedId === 'map' ? (
-        <MapPage />
-      ) : selectedId === 'builds' ? (
-        <BuildPage
-          searchQuery={searchQuery}
-          authUserId={authUserId}
-          authRole={authRole}
-          focusPostId={buildFocusPostId}
-          onLoginRequired={handleLoginRequired}
-        />
-      ) : selectedId === 'relic-builder' ? (
-        <RelicBuilderPage
-          searchQuery={searchQuery}
-          authUserId={authUserId}
-          onRelicsChanged={() => setRelicStorageRefreshKey((currentKey) => currentKey + 1)}
-        />
-      ) : selectedId === 'save-parser' ? (
-        <SaveParserPage
-          characterSlot={characterSlot}
-          setCharacterSlot={setCharacterSlot}
-          selectedFile={selectedFile}
-          setSelectedFile={setSelectedFile}
-          result={saveParserResult}
-          setResult={setSaveParserResultWithCache}
-          logs={saveParserLogs}
-          setLogs={setSaveParserLogs}
-          error={saveParserError}
-          setError={setSaveParserError}
-          isParsing={isSaveParserParsing}
-          setIsParsing={setIsSaveParserParsing}
-          clearCache={clearSaveParserCache}
-        />
-      ) : selectedId === 'vessels' ? (
-        <VesselsPage searchQuery={searchQuery} />
-      ) : selectedId === 'items' ? (
-        <ItemsPage searchQuery={searchQuery} />
-      ) : selectedId === 'gestures' ? (
-        <GesturesPage searchQuery={searchQuery} />
-      ) : (
-        <PlaceholderPage category={selectedCategory} searchQuery={searchQuery} />
-      )}
+      <div
+        className="page-swipe-surface"
+        onTouchStart={handlePageSwipeStart}
+        onTouchMove={handlePageSwipeMove}
+        onTouchEnd={handlePageSwipeEnd}
+        onTouchCancel={() => {
+          pageSwipeStartRef.current = null;
+          setPageSwipe({ targetId: null, offset: 0, isAnimating: false });
+        }}
+      >
+        <div
+          className={`page-swipe-track${pageSwipe.isAnimating ? ' is-animating' : ''}`}
+          style={{ transform: `translate3d(${swipeTrackTransform}, 0, 0)` }}
+        >
+          {pageSwipe.targetId && isSwipingToPrevious ? (
+            <section className="page-swipe-panel" aria-hidden="true">
+              {renderPageContent(pageSwipe.targetId)}
+            </section>
+          ) : null}
+          <section className="page-swipe-panel">{renderPageContent(selectedId)}</section>
+          {pageSwipe.targetId && !isSwipingToPrevious ? (
+            <section className="page-swipe-panel" aria-hidden="true">
+              {renderPageContent(pageSwipe.targetId)}
+            </section>
+          ) : null}
+        </div>
+      </div>
     </main>
   );
 }

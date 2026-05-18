@@ -10,6 +10,7 @@ import {
   type StoredRelicOption,
 } from '../api/storageApi';
 import { getApiErrorMessage } from '../api/apiError';
+import ResponsiveSelect from '../components/ResponsiveSelect';
 import {
   accessTokenStorageKey,
   authNicknameStorageKey,
@@ -401,10 +402,6 @@ function getPresetVesselSlotColors(vessel: Vessel | undefined) {
 
 function getPresetVessel(vesselIndex: number) {
   return vessels.find((vessel) => vessel.index === vesselIndex);
-}
-
-function getPresetVesselName(vesselIndex: number) {
-  return getPresetVessel(vesselIndex)?.name ?? `현기 ${vesselIndex}`;
 }
 
 function getPresetNightfarer(characterName: string) {
@@ -1164,6 +1161,17 @@ function getAuthorLabel(userId: string, nickname = '') {
   return userId ? `사용자 #${userId}` : '알 수 없음';
 }
 
+function getCommentById(comments: BuildComment[], commentId: string | null) {
+  if (!commentId) return null;
+  return comments.find((comment) => comment.id === commentId) ?? null;
+}
+
+function getReplyMention(comment: BuildComment, comments: BuildComment[]) {
+  const parentComment = getCommentById(comments, comment.parentCommentId);
+  if (!parentComment) return '';
+  return `@${getAuthorLabel(parentComment.userId, parentComment.authorNickname)}`;
+}
+
 function getPostNightfarer(post: BuildPost) {
   // TODO: Currently UI only. Connect this to the DB/API later.
   const searchableText = [post.title, getSearchableBuildContent(post.content), post.category, getCategoryLabel(post.category)]
@@ -1356,11 +1364,17 @@ function BoardSearchBar({
 
       <label className="build-sort-control">
         <span>정렬</span>
-        <select value={sortKey} onChange={(event) => onSortChange(event.target.value as SortKey)}>
-          <option value="latest">최신순</option>
-          <option value="popular">인기순</option>
-          <option value="views">조회순</option>
-        </select>
+        <ResponsiveSelect
+          value={sortKey}
+          ariaLabel="정렬"
+          sheetTitle="정렬 선택"
+          options={[
+            { value: 'latest', label: '최신순' },
+            { value: 'popular', label: '인기순' },
+            { value: 'views', label: '조회순' },
+          ]}
+          onChange={(nextSortKey) => onSortChange(nextSortKey as SortKey)}
+        />
       </label>
 
       <span className="build-board-count">글 {totalCount}개</span>
@@ -1576,11 +1590,13 @@ function BuildPresetOptionList({
 }
 
 function BuildPresetSlotSummary({
+  hideRelicSource = false,
   onSelect,
   relicsById,
   slot,
   slotIndex,
 }: {
+  hideRelicSource?: boolean;
   onSelect: () => void;
   relicsById: Map<string, StoredRelic>;
   slot: RelicPresetSlotInput | null;
@@ -1616,7 +1632,7 @@ function BuildPresetSlotSummary({
       <div>
         <div className="relic-preset-summary-top">
           <strong className={getRelicColorClass(relicColor)}>{getRelicColorLabel(relicColor)}</strong>
-          <em>{slot.relicRefType === 'stored' ? '저장 유물' : '세이브 유물'}</em>
+          {hideRelicSource ? null : <em>{slot.relicRefType === 'stored' ? '저장 유물' : '세이브 유물'}</em>}
         </div>
         <p>{relicName}</p>
       </div>
@@ -1625,11 +1641,13 @@ function BuildPresetSlotSummary({
 }
 
 function BuildPresetCard({
+  hideRelicSource = false,
   onSelectPreset,
   onSelectSlot,
   preset,
   relicsById,
 }: {
+  hideRelicSource?: boolean;
   onSelectPreset?: (preset: RelicPreset) => void;
   onSelectSlot?: (preset: RelicPreset, slotIndex: number) => void;
   preset: RelicPreset;
@@ -1657,9 +1675,6 @@ function BuildPresetCard({
         </div>
         <div className="saved-preset-card-heading">
           <h3>{preset.name}</h3>
-          <p>
-            {preset.characterName} · {vessel?.name ?? getPresetVesselName(preset.vesselIndex)}
-          </p>
         </div>
         <BuildPresetVesselPreview vessel={vessel} />
       </div>
@@ -1667,6 +1682,7 @@ function BuildPresetCard({
         {getSavedPresetSlots(preset.slots).map((slot, slotIndex) => (
           <BuildPresetSlotSummary
             key={`${preset.presetId}-${slotIndex}`}
+            hideRelicSource={hideRelicSource}
             onSelect={() => (onSelectSlot ? onSelectSlot(preset, slotIndex) : onSelectPreset?.(preset))}
             relicsById={relicsById}
             slot={slot}
@@ -1853,6 +1869,7 @@ function BuildPresetInsertSection({
               {presets.map((preset) => (
                 <BuildPresetCard
                   key={preset.presetId}
+                  hideRelicSource
                   onSelectPreset={(selectedPreset) => {
                     onSelectPreset(createBuildPostPreset(selectedPreset, relicsById));
                     setIsOpen(false);
@@ -2071,6 +2088,7 @@ function BuildPostContent({ content }: { content: string }) {
 }
 
 function BuildPostWritePage({
+  authorLabel,
   authUserId,
   draft,
   isSubmitting,
@@ -2079,6 +2097,7 @@ function BuildPostWritePage({
   onSubmit,
   onCancel,
 }: {
+  authorLabel: string;
   authUserId: string | null;
   draft: BuildPostDraft;
   isSubmitting: boolean;
@@ -2102,36 +2121,38 @@ function BuildPostWritePage({
       </div>
 
       <form className="build-write-form" onSubmit={onSubmit}>
-        <p className="build-session-note">작성자: {authUserId ?? '로그인 필요'}</p>
+        <p className="build-session-note">작성자: {authorLabel}</p>
         <label>
           카테고리
-          <select
+          <ResponsiveSelect
             value={draft.category}
-            onChange={(event) => onDraftChange('category', event.target.value as WritableBuildPostCategory)}
-          >
-            {writeCategories.map((category) => (
-              <option key={category} value={category}>
-                {getCategoryLabel(category)}
-              </option>
-            ))}
-          </select>
+            ariaLabel="카테고리"
+            sheetTitle="카테고리 선택"
+            options={writeCategories.map((category) => ({
+              value: category,
+              label: getCategoryLabel(category),
+            }))}
+            onChange={(nextCategory) => onDraftChange('category', nextCategory as WritableBuildPostCategory)}
+          />
         </label>
         <label>
           캐릭터
           {/* TODO: Currently UI only. Connect this form to the DB/API later. */}
-          <select
-            value={draft.nightfarerIndex ?? ''}
-            onChange={(event) =>
-              onDraftChange('nightfarerIndex', event.target.value === '' ? null : Number(event.target.value))
+          <ResponsiveSelect
+            value={draft.nightfarerIndex == null ? '' : String(draft.nightfarerIndex)}
+            ariaLabel="캐릭터"
+            sheetTitle="캐릭터 선택"
+            options={[
+              { value: '', label: '선택 안 함' },
+              ...nightfarers.map((nightfarer) => ({
+                value: String(nightfarer.index),
+                label: nightfarer.name,
+              })),
+            ]}
+            onChange={(nextNightfarerIndex) =>
+              onDraftChange('nightfarerIndex', nextNightfarerIndex === '' ? null : Number(nextNightfarerIndex))
             }
-          >
-            <option value="">선택 안 함</option>
-            {nightfarers.map((nightfarer) => (
-              <option key={nightfarer.index} value={nightfarer.index}>
-                {nightfarer.name}
-              </option>
-            ))}
-          </select>
+          />
         </label>
         <label>
           제목
@@ -2205,6 +2226,7 @@ function BuildPostDetail({
   onReportPost: (post: BuildPost) => void;
 }) {
   const contentParts = useMemo(() => getBuildPostContentParts(post.content), [post.content]);
+  const replyTargetComment = getCommentById(post.comments, commentParentId);
 
   return (
     <article className="build-post-detail" aria-label="선택한 빌드 글">
@@ -2263,28 +2285,35 @@ function BuildPostDetail({
         </div>
 
         {post.comments.length ? (
-          post.comments.map((comment) => (
-            <div key={comment.id} className={`build-comment${comment.parentCommentId ? ' is-reply' : ''}`}>
-              <div>
-                <strong>{getAuthorLabel(comment.userId, comment.authorNickname)}</strong>
-                <span>{formatDate(comment.createdAt)}</span>
-              </div>
-              <p>{comment.content}</p>
-              <div className="build-comment-actions">
-                <button type="button" onClick={() => onSetCommentParentId(comment.id)}>
-                  답글
-                </button>
-                <button type="button" className="is-danger" onClick={() => onDeleteComment(comment)}>
-                  삭제
-                </button>
-                {isAdmin ? (
-                  <button type="button" className="is-danger" onClick={() => onAdminDeleteComment(comment)}>
-                    관리자 삭제
+          post.comments.map((comment) => {
+            const replyMention = getReplyMention(comment, post.comments);
+
+            return (
+              <div key={comment.id} className={`build-comment${comment.parentCommentId ? ' is-reply' : ''}`}>
+                <div>
+                  <strong>{getAuthorLabel(comment.userId, comment.authorNickname)}</strong>
+                  <span>{formatDate(comment.createdAt)}</span>
+                </div>
+                <p>
+                  {replyMention ? <span className="build-reply-mention">{replyMention}</span> : null}
+                  {comment.content}
+                </p>
+                <div className="build-comment-actions">
+                  <button type="button" onClick={() => onSetCommentParentId(comment.id)}>
+                    답글
                   </button>
-                ) : null}
+                  <button type="button" className="is-danger" onClick={() => onDeleteComment(comment)}>
+                    삭제
+                  </button>
+                  {isAdmin ? (
+                    <button type="button" className="is-danger" onClick={() => onAdminDeleteComment(comment)}>
+                      관리자 삭제
+                    </button>
+                  ) : null}
+                </div>
               </div>
-            </div>
-          ))
+            );
+          })
         ) : (
           <p className="build-empty">아직 댓글이 없습니다.</p>
         )}
@@ -2292,7 +2321,9 @@ function BuildPostDetail({
         <form className="build-comment-form" onSubmit={onCreateComment}>
           {commentParentId ? (
             <div className="build-reply-target">
-              <span>답글 대상: 댓글 #{commentParentId}</span>
+              <span>
+                답글 대상: {replyTargetComment ? `@${getAuthorLabel(replyTargetComment.userId, replyTargetComment.authorNickname)}` : `댓글 #${commentParentId}`}
+              </span>
               <button type="button" onClick={() => onSetCommentParentId(null)}>
                 취소
               </button>
@@ -2438,6 +2469,8 @@ function BuildPage({
   const pagedPosts = visiblePosts.slice(pageStartIndex, pageStartIndex + postsPerPage);
   const selectedPost = selectedPostId ? posts.find((post) => post.id === selectedPostId) ?? null : null;
   const isAdmin = authRole === 'ADMIN';
+  const authUserProfile = getAuthUserProfile();
+  const authorLabel = authUserProfile?.nickname ?? (authUserId ? getAuthorLabel(authUserId) : '로그인 필요');
 
   function handleApiError(error: unknown, fallback: string, options: { admin?: boolean } = {}) {
     if (isApiRequestError(error) && error.status === 401) {
@@ -2773,6 +2806,7 @@ function BuildPage({
   if (boardMode === 'write') {
     return (
       <BuildPostWritePage
+        authorLabel={authorLabel}
         authUserId={authUserId}
         draft={draft}
         isSubmitting={isSubmitting}
@@ -2786,6 +2820,7 @@ function BuildPage({
   if (boardMode === 'edit') {
     return (
       <BuildPostWritePage
+        authorLabel={authorLabel}
         authUserId={authUserId}
         draft={draft}
         isSubmitting={isSubmitting}

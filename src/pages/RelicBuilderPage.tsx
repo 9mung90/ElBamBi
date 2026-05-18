@@ -5,6 +5,7 @@ import {
   type StoredRelicDebuff,
   type StoredRelicOption,
 } from '../api/storageApi';
+import ResponsiveSelect from '../components/ResponsiveSelect';
 import { relicRollAppData, type RelicRollEffect, type RelicRollMode } from '../data/relics';
 
 type SlotSelection = [string, string, string];
@@ -466,20 +467,20 @@ function RelicBuilderPage({
           <div className="calc-control-grid relic-builder-mode-grid">
             <label>
               모드
-              <select
+              <ResponsiveSelect
                 value={mode.id}
-                onChange={(event) => {
-                  setModeId(event.target.value);
+                ariaLabel="모드"
+                sheetTitle="모드 선택"
+                options={modes.map((candidateMode) => ({
+                  value: candidateMode.id,
+                  label: getModeLabel(candidateMode),
+                }))}
+                onChange={(nextModeId) => {
+                  setModeId(nextModeId);
                   setSelectedKeys(EMPTY_SELECTION);
                   setSelectedDebuffKeys(EMPTY_SELECTION);
                 }}
-              >
-                {modes.map((candidateMode) => (
-                  <option key={candidateMode.id} value={candidateMode.id}>
-                    {getModeLabel(candidateMode)}
-                  </option>
-                ))}
-              </select>
+              />
             </label>
 
             <button
@@ -493,16 +494,16 @@ function RelicBuilderPage({
 
           <label className="relic-builder-color-control">
             색상
-            <select
+            <ResponsiveSelect
               value={selectedColor}
-              onChange={(event) => setSelectedColor(event.target.value as BuilderRelicColor)}
-            >
-              {RELIC_COLOR_OPTIONS.map((colorOption) => (
-                <option key={colorOption.value} value={colorOption.value}>
-                  {colorOption.label}
-                </option>
-              ))}
-            </select>
+              ariaLabel="색상"
+              sheetTitle="색상 선택"
+              options={RELIC_COLOR_OPTIONS.map((colorOption) => ({
+                value: colorOption.value,
+                label: colorOption.label,
+              }))}
+              onChange={(nextColor) => setSelectedColor(nextColor as BuilderRelicColor)}
+            />
           </label>
 
           <label className="relic-builder-invalid-toggle">
@@ -554,19 +555,19 @@ function RelicBuilderPage({
                   <em>{visibleEvaluations.length} / {totalCount}</em>
                 </div>
 
-                <select
+                <ResponsiveSelect
                   value={selectedKeys[slotIndex]}
-                  onChange={(event) => updateSlot(slotIndex, event.target.value)}
-                  aria-label={`옵션 ${slotIndex + 1} 효과 선택`}
-                >
-                  <option value="">효과 선택</option>
-                  {visibleEvaluations.map(({ effect, reasons }) => (
-                    <option key={effect.key} value={effect.key}>
-                      {getEffectName(effect)}
-                      {reasons.length ? ' (불가)' : ''}
-                    </option>
-                  ))}
-                </select>
+                  ariaLabel={`옵션 ${slotIndex + 1} 효과 선택`}
+                  sheetTitle={`${slotLabel} 옵션 선택`}
+                  options={[
+                    { value: '', label: '효과 선택' },
+                    ...visibleEvaluations.map(({ effect, reasons }) => ({
+                      value: effect.key,
+                      label: `${getEffectName(effect)}${reasons.length ? ' (불가)' : ''}`,
+                    })),
+                  ]}
+                  onChange={(nextEffectKey) => updateSlot(slotIndex, nextEffectKey)}
+                />
 
                 <RelicEffectOption
                   candidateCount={visibleEvaluations.length}
@@ -579,25 +580,25 @@ function RelicBuilderPage({
                   <div className="relic-builder-slot-debuff">
                     <label>
                       디버프
-                      <select
+                      <ResponsiveSelect
                         value={selectedDebuffKeys[slotIndex]}
-                        onChange={(event) => {
-                          const effectKey = event.target.value;
+                        ariaLabel={`${slotLabel} 슬롯 디버프 선택`}
+                        sheetTitle={`${slotLabel} 디버프 선택`}
+                        options={[
+                          { value: '', label: '디버프 선택' },
+                          ...visibleDebuffs.map((effect) => ({
+                            value: effect.key,
+                            label: getEffectName(effect),
+                          })),
+                        ]}
+                        onChange={(effectKey) => {
                           setSelectedDebuffKeys((currentSelection) => {
                             const nextSelection = [...currentSelection] as SlotSelection;
                             nextSelection[slotIndex] = effectKey;
                             return nextSelection;
                           });
                         }}
-                        aria-label={`${slotLabel} 슬롯 디버프 선택`}
-                      >
-                        <option value="">디버프 선택</option>
-                        {visibleDebuffs.map((effect) => (
-                          <option key={effect.key} value={effect.key}>
-                            {getEffectName(effect)}
-                          </option>
-                        ))}
-                      </select>
+                      />
                     </label>
 
                     <RelicEffectOption
