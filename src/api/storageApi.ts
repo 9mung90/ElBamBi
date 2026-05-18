@@ -1,6 +1,8 @@
+import { getApiErrorMessage } from './apiError';
+import { accessTokenStorageKey, clearAuthStorage, isAccessTokenExpired } from './authToken';
+
 const defaultApiBaseUrl = 'https://k9e297bszl.execute-api.ap-northeast-2.amazonaws.com';
 const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? defaultApiBaseUrl).replace(/\/$/, '');
-const accessTokenStorageKey = 'accessToken';
 
 type ApiBodyValue = string | number | boolean | null | undefined;
 
@@ -96,7 +98,13 @@ export function isApiRequestError(error: unknown): error is ApiRequestError {
 
 function getAccessToken() {
   try {
-    return localStorage.getItem(accessTokenStorageKey);
+    const accessToken = localStorage.getItem(accessTokenStorageKey);
+    if (!accessToken) return null;
+    if (isAccessTokenExpired(accessToken)) {
+      clearAuthStorage();
+      return null;
+    }
+    return accessToken;
   } catch {
     return null;
   }
@@ -165,6 +173,10 @@ async function requestStorageApi<T>(
   const payload = await parseResponsePayload(response);
 
   if (!response.ok) {
+    if (response.status === 401) {
+      clearAuthStorage();
+    }
+
     console.error('[storageApi] Request failed', {
       path,
       status: response.status,
@@ -185,8 +197,7 @@ async function requestStorageApi<T>(
 
 export function getStorageErrorMessage(error: unknown, fallback: string) {
   if (isApiRequestError(error)) {
-    if (error.status === 401) return 'Login is required.';
-    return error.message ? `${error.status}: ${error.message}` : fallback;
+    return getApiErrorMessage(error.status, error.message || fallback);
   }
   if (error instanceof Error) return error.message || fallback;
   return fallback;

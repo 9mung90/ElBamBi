@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type ChangeEvent, type FormEvent } from 'react';
+﻿import { useEffect, useMemo, useRef, useState, type ChangeEvent, type FormEvent } from 'react';
 import { nightfarers, type Nightfarer } from '../data/nightfarers';
 import {
   getStorageErrorMessage,
@@ -9,6 +9,16 @@ import {
   type StoredRelic,
   type StoredRelicOption,
 } from '../api/storageApi';
+import { getApiErrorMessage } from '../api/apiError';
+import {
+  accessTokenStorageKey,
+  authNicknameStorageKey,
+  authNicknameUserIdStorageKey,
+  authUserIdStorageKey,
+  clearAuthStorage,
+  getAccessTokenPayload,
+  isAccessTokenExpired,
+} from '../api/authToken';
 import {
   relicEffectsKo,
   relicItemColorMap,
@@ -187,10 +197,6 @@ type ApiBodyValue = string | number | null | undefined;
 
 const defaultApiBaseUrl = 'https://k9e297bszl.execute-api.ap-northeast-2.amazonaws.com';
 const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? defaultApiBaseUrl).replace(/\/$/, '');
-const accessTokenStorageKey = 'accessToken';
-const authUserIdStorageKey = 'nightreign:auth-user-id';
-const authNicknameStorageKey = 'nightreign:auth-nickname';
-const authNicknameUserIdStorageKey = 'nightreign:auth-nickname-user-id';
 const postsPerPage = 15;
 const EMPTY_PRESET_SLOTS: PresetSlotRelics = [null, null, null, null, null, null];
 const EMPTY_EFFECT_ID = 0xffffffff;
@@ -502,7 +508,13 @@ function appendParams(params: URLSearchParams, values: Record<string, ApiBodyVal
 
 function getAccessToken() {
   try {
-    return localStorage.getItem(accessTokenStorageKey);
+    const accessToken = localStorage.getItem(accessTokenStorageKey);
+    if (!accessToken) return null;
+    if (isAccessTokenExpired(accessToken)) {
+      clearAuthStorage();
+      return null;
+    }
+    return accessToken;
   } catch {
     return null;
   }
@@ -512,25 +524,6 @@ function getStoredValue(key: string) {
   try {
     return localStorage.getItem(key);
   } catch {
-    return null;
-  }
-}
-
-function decodeJwtPayload(token: string): Record<string, unknown> | null {
-  const [, encodedPayload] = token.split('.');
-  if (!encodedPayload) return null;
-
-  try {
-    const normalizedPayload = encodedPayload.replace(/-/g, '+').replace(/_/g, '/');
-    const paddedPayload = normalizedPayload.padEnd(
-      normalizedPayload.length + ((4 - (normalizedPayload.length % 4)) % 4),
-      '=',
-    );
-    const binaryPayload = atob(paddedPayload);
-    const bytes = Uint8Array.from(binaryPayload, (character) => character.charCodeAt(0));
-    return JSON.parse(new TextDecoder().decode(bytes)) as Record<string, unknown>;
-  } catch (error) {
-    console.warn('[build] Failed to decode access token payload', error);
     return null;
   }
 }
@@ -549,7 +542,7 @@ function getAuthUserProfile(): AuthUserProfile | null {
     return null;
   }
 
-  const payload = decodeJwtPayload(accessToken);
+  const payload = getAccessTokenPayload(accessToken);
   if (!payload) {
     if (storedUserId && storedNickname && storedNicknameUserId === storedUserId) {
       return { nickname: storedNickname, userId: storedUserId };
@@ -629,6 +622,9 @@ async function requestApi<T>(
   const text = await response.text();
 
   if (!response.ok) {
+    if (response.status === 401) {
+      clearAuthStorage();
+    }
     throw new ApiRequestError(response.status, text || `${response.status} ${response.statusText}`);
   }
 
@@ -1104,7 +1100,7 @@ async function uploadBuildPostImageToS3({
   });
 
   if (!response.ok) {
-    throw new Error(`이미지 업로드 실패: ${response.status} ${response.statusText}`);
+    throw new Error(getApiErrorMessage(response.status, `이미지 업로드 실패: ${response.status} ${response.statusText}`));
   }
 }
 
@@ -1248,18 +1244,14 @@ function sortPosts(posts: BuildPost[], sortKey: SortKey) {
 
 function getErrorMessage(error: unknown, fallback: string) {
   if (isApiRequestError(error)) {
-    if (error.status === 401) return '로그인이 필요합니다.';
-    if (error.status === 403) return '이 글을 수정할 권한이 없습니다.';
-    return error.message || fallback;
+    return getApiErrorMessage(error.status, error.message || fallback);
   }
   return fallback;
 }
 
 function getAdminDeleteErrorMessage(error: unknown, fallback: string) {
   if (isApiRequestError(error)) {
-    if (error.status === 401) return '로그인이 필요합니다.';
-    if (error.status === 403) return '관리자 권한이 없습니다.';
-    return error.message || fallback;
+    return getApiErrorMessage(error.status, error.message || fallback);
   }
   return fallback;
 }
@@ -2325,11 +2317,13 @@ function BuildPage({
   authRole,
   authUserId,
   focusPostId,
+  onLoginRequired,
   searchQuery,
 }: {
   authRole?: AuthRole;
   authUserId: string | null;
   focusPostId?: string | null;
+  onLoginRequired?: () => void;
   searchQuery: string;
 }) {
   const [posts, setPosts] = useState<BuildPost[]>([]);
@@ -2445,6 +2439,13 @@ function BuildPage({
   const selectedPost = selectedPostId ? posts.find((post) => post.id === selectedPostId) ?? null : null;
   const isAdmin = authRole === 'ADMIN';
 
+  function handleApiError(error: unknown, fallback: string, options: { admin?: boolean } = {}) {
+    if (isApiRequestError(error) && error.status === 401) {
+      onLoginRequired?.();
+    }
+    setNotice(options.admin ? getAdminDeleteErrorMessage(error, fallback) : getErrorMessage(error, fallback));
+  }
+
   function updateDraft<K extends keyof BuildPostDraft>(key: K, value: BuildPostDraft[K]) {
     setDraft((currentDraft) => ({
       ...currentDraft,
@@ -2520,7 +2521,7 @@ function BuildPage({
       await loadCommunityData(createdPostId);
       setNotice('빌드 글을 등록했습니다.');
     } catch (error) {
-      setNotice(getErrorMessage(error, '빌드 글 등록에 실패했습니다.'));
+      handleApiError(error, '빌드 글 등록에 실패했습니다.');
     } finally {
       setIsSubmitting(false);
     }
@@ -2599,7 +2600,7 @@ function BuildPage({
       setBoardMode('detail');
       setNotice('빌드 글을 수정했습니다.');
     } catch (error) {
-      setNotice(getErrorMessage(error, '빌드 글 수정에 실패했습니다.'));
+      handleApiError(error, '빌드 글 수정에 실패했습니다.');
     } finally {
       setIsSubmitting(false);
     }
@@ -2634,7 +2635,7 @@ function BuildPage({
       });
       await loadCommunityData(post.id);
     } catch (error) {
-      setNotice(getErrorMessage(error, '좋아요 상태 저장에 실패했습니다.'));
+      handleApiError(error, '좋아요 상태 저장에 실패했습니다.');
     }
   }
 
@@ -2648,7 +2649,7 @@ function BuildPage({
       });
       await loadCommunityData(post.id);
     } catch (error) {
-      setNotice(getErrorMessage(error, '북마크 상태 저장에 실패했습니다.'));
+      handleApiError(error, '북마크 상태 저장에 실패했습니다.');
     }
   }
 
@@ -2667,7 +2668,7 @@ function BuildPage({
       setBoardMode('list');
       setNotice('빌드 글을 삭제했습니다.');
     } catch (error) {
-      setNotice(getErrorMessage(error, '빌드 글 삭제에 실패했습니다.'));
+      handleApiError(error, '빌드 글 삭제에 실패했습니다.');
     }
   }
 
@@ -2685,7 +2686,7 @@ function BuildPage({
       }
       setNotice('게시글이 관리자 권한으로 삭제되었습니다.');
     } catch (error) {
-      setNotice(getAdminDeleteErrorMessage(error, '게시글 관리자 삭제에 실패했습니다.'));
+      handleApiError(error, '게시글 관리자 삭제에 실패했습니다.', { admin: true });
     }
   }
 
@@ -2728,7 +2729,7 @@ function BuildPage({
       setCommentParentId(null);
       await loadCommunityData(selected.id);
     } catch (error) {
-      setNotice(getErrorMessage(error, '댓글 등록에 실패했습니다.'));
+      handleApiError(error, '댓글 등록에 실패했습니다.');
     }
   }
 
@@ -2746,7 +2747,7 @@ function BuildPage({
       await loadCommunityData(selected.id);
       setNotice('댓글을 삭제했습니다.');
     } catch (error) {
-      setNotice(getErrorMessage(error, '댓글 삭제에 실패했습니다.'));
+      handleApiError(error, '댓글 삭제에 실패했습니다.');
     }
   }
 
@@ -2765,7 +2766,7 @@ function BuildPage({
       );
       setNotice('댓글이 관리자 권한으로 삭제되었습니다.');
     } catch (error) {
-      setNotice(getAdminDeleteErrorMessage(error, '댓글 관리자 삭제에 실패했습니다.'));
+      handleApiError(error, '댓글 관리자 삭제에 실패했습니다.', { admin: true });
     }
   }
 

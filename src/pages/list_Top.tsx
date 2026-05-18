@@ -39,6 +39,16 @@ import WeaponsPage, {
   weaponFilterOptions,
   type WeaponFilters,
 } from './WeaponsPage';
+import { getApiErrorMessage } from '../api/apiError';
+import {
+  accessTokenStorageKey,
+  authNicknameStorageKey,
+  authNicknameUserIdStorageKey,
+  authUserIdStorageKey,
+  clearAuthStorage,
+  getUserIdFromAccessToken,
+  isAccessTokenExpired,
+} from '../api/authToken';
 import type { Category } from './pageTypes';
 import ashTopIcon from '../assets/images/top_icon/ash.webp';
 import bossTopIcon from '../assets/images/top_icon/boss.webp';
@@ -109,10 +119,6 @@ type MyPageView = 'overview' | 'posts' | 'comments' | 'bookmarks' | 'relics' | '
 type AuthRole = 'USER' | 'ADMIN';
 const defaultApiBaseUrl = 'https://k9e297bszl.execute-api.ap-northeast-2.amazonaws.com';
 const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? defaultApiBaseUrl).replace(/\/$/, '');
-const accessTokenStorageKey = 'accessToken';
-const authUserIdStorageKey = 'nightreign:auth-user-id';
-const authNicknameStorageKey = 'nightreign:auth-nickname';
-const authNicknameUserIdStorageKey = 'nightreign:auth-nickname-user-id';
 const lastPageStorageKey = 'nightreign:last-page';
 const authViewStorageKey = 'nightreign:auth-view';
 const pullToRefreshThreshold = 90;
@@ -183,7 +189,7 @@ function getStoredAuthView(): AuthView {
 }
 
 function getStoredAuthUserId() {
-  return getUserIdFromAccessToken(getStoredValue(accessTokenStorageKey)) ?? getStoredValue(authUserIdStorageKey);
+  return getUserIdFromAccessToken(getStoredAccessToken()) ?? getStoredValue(authUserIdStorageKey);
 }
 
 function getStoredValue(key: string) {
@@ -192,6 +198,16 @@ function getStoredValue(key: string) {
   } catch {
     return null;
   }
+}
+
+function getStoredAccessToken() {
+  const accessToken = getStoredValue(accessTokenStorageKey);
+  if (!accessToken) return null;
+  if (isAccessTokenExpired(accessToken)) {
+    clearAuthStorage();
+    return null;
+  }
+  return accessToken;
 }
 
 function setStoredValue(key: string, value: string) {
@@ -312,10 +328,6 @@ function getAccessTokenFromPayload(payload: unknown) {
   return typeof token === 'string' && token ? token : null;
 }
 
-function isLoginRequiredMessage(message: string) {
-  return message.trim().toLowerCase() === 'login required';
-}
-
 function getProfileEmail(profile: Record<string, unknown> | null) {
   return getFirstString(profile, ['email', 'userEmail']);
 }
@@ -361,34 +373,6 @@ function isValidProfilePassword(password: string) {
   return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,20}$/.test(password);
 }
 
-function decodeJwtPayload(token: string): Record<string, unknown> | null {
-  const [, encodedPayload] = token.split('.');
-  if (!encodedPayload) return null;
-
-  try {
-    const normalizedPayload = encodedPayload.replace(/-/g, '+').replace(/_/g, '/');
-    const paddedPayload = normalizedPayload.padEnd(
-      normalizedPayload.length + ((4 - (normalizedPayload.length % 4)) % 4),
-      '=',
-    );
-    const binaryPayload = atob(paddedPayload);
-    const bytes = Uint8Array.from(binaryPayload, (character) => character.charCodeAt(0));
-    return JSON.parse(new TextDecoder().decode(bytes)) as Record<string, unknown>;
-  } catch (error) {
-    console.warn('[auth] Failed to decode access token payload', error);
-    return null;
-  }
-}
-
-function getUserIdFromAccessToken(token: string | null) {
-  if (!token) return null;
-  const payload = decodeJwtPayload(token);
-  const userId = payload?.userId ?? payload?.sub;
-  if (typeof userId === 'string' && userId) return userId;
-  if (typeof userId === 'number' && Number.isFinite(userId)) return String(userId);
-  return null;
-}
-
 function getAccessTokenFromLocationSearch() {
   if (window.location.pathname === verifyEmailRoutePath) return null;
   const params = new URLSearchParams(window.location.search);
@@ -404,6 +388,7 @@ function hasOAuthRedirectParams() {
   if (window.location.pathname === verifyEmailRoutePath) return false;
   const params = new URLSearchParams(window.location.search);
   return (
+    params.has('oauthError') ||
     params.has('accessToken') ||
     params.has('access_token') ||
     params.has('token') ||
@@ -421,7 +406,7 @@ async function postNicknameForm(nickname: string, accessTokenOverride?: string |
     'content-type': 'application/x-www-form-urlencoded;charset=UTF-8',
   });
   const accessToken =
-    accessTokenOverride ?? getStoredValue(accessTokenStorageKey) ?? getAccessTokenFromLocationSearch();
+    accessTokenOverride ?? getStoredAccessToken() ?? getAccessTokenFromLocationSearch();
 
   if (accessToken) {
     headers.set('authorization', `Bearer ${accessToken}`);
@@ -527,7 +512,7 @@ async function requestMyPageApi<T>(
     form?: Record<string, string>;
   } = {},
 ): Promise<T> {
-  const accessToken = getStoredValue(accessTokenStorageKey);
+  const accessToken = getStoredAccessToken();
   if (!accessToken) {
     throw new LoginRequiredError('Login required');
   }
@@ -554,10 +539,11 @@ async function requestMyPageApi<T>(
 
   if (!response.ok) {
     const message = getErrorMessageFromPayload(payload) || text;
-    if (response.status === 401 && (!message || isLoginRequiredMessage(message))) {
+    if (response.status === 401) {
+      clearAuthStorage();
       throw new LoginRequiredError('Login required');
     }
-    throw new Error(message || `${response.status} ${response.statusText}`);
+    throw new Error(getApiErrorMessage(response.status, message || `${response.status} ${response.statusText}`));
   }
 
   return payload as T;
@@ -591,7 +577,7 @@ function NicknamePage({
 
     try {
       await postNicknameForm(trimmedNickname, accessToken);
-      const userId = getUserIdFromAccessToken(accessToken ?? getStoredValue(accessTokenStorageKey));
+      const userId = getUserIdFromAccessToken(accessToken ?? getStoredAccessToken());
       setStoredValue(authNicknameStorageKey, trimmedNickname);
       if (userId) {
         setStoredValue(authNicknameUserIdStorageKey, userId);
@@ -717,10 +703,12 @@ function VerifyEmailPage({ onGoToLogin }: { onGoToLogin: () => void }) {
 }
 
 function AuthPage({
+  initialError,
   view,
   onChangeView,
   onLoginSuccess,
 }: {
+  initialError?: string | null;
   view: Exclude<AuthView, null>;
   onChangeView: (view: Exclude<AuthView, null>) => void;
   onLoginSuccess: (loginId: string) => void;
@@ -741,6 +729,10 @@ function AuthPage({
   const [isResendingVerification, setIsResendingVerification] = useState(false);
 
   const resendEmail = verificationEmail.trim() || (loginId.includes('@') ? loginId.trim() : '');
+
+  useEffect(() => {
+    if (initialError) setError(initialError);
+  }, [initialError]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -1751,6 +1743,7 @@ function ListTop() {
   const [authView, setAuthView] = useState<AuthView>(getStoredAuthView);
   const [authUserId, setAuthUserId] = useState<string | null>(getStoredAuthUserId);
   const [authRole, setAuthRole] = useState<AuthRole>('USER');
+  const [authInitialError, setAuthInitialError] = useState<string | null>(null);
   const [isMyPageOpen, setIsMyPageOpen] = useState(false);
   const [buildFocusPostId, setBuildFocusPostId] = useState<string | null>(null);
   const [isNicknameRoute, setIsNicknameRoute] = useState(
@@ -1796,9 +1789,13 @@ function ListTop() {
   }, [authView]);
 
   useEffect(() => {
-    const tokenUserId = getUserIdFromAccessToken(getStoredValue(accessTokenStorageKey));
+    const tokenUserId = getUserIdFromAccessToken(getStoredAccessToken());
     if (tokenUserId && tokenUserId !== authUserId) {
       setAuthUserId(tokenUserId);
+      return;
+    }
+    if (!tokenUserId && authUserId && !getStoredAccessToken()) {
+      setAuthUserId(null);
     }
   }, [authUserId]);
 
@@ -1811,7 +1808,7 @@ function ListTop() {
   }, [authUserId]);
 
   useEffect(() => {
-    if (!getStoredValue(accessTokenStorageKey)) {
+    if (!getStoredAccessToken()) {
       setAuthRole('USER');
       return;
     }
@@ -1836,10 +1833,7 @@ function ListTop() {
         if (!isMounted) return;
         setAuthRole('USER');
         if (error instanceof LoginRequiredError) {
-          removeStoredValue(accessTokenStorageKey);
-          removeStoredValue(authUserIdStorageKey);
-          removeStoredValue(authNicknameStorageKey);
-          removeStoredValue(authNicknameUserIdStorageKey);
+          clearAuthStorage();
           setAuthUserId(null);
           return;
         }
@@ -1869,8 +1863,18 @@ function ListTop() {
     if (!hasOAuthRedirectParams()) return;
 
     const currentPath = window.location.pathname;
+    const params = new URLSearchParams(window.location.search);
+    const oauthError = params.get('oauthError');
     const accessToken = getAccessTokenFromLocationSearch();
     const needsNickname = getNeedsNicknameFromLocationSearch();
+
+    if (oauthError) {
+      setAuthInitialError('구글 로그인에 실패했습니다. 다시 시도해 주세요.');
+      setAuthView('login');
+      setIsMyPageOpen(false);
+      window.history.replaceState(null, '', currentPath === nicknameRoutePath ? mainRoutePath : currentPath || mainRoutePath);
+      return;
+    }
 
     if (accessToken) {
       setStoredValue(accessTokenStorageKey, accessToken);
@@ -2072,10 +2076,7 @@ function ListTop() {
   };
 
   const clearAuthState = () => {
-    removeStoredValue(accessTokenStorageKey);
-    removeStoredValue(authUserIdStorageKey);
-    removeStoredValue(authNicknameStorageKey);
-    removeStoredValue(authNicknameUserIdStorageKey);
+    clearAuthStorage();
     setAuthUserId(null);
     setAuthRole('USER');
   };
@@ -2093,7 +2094,7 @@ function ListTop() {
 
     const nextUserId =
       response.userId ??
-      getUserIdFromAccessToken(response.accessToken ?? getStoredValue(accessTokenStorageKey));
+      getUserIdFromAccessToken(response.accessToken ?? getStoredAccessToken());
 
     if (nextUserId) {
       setAuthUserId(nextUserId);
@@ -2179,7 +2180,7 @@ function ListTop() {
             aria-label={authUserId ? `${authUserId} 계정` : '로그인 페이지로 이동'}
             title={authUserId ? `${authUserId} 로그인됨` : '로그인'}
             onClick={() => {
-              if (getStoredValue(accessTokenStorageKey)) {
+              if (getStoredAccessToken()) {
                 setAuthView(null);
                 setIsMyPageOpen(true);
               } else {
@@ -2504,9 +2505,14 @@ function ListTop() {
 
       {authView ? (
         <AuthPage
+          initialError={authInitialError}
           view={authView}
-          onChangeView={setAuthView}
+          onChangeView={(nextView) => {
+            setAuthInitialError(null);
+            setAuthView(nextView);
+          }}
           onLoginSuccess={(loginId) => {
+            setAuthInitialError(null);
             setAuthUserId(loginId);
             setAuthView(null);
             setIsMyPageOpen(false);
@@ -2574,6 +2580,7 @@ function ListTop() {
           authUserId={authUserId}
           authRole={authRole}
           focusPostId={buildFocusPostId}
+          onLoginRequired={handleLoginRequired}
         />
       ) : selectedId === 'relic-builder' ? (
         <RelicBuilderPage
