@@ -17,20 +17,65 @@ const nightAssetUrlsByLower = new Map(
   Object.entries(nightAssetUrls).map(([path, url]) => [path.toLowerCase(), url]),
 );
 
-const skinAssetUrls = import.meta.glob('../assets/images/skins/**/*.png', {
+const skinAssetUrls = import.meta.glob('../assets/images/skins/**/*.webp', {
   eager: true,
   import: 'default',
   query: '?url',
 }) as Record<string, string>;
 
-const skinNames: Record<number, string> = {
+const commonSkinNames: Record<number, string> = {
   0: '일반',
   1: '여명',
   2: '암흑',
   3: '추억',
-  4: '임시',
-  5: '임시',
 };
+
+const characterSkinNames: Record<number, Record<number, string>> = {
+  0: {
+    4: '심연을 걷는 자',
+    5: '사자기사',
+  },
+  1: {
+    4: '태양의 기사',
+    5: '방랑 기사',
+  },
+  2: {
+    4: '약지',
+    5: '용병 기사',
+  },
+  3: {
+    4: '검은 가죽',
+    5: '어둠',
+  },
+  4: {
+    4: '바위와도 같은',
+    5: '카타리나',
+  },
+  5: {
+    4: '그림 속 수도녀',
+    5: '용의 학원',
+  },
+  6: {
+    4: '이단 마술사',
+    5: '인과의 녹의',
+  },
+  7: {
+    4: '가시',
+    5: '흑교회',
+  },
+  8: {
+    4: '교회사',
+    5: '황의',
+  },
+  9: {
+    4: '놋쇠',
+    5: '왕의 칼날',
+  },
+};
+
+function getSkinName(nightfarerIndex: number, skinIndex: number) {
+  return commonSkinNames[skinIndex] ?? characterSkinNames[nightfarerIndex]?.[skinIndex] ?? '임시';
+}
 
 function resolveNightAssetUrl(url: string) {
   if (!url.startsWith('/assets/images/night/')) return url;
@@ -42,7 +87,7 @@ function resolveNightAssetUrl(url: string) {
 function getSkinEntries(nightfarerIndex: number) {
   return Object.entries(skinAssetUrls)
     .map(([path, imageUrl]) => {
-      const match = path.match(/\/skins\/(\d+)\/(\d+)\.png$/);
+      const match = path.match(/\/skins\/(\d+)\/(\d+)\.webp$/);
       if (!match) return null;
 
       const characterIndex = Number(match[1]);
@@ -52,7 +97,7 @@ function getSkinEntries(nightfarerIndex: number) {
       return {
         imageUrl,
         index: skinIndex,
-        name: skinNames[skinIndex] ?? '임시',
+        name: getSkinName(nightfarerIndex, skinIndex),
       };
     })
     .filter((entry): entry is { imageUrl: string; index: number; name: string } => Boolean(entry))

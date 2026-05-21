@@ -1810,18 +1810,20 @@ function ListTop() {
   const pageSwipeStartRef = useRef<{
     x: number;
     y: number;
-    id: string;
+    index: number;
     width: number;
     time: number;
+    axis: 'horizontal' | 'vertical' | null;
   } | null>(null);
-  const [pageSwipe, setPageSwipe] = useState<{
-    targetId: string | null;
+  const [visitedCategoryIds, setVisitedCategoryIds] = useState<Set<string>>(() => new Set([getStoredPageId()]));
+  const [pageDrag, setPageDrag] = useState<{
     offset: number;
-    isAnimating: boolean;
+    isDragging: boolean;
+    targetIndex: number | null;
   }>({
-    targetId: null,
     offset: 0,
-    isAnimating: false,
+    isDragging: false,
+    targetIndex: null,
   });
 
   // SaveParserPage state
@@ -2128,10 +2130,22 @@ function ListTop() {
     }
   };
 
-  const selectedCategory = useMemo(
-    () => categories.find((category) => category.id === selectedId) ?? categories[0],
-    [selectedId],
-  );
+  const selectedIndex = useMemo(() => {
+    const index = categories.findIndex((category) => category.id === selectedId);
+    return index >= 0 ? index : 0;
+  }, [selectedId]);
+
+  const selectedCategory = categories[selectedIndex] ?? categories[0];
+
+  useEffect(() => {
+    const selectedCategoryId = selectedCategory.id;
+    setVisitedCategoryIds((currentIds) => {
+      if (currentIds.has(selectedCategoryId)) return currentIds;
+      const nextIds = new Set(currentIds);
+      nextIds.add(selectedCategoryId);
+      return nextIds;
+    });
+  }, [selectedCategory.id]);
 
   useEffect(() => {
     const currentTab = categoryTabsRef.current?.querySelector<HTMLElement>(
@@ -2213,6 +2227,12 @@ function ListTop() {
 
   const selectCategory = (categoryId: string) => {
     closeOverlayPages();
+    setVisitedCategoryIds((currentIds) => {
+      if (currentIds.has(categoryId)) return currentIds;
+      const nextIds = new Set(currentIds);
+      nextIds.add(categoryId);
+      return nextIds;
+    });
     setSelectedId(categoryId);
     setSearchQuery('');
     setIsFilterPanelOpen(false);
@@ -2221,11 +2241,47 @@ function ListTop() {
     setFocusedWeaponGroupId(null);
   };
 
+  const selectCategoryByIndex = (index: number) => {
+    const category = categories[Math.max(0, Math.min(categories.length - 1, index))];
+    if (!category || category.id === selectedCategory.id) return;
+    selectCategory(category.id);
+  };
+
   const isPageSwipeTarget = (target: EventTarget | null) => {
     if (!(target instanceof HTMLElement)) return false;
-    return !target.closest(
-      'input, textarea, select, button, a, [contenteditable="true"], .map-stage-viewport, .responsive-select-overlay',
-    );
+    if (
+      target.closest(
+        [
+          'input',
+          'textarea',
+          'select',
+          'button',
+          'a',
+          '[contenteditable="true"]',
+          '[role="button"]',
+          '[role="link"]',
+          '[role="dialog"]',
+          '[aria-modal="true"]',
+          '[data-no-page-swipe]',
+          '[data-interactive]',
+          '.responsive-select-overlay',
+        ].join(', '),
+      )
+    ) {
+      return false;
+    }
+
+    let element: HTMLElement | null = target;
+    while (element) {
+      const style = window.getComputedStyle(element);
+      const canScrollHorizontally =
+        (style.overflowX === 'auto' || style.overflowX === 'scroll') &&
+        element.scrollWidth > element.clientWidth;
+      if (canScrollHorizontally) return false;
+      element = element.parentElement;
+    }
+
+    return true;
   };
 
   const handlePageSwipeStart = (event: ReactTouchEvent<HTMLDivElement>) => {
@@ -2233,7 +2289,6 @@ function ListTop() {
       event.touches.length !== 1 ||
       authView ||
       isMyPageOpen ||
-      pageSwipe.isAnimating ||
       !isPageSwipeTarget(event.target)
     ) {
       pageSwipeStartRef.current = null;
@@ -2244,50 +2299,55 @@ function ListTop() {
     pageSwipeStartRef.current = {
       x: touch.clientX,
       y: touch.clientY,
-      id: selectedId,
+      index: selectedIndex,
       width: event.currentTarget.clientWidth,
       time: performance.now(),
+      axis: null,
     };
-    setPageSwipe({ targetId: null, offset: 0, isAnimating: false });
+    setPageDrag({ offset: 0, isDragging: true, targetIndex: null });
   };
 
   const handlePageSwipeMove = (event: ReactTouchEvent<HTMLDivElement>) => {
     const start = pageSwipeStartRef.current;
-    if (!start || start.id !== selectedId || event.touches.length !== 1) return;
+    if (!start || start.index !== selectedIndex || event.touches.length !== 1) return;
 
     const touch = event.touches[0];
     const deltaX = touch.clientX - start.x;
     const deltaY = touch.clientY - start.y;
-    if (Math.abs(deltaX) < 12 || Math.abs(deltaX) <= Math.abs(deltaY)) return;
+    const absX = Math.abs(deltaX);
+    const absY = Math.abs(deltaY);
 
-    const currentIndex = categories.findIndex((category) => category.id === selectedId);
-    const targetIndex =
-      deltaX < 0
-        ? Math.min(categories.length - 1, currentIndex + 1)
-        : Math.max(0, currentIndex - 1);
+    if (!start.axis) {
+      if (absX < 10 && absY < 10) return;
+      start.axis = absX > absY * 1.18 ? 'horizontal' : 'vertical';
+    }
+
+    if (start.axis === 'vertical') return;
+
+    const targetIndex = deltaX < 0 ? Math.min(categories.length - 1, start.index + 1) : Math.max(0, start.index - 1);
     const targetCategory = categories[targetIndex];
-    if (!targetCategory || targetCategory.id === selectedId) {
-      setPageSwipe({ targetId: null, offset: deltaX * 0.18, isAnimating: false });
+    if (!targetCategory || targetIndex === start.index) {
+      setPageDrag({ offset: deltaX * 0.18, isDragging: true, targetIndex: null });
       return;
     }
 
     event.preventDefault();
     const limit = Math.max(1, start.width);
     const offset = Math.max(-limit, Math.min(limit, deltaX));
-    setPageSwipe({ targetId: targetCategory.id, offset, isAnimating: false });
+    setPageDrag({ offset, isDragging: true, targetIndex });
   };
 
   const handlePageSwipeEnd = (event: ReactTouchEvent<HTMLDivElement>) => {
     const start = pageSwipeStartRef.current;
     pageSwipeStartRef.current = null;
-    if (!start || start.id !== selectedId) {
-      setPageSwipe({ targetId: null, offset: 0, isAnimating: false });
+    if (!start || start.index !== selectedIndex) {
+      setPageDrag({ offset: 0, isDragging: false, targetIndex: null });
       return;
     }
 
     const touch = event.changedTouches[0];
     if (!touch) {
-      setPageSwipe({ targetId: null, offset: 0, isAnimating: false });
+      setPageDrag({ offset: 0, isDragging: false, targetIndex: null });
       return;
     }
 
@@ -2295,25 +2355,19 @@ function ListTop() {
     const deltaY = touch.clientY - start.y;
     const elapsed = Math.max(1, performance.now() - start.time);
     const velocity = Math.abs(deltaX) / elapsed;
+    const fallbackTargetIndex =
+      deltaX < 0 ? Math.min(categories.length - 1, start.index + 1) : Math.max(0, start.index - 1);
+    const targetIndex = pageDrag.targetIndex ?? (fallbackTargetIndex !== start.index ? fallbackTargetIndex : null);
     const shouldCommitSwipe =
-      Boolean(pageSwipe.targetId) &&
-      Math.abs(deltaY) <= 72 &&
+      targetIndex !== null &&
+      start.axis === 'horizontal' &&
+      Math.abs(deltaY) <= Math.max(80, start.width * 0.35) &&
       (Math.abs(deltaX) >= Math.min(110, start.width * 0.24) || velocity >= 0.45);
 
-    if (!shouldCommitSwipe || !pageSwipe.targetId) {
-      setPageSwipe({ targetId: null, offset: 0, isAnimating: true });
-      window.setTimeout(() => setPageSwipe({ targetId: null, offset: 0, isAnimating: false }), 260);
-      return;
+    setPageDrag({ offset: 0, isDragging: false, targetIndex: null });
+    if (shouldCommitSwipe && targetIndex !== null) {
+      selectCategoryByIndex(targetIndex);
     }
-
-    const targetId = pageSwipe.targetId;
-    const targetOffset = pageSwipe.offset < 0 ? -start.width : start.width;
-    setPageSwipe({ targetId, offset: targetOffset, isAnimating: true });
-
-    window.setTimeout(() => {
-      selectCategory(targetId);
-      setPageSwipe({ targetId: null, offset: 0, isAnimating: false });
-    }, 280);
   };
 
   const clearAuthState = () => {
@@ -2407,7 +2461,7 @@ function ListTop() {
     );
   }
 
-  const renderPageContent = (categoryId: string): ReactNode => {
+  const renderOverlayContent = (): ReactNode => {
     if (authView) {
       return (
         <AuthPage
@@ -2441,6 +2495,10 @@ function ListTop() {
       );
     }
 
+    return null;
+  };
+
+  const renderPageContent = (categoryId: string): ReactNode => {
     if (categoryId === 'characters') {
       return (
         <CharactersPage
@@ -2533,15 +2591,17 @@ function ListTop() {
     if (categoryId === 'items') return <ItemsPage searchQuery={searchQuery} />;
     if (categoryId === 'gestures') return <GesturesPage searchQuery={searchQuery} />;
 
-    return <PlaceholderPage category={selectedCategory} searchQuery={searchQuery} />;
+    return (
+      <PlaceholderPage
+        category={categories.find((category) => category.id === categoryId) ?? selectedCategory}
+        searchQuery={searchQuery}
+      />
+    );
   };
 
-  const isSwipingToPrevious = Boolean(pageSwipe.targetId && pageSwipe.offset > 0);
-  const swipeTrackTransform = pageSwipe.targetId
-    ? isSwipingToPrevious
-      ? `calc(-100% + ${pageSwipe.offset}px)`
-      : `${pageSwipe.offset}px`
-    : '0px';
+  const overlayContent = renderOverlayContent();
+  const isOverlayOpen = Boolean(overlayContent);
+  const pageTrackTransform = `calc(${-selectedIndex * 100}% + ${pageDrag.offset}px)`;
 
   return (
     <main className="list-top-shell">
@@ -2593,9 +2653,6 @@ function ListTop() {
               setIsFilterPanelOpen((isOpen) => !isOpen);
             }}
           >
-            &#9881;
-          </button>
-          <button type="button" className="icon-button" aria-label="카테고리 필터">
             &#9776;
           </button>
         </div>
@@ -2872,33 +2929,46 @@ function ListTop() {
         </nav>
       </header>
 
-      <div
-        className="page-swipe-surface"
-        onTouchStart={handlePageSwipeStart}
-        onTouchMove={handlePageSwipeMove}
-        onTouchEnd={handlePageSwipeEnd}
-        onTouchCancel={() => {
-          pageSwipeStartRef.current = null;
-          setPageSwipe({ targetId: null, offset: 0, isAnimating: false });
-        }}
-      >
-        <div
-          className={`page-swipe-track${pageSwipe.isAnimating ? ' is-animating' : ''}`}
-          style={{ transform: `translate3d(${swipeTrackTransform}, 0, 0)` }}
-        >
-          {pageSwipe.targetId && isSwipingToPrevious ? (
-            <section className="page-swipe-panel" aria-hidden="true">
-              {renderPageContent(pageSwipe.targetId)}
-            </section>
-          ) : null}
-          <section className="page-swipe-panel">{renderPageContent(selectedId)}</section>
-          {pageSwipe.targetId && !isSwipingToPrevious ? (
-            <section className="page-swipe-panel" aria-hidden="true">
-              {renderPageContent(pageSwipe.targetId)}
-            </section>
-          ) : null}
+      {isOverlayOpen ? (
+        <div className="page-view-viewport">
+          <div className="page-view-track">
+            <section className="page-view-panel is-active">{overlayContent}</section>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div
+          className={`page-view-viewport${pageDrag.isDragging ? ' is-dragging' : ''}`}
+          onTouchStart={handlePageSwipeStart}
+          onTouchMove={handlePageSwipeMove}
+          onTouchEnd={handlePageSwipeEnd}
+          onTouchCancel={() => {
+            pageSwipeStartRef.current = null;
+            setPageDrag({ offset: 0, isDragging: false, targetIndex: null });
+          }}
+        >
+          <div
+            className={`page-view-track${pageDrag.isDragging ? ' is-dragging' : ''}`}
+            style={{ transform: `translate3d(${pageTrackTransform}, 0, 0)` }}
+          >
+            {categories.map((category, index) => {
+              const isActive = index === selectedIndex;
+              const isSwipePreview = pageDrag.targetIndex === index;
+              const shouldMount =
+                isActive || visitedCategoryIds.has(category.id) || pageDrag.targetIndex === index;
+
+              return (
+                <section
+                  key={category.id}
+                  className={`page-view-panel${isActive ? ' is-active' : ' is-inactive'}${isSwipePreview ? ' is-preview' : ''}`}
+                  aria-hidden={!isActive}
+                >
+                  {shouldMount ? renderPageContent(category.id) : null}
+                </section>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </main>
   );
 }

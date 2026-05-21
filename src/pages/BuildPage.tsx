@@ -1452,7 +1452,7 @@ function BoardPostList({
                       {isPopularPost(post) ? <em>인기</em> : null}
                     </button>
                   </td>
-                  <td>{getAuthorLabel(post.userId, post.authorNickname)}</td>
+                  <td data-build-date={formatDate(post.createdAt)}>{getAuthorLabel(post.userId, post.authorNickname)}</td>
                   <td>{formatDate(post.createdAt)}</td>
                   <td>{post.viewCount}</td>
                   <td>

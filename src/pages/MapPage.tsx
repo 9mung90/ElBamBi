@@ -1441,6 +1441,7 @@ const MapPage = () => {
           <div
             ref={mapViewportRef}
             className={`map-stage-viewport${mapZoom > 1 ? ' is-draggable' : ''}`}
+            data-no-page-swipe
             onMouseDown={handleMapMouseDown}
             onMouseMove={handleMapMouseMove}
             onMouseUp={handleMapMouseUp}
