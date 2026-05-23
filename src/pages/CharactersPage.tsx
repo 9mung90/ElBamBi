@@ -134,7 +134,7 @@ function getSkillEntries(nightfarer: Nightfarer) {
 function getEquipmentEntries(nightfarer: Nightfarer) {
   const names = [nightfarer.equipment, nightfarer.equipment1, nightfarer.equipment2].filter(
     Boolean,
-  );
+  ).filter((name) => !(nightfarer.index === 4 && name === "Raider's Greataxe"));
   const imageUrls = splitUrls(nightfarer.equipmentImageUrls);
 
   return names.map((name, index) => ({
@@ -166,8 +166,13 @@ function matchesCharacterSearch(nightfarer: Nightfarer, query: string) {
     .some((value) => String(value).toLowerCase().includes(normalizedQuery));
 }
 
+function isMobileCharacterCardLayout() {
+  return window.matchMedia('(max-width: 760px)').matches;
+}
+
 function CharactersPage({ searchQuery, onSelectWeapon }: CharactersPageProps) {
   const [selectedNightfarerIndex, setSelectedNightfarerIndex] = useState<number | null>(null);
+  const [expandedNightfarerIndex, setExpandedNightfarerIndex] = useState<number | null>(null);
   const filteredCharacters = useMemo(
     () => nightfarers.filter((nightfarer) => matchesCharacterSearch(nightfarer, searchQuery)),
     [searchQuery],
@@ -186,6 +191,12 @@ function CharactersPage({ searchQuery, onSelectWeapon }: CharactersPageProps) {
     if (event.key !== 'Enter' && event.key !== ' ') return;
 
     event.preventDefault();
+    if (isMobileCharacterCardLayout()) {
+      setExpandedNightfarerIndex((currentIndex) =>
+        currentIndex === nightfarerIndex ? null : nightfarerIndex,
+      );
+      return;
+    }
     setSelectedNightfarerIndex(nightfarerIndex);
   }
 
@@ -225,14 +236,24 @@ function CharactersPage({ searchQuery, onSelectWeapon }: CharactersPageProps) {
         {filteredCharacters.map((nightfarer) => {
           const skills = getSkillEntries(nightfarer);
           const equipment = getEquipmentEntries(nightfarer);
+          const isExpanded = expandedNightfarerIndex === nightfarer.index;
 
           return (
             <article
-              className="character-card character-card-button"
+              className={`character-card character-card-button${isExpanded ? ' is-expanded' : ''}`}
               key={nightfarer.index}
               role="button"
               tabIndex={0}
-              onClick={() => setSelectedNightfarerIndex(nightfarer.index)}
+              aria-expanded={isExpanded}
+              onClick={() => {
+                if (isMobileCharacterCardLayout()) {
+                  setExpandedNightfarerIndex((currentIndex) =>
+                    currentIndex === nightfarer.index ? null : nightfarer.index,
+                  );
+                  return;
+                }
+                setSelectedNightfarerIndex(nightfarer.index);
+              }}
               onKeyDown={(event) => handleCharacterCardKeyDown(event, nightfarer.index)}
             >
               <div className="character-card-top">
@@ -247,7 +268,8 @@ function CharactersPage({ searchQuery, onSelectWeapon }: CharactersPageProps) {
                 </div>
               </div>
 
-              {nightfarer.aboutText ? <p className="character-about">{nightfarer.aboutText}</p> : null}
+              <div className="character-card-details">
+                {nightfarer.aboutText ? <p className="character-about">{nightfarer.aboutText}</p> : null}
 
               <div className="character-section">
                 <h4>스킬</h4>
@@ -298,6 +320,18 @@ function CharactersPage({ searchQuery, onSelectWeapon }: CharactersPageProps) {
                   </div>
                 </div>
               ) : null}
+
+                <button
+                  type="button"
+                  className="character-skin-button"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    setSelectedNightfarerIndex(nightfarer.index);
+                  }}
+                >
+                  스킨 보기
+                </button>
+              </div>
             </article>
           );
         })}

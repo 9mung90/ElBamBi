@@ -1064,6 +1064,7 @@
 
 .page-view-track {
   display: flex;
+  align-items: flex-start;
   width: 100%;
   transform: translate3d(0, 0, 0);
   transition: transform 260ms cubic-bezier(0.22, 0.61, 0.36, 1);
@@ -1082,15 +1083,21 @@
 }
 
 .page-view-panel.is-inactive {
+  height: 0;
+  overflow: hidden;
   pointer-events: none;
   visibility: hidden;
 }
 
 .page-view-panel.is-preview {
+  height: auto;
+  overflow: visible;
   visibility: visible;
 }
 
 .page-view-panel.is-active {
+  height: auto;
+  overflow: visible;
   pointer-events: auto;
   visibility: visible;
 }
@@ -1203,6 +1210,12 @@
   overflow-wrap: anywhere;
 }
 
+.character-card-details {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
 .character-about {
   padding-left: 10px;
   border-left: 2px solid rgba(157, 190, 255, 0.42);
@@ -1271,6 +1284,10 @@
   border-color: rgba(157, 190, 255, 0.55);
   background: rgba(34, 53, 91, 0.72);
   color: var(--night-text);
+}
+
+.character-skin-button {
+  display: none;
 }
 
 .skin-back-button {
@@ -4859,11 +4876,62 @@
 
   .character-card-top {
     grid-template-columns: 60px minmax(0, 1fr);
+    gap: 10px;
+    align-items: center;
   }
 
   .character-portrait {
     width: 60px;
     height: 60px;
+  }
+
+  .character-card {
+    min-height: auto;
+  }
+
+  .character-card:not(.is-expanded) .character-card-details {
+    display: none;
+  }
+
+  .character-card.is-expanded .character-card-details {
+    display: flex;
+  }
+
+  .character-card h3 {
+    margin-top: 0;
+    font-size: 16px;
+  }
+
+  .character-card-top p {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .character-card.is-expanded .character-card-top p {
+    display: block;
+    overflow: visible;
+  }
+
+  .character-skin-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 36px;
+    padding: 0 12px;
+    border: 1px solid var(--night-border-strong);
+    border-radius: 8px;
+    background: var(--night-accent-bg);
+    color: var(--night-text);
+    cursor: pointer;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+  .character-skin-button:hover {
+    background: var(--night-accent-bg-strong);
   }
 
 }
@@ -4907,6 +4975,45 @@
   width: 40px;
   height: 40px;
   object-fit: contain;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .option-card,
+  .catalog-card,
+  .spell-card,
+  .ash-card,
+  .character-card,
+  .weapon-card,
+  .skin-card,
+  .relic-preset-choice,
+  .relic-card,
+  .boss-card,
+  .vessel-card,
+  .relic-preset-summary-slot,
+  .saved-preset-slot {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .spell-card.is-expandable:hover,
+  .ash-card.is-expandable:hover,
+  .character-card-button:hover,
+  .weapon-card-button:hover,
+  .skin-card:hover,
+  .relic-preset-choice:hover:not(:disabled),
+  .relic-card.is-expandable:hover,
+  .boss-card.is-expandable:hover,
+  .relic-preset-summary-slot.is-expandable:hover,
+  .saved-preset-slot:not(.is-empty):hover {
+    border-color: var(--night-border-soft);
+    background: linear-gradient(180deg, rgba(17, 26, 48, 0.98), rgba(9, 15, 29, 0.98));
+    box-shadow: none;
+    transform: none;
+  }
+
+  .skin-card:hover img {
+    filter: none;
+    transform: translate(-6px, -12px);
+  }
 }
 
 @media (max-width: 520px) {

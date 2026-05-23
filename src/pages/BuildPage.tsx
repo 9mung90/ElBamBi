@@ -1,5 +1,6 @@
 ﻿import { useEffect, useMemo, useRef, useState, type ChangeEvent, type FormEvent } from 'react';
 import { nightfarers, type Nightfarer } from '../data/nightfarers';
+import type { TouchEvent as ReactTouchEvent } from 'react';
 import {
   getStorageErrorMessage,
   listRelicPresets,
@@ -2372,6 +2373,13 @@ function BuildPage({
   const [notice, setNotice] = useState<string | null>(null);
   const [commentText, setCommentText] = useState('');
   const [commentParentId, setCommentParentId] = useState<string | null>(null);
+  const boardSwipeStartRef = useRef<{
+    x: number;
+    y: number;
+    time: number;
+    tabIndex: number;
+    axis: 'horizontal' | 'vertical' | null;
+  } | null>(null);
   const [draft, setDraft] = useState<BuildPostDraft>({
     title: '',
     category: 'Class Builds',
@@ -2471,6 +2479,82 @@ function BuildPage({
   const isAdmin = authRole === 'ADMIN';
   const authUserProfile = getAuthUserProfile();
   const authorLabel = authUserProfile?.nickname ?? (authUserId ? getAuthorLabel(authUserId) : '로그인 필요');
+  const selectedBoardTabIndex = boardTabs.findIndex((tab) => tab.id === selectedBoardTab);
+
+  function isBoardSwipeTarget(target: EventTarget | null) {
+    if (!(target instanceof HTMLElement)) return false;
+    if (target.closest('.build-board-tabs')) return true;
+    return !target.closest(
+      [
+        'input',
+        'textarea',
+        'select',
+        'button',
+        'a',
+        '[contenteditable="true"]',
+        '[data-no-board-swipe]',
+        '.responsive-select-overlay',
+      ].join(', '),
+    );
+  }
+
+  function handleBoardSwipeStart(event: ReactTouchEvent<HTMLElement>) {
+    if (event.touches.length !== 1 || !isBoardSwipeTarget(event.target)) {
+      boardSwipeStartRef.current = null;
+      return;
+    }
+
+    const touch = event.touches[0];
+    boardSwipeStartRef.current = {
+      x: touch.clientX,
+      y: touch.clientY,
+      time: performance.now(),
+      tabIndex: Math.max(0, selectedBoardTabIndex),
+      axis: null,
+    };
+  }
+
+  function handleBoardSwipeMove(event: ReactTouchEvent<HTMLElement>) {
+    const start = boardSwipeStartRef.current;
+    if (!start || event.touches.length !== 1) return;
+
+    const touch = event.touches[0];
+    const deltaX = touch.clientX - start.x;
+    const deltaY = touch.clientY - start.y;
+    const absX = Math.abs(deltaX);
+    const absY = Math.abs(deltaY);
+
+    if (!start.axis) {
+      if (absX < 10 && absY < 10) return;
+      start.axis = absX > absY * 1.18 ? 'horizontal' : 'vertical';
+    }
+
+    if (start.axis === 'horizontal' && absX > 12) {
+      event.preventDefault();
+    }
+  }
+
+  function handleBoardSwipeEnd(event: ReactTouchEvent<HTMLElement>) {
+    const start = boardSwipeStartRef.current;
+    boardSwipeStartRef.current = null;
+    if (!start || start.axis !== 'horizontal') return;
+
+    const touch = event.changedTouches[0];
+    if (!touch) return;
+
+    const deltaX = touch.clientX - start.x;
+    const deltaY = touch.clientY - start.y;
+    const elapsed = Math.max(1, performance.now() - start.time);
+    const velocity = Math.abs(deltaX) / elapsed;
+    const shouldChangeTab = Math.abs(deltaY) <= 80 && (Math.abs(deltaX) >= 86 || velocity >= 0.45);
+
+    if (!shouldChangeTab) return;
+
+    const nextIndex = deltaX < 0 ? start.tabIndex + 1 : start.tabIndex - 1;
+    const nextTab = boardTabs[Math.max(0, Math.min(boardTabs.length - 1, nextIndex))];
+    if (!nextTab || nextTab.id === selectedBoardTab) return;
+    setSelectedBoardTab(nextTab.id);
+  }
 
   function handleApiError(error: unknown, fallback: string, options: { admin?: boolean } = {}) {
     if (isApiRequestError(error) && error.status === 401) {
@@ -2880,27 +2964,28 @@ function BuildPage({
           <p className="list-page-kicker">커뮤니티 게시판</p>
           <h2 id="build-page-title">빌드 공유</h2>
         </div>
-        <button type="button" className="build-primary-button" onClick={() => setBoardMode('write')}>
-          글쓰기
-        </button>
-      </div>
-
-      <div className="build-board-notice">
-        <strong>공지</strong>
-        <span>나이트파러 빌드, 무기 세팅, 루트, 질문을 공유하는 게시판입니다. 글 목록은 현재 커뮤니티 API에서 불러옵니다.</span>
       </div>
 
       {notice ? <p className="build-notice">{notice}</p> : null}
 
-      <BoardCategoryTabs selectedTab={selectedBoardTab} onSelectTab={setSelectedBoardTab} />
-      {selectedBoardTab === 'class-builds' ? (
-        <BoardNightfarerFilter
-          selectedNightfarerIndex={selectedNightfarerIndex}
-          onSelectNightfarer={setSelectedNightfarerIndex}
-        />
-      ) : null}
+      <div
+        className="build-board-swipe-zone"
+        onTouchStart={handleBoardSwipeStart}
+        onTouchMove={handleBoardSwipeMove}
+        onTouchEnd={handleBoardSwipeEnd}
+        onTouchCancel={() => {
+          boardSwipeStartRef.current = null;
+        }}
+      >
+        <BoardCategoryTabs selectedTab={selectedBoardTab} onSelectTab={setSelectedBoardTab} />
+        {selectedBoardTab === 'class-builds' ? (
+          <BoardNightfarerFilter
+            selectedNightfarerIndex={selectedNightfarerIndex}
+            onSelectNightfarer={setSelectedNightfarerIndex}
+          />
+        ) : null}
 
-      <section className="build-board-panel" aria-label="빌드 공유 글 목록">
+        <section className="build-board-panel" aria-label="빌드 공유 글 목록">
         <BoardSearchBar
           boardSearchQuery={boardSearchQuery}
           sortKey={sortKey}
@@ -2928,12 +3013,19 @@ function BuildPage({
 
         <div className="build-list-footer">
           <BoardPagination currentPage={currentPage} pageCount={pageCount} onPageChange={setCurrentPage} />
-          <button type="button" className="build-primary-button build-write-button" onClick={() => setBoardMode('write')}>
-            글쓰기
-          </button>
         </div>
-      </section>
+        </section>
+      </div>
 
+      <button
+        type="button"
+        className="build-write-fab"
+        aria-label="글쓰기"
+        title="글쓰기"
+        onClick={() => setBoardMode('write')}
+      >
+        <span aria-hidden="true">✎</span>
+      </button>
     </section>
   );
 }

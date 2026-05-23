@@ -232,6 +232,12 @@ function removeStoredValue(key: string) {
   }
 }
 
+function resetPageScroll() {
+  window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+}
+
 function getMessageFromPayload(payload: unknown) {
   if (typeof payload === 'string') return payload;
   if (payload && typeof payload === 'object' && 'message' in payload) {
@@ -1807,6 +1813,7 @@ function ListTop() {
   const [focusedWeaponGroupId, setFocusedWeaponGroupId] = useState<number | null>(null);
   const [ashProperty, setAshProperty] = useState<string | null>(null);
   const categoryTabsRef = useRef<HTMLElement | null>(null);
+  const nativeBackButtonHandlerRef = useRef<(canGoBack: boolean) => void>(() => {});
   const pageSwipeStartRef = useRef<{
     x: number;
     y: number;
@@ -1815,6 +1822,7 @@ function ListTop() {
     time: number;
     axis: 'horizontal' | 'vertical' | null;
   } | null>(null);
+  const suppressNextPageClickRef = useRef(false);
   const [visitedCategoryIds, setVisitedCategoryIds] = useState<Set<string>>(() => new Set([getStoredPageId()]));
   const [pageDrag, setPageDrag] = useState<{
     offset: number;
@@ -1838,6 +1846,7 @@ function ListTop() {
 
   useEffect(() => {
     setStoredValue(lastPageStorageKey, selectedId);
+    resetPageScroll();
   }, [selectedId]);
 
   useEffect(() => {
@@ -2226,6 +2235,9 @@ function ListTop() {
   };
 
   const selectCategory = (categoryId: string) => {
+    if (categoryId !== selectedId) {
+      resetPageScroll();
+    }
     closeOverlayPages();
     setVisitedCategoryIds((currentIds) => {
       if (currentIds.has(categoryId)) return currentIds;
@@ -2258,8 +2270,6 @@ function ListTop() {
           'button',
           'a',
           '[contenteditable="true"]',
-          '[role="button"]',
-          '[role="link"]',
           '[role="dialog"]',
           '[aria-modal="true"]',
           '[data-no-page-swipe]',
@@ -2324,6 +2334,10 @@ function ListTop() {
 
     if (start.axis === 'vertical') return;
 
+    if (absX > 12) {
+      suppressNextPageClickRef.current = true;
+    }
+
     const targetIndex = deltaX < 0 ? Math.min(categories.length - 1, start.index + 1) : Math.max(0, start.index - 1);
     const targetCategory = categories[targetIndex];
     if (!targetCategory || targetIndex === start.index) {
@@ -2364,10 +2378,25 @@ function ListTop() {
       Math.abs(deltaY) <= Math.max(80, start.width * 0.35) &&
       (Math.abs(deltaX) >= Math.min(110, start.width * 0.24) || velocity >= 0.45);
 
+    if (start.axis === 'horizontal' && Math.abs(deltaX) > 12) {
+      suppressNextPageClickRef.current = true;
+      window.setTimeout(() => {
+        suppressNextPageClickRef.current = false;
+      }, 350);
+    }
+
     setPageDrag({ offset: 0, isDragging: false, targetIndex: null });
     if (shouldCommitSwipe && targetIndex !== null) {
       selectCategoryByIndex(targetIndex);
     }
+  };
+
+  const handlePageClickCapture = (event: MouseEvent<HTMLDivElement>) => {
+    if (!suppressNextPageClickRef.current) return;
+
+    suppressNextPageClickRef.current = false;
+    event.preventDefault();
+    event.stopPropagation();
   };
 
   const clearAuthState = () => {
@@ -2439,6 +2468,86 @@ function ListTop() {
     setSearchQuery('');
     setIsFilterPanelOpen(false);
   };
+
+  nativeBackButtonHandlerRef.current = (canGoBack) => {
+    if (isNicknameRoute || isVerifyEmailRoute) {
+      setIsNicknameRoute(false);
+      setIsVerifyEmailRoute(false);
+      setNicknameAccessToken(null);
+      setAuthView(null);
+      setIsMyPageOpen(false);
+      setSearchQuery('');
+      setIsFilterPanelOpen(false);
+      window.history.replaceState(null, '', mainRoutePath);
+      return;
+    }
+
+    if (authView) {
+      setAuthInitialError(null);
+      setAuthView(null);
+      return;
+    }
+
+    if (isMyPageOpen) {
+      setIsMyPageOpen(false);
+      return;
+    }
+
+    if (isFilterPanelOpen) {
+      setIsFilterPanelOpen(false);
+      return;
+    }
+
+    if (selectedWeaponGroupId !== null || focusedWeaponGroupId !== null) {
+      setSelectedWeaponGroupId(null);
+      setFocusedWeaponGroupId(null);
+      return;
+    }
+
+    if (buildFocusPostId) {
+      setBuildFocusPostId(null);
+      return;
+    }
+
+    if (searchQuery) {
+      setSearchQuery('');
+      return;
+    }
+
+    if (selectedId !== categories[0].id) {
+      selectCategory(categories[0].id);
+      return;
+    }
+
+    if (canGoBack) {
+      window.history.back();
+      return;
+    }
+
+    void App.minimizeApp();
+  };
+
+  useEffect(() => {
+    if (!Capacitor.isNativePlatform() || Capacitor.getPlatform() !== 'android') return undefined;
+
+    let removeListener: (() => Promise<void>) | null = null;
+    let isMounted = true;
+
+    void App.addListener('backButton', ({ canGoBack }) => {
+      nativeBackButtonHandlerRef.current(canGoBack);
+    }).then((listener) => {
+      if (!isMounted) {
+        void listener.remove();
+        return;
+      }
+      removeListener = () => listener.remove();
+    });
+
+    return () => {
+      isMounted = false;
+      if (removeListener) void removeListener();
+    };
+  }, []);
 
   if (isVerifyEmailRoute) {
     return <VerifyEmailPage onGoToLogin={openLoginPage} />;
@@ -2938,6 +3047,7 @@ function ListTop() {
       ) : (
         <div
           className={`page-view-viewport${pageDrag.isDragging ? ' is-dragging' : ''}`}
+          onClickCapture={handlePageClickCapture}
           onTouchStart={handlePageSwipeStart}
           onTouchMove={handlePageSwipeMove}
           onTouchEnd={handlePageSwipeEnd}

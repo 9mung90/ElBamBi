@@ -1,7 +1,7 @@
 .build-page {
   width: min(1180px, calc(100% - 24px));
   margin: 16px auto 0;
-  padding-bottom: 28px;
+  padding-bottom: 96px;
   color: var(--night-text);
 }
 
@@ -102,6 +102,10 @@
   border-radius: 8px 8px 0 0;
   background: rgba(8, 13, 27, 0.86);
   scrollbar-width: thin;
+}
+
+.build-board-swipe-zone {
+  touch-action: pan-y;
 }
 
 .build-board-tabs button {
@@ -460,7 +464,7 @@
 .build-list-footer {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: 12px;
   padding: 12px;
   background: rgba(12, 19, 36, 0.72);
@@ -497,8 +501,37 @@
   font-size: 12px;
 }
 
-.build-write-button {
-  flex: 0 0 auto;
+.build-write-fab {
+  position: fixed;
+  right: max(18px, env(safe-area-inset-right));
+  bottom: max(18px, env(safe-area-inset-bottom));
+  z-index: 30;
+  display: inline-grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  border: 1px solid var(--night-border-strong);
+  border-radius: 50%;
+  background: var(--night-accent-bg-strong);
+  color: var(--night-accent-bright);
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.38);
+  cursor: pointer;
+  font: inherit;
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.build-write-fab:hover,
+.build-write-fab:focus-visible {
+  border-color: var(--night-gold);
+  background: var(--night-gold-bg);
+  color: var(--night-gold);
+  outline: none;
+}
+
+.build-write-fab span {
+  transform: translate(1px, -1px);
 }
 
 .build-post-detail {
@@ -783,12 +816,7 @@
   }
 
   .build-list-footer {
-    align-items: stretch;
-    flex-direction: column;
-  }
-
-  .build-write-button {
-    align-self: flex-end;
+    justify-content: center;
   }
 }
 
@@ -824,18 +852,12 @@
     padding: 10px;
   }
 
-  .build-board-tabs {
-    flex-wrap: wrap;
-    overflow-x: hidden;
-  }
-
   .build-board-tabs button {
-    flex: 1 1 33.333%;
-    min-width: 0;
+    min-width: 96px;
     min-height: 36px;
-    padding: 0 6px;
+    padding: 0 10px;
     font-size: 11px;
-    white-space: normal;
+    white-space: nowrap;
   }
 
   .build-nightfarer-filter {
@@ -1049,5 +1071,13 @@
 
   .build-write-actions button {
     width: 100%;
+  }
+
+  .build-write-fab {
+    right: max(14px, env(safe-area-inset-right));
+    bottom: max(14px, env(safe-area-inset-bottom));
+    width: 54px;
+    height: 54px;
+    font-size: 26px;
   }
 }
