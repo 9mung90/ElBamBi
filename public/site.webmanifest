@@ -1,0 +1,17 @@
+{
+  "name": "ElBamBi",
+  "short_name": "ElBamBi",
+  "description": "엘밤 비는 엘든링 밤의 통치자 캐릭터, 보스, 유물, 스킨, 지도 정보를 제공하는 비공식 팬 정보 및 커뮤니티 웹사이트입니다.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#050814",
+  "theme_color": "#050814",
+  "icons": [
+    {
+      "src": "/icon-only.png",
+      "sizes": "1254x1254",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
