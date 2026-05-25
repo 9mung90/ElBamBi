@@ -79,6 +79,7 @@ interface PatternPoint {
   poi_id?: number;
   boss?: string;
   event?: string;
+  k_event?: string;
   location?: string | null;
   night?: number;
   value?: string;
@@ -259,7 +260,7 @@ const mapTypeFallbackLabels: Record<string, string> = {
 };
 
 const focusedFieldBossLocations: Record<string, string> = {
-  'Castle Rooftop': '캐슬 옥상',
+  'Castle Rooftop': '성체 옥상',
   'Castle Basement': '성 지하실',
 };
 
@@ -395,6 +396,7 @@ function slotDetails(value: string, mergedDetails: string[] = []) {
 
 function poiDetails(item: PatternPoint, kind: PoiMarker['kind']) {
   const value = item.value ?? item.boss ?? item.event ?? '';
+  const eventLabel = item.k_event ?? tr('events_labels', item.event);
   const details: string[] = [];
 
   if (kind === 'rise') {
@@ -414,7 +416,7 @@ function poiDetails(item: PatternPoint, kind: PoiMarker['kind']) {
     details.push(bossKo(item.boss));
   } else if (kind === 'event') {
     details.push('특수 이벤트');
-    details.push(tr('events_labels', item.event));
+    details.push(eventLabel);
   } else {
     details.push('장소 정보');
     details.push(detailSuffix(value));
@@ -471,6 +473,9 @@ function iconUrlForSlot(value: string) {
     return exact;
   }
   const base = slotBase(value);
+  if (base === 'caravan') {
+    return assetByFileName(buildingIcons, 'mainencampment.webp');
+  }
   return assetByFileName(buildingIcons, `${base}.webp`);
 }
 
@@ -973,7 +978,7 @@ const MapPage = () => {
         item.poi_id,
         'event',
         '이벤트',
-        tr('events_labels', item.event),
+        item.k_event ?? tr('events_labels', item.event),
         poiDetails(item, 'event'),
         iconUrlForKey('empty'),
       );
@@ -1575,7 +1580,7 @@ const MapPage = () => {
                 <ul className="map-detail-list">
                   {specialEvents.map((event, index) => (
                     <li key={`${event.event}-${event.poi_id ?? index}`}>
-                      <strong>{tr('events_labels', event.event)}</strong>
+                      <strong>{event.k_event ?? tr('events_labels', event.event)}</strong>
                     </li>
                   ))}
                 </ul>

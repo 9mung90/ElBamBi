@@ -824,7 +824,8 @@
         "event": "Day 1 Morgott Invasion",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 모르고트 침공"
       }
     ],
     "extra_night_boss": "empty",
@@ -1340,7 +1341,8 @@
         "event": "Day 2 Morgott Invasion",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 모르고트 침공"
       }
     ],
     "extra_night_boss": "empty",
@@ -1602,7 +1604,8 @@
         "event": "Day 2 Extra Night Boss",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 추가 밤 보스"
       }
     ],
     "extra_night_boss": "Dragonkin Soldier",
@@ -1865,7 +1868,8 @@
         "event": "Day 2 Extra Night Boss",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 추가 밤 보스"
       }
     ],
     "extra_night_boss": "Death Rite Bird",
@@ -3202,7 +3206,8 @@
         "event": "Day 2 Meteor Strike",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 유성 낙하"
       }
     ],
     "extra_night_boss": "empty",
@@ -3459,7 +3464,8 @@
         "event": "Day 1 Morgott Invasion",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 모르고트 침공"
       }
     ],
     "extra_night_boss": "empty",
@@ -4521,7 +4527,8 @@
         "event": "Day 2 Morgott Invasion",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 모르고트 침공"
       }
     ],
     "extra_night_boss": "empty",
@@ -4778,7 +4785,8 @@
         "event": "Day 1 Morgott Invasion",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 모르고트 침공"
       }
     ],
     "extra_night_boss": "empty",
@@ -5550,7 +5558,8 @@
         "event": "Day 1 Meteor Strike",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 유성 낙하"
       }
     ],
     "extra_night_boss": "empty",
@@ -6091,7 +6100,8 @@
         "event": "Day 1 Morgott Invasion",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 모르고트 침공"
       }
     ],
     "extra_night_boss": "empty",
@@ -7129,7 +7139,8 @@
         "event": "Day 2 Morgott Invasion",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 모르고트 침공"
       }
     ],
     "extra_night_boss": "empty",
@@ -7383,7 +7394,8 @@
         "event": "Day 2 Extra Night Boss",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 추가 밤 보스"
       }
     ],
     "extra_night_boss": "Crucible Knight and Golden Hippopotamus",
@@ -7911,7 +7923,8 @@
         "event": "Day 1 Extra Night Boss",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 추가 밤 보스"
       }
     ],
     "extra_night_boss": "Smelter Demon",
@@ -8193,7 +8206,8 @@
         "event": "Day 1 Morgott Invasion",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 모르고트 침공"
       }
     ],
     "extra_night_boss": "empty",
@@ -8475,7 +8489,8 @@
         "event": "Day 2 Meteor Strike",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 유성 낙하"
       }
     ],
     "extra_night_boss": "empty",
@@ -10113,7 +10128,8 @@
         "event": "Day 1 Morgott Invasion",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 모르고트 침공"
       }
     ],
     "extra_night_boss": "empty",
@@ -10678,7 +10694,8 @@
         "event": "Day 2 Caligo Blizzard",
         "night": 2,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 칼리고 눈보라"
       }
     ],
     "extra_night_boss": "empty",
@@ -11128,7 +11145,8 @@
         "event": "Day 2 Gladius Invasion",
         "night": 2,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 글라디우스 침공"
       }
     ],
     "night1": {
@@ -11394,7 +11412,8 @@
         "event": "Day 1 Gladius Invasion",
         "night": 1,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 글라디우스 침공"
       }
     ],
     "night1": {
@@ -12123,7 +12142,8 @@
         "event": "Day 2 Gladius Invasion",
         "night": 2,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 글라디우스 침공"
       }
     ],
     "night1": {
@@ -12320,7 +12340,8 @@
         "event": "Day 1 Extra Night Boss",
         "night": 1,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 추가 밤 보스"
       }
     ],
     "night1": {

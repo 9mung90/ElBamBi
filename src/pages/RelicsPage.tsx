@@ -676,7 +676,7 @@ function RelicPresetBuilder({
   const [presetName, setPresetName] = useState('');
   const [isSavingPreset, setIsSavingPreset] = useState(false);
   const [presetSaveNotice, setPresetSaveNotice] = useState<string | null>(null);
-  const [expandedSummarySlotIndex, setExpandedSummarySlotIndex] = useState<number | null>(null);
+  const [expandedSummarySlotIndexes, setExpandedSummarySlotIndexes] = useState<number[]>([]);
   const [placedRelicIds, setPlacedRelicIds] = useState<PresetSlotRelics>(createEmptyPresetSlots);
   const [ownedRelics, setOwnedRelics] = useState<StoredRelic[]>([]);
   const [isLoadingOwnedRelics, setIsLoadingOwnedRelics] = useState(false);
@@ -793,6 +793,9 @@ function RelicPresetBuilder({
     if (!canRelicFitSlot(relic, activeSlotColor, activeSlotIndex)) return;
 
     const slotIndexToUpdate = activeSlotIndex;
+    const clearedSlotIndexes = placedRelicIds
+      .map((relicId, slotIndex) => (relicId === relic.relicId ? slotIndex : null))
+      .filter((slotIndex): slotIndex is number => slotIndex !== null);
 
     setPlacedRelicIds((currentSlots) => {
       const nextSlots = currentSlots.map((relicId, slotIndex) => {
@@ -804,7 +807,9 @@ function RelicPresetBuilder({
 
       return nextSlots;
     });
-    setExpandedSummarySlotIndex(null);
+    setExpandedSummarySlotIndexes((currentIndexes) =>
+      currentIndexes.filter((currentIndex) => !clearedSlotIndexes.includes(currentIndex)),
+    );
     setActiveSlotIndex(null);
   }
 
@@ -814,12 +819,18 @@ function RelicPresetBuilder({
       nextSlots[slotIndex] = null;
       return nextSlots;
     });
-    setExpandedSummarySlotIndex((currentIndex) => (currentIndex === slotIndex ? null : currentIndex));
+    setExpandedSummarySlotIndexes((currentIndexes) =>
+      currentIndexes.filter((currentIndex) => currentIndex !== slotIndex),
+    );
   }
 
   function toggleSummarySlot(slotIndex: number) {
     if (!selectedRelics[slotIndex]) return;
-    setExpandedSummarySlotIndex((currentIndex) => (currentIndex === slotIndex ? null : slotIndex));
+    setExpandedSummarySlotIndexes((currentIndexes) =>
+      currentIndexes.includes(slotIndex)
+        ? currentIndexes.filter((currentIndex) => currentIndex !== slotIndex)
+        : [...currentIndexes, slotIndex],
+    );
   }
 
   function handleSummarySlotKeyDown(event: KeyboardEvent<HTMLLIElement>, slotIndex: number) {
@@ -838,7 +849,7 @@ function RelicPresetBuilder({
     setSelectedCharacter(characterName);
     setSelectedVesselIndex(nextVesselIndex);
     setActiveSlotIndex(null);
-    setExpandedSummarySlotIndex(null);
+    setExpandedSummarySlotIndexes([]);
     setPlacedRelicIds((currentSlots) =>
       sanitizePresetSlots(currentSlots, nextSlotColors, ownedRelics),
     );
@@ -849,7 +860,7 @@ function RelicPresetBuilder({
 
     setSelectedVesselIndex(nextVessel.index);
     setActiveSlotIndex(null);
-    setExpandedSummarySlotIndex(null);
+    setExpandedSummarySlotIndexes([]);
     setPlacedRelicIds((currentSlots) =>
       sanitizePresetSlots(currentSlots, nextSlotColors, ownedRelics),
     );
@@ -939,7 +950,7 @@ function RelicPresetBuilder({
     const placedRelic = selectedRelics[slotIndex];
     const includeDebuffs = shouldIncludePresetDebuffs(slotIndex);
     const optionGroups = placedRelic ? getStoredRelicOptionGroups(placedRelic, includeDebuffs) : [];
-    const isExpanded = expandedSummarySlotIndex === slotIndex;
+    const isExpanded = expandedSummarySlotIndexes.includes(slotIndex);
 
     return (
       <li
@@ -1268,7 +1279,7 @@ function RelicPresetBuilder({
                 const optionGroups = placedRelic
                   ? getStoredRelicOptionGroups(placedRelic, shouldIncludePresetDebuffs(slotIndex))
                   : [];
-                const isExpanded = expandedSummarySlotIndex === slotIndex;
+                const isExpanded = expandedSummarySlotIndexes.includes(slotIndex);
 
                 return (
                   <li

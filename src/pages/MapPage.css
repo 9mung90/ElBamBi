@@ -17,6 +17,10 @@
   font-size: 24px;
 }
 
+.map-page-heading > div:first-child {
+  display: none;
+}
+
 .map-summary-pills {
   display: flex;
   flex-wrap: wrap;

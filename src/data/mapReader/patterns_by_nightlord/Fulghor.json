@@ -312,7 +312,8 @@
         "event": "Day 2 Libra Curse",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 리브라 저주"
       }
     ],
     "extra_night_boss": "empty",
@@ -579,7 +580,8 @@
         "event": "Day 1 Libra Curse",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 리브라 저주"
       }
     ],
     "extra_night_boss": "empty",
@@ -1101,7 +1103,8 @@
         "event": "Day 1 Night Horde",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 밤의 군세"
       }
     ],
     "extra_night_boss": "empty",
@@ -1629,7 +1632,8 @@
         "event": "Day 1 Libra Curse",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 리브라 저주"
       }
     ],
     "extra_night_boss": "empty",
@@ -2420,7 +2424,8 @@
         "event": "Day 2 Extra Night Boss",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 추가 밤 보스"
       }
     ],
     "extra_night_boss": "Morgott",
@@ -2947,7 +2952,8 @@
         "event": "Day 1 Extra Night Boss",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 추가 밤 보스"
       }
     ],
     "extra_night_boss": "Valiant Gargoyle",
@@ -3743,7 +3749,8 @@
         "event": "Day 2 Libra Curse",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 리브라 저주"
       }
     ],
     "extra_night_boss": "empty",
@@ -4011,7 +4018,8 @@
         "event": "Day 1 Libra Curse",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 리브라 저주"
       }
     ],
     "extra_night_boss": "empty",
@@ -5319,7 +5327,8 @@
         "event": "Day 1 Extra Night Boss",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 추가 밤 보스"
       }
     ],
     "extra_night_boss": "Bell Bearing Hunter",
@@ -6374,7 +6383,8 @@
         "event": "Day 1 Libra Curse",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 리브라 저주"
       }
     ],
     "extra_night_boss": "empty",
@@ -6643,7 +6653,8 @@
         "event": "Day 1 Libra Curse",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 리브라 저주"
       }
     ],
     "extra_night_boss": "empty",
@@ -7160,7 +7171,8 @@
         "event": "Day 2 Night Horde",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 밤의 군세"
       }
     ],
     "extra_night_boss": "empty",
@@ -8218,7 +8230,8 @@
         "event": "Day 1 Libra Curse",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 리브라 저주"
       }
     ],
     "extra_night_boss": "empty",
@@ -9047,7 +9060,8 @@
         "event": "Day 2 Extra Night Boss",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 추가 밤 보스"
       }
     ],
     "extra_night_boss": "Dancer of the Boreal Valley",
@@ -9340,7 +9354,8 @@
         "event": "Day 1 Night Horde",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 밤의 군세"
       }
     ],
     "extra_night_boss": "empty",
@@ -10429,7 +10444,8 @@
         "event": "Day 2 Libra Curse",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 리브라 저주"
       }
     ],
     "extra_night_boss": "empty",
@@ -10713,7 +10729,8 @@
         "event": "Day 2 Gladius Invasion",
         "night": 2,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 글라디우스 침공"
       }
     ],
     "extra_night_boss": "empty",
@@ -11699,7 +11716,8 @@
         "event": "Day 1 Balancers Raid",
         "night": 1,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 안녕을 내리는 자들의 심판"
       }
     ],
     "night1": {
@@ -11971,7 +11989,8 @@
         "event": "Day 1 Balancers Raid",
         "night": 1,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 안녕을 내리는 자들의 심판"
       }
     ],
     "night1": {
@@ -12538,7 +12557,8 @@
         "event": "Day 2 Gladius Invasion",
         "night": 2,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 글라디우스 침공"
       }
     ],
     "night1": {
@@ -12924,7 +12944,8 @@
         "event": "Day 2 Extra Night Boss",
         "night": 2,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 추가 밤 보스"
       }
     ],
     "night1": {

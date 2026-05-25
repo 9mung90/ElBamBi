@@ -1369,7 +1369,8 @@
         "event": "Day 2 Gnoster Plague",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 그노스터 역병"
       }
     ],
     "extra_night_boss": "empty",
@@ -1886,7 +1887,8 @@
         "event": "Day 2 Morgott Invasion",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 모르고트 침공"
       }
     ],
     "extra_night_boss": "empty",
@@ -2158,7 +2160,8 @@
         "event": "Day 2 Morgott Invasion",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 모르고트 침공"
       }
     ],
     "extra_night_boss": "empty",
@@ -3200,7 +3203,8 @@
         "event": "Day 1 Maris Bubbles",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 마리스 거품"
       }
     ],
     "extra_night_boss": "empty",
@@ -3467,7 +3471,8 @@
         "event": "Day 1 Maris Bubbles",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 마리스 거품"
       }
     ],
     "extra_night_boss": "empty",
@@ -3994,7 +3999,8 @@
         "event": "Day 2 Libra Curse",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 리브라 저주"
       }
     ],
     "extra_night_boss": "empty",
@@ -4256,7 +4262,8 @@
         "event": "Day 2 Gnoster Plague",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 그노스터 역병"
       }
     ],
     "extra_night_boss": "empty",
@@ -4788,7 +4795,8 @@
         "event": "Day 1 Libra Curse",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 리브라 저주"
       }
     ],
     "extra_night_boss": "empty",
@@ -5305,7 +5313,8 @@
         "event": "Day 1 Gnoster Plague",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 그노스터 역병"
       }
     ],
     "extra_night_boss": "empty",
@@ -5839,7 +5848,8 @@
         "event": "Day 2 Maris Bubbles",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 마리스 거품"
       }
     ],
     "extra_night_boss": "empty",
@@ -6892,7 +6902,8 @@
         "event": "Day 1 Gnoster Plague",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 그노스터 역병"
       }
     ],
     "extra_night_boss": "empty",
@@ -7660,7 +7671,8 @@
         "event": "Day 2 Morgott Invasion",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 모르고트 침공"
       }
     ],
     "extra_night_boss": "empty",
@@ -8482,7 +8494,8 @@
         "event": "Day 2 Libra Curse",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 리브라 저주"
       }
     ],
     "extra_night_boss": "empty",
@@ -8763,7 +8776,8 @@
         "event": "Day 1 Morgott Invasion",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 모르고트 침공"
       }
     ],
     "extra_night_boss": "empty",
@@ -9583,7 +9597,8 @@
         "event": "Day 2 Maris Bubbles",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 마리스 거품"
       }
     ],
     "extra_night_boss": "empty",
@@ -10405,7 +10420,8 @@
         "event": "Day 2 Libra Curse",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 리브라 저주"
       }
     ],
     "extra_night_boss": "empty",
@@ -10880,7 +10896,8 @@
         "event": "Day 2 Gladius Invasion",
         "night": 2,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 글라디우스 침공"
       }
     ],
     "night1": {
@@ -11423,7 +11440,8 @@
         "event": "Day 1 Caligo Blizzard",
         "night": 1,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 칼리고 눈보라"
       }
     ],
     "night1": {
@@ -11966,7 +11984,8 @@
         "event": "Day 1 Balancers Raid",
         "night": 1,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 안녕을 내리는 자들의 심판"
       }
     ],
     "night1": {
@@ -12536,7 +12555,8 @@
         "event": "Day 2 Gladius Invasion",
         "night": 2,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 글라디우스 침공"
       }
     ],
     "night1": {
@@ -12728,7 +12748,8 @@
         "event": "Day 2 Extra Night Boss",
         "night": 2,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 추가 밤 보스"
       }
     ],
     "night1": {
@@ -12926,7 +12947,8 @@
         "event": "Day 2 Caligo Blizzard",
         "night": 2,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 칼리고 눈보라"
       }
     ],
     "night1": {

@@ -42,7 +42,8 @@
         "event": "Day 1 Libra Curse",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 리브라 저주"
       }
     ],
     "extra_night_boss": "empty",
@@ -575,7 +576,8 @@
         "event": "Day 1 Meteor Strike",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 유성 낙하"
       }
     ],
     "extra_night_boss": "empty",
@@ -1366,7 +1368,8 @@
         "event": "Day 1 Maris Bubbles",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 마리스 거품"
       }
     ],
     "extra_night_boss": "empty",
@@ -2412,7 +2415,8 @@
         "event": "Day 2 Libra Curse",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 리브라 저주"
       }
     ],
     "extra_night_boss": "empty",
@@ -3193,7 +3197,8 @@
         "event": "Day 2 Maris Bubbles",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 마리스 거품"
       }
     ],
     "extra_night_boss": "empty",
@@ -3990,7 +3995,8 @@
         "event": "Day 2 Maris Bubbles",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 마리스 거품"
       }
     ],
     "extra_night_boss": "empty",
@@ -4507,7 +4513,8 @@
         "event": "Day 1 Maris Bubbles",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 마리스 거품"
       }
     ],
     "extra_night_boss": "empty",
@@ -5018,7 +5025,8 @@
         "event": "Walking Mausoleum",
         "night": null,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "걷는 영묘"
       }
     ],
     "extra_night_boss": "empty",
@@ -5276,7 +5284,8 @@
         "event": "Day 2 Maris Bubbles",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 마리스 거품"
       }
     ],
     "extra_night_boss": "empty",
@@ -5805,7 +5814,8 @@
         "event": "Day 2 Libra Curse",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 리브라 저주"
       }
     ],
     "extra_night_boss": "empty",
@@ -6859,7 +6869,8 @@
         "event": "Day 1 Maris Bubbles",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 마리스 거품"
       }
     ],
     "extra_night_boss": "empty",
@@ -7129,7 +7140,8 @@
         "event": "Walking Mausoleum",
         "night": null,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "걷는 영묘"
       }
     ],
     "extra_night_boss": "empty",
@@ -8467,7 +8479,8 @@
         "event": "Day 1 Libra Curse",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 리브라 저주"
       }
     ],
     "extra_night_boss": "empty",
@@ -8754,7 +8767,8 @@
         "event": "Walking Mausoleum",
         "night": null,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "걷는 영묘"
       }
     ],
     "extra_night_boss": "empty",
@@ -9304,7 +9318,8 @@
         "event": "Day 2 Maris Bubbles",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 마리스 거품"
       }
     ],
     "extra_night_boss": "empty",
@@ -10114,7 +10129,8 @@
         "event": "Day 2 Meteor Strike",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 유성 낙하"
       }
     ],
     "extra_night_boss": "empty",
@@ -10649,7 +10665,8 @@
         "event": "Day 1 Balancers Raid",
         "night": 1,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 안녕을 내리는 자들의 심판"
       }
     ],
     "extra_night_boss": "empty",
@@ -11105,7 +11122,8 @@
         "event": "Day 1 Gladius Invasion",
         "night": 1,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 글라디우스 침공"
       }
     ],
     "night1": {
@@ -11903,7 +11921,8 @@
         "event": "Day 1 Balancers Raid",
         "night": 1,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 안녕을 내리는 자들의 심판"
       }
     ],
     "night1": {
@@ -12292,7 +12311,8 @@
         "event": "Day 2 Libra Curse",
         "night": 2,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 리브라 저주"
       }
     ],
     "night1": {
@@ -12489,7 +12509,8 @@
         "event": "Day 1 Maris Bubbles",
         "night": 1,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 마리스 거품"
       }
     ],
     "night1": {

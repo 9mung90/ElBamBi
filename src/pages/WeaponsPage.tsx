@@ -433,6 +433,7 @@ function WeaponCard({
       <button
         type="button"
         ref={cardRef}
+        data-page-swipe-allowed
         className={`option-card weapon-card-button${isFocused ? ' is-focused' : ''}`}
         onClick={onClick}
       >
@@ -487,7 +488,6 @@ function WeaponsPage({
       <section className="options-page" aria-labelledby="weapon-variants-title">
         <div className="options-page-heading">
           <div>
-            <p className="list-page-kicker">파생 무기</p>
             <h2 id="weapon-variants-title">{selectedGroup.representative.name}</h2>
           </div>
           <div className="heading-actions">

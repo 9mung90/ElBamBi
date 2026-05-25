@@ -1,4 +1,5 @@
-import { useMemo, useState, type KeyboardEvent } from 'react';
+import { useEffect, useMemo, useState, type KeyboardEvent } from 'react';
+import { createPortal } from 'react-dom';
 import { nightfarers, type Nightfarer } from '../data/nightfarers';
 import { getWeaponGroupIdByName } from './WeaponsPage';
 
@@ -24,7 +25,7 @@ const skinAssetUrls = import.meta.glob('../assets/images/skins/**/*.webp', {
 }) as Record<string, string>;
 
 const commonSkinNames: Record<number, string> = {
-  0: '일반',
+  0: '기본',
   1: '여명',
   2: '암흑',
   3: '추억',
@@ -173,6 +174,11 @@ function isMobileCharacterCardLayout() {
 function CharactersPage({ searchQuery, onSelectWeapon }: CharactersPageProps) {
   const [selectedNightfarerIndex, setSelectedNightfarerIndex] = useState<number | null>(null);
   const [expandedNightfarerIndex, setExpandedNightfarerIndex] = useState<number | null>(null);
+  const [fullscreenSkin, setFullscreenSkin] = useState<{
+    imageUrl: string;
+    name: string;
+    nightfarerName: string;
+  } | null>(null);
   const filteredCharacters = useMemo(
     () => nightfarers.filter((nightfarer) => matchesCharacterSearch(nightfarer, searchQuery)),
     [searchQuery],
@@ -185,6 +191,25 @@ function CharactersPage({ searchQuery, onSelectWeapon }: CharactersPageProps) {
     () => (selectedNightfarer ? getSkinEntries(selectedNightfarer.index) : []),
     [selectedNightfarer],
   );
+
+  useEffect(() => {
+    if (!fullscreenSkin) return undefined;
+
+    const handleKeyDown = (event: globalThis.KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setFullscreenSkin(null);
+      }
+    };
+    const previousOverflow = document.body.style.overflow;
+
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [fullscreenSkin]);
 
   function handleCharacterCardKeyDown(event: KeyboardEvent<HTMLElement>, nightfarerIndex: number) {
     if (event.target !== event.currentTarget) return;
@@ -214,12 +239,50 @@ function CharactersPage({ searchQuery, onSelectWeapon }: CharactersPageProps) {
 
         <div className="skin-card-grid">
           {selectedSkins.map((skin) => (
-            <article className="skin-card" key={`${selectedNightfarer.index}-${skin.index}`}>
+            <button
+              type="button"
+              data-page-swipe-allowed
+              className="skin-card"
+              key={`${selectedNightfarer.index}-${skin.index}`}
+              onClick={() =>
+                setFullscreenSkin({
+                  imageUrl: skin.imageUrl,
+                  name: skin.name,
+                  nightfarerName: selectedNightfarer.name,
+                })
+              }
+            >
               <img src={skin.imageUrl} alt={`${selectedNightfarer.name} ${skin.name}`} />
               <span className="skin-card-name">{skin.name}</span>
-            </article>
+            </button>
           ))}
         </div>
+        {fullscreenSkin
+          ? createPortal(
+              <div
+                className="skin-fullscreen-viewer"
+                role="dialog"
+                aria-modal="true"
+                aria-label={`${fullscreenSkin.nightfarerName} ${fullscreenSkin.name} 스킨`}
+                onClick={() => setFullscreenSkin(null)}
+              >
+                <button
+                  type="button"
+                  className="skin-fullscreen-close"
+                  aria-label="스킨 닫기"
+                  onClick={() => setFullscreenSkin(null)}
+                >
+                  X
+                </button>
+                <img
+                  src={fullscreenSkin.imageUrl}
+                  alt={`${fullscreenSkin.nightfarerName} ${fullscreenSkin.name}`}
+                  onClick={(event) => event.stopPropagation()}
+                />
+              </div>,
+              document.body,
+            )
+          : null}
       </section>
     );
   }
@@ -250,9 +313,7 @@ function CharactersPage({ searchQuery, onSelectWeapon }: CharactersPageProps) {
                   setExpandedNightfarerIndex((currentIndex) =>
                     currentIndex === nightfarer.index ? null : nightfarer.index,
                   );
-                  return;
                 }
-                setSelectedNightfarerIndex(nightfarer.index);
               }}
               onKeyDown={(event) => handleCharacterCardKeyDown(event, nightfarer.index)}
             >
@@ -271,7 +332,7 @@ function CharactersPage({ searchQuery, onSelectWeapon }: CharactersPageProps) {
               <div className="character-card-details">
                 {nightfarer.aboutText ? <p className="character-about">{nightfarer.aboutText}</p> : null}
 
-              <div className="character-section">
+              <div className="character-section character-skills-section">
                 <h4>스킬</h4>
                 <div className="character-list">
                   {skills.map((skill) => (
@@ -287,7 +348,7 @@ function CharactersPage({ searchQuery, onSelectWeapon }: CharactersPageProps) {
               </div>
 
               {equipment.length ? (
-                <div className="character-section">
+                <div className="character-section character-equipment-section">
                   <h4>장비</h4>
                   <div className="equipment-row">
                     {equipment.map((item) => {

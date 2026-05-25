@@ -8,7 +8,7 @@ import { useRef, type TouchEvent as ReactTouchEvent } from 'react';
 import { ashes } from '../data/ashes';
 import AshesPage from './AshesPage';
 import BossesPage from './BossesPage';
-import BuildPage from './BuildPage';
+import BuildPage, { type SortKey as BuildSortKey } from './BuildPage';
 import {
   bossFilterOptions,
   bossTypeLabels,
@@ -89,7 +89,7 @@ const categories: Category[] = [
   { id: 'builds', label: '빌드', icon: 'D', description: '빌드 공유 커뮤니티입니다.' },
   { id: 'relic-builder', label: '유물 제작', icon: 'B', description: '유물 옵션 3개를 규칙에 맞춰 조합합니다.' },
   { id: 'save-parser', label: '세이브', icon: 'P', description: 'Nightreign save relic parser test page.' },
-  { id: 'vessels', label: '그릇', icon: 'V', description: '그릇 목록입니다.' },
+  { id: 'vessels', label: '현기', icon: 'V', description: '그릇 목록입니다.' },
   { id: 'items', label: '기타', icon: 'E', description: '기타 아이템 목록 페이지입니다.' },
   { id: 'gestures', label: '제스처', icon: 'G', description: '제스처 목록 페이지입니다.' },
 ];
@@ -1809,11 +1809,13 @@ function ListTop() {
   const [optionFilters, setOptionFilters] = useState<OptionFilters>(() => createEmptyOptionFilters());
   const [bossFilters, setBossFilters] = useState<BossFilters>(() => createEmptyBossFilters());
   const [spellFilters, setSpellFilters] = useState<SpellFilters>(() => createEmptySpellFilters());
+  const [buildSortKey, setBuildSortKey] = useState<BuildSortKey>('latest');
   const [selectedWeaponGroupId, setSelectedWeaponGroupId] = useState<number | null>(null);
   const [focusedWeaponGroupId, setFocusedWeaponGroupId] = useState<number | null>(null);
   const [ashProperty, setAshProperty] = useState<string | null>(null);
   const categoryTabsRef = useRef<HTMLElement | null>(null);
   const nativeBackButtonHandlerRef = useRef<(canGoBack: boolean) => void>(() => {});
+  const buildInternalBackHandlerRef = useRef<(() => boolean) | null>(null);
   const pageSwipeStartRef = useRef<{
     x: number;
     y: number;
@@ -2173,12 +2175,14 @@ function ListTop() {
   const hasActiveBossFilters = bossFilters.types.length > 0;
   const hasActiveAshFilters = ashProperty !== null;
   const hasActiveSpellFilters = spellFilters.spell !== null || spellFilters.type !== null;
+  const hasActiveBuildSort = buildSortKey !== 'latest';
   const canUseFilters =
     selectedId === 'weapons' ||
     selectedId === 'options' ||
     selectedId === 'ashes' ||
     selectedId === 'bosses' ||
-    selectedId === 'spells';
+    selectedId === 'spells' ||
+    selectedId === 'builds';
 
   const updateWeaponLevelFilter = (level: number) => {
     setWeaponFilters((currentFilters) => ({
@@ -2261,22 +2265,23 @@ function ListTop() {
 
   const isPageSwipeTarget = (target: EventTarget | null) => {
     if (!(target instanceof HTMLElement)) return false;
+    const allowedInteractiveSwipeTarget = target.closest('[data-page-swipe-allowed]');
+    const blockedSelectors = [
+      'input',
+      'textarea',
+      'select',
+      allowedInteractiveSwipeTarget ? null : 'button',
+      allowedInteractiveSwipeTarget ? null : 'a',
+      '[contenteditable="true"]',
+      '[role="dialog"]',
+      '[aria-modal="true"]',
+      '[data-no-page-swipe]',
+      '[data-interactive]',
+      '.responsive-select-overlay',
+    ].filter((selector): selector is string => Boolean(selector));
+
     if (
-      target.closest(
-        [
-          'input',
-          'textarea',
-          'select',
-          'button',
-          'a',
-          '[contenteditable="true"]',
-          '[role="dialog"]',
-          '[aria-modal="true"]',
-          '[data-no-page-swipe]',
-          '[data-interactive]',
-          '.responsive-select-overlay',
-        ].join(', '),
-      )
+      target.closest(blockedSelectors.join(', '))
     ) {
       return false;
     }
@@ -2469,6 +2474,10 @@ function ListTop() {
     setIsFilterPanelOpen(false);
   };
 
+  const handleBuildInternalBackChange = useCallback((handler: (() => boolean) | null) => {
+    buildInternalBackHandlerRef.current = handler;
+  }, []);
+
   nativeBackButtonHandlerRef.current = (canGoBack) => {
     if (isNicknameRoute || isVerifyEmailRoute) {
       setIsNicknameRoute(false);
@@ -2506,6 +2515,10 @@ function ListTop() {
 
     if (buildFocusPostId) {
       setBuildFocusPostId(null);
+      return;
+    }
+
+    if (selectedId === 'builds' && buildInternalBackHandlerRef.current?.()) {
       return;
     }
 
@@ -2664,7 +2677,9 @@ function ListTop() {
           authUserId={authUserId}
           authRole={authRole}
           focusPostId={buildFocusPostId}
+          onInternalBackChange={handleBuildInternalBackChange}
           onLoginRequired={handleLoginRequired}
+          sortKey={buildSortKey}
         />
       );
     }
@@ -2742,20 +2757,18 @@ function ListTop() {
         </div>
 
         <div className="search-row">
-          <span className="search-icon" aria-hidden="true">
-            &#128269;
-          </span>
+          <span className="search-icon" aria-hidden="true" />
           <input
             type="search"
             value={searchQuery}
             onChange={(event) => setSearchQuery(event.target.value)}
-            placeholder="아이템 이름으로 검색..."
-            aria-label="아이템 이름으로 검색"
+            placeholder="통합 검색 (아이템, 옵션, 무기 등)"
+            aria-label="통합 검색"
           />
           <button
             type="button"
             className={`icon-button${canUseFilters && isFilterPanelOpen ? ' is-active' : ''}`}
-            aria-label={`${selectedCategory.label} 필터`}
+            aria-label={selectedId === 'builds' ? '빌드 정렬' : `${selectedCategory.label} 필터`}
             aria-pressed={canUseFilters && isFilterPanelOpen}
             onClick={() => {
               if (!canUseFilters) return;
@@ -2767,16 +2780,16 @@ function ListTop() {
         </div>
 
         {selectedId === 'weapons' && isFilterPanelOpen ? (
-          <section className="filter-panel" aria-label="Weapon filters">
+          <section className="filter-panel" aria-label="무기 필터">
             <div className="filter-panel-heading">
-              <strong>Weapon Filters</strong>
+              <strong>무기 필터</strong>
               <button
                 type="button"
                 className="filter-reset-button"
                 disabled={!hasActiveWeaponFilters}
                 onClick={() => setWeaponFilters(createEmptyWeaponFilters())}
               >
-                Reset
+                초기화
               </button>
             </div>
 
@@ -3003,6 +3016,42 @@ function ListTop() {
                     onClick={() => updateBossTypeFilter(type)}
                   >
                     {bossTypeLabels[type] ?? type}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </section>
+        ) : null}
+
+        {selectedId === 'builds' && isFilterPanelOpen ? (
+          <section className="filter-panel" aria-label="빌드 정렬">
+            <div className="filter-panel-heading">
+              <strong>빌드 정렬</strong>
+              <button
+                type="button"
+                className="filter-reset-button"
+                disabled={!hasActiveBuildSort}
+                onClick={() => setBuildSortKey('latest')}
+              >
+                초기화
+              </button>
+            </div>
+
+            <div className="filter-group">
+              <span>정렬</span>
+              <div className="filter-chip-row">
+                {[
+                  { value: 'latest', label: '최신순' },
+                  { value: 'popular', label: '인기순' },
+                  { value: 'views', label: '조회순' },
+                ].map((sortOption) => (
+                  <button
+                    key={sortOption.value}
+                    type="button"
+                    className={`filter-chip${buildSortKey === sortOption.value ? ' is-selected' : ''}`}
+                    onClick={() => setBuildSortKey(sortOption.value as BuildSortKey)}
+                  >
+                    {sortOption.label}
                   </button>
                 ))}
               </div>

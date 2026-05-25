@@ -47,7 +47,8 @@
         "event": "Day 2 Night Horde",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 밤의 군세"
       }
     ],
     "extra_night_boss": "empty",
@@ -1082,7 +1083,8 @@
         "event": "Day 2 Night Horde",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 밤의 군세"
       }
     ],
     "extra_night_boss": "empty",
@@ -1360,7 +1362,8 @@
         "event": "Day 1 Night Horde",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 밤의 군세"
       }
     ],
     "extra_night_boss": "empty",
@@ -2151,7 +2154,8 @@
         "event": "Day 2 Night Horde",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 밤의 군세"
       }
     ],
     "extra_night_boss": "empty",
@@ -2678,7 +2682,8 @@
         "event": "Day 2 Night Horde",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 밤의 군세"
       }
     ],
     "extra_night_boss": "empty",
@@ -2951,7 +2956,8 @@
         "event": "Day 2 Meteor Strike",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 유성 낙하"
       }
     ],
     "extra_night_boss": "empty",
@@ -4240,7 +4246,8 @@
         "event": "Day 1 Meteor Strike",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 유성 낙하"
       }
     ],
     "extra_night_boss": "empty",
@@ -4751,7 +4758,8 @@
         "event": "Day 1 Meteor Strike",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 유성 낙하"
       }
     ],
     "extra_night_boss": "empty",
@@ -5267,7 +5275,8 @@
         "event": "Day 2 Night Horde",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 밤의 군세"
       }
     ],
     "extra_night_boss": "empty",
@@ -5535,7 +5544,8 @@
         "event": "Day 1 Meteor Strike",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 유성 낙하"
       }
     ],
     "extra_night_boss": "empty",
@@ -7365,7 +7375,8 @@
         "event": "Day 2 Night Horde",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 밤의 군세"
       }
     ],
     "extra_night_boss": "empty",
@@ -7636,7 +7647,8 @@
         "event": "Day 1 Meteor Strike",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 유성 낙하"
       }
     ],
     "extra_night_boss": "empty",
@@ -8449,7 +8461,8 @@
         "event": "Day 2 Meteor Strike",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 유성 낙하"
       }
     ],
     "extra_night_boss": "empty",
@@ -8731,7 +8744,8 @@
         "event": "Day 2 Night Horde",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 밤의 군세"
       }
     ],
     "extra_night_boss": "empty",
@@ -9292,7 +9306,8 @@
         "event": "Day 1 Night Horde",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 밤의 군세"
       }
     ],
     "extra_night_boss": "empty",
@@ -9832,7 +9847,8 @@
         "event": "Day 2 Meteor Strike",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 유성 낙하"
       }
     ],
     "extra_night_boss": "empty",
@@ -10642,7 +10658,8 @@
         "event": "Day 2 Caligo Blizzard",
         "night": 2,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 칼리고 눈보라"
       }
     ],
     "extra_night_boss": "empty",
@@ -11347,7 +11364,8 @@
         "event": "Day 1 Caligo Blizzard\\",
         "night": 1,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 칼리고 눈보라"
       }
     ],
     "night1": {
@@ -11878,7 +11896,8 @@
         "event": "Day 1 Balancers Raid",
         "night": 1,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 안녕을 내리는 자들의 심판"
       }
     ],
     "night1": {
@@ -12261,7 +12280,8 @@
         "event": "Day 1 Caligo Blizzard",
         "night": 1,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 칼리고 눈보라"
       }
     ],
     "night1": {
@@ -12458,7 +12478,8 @@
         "event": "Day 1 Frenzy Tower",
         "night": 1,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 미친 불 출현"
       }
     ],
     "night1": {

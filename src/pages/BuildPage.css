@@ -1,7 +1,8 @@
 .build-page {
-  width: min(1180px, calc(100% - 24px));
-  margin: 16px auto 0;
-  padding-bottom: 96px;
+  width: 100%;
+  margin: 0;
+  padding: 12px 12px 96px;
+  box-sizing: border-box;
   color: var(--night-text);
 }
 
@@ -177,17 +178,15 @@
 }
 
 .build-board-controls {
-  display: grid;
-  grid-template-columns: minmax(220px, 1fr) 170px auto auto;
+  display: flex;
   gap: 10px;
-  align-items: end;
+  align-items: center;
+  justify-content: flex-end;
   padding: 12px;
   border-bottom: 1px solid var(--night-border-soft);
   background: rgba(12, 19, 36, 0.88);
 }
 
-.build-board-search,
-.build-sort-control,
 .build-write-form label,
 .build-write-field {
   display: grid;
@@ -265,8 +264,6 @@
   object-fit: contain;
 }
 
-.build-board-search input,
-.build-sort-control select,
 .build-write-form input,
 .build-write-form select,
 .build-write-form textarea,
@@ -283,8 +280,6 @@
   font-size: 14px;
 }
 
-.build-board-search input,
-.build-sort-control select,
 .build-write-form input,
 .build-write-form select {
   min-height: 38px;
@@ -370,9 +365,10 @@
   min-height: 23px;
   max-width: 120px;
   padding: 0 8px;
-  border-radius: 6px;
-  background: var(--night-gold-bg);
-  color: var(--night-gold);
+  border: 1px solid var(--night-border);
+  border-radius: 7px;
+  background: var(--night-surface-3);
+  color: var(--night-text);
   font-size: 12px;
   font-weight: 800;
 }
@@ -418,7 +414,7 @@
 .build-title-cell span {
   display: inline-block;
   overflow: hidden;
-  max-width: 420px;
+  max-width: min(760px, 42vw);
   text-overflow: ellipsis;
   vertical-align: bottom;
   white-space: nowrap;
@@ -691,7 +687,7 @@
 }
 
 .build-write-page {
-  width: min(820px, calc(100% - 24px));
+  width: 100%;
 }
 
 .build-write-form {
@@ -824,7 +820,7 @@
   .build-page,
   .build-write-page {
     width: 100%;
-    padding: 0 8px 24px;
+    padding: 8px 8px 24px;
     box-sizing: border-box;
   }
 

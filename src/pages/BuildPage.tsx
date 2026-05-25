@@ -33,7 +33,7 @@ import './BuildPage.css';
 
 type WritableBuildPostCategory = 'Class Builds' | 'Strategy' | 'Questions' | 'Free Board';
 type BoardTabId = 'all' | 'popular' | 'class-builds' | 'strategy' | 'questions' | 'free-board';
-type SortKey = 'latest' | 'popular' | 'views';
+export type SortKey = 'latest' | 'popular' | 'views';
 type BoardMode = 'detail' | 'edit' | 'list' | 'write';
 type AuthRole = 'USER' | 'ADMIN';
 
@@ -789,6 +789,7 @@ function formatDate(value: string) {
     day: '2-digit',
     hour: '2-digit',
     minute: '2-digit',
+    hour12: false,
   }).format(date);
 }
 
@@ -1334,50 +1335,17 @@ function BoardNightfarerFilter({
   );
 }
 
-function BoardSearchBar({
-  boardSearchQuery,
-  sortKey,
+function BoardListToolbar({
   totalCount,
   isRefreshing,
-  onSearchChange,
-  onSortChange,
   onRefresh,
 }: {
-  boardSearchQuery: string;
-  sortKey: SortKey;
   totalCount: number;
   isRefreshing: boolean;
-  onSearchChange: (value: string) => void;
-  onSortChange: (value: SortKey) => void;
   onRefresh: () => void;
 }) {
   return (
     <div className="build-board-controls">
-      <label className="build-board-search">
-        <span>검색</span>
-        <input
-          type="search"
-          value={boardSearchQuery}
-          onChange={(event) => onSearchChange(event.target.value)}
-          placeholder="제목, 내용, 카테고리, 작성자 검색"
-        />
-      </label>
-
-      <label className="build-sort-control">
-        <span>정렬</span>
-        <ResponsiveSelect
-          value={sortKey}
-          ariaLabel="정렬"
-          sheetTitle="정렬 선택"
-          options={[
-            { value: 'latest', label: '최신순' },
-            { value: 'popular', label: '인기순' },
-            { value: 'views', label: '조회순' },
-          ]}
-          onChange={(nextSortKey) => onSortChange(nextSortKey as SortKey)}
-        />
-      </label>
-
       <span className="build-board-count">글 {totalCount}개</span>
       <button type="button" className="build-secondary-button" onClick={onRefresh}>
         {isRefreshing ? '새로고침 중' : '새로고침'}
@@ -2349,14 +2317,18 @@ function BuildPage({
   authRole,
   authUserId,
   focusPostId,
+  onInternalBackChange,
   onLoginRequired,
   searchQuery,
+  sortKey,
 }: {
   authRole?: AuthRole;
   authUserId: string | null;
   focusPostId?: string | null;
+  onInternalBackChange?: (handler: (() => boolean) | null) => void;
   onLoginRequired?: () => void;
   searchQuery: string;
+  sortKey: SortKey;
 }) {
   const [posts, setPosts] = useState<BuildPost[]>([]);
   const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
@@ -2364,8 +2336,6 @@ function BuildPage({
   // TODO: Currently UI only. Connect this to the DB/API later.
   const [selectedBoardTab, setSelectedBoardTab] = useState<BoardTabId>('all');
   const [selectedNightfarerIndex, setSelectedNightfarerIndex] = useState<number | null>(null);
-  const [boardSearchQuery, setBoardSearchQuery] = useState('');
-  const [sortKey, setSortKey] = useState<SortKey>('latest');
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -2446,7 +2416,7 @@ function BuildPage({
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [boardSearchQuery, searchQuery, selectedBoardTab, selectedNightfarerIndex, sortKey]);
+  }, [searchQuery, selectedBoardTab, selectedNightfarerIndex, sortKey]);
 
   useEffect(() => {
     if (selectedBoardTab !== 'class-builds') {
@@ -2454,17 +2424,46 @@ function BuildPage({
     }
   }, [selectedBoardTab]);
 
+  useEffect(() => {
+    if (!onInternalBackChange) return undefined;
+
+    if (boardMode === 'list') {
+      onInternalBackChange(null);
+      return () => onInternalBackChange(null);
+    }
+
+    onInternalBackChange(() => {
+      if (boardMode === 'write') {
+        setBoardMode('list');
+        return true;
+      }
+
+      if (boardMode === 'edit') {
+        setBoardMode('detail');
+        return true;
+      }
+
+      if (boardMode === 'detail') {
+        setBoardMode('list');
+        return true;
+      }
+
+      return false;
+    });
+
+    return () => onInternalBackChange(null);
+  }, [boardMode, onInternalBackChange]);
+
   const visiblePosts = useMemo(
     () =>
       sortPosts(
         posts
           .filter((post) => matchesBoardTab(post, selectedBoardTab))
           .filter((post) => selectedBoardTab !== 'class-builds' || matchesNightfarerFilter(post, selectedNightfarerIndex))
-          .filter((post) => matchesPostSearch(post, searchQuery))
-          .filter((post) => matchesPostSearch(post, boardSearchQuery)),
+          .filter((post) => matchesPostSearch(post, searchQuery)),
         sortKey,
       ),
-    [boardSearchQuery, posts, searchQuery, selectedBoardTab, selectedNightfarerIndex, sortKey],
+    [posts, searchQuery, selectedBoardTab, selectedNightfarerIndex, sortKey],
   );
 
   const pageCount = Math.max(1, Math.ceil(visiblePosts.length / postsPerPage));
@@ -2921,7 +2920,6 @@ function BuildPage({
       <section className="build-page" aria-labelledby="build-detail-page-title">
         <div className="build-page-heading">
           <div>
-            <p className="list-page-kicker">커뮤니티 게시판</p>
             <h2 id="build-detail-page-title">빌드 글</h2>
           </div>
           <button type="button" className="build-secondary-button" onClick={() => setBoardMode('list')}>
@@ -2958,14 +2956,7 @@ function BuildPage({
   }
 
   return (
-    <section className="build-page" aria-labelledby="build-page-title">
-      <div className="build-page-heading">
-        <div>
-          <p className="list-page-kicker">커뮤니티 게시판</p>
-          <h2 id="build-page-title">빌드 공유</h2>
-        </div>
-      </div>
-
+    <section className="build-page" aria-label="빌드 공유">
       {notice ? <p className="build-notice">{notice}</p> : null}
 
       <div
@@ -2986,13 +2977,9 @@ function BuildPage({
         ) : null}
 
         <section className="build-board-panel" aria-label="빌드 공유 글 목록">
-        <BoardSearchBar
-          boardSearchQuery={boardSearchQuery}
-          sortKey={sortKey}
+        <BoardListToolbar
           totalCount={visiblePosts.length}
           isRefreshing={isRefreshing}
-          onSearchChange={setBoardSearchQuery}
-          onSortChange={setSortKey}
           onRefresh={() => loadCommunityData(selectedPost?.id)}
         />
 

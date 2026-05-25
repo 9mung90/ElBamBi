@@ -28,6 +28,8 @@
   --night-red-bg: rgba(218, 80, 88, 0.15);
 }
 .list-top-shell {
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
   max-width: none;
   margin: 0;
@@ -600,8 +602,35 @@
 }
 
 .search-icon {
+  position: relative;
+  width: 15px;
+  height: 15px;
+  flex: 0 0 auto;
   color: var(--night-dim);
-  font-size: 15px;
+}
+
+.search-icon::before {
+  content: "";
+  position: absolute;
+  left: 1px;
+  top: 1px;
+  width: 9px;
+  height: 9px;
+  border: 1.6px solid currentColor;
+  border-radius: 50%;
+}
+
+.search-icon::after {
+  content: "";
+  position: absolute;
+  right: 1px;
+  bottom: 2px;
+  width: 6px;
+  height: 1.6px;
+  border-radius: 999px;
+  background: currentColor;
+  transform: rotate(45deg);
+  transform-origin: right center;
 }
 
 .search-row input {
@@ -828,6 +857,41 @@
   font-size: 24px;
 }
 
+.options-page-heading:has(#characters-title),
+.options-page-heading:has(#stats-calculator-title) {
+  display: none;
+}
+
+.options-page-heading:has(#ashes-title),
+.options-page-heading:has(#bosses-title),
+.options-page-heading:has(#gestures-title),
+.options-page-heading:has(#items-title),
+.options-page-heading:has(#options-title),
+.options-page-heading:has(#relic-builder-title),
+.options-page-heading:has(#relics-title),
+.options-page-heading:has(#save-parser-title),
+.options-page-heading:has(#spells-title),
+.options-page-heading:has(#talismans-title),
+.options-page-heading:has(#vessels-title),
+.options-page-heading:has(#weapons-title) {
+  justify-content: flex-end;
+}
+
+.options-page-heading:has(#ashes-title) > div:first-child,
+.options-page-heading:has(#bosses-title) > div:first-child,
+.options-page-heading:has(#gestures-title) > div:first-child,
+.options-page-heading:has(#items-title) > div:first-child,
+.options-page-heading:has(#options-title) > div:first-child,
+.options-page-heading:has(#relic-builder-title) > div:first-child,
+.options-page-heading:has(#relics-title) > div:first-child,
+.options-page-heading:has(#save-parser-title) > div:first-child,
+.options-page-heading:has(#spells-title) > div:first-child,
+.options-page-heading:has(#talismans-title) > div:first-child,
+.options-page-heading:has(#vessels-title) > div:first-child,
+.options-page-heading:has(#weapons-title) > div:first-child {
+  display: none;
+}
+
 .option-count {
   flex: 0 0 auto;
   color: var(--night-gold);
@@ -863,19 +927,21 @@
 .relic-preset-toggle-button {
   min-height: 34px;
   padding: 0 12px;
-  border: 1px solid var(--night-border-strong);
-  border-radius: 8px;
-  background: var(--night-gold-bg);
-  color: var(--night-gold);
+  border: 1px solid var(--night-border);
+  border-radius: 7px;
+  background: var(--night-surface-3);
+  color: var(--night-text);
   cursor: pointer;
   font: inherit;
-  font-size: 13px;
-  font-weight: 700;
+  font-size: 12px;
+  font-weight: 800;
 }
 
 .relic-preset-toggle-button:hover,
 .relic-preset-toggle-button.is-active {
-  background: rgba(214, 189, 120, 0.23);
+  border-color: var(--night-border-strong);
+  background: rgba(34, 53, 91, 0.9);
+  color: var(--night-text);
 }
 
 .option-card-grid {
@@ -894,6 +960,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
   gap: 12px;
+  align-items: stretch;
 }
 
 .catalog-card-grid {
@@ -1057,6 +1124,7 @@
 }
 
 .page-view-viewport {
+  flex: 1 1 auto;
   min-width: 0;
   overflow: hidden;
   overscroll-behavior-x: contain;
@@ -1066,6 +1134,7 @@
   display: flex;
   align-items: flex-start;
   width: 100%;
+  min-height: 100%;
   transform: translate3d(0, 0, 0);
   transition: transform 260ms cubic-bezier(0.22, 0.61, 0.36, 1);
   will-change: transform;
@@ -1077,6 +1146,7 @@
 
 .page-view-panel {
   flex: 0 0 100%;
+  min-height: 100%;
   min-width: 0;
   backface-visibility: hidden;
   transform: translateZ(0);
@@ -1145,6 +1215,7 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
+  height: 100%;
   min-height: 360px;
   padding: 16px;
   border: 1px solid var(--night-border-soft);
@@ -1175,6 +1246,7 @@
   grid-template-columns: 74px minmax(0, 1fr);
   gap: 14px;
   align-items: start;
+  min-height: 92px;
 }
 
 .character-portrait {
@@ -1213,10 +1285,12 @@
 .character-card-details {
   display: flex;
   flex-direction: column;
+  flex: 1;
   gap: 14px;
 }
 
 .character-about {
+  min-height: 58px;
   padding-left: 10px;
   border-left: 2px solid rgba(157, 190, 255, 0.42);
 }
@@ -1225,6 +1299,14 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+.character-skills-section {
+  min-height: 196px;
+}
+
+.character-equipment-section {
+  min-height: 62px;
 }
 
 .character-list {
@@ -1287,7 +1369,24 @@
 }
 
 .character-skin-button {
-  display: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  margin-top: auto;
+  padding: 0 12px;
+  border: 1px solid var(--night-border-strong);
+  border-radius: 8px;
+  background: var(--night-accent-bg);
+  color: var(--night-text);
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.character-skin-button:hover {
+  background: var(--night-accent-bg-strong);
 }
 
 .skin-back-button {
@@ -1317,11 +1416,16 @@
 .skin-card {
   position: relative;
   overflow: hidden;
+  width: 100%;
   padding: 0;
   border: 1px solid var(--night-border-soft);
   border-radius: 8px;
   background: linear-gradient(180deg, rgba(17, 26, 48, 0.98), rgba(9, 15, 29, 0.98));
   box-sizing: border-box;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
   transition:
     border-color 0.18s ease,
     background 0.18s ease,
@@ -1363,6 +1467,50 @@
   font-size: 14px;
   font-weight: 700;
   line-height: 1.2;
+}
+
+.skin-fullscreen-viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(2, 5, 12, 0.94);
+  cursor: zoom-out;
+}
+
+.skin-fullscreen-viewer img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: min(96vw, 920px);
+  max-height: 96vh;
+  object-fit: contain;
+  cursor: default;
+  transform: none;
+}
+
+.skin-fullscreen-close {
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  z-index: 1001;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--night-border);
+  border-radius: 8px;
+  background: var(--night-surface-3);
+  color: var(--night-text);
+  cursor: pointer;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.skin-fullscreen-close:hover {
+  border-color: rgba(157, 190, 255, 0.55);
+  background: rgba(34, 53, 91, 0.9);
 }
 
 .weapon-card-button {
@@ -1416,11 +1564,12 @@
   max-width: 70%;
   min-height: 24px;
   padding: 0 8px;
-  border-radius: 6px;
-  background: var(--night-gold-bg);
-  color: var(--night-gold);
+  border: 1px solid var(--night-border);
+  border-radius: 7px;
+  background: var(--night-surface-3);
+  color: var(--night-text);
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .relic-color-red {
@@ -1446,6 +1595,16 @@
 .relic-color-builder {
   background: var(--night-purple-bg);
   color: var(--night-purple);
+}
+
+.option-category.relic-color-red,
+.option-category.relic-color-blue,
+.option-category.relic-color-yellow,
+.option-category.relic-color-green,
+.option-category.relic-color-builder {
+  border-color: var(--night-border);
+  background: var(--night-surface-3);
+  color: var(--night-text);
 }
 
 .option-header-icon {
@@ -2449,6 +2608,8 @@
 }
 
 .vessel-card-title {
+  display: grid;
+  gap: 6px;
   min-width: 0;
 }
 
@@ -3189,17 +3350,19 @@
 
 .relic-builder-reset {
   min-height: 38px;
-  border: 1px solid var(--night-border-strong);
+  border: 1px solid var(--night-border);
   border-radius: 7px;
-  background: var(--night-gold-bg);
-  color: var(--night-gold);
+  background: var(--night-surface-3);
+  color: var(--night-text);
   cursor: pointer;
   font: inherit;
-  font-weight: 700;
+  font-size: 12px;
+  font-weight: 800;
 }
 
 .relic-builder-reset:hover {
-  background: rgba(214, 189, 120, 0.23);
+  border-color: var(--night-border-strong);
+  background: rgba(34, 53, 91, 0.9);
 }
 
 .relic-builder-debuff-note {
@@ -3405,6 +3568,10 @@
 .relic-preset-summary-slot.is-expanded {
   border-radius: 8px;
   background: rgba(120, 221, 255, 0.06);
+}
+
+.relic-preset-summary-slot.is-expanded {
+  padding: 8px 8px 10px;
 }
 
 .relic-preset-summary-slot.is-expandable:focus-visible {
@@ -4541,7 +4708,19 @@
   }
 
   .search-icon {
-    font-size: 13px;
+    width: 13px;
+    height: 13px;
+  }
+
+  .search-icon::before {
+    width: 8px;
+    height: 8px;
+    border-width: 1.5px;
+  }
+
+  .search-icon::after {
+    width: 5px;
+    height: 1.5px;
   }
 
   .icon-button {
@@ -4799,6 +4978,20 @@
     grid-template-columns: 1fr;
   }
 
+  .skin-card-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .skin-card-name {
+    left: 6px;
+    right: 6px;
+    bottom: 6px;
+    padding: 3px 4px;
+    font-size: 10px;
+    text-align: center;
+  }
+
   .relic-preset-layout,
   .relic-preset-slots,
   .saved-preset-slot-list,
@@ -4878,6 +5071,7 @@
     grid-template-columns: 60px minmax(0, 1fr);
     gap: 10px;
     align-items: center;
+    min-height: auto;
   }
 
   .character-portrait {
@@ -4886,7 +5080,14 @@
   }
 
   .character-card {
+    height: auto;
     min-height: auto;
+  }
+
+  .character-about,
+  .character-skills-section,
+  .character-equipment-section {
+    min-height: 0;
   }
 
   .character-card:not(.is-expanded) .character-card-details {
@@ -4912,26 +5113,6 @@
   .character-card.is-expanded .character-card-top p {
     display: block;
     overflow: visible;
-  }
-
-  .character-skin-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 36px;
-    padding: 0 12px;
-    border: 1px solid var(--night-border-strong);
-    border-radius: 8px;
-    background: var(--night-accent-bg);
-    color: var(--night-text);
-    cursor: pointer;
-    font: inherit;
-    font-size: 12px;
-    font-weight: 800;
-  }
-
-  .character-skin-button:hover {
-    background: var(--night-accent-bg-strong);
   }
 
 }

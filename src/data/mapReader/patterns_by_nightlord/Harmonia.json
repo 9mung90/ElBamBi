@@ -155,7 +155,8 @@
         "event": "Day 1 Frenzy Tower",
         "night": 1,
         "location": "Frenzy Tower South",
-        "poi_id": 196
+        "poi_id": 196,
+        "k_event": "1일차 미친 불 출현"
       }
     ],
     "night1": {
@@ -336,7 +337,8 @@
         "event": "Day 2 Gladius Invasion",
         "night": 2,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 글라디우스 침공"
       }
     ],
     "night1": {
@@ -521,7 +523,8 @@
         "event": "Day 1 Gladius Invasion",
         "night": 1,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 글라디우스 침공"
       }
     ],
     "night1": {
@@ -1215,7 +1218,8 @@
         "event": "Day 2 Gladius Invasion",
         "night": 2,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 글라디우스 침공"
       }
     ],
     "night1": {
@@ -1395,7 +1399,8 @@
         "event": "Day 2 Extra Night Boss",
         "night": 2,
         "location": "TBD",
-        "poi_id": 176
+        "poi_id": 176,
+        "k_event": "2일차 추가 밤 보스"
       }
     ],
     "night1": {
@@ -1579,7 +1584,8 @@
         "event": "Day 1 Gladius Invasion",
         "night": 1,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 글라디우스 침공"
       }
     ],
     "night1": {
@@ -1764,7 +1770,8 @@
         "event": "Day 1 Caligo Blizzard",
         "night": 1,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 칼리고 눈보라"
       }
     ],
     "night1": {
@@ -2311,7 +2318,8 @@
         "event": "Day 2 Gladius Invasion",
         "night": 2,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 글라디우스 침공"
       }
     ],
     "night1": {
@@ -2496,7 +2504,8 @@
         "event": "Day 1 Walking Mausoleum",
         "night": 1,
         "location": "Alexander Spot",
-        "poi_id": 98
+        "poi_id": 98,
+        "k_event": "1일차 걷는 영묘"
       }
     ],
     "night1": {
@@ -2676,7 +2685,8 @@
         "event": "Day 2 Caligo Blizzard",
         "night": 2,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 칼리고 눈보라"
       }
     ],
     "night1": {
@@ -2861,7 +2871,8 @@
         "event": "Day 1 Caligo Blizzard",
         "night": 1,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 칼리고 눈보라"
       }
     ],
     "night1": {
@@ -3052,7 +3063,8 @@
         "event": "Day 2 Meteor Strike",
         "night": 2,
         "location": "South Lake",
-        "poi_id": 93
+        "poi_id": 93,
+        "k_event": "2일차 유성 낙하"
       }
     ],
     "night1": {
@@ -3416,7 +3428,8 @@
         "event": "Day 1 Gladius Invasion",
         "night": 1,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 글라디우스 침공"
       }
     ],
     "night1": {
@@ -3795,7 +3808,8 @@
         "event": "Day 2 Night Horde",
         "night": 2,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 밤의 군세"
       }
     ],
     "night1": {
@@ -3980,7 +3994,8 @@
         "event": "Day 2 Gladius Invasion",
         "night": 2,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 글라디우스 침공"
       }
     ],
     "night1": {
@@ -4171,7 +4186,8 @@
         "event": "Day 1 Extra Night Boss",
         "night": 1,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 추가 밤 보스"
       }
     ],
     "night1": {
@@ -4717,7 +4733,8 @@
         "event": "Day 1 Gladius Invasion",
         "night": 1,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 글라디우스 침공"
       }
     ],
     "night1": {
@@ -5420,7 +5437,8 @@
         "event": "Day 1 Walking Mausoleum",
         "night": 1,
         "location": "West Mistwood",
-        "poi_id": 105
+        "poi_id": 105,
+        "k_event": "1일차 걷는 영묘"
       }
     ],
     "night1": {
@@ -5624,7 +5642,8 @@
         "event": "Day 2 Caligo Blizzard",
         "night": 2,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 칼리고 눈보라"
       }
     ],
     "night1": {
@@ -5828,7 +5847,8 @@
         "event": "Day 1 Gladius Invasion",
         "night": 1,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 글라디우스 침공"
       }
     ],
     "night1": {
@@ -6438,7 +6458,8 @@
         "event": "Day 2 Meteor Strike",
         "night": 2,
         "location": "Alexander Spot",
-        "poi_id": 98
+        "poi_id": 98,
+        "k_event": "2일차 유성 낙하"
       }
     ],
     "night1": {
@@ -6828,7 +6849,8 @@
         "event": "Day 2 Gladius Invasion",
         "night": 2,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 글라디우스 침공"
       }
     ],
     "night1": {
@@ -7026,7 +7048,8 @@
         "event": "Day 1 Frenzy Tower",
         "night": 1,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 미친 불 출현"
       }
     ],
     "night1": {
@@ -7224,7 +7247,8 @@
         "event": "Day 2 Extra Night Boss",
         "night": 2,
         "location": "TBD",
-        "poi_id": 250
+        "poi_id": 250,
+        "k_event": "2일차 추가 밤 보스"
       }
     ],
     "night1": {
@@ -7416,7 +7440,8 @@
         "event": "Day 2 Caligo Blizzard",
         "night": 2,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 칼리고 눈보라"
       }
     ],
     "night1": {
@@ -7608,7 +7633,8 @@
         "event": "Day 1 Extra Night Boss",
         "night": 1,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 추가 밤 보스"
       }
     ],
     "night1": {
@@ -8361,7 +8387,8 @@
         "event": "Day 1 Frenzy Tower",
         "night": 1,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 미친 불 출현"
       }
     ],
     "night1": {
@@ -8553,7 +8580,8 @@
         "event": "Day 2 Gladius Invasion",
         "night": 2,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 글라디우스 침공"
       }
     ],
     "night1": {
@@ -8751,7 +8779,8 @@
         "event": "Day 2 Caligo Blizzard",
         "night": 2,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 칼리고 눈보라"
       }
     ],
     "night1": {
@@ -9325,7 +9354,8 @@
         "event": "Day 2 Gladius Invasion",
         "night": 2,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 글라디우스 침공"
       }
     ],
     "night1": {
@@ -9702,7 +9732,8 @@
         "event": "Day 2 Gladius Invasion",
         "night": 2,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 글라디우스 침공"
       }
     ],
     "night1": {
@@ -9900,7 +9931,8 @@
         "event": "Day 2 Gladius Invasion",
         "night": 2,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 글라디우스 침공"
       }
     ],
     "night1": {
@@ -10098,7 +10130,8 @@
         "event": "Day 2 Gladius Invasion",
         "night": 2,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 글라디우스 침공"
       }
     ],
     "night1": {
@@ -10296,7 +10329,8 @@
         "event": "Day 1 Caligo Blizzard",
         "night": 1,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 칼리고 눈보라"
       }
     ],
     "night1": {
@@ -10489,7 +10523,8 @@
         "event": "Day 2 Gladius Invasion",
         "night": 2,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 글라디우스 침공"
       }
     ],
     "night1": {
@@ -11058,7 +11093,8 @@
         "event": "Day 2 Caligo Blizzard",
         "night": 2,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 칼리고 눈보라"
       }
     ],
     "night1": {
@@ -11258,7 +11294,8 @@
         "event": "Difficult Sorcerer's Rise",
         "night": null,
         "location": "TBD",
-        "poi_id": 35
+        "poi_id": 35,
+        "k_event": "고난도 마술사탑"
       }
     ],
     "night1": {

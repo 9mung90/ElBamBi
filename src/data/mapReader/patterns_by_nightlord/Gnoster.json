@@ -566,7 +566,8 @@
         "event": "Day 2 Maris Bubbles",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 마리스 거품"
       }
     ],
     "extra_night_boss": "empty",
@@ -844,7 +845,8 @@
         "event": "Day 2 Frenzy Tower",
         "night": 2,
         "location": "Frenzy Tower South",
-        "poi_id": 196
+        "poi_id": 196,
+        "k_event": "2일차 미친 불 출현"
       }
     ],
     "extra_night_boss": "empty",
@@ -1377,7 +1379,8 @@
         "event": "Day 2 Morgott Invasion",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 모르고트 침공"
       }
     ],
     "extra_night_boss": "empty",
@@ -2164,7 +2167,8 @@
         "event": "Day 1 Morgott Invasion",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 모르고트 침공"
       }
     ],
     "extra_night_boss": "empty",
@@ -2712,7 +2716,8 @@
         "event": "Difficult Sorcerer's Rise",
         "night": null,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "고난도 마술사탑"
       }
     ],
     "extra_night_boss": "empty",
@@ -3763,7 +3768,8 @@
         "event": "Day 1 Maris Bubbles",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 마리스 거품"
       }
     ],
     "extra_night_boss": "empty",
@@ -4284,7 +4290,8 @@
         "event": "Day 2 Maris Bubbles",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 마리스 거품"
       }
     ],
     "extra_night_boss": "empty",
@@ -5075,7 +5082,8 @@
         "event": "Day 1 Maris Bubbles",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 마리스 거품"
       }
     ],
     "extra_night_boss": "empty",
@@ -5875,7 +5883,8 @@
         "event": "Day 1 Morgott Invasion",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 모르고트 침공"
       }
     ],
     "extra_night_boss": "empty",
@@ -6409,7 +6418,8 @@
         "event": "Day 2 Maris Bubbles",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 마리스 거품"
       }
     ],
     "extra_night_boss": "empty",
@@ -6923,7 +6933,8 @@
         "event": "Day 1 Maris Bubbles",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 마리스 거품"
       }
     ],
     "extra_night_boss": "empty",
@@ -7697,7 +7708,8 @@
         "event": "Day 2 Frenzy Tower",
         "night": 2,
         "location": "Frenzy Tower South",
-        "poi_id": 196
+        "poi_id": 196,
+        "k_event": "2일차 미친 불 출현"
       }
     ],
     "extra_night_boss": "empty",
@@ -8531,7 +8543,8 @@
         "event": "Difficult Sorcerer's Rise",
         "night": null,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "고난도 마술사탑"
       }
     ],
     "extra_night_boss": "empty",
@@ -8812,7 +8825,8 @@
         "event": "Day 1 Morgott Invasion",
         "night": 1,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 모르고트 침공"
       }
     ],
     "extra_night_boss": "empty",
@@ -9373,7 +9387,8 @@
         "event": "Day 2 Maris Bubbles",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 마리스 거품"
       }
     ],
     "extra_night_boss": "empty",
@@ -9918,7 +9933,8 @@
         "event": "Day 2 Morgott Invasion",
         "night": 2,
         "location": null,
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 모르고트 침공"
       }
     ],
     "extra_night_boss": "empty",
@@ -11192,7 +11208,8 @@
         "event": "Day 2 Caligo Blizzard",
         "night": 2,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 칼리고 눈보라"
       }
     ],
     "night1": {
@@ -11738,7 +11755,8 @@
         "event": "Day 2 Caligo Blizzard",
         "night": 2,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 칼리고 눈보라"
       }
     ],
     "night1": {
@@ -12011,7 +12029,8 @@
         "event": "Day 1 Gladius Invasion",
         "night": 1,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "1일차 글라디우스 침공"
       }
     ],
     "night1": {
@@ -12394,7 +12413,8 @@
         "event": "Frenzy Tower",
         "night": 1,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "미친 불 출현"
       }
     ],
     "night1": {
@@ -12585,7 +12605,8 @@
         "event": "Day 2 Gladius Invasion",
         "night": 2,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 글라디우스 침공"
       }
     ],
     "night1": {
@@ -12973,7 +12994,8 @@
         "event": "Day 2 Maris Bubbles",
         "night": 2,
         "location": "TBD",
-        "poi_id": 214
+        "poi_id": 214,
+        "k_event": "2일차 마리스 거품"
       }
     ],
     "night1": {
