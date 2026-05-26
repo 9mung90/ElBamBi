@@ -428,6 +428,14 @@ function getAndroidGoogleLoginUrl() {
   return url.toString();
 }
 
+function getOAuthErrorMessage(errorCode: string | null) {
+  if (errorCode === 'google_email_already_exists') {
+    return '이미 사용하신 이메일 주소 입니다';
+  }
+
+  return '구글 로그인에 실패했습니다. 다시 시도해 주세요.';
+}
+
 async function postNicknameForm(nickname: string, accessTokenOverride?: string | null): Promise<string> {
   const body = new URLSearchParams({ nickname });
   const headers = new Headers({
@@ -1943,7 +1951,7 @@ function ListTop() {
       const needsNickname = getNeedsNicknameFromParams(params);
 
       if (oauthError) {
-        setAuthInitialError('구글 로그인에 실패했습니다. 다시 시도해 주세요.');
+        setAuthInitialError(getOAuthErrorMessage(oauthError));
         setAuthView('login');
         setIsMyPageOpen(false);
         return { handled: true, success: false, route: routeAfterError };
