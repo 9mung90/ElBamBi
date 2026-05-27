@@ -768,6 +768,7 @@ function AuthPage({
   const [resendMessage, setResendMessage] = useState<string | null>(null);
   const [resendError, setResendError] = useState<string | null>(null);
   const [isResendingVerification, setIsResendingVerification] = useState(false);
+  const enableEmailPasswordAuthAfterSesRestore = false;
 
   const resendEmail = verificationEmail.trim() || (loginId.includes('@') ? loginId.trim() : '');
 
@@ -860,76 +861,80 @@ function AuthPage({
     <section className="auth-page" aria-labelledby="auth-page-title">
       <div className="auth-panel">
         <p className="list-page-kicker">Account</p>
-        <h2 id="auth-page-title">{isLogin ? '로그인' : '회원가입'}</h2>
+        <h2 id="auth-page-title">로그인</h2>
 
-        <form className="auth-form" onSubmit={handleSubmit}>
-          <label>
-            아이디
-            <input
-              type="text"
-              value={loginId}
-              onChange={(event) => setLoginId(event.target.value)}
-              autoComplete="username"
-              required
-            />
-          </label>
-          {!isLogin ? (
+        {/* SES 인증 복구 후 다시 노출할 이메일/비밀번호 로그인 및 회원가입 폼입니다. */}
+        {enableEmailPasswordAuthAfterSesRestore ? (
+          <form className="auth-form" onSubmit={handleSubmit}>
             <label>
-              닉네임
+              아이디
               <input
                 type="text"
-                value={nickname}
-                onChange={(event) => setNickname(event.target.value)}
-                autoComplete="nickname"
+                value={loginId}
+                onChange={(event) => setLoginId(event.target.value)}
+                autoComplete="username"
                 required
               />
             </label>
-          ) : null}
-          {!isLogin ? (
+            {!isLogin ? (
+              <label>
+                닉네임
+                <input
+                  type="text"
+                  value={nickname}
+                  onChange={(event) => setNickname(event.target.value)}
+                  autoComplete="nickname"
+                  required
+                />
+              </label>
+            ) : null}
+            {!isLogin ? (
+              <label>
+                이메일
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                  autoComplete="email"
+                  required
+                />
+              </label>
+            ) : null}
             <label>
-              이메일
-              <input
-                type="email"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-                autoComplete="email"
-                required
-              />
-            </label>
-          ) : null}
-          <label>
-            비밀번호
-            <input
-              type="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              autoComplete={isLogin ? 'current-password' : 'new-password'}
-              required
-            />
-          </label>
-          {!isLogin ? (
-            <label>
-              비밀번호 확인
+              비밀번호
               <input
                 type="password"
-                value={confirmPassword}
-                onChange={(event) => setConfirmPassword(event.target.value)}
-                autoComplete="new-password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                autoComplete={isLogin ? 'current-password' : 'new-password'}
                 required
               />
             </label>
-          ) : null}
-          {!isLogin ? (
-            <p className="auth-help-text">아이디는 영문 소문자/숫자/밑줄 4~20자, 비밀번호는 영문/숫자/특수문자 포함 8~20자입니다.</p>
-          ) : null}
-          {error ? <p className="auth-message is-error">{error}</p> : null}
-          {message ? <p className="auth-message is-success">{message}</p> : null}
-          <button type="submit" className="auth-submit-button" disabled={isSubmitting}>
-            {isSubmitting ? '처리 중...' : isLogin ? '로그인' : '회원가입'}
-          </button>
-        </form>
+            {!isLogin ? (
+              <label>
+                비밀번호 확인
+                <input
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(event) => setConfirmPassword(event.target.value)}
+                  autoComplete="new-password"
+                  required
+                />
+              </label>
+            ) : null}
+            {!isLogin ? (
+              <p className="auth-help-text">아이디는 영문 소문자/숫자/밑줄 4~20자, 비밀번호는 영문/숫자/특수문자 포함 8~20자입니다.</p>
+            ) : null}
+            {message ? <p className="auth-message is-success">{message}</p> : null}
+            <button type="submit" className="auth-submit-button" disabled={isSubmitting}>
+              {isSubmitting ? '처리 중...' : isLogin ? '로그인' : '회원가입'}
+            </button>
+          </form>
+        ) : null}
+        {error ? <p className="auth-message is-error">{error}</p> : null}
 
-        {needsEmailVerification ? (
+        {/* SES 인증 복구 후 다시 노출할 인증 메일 재전송 영역입니다. */}
+        {enableEmailPasswordAuthAfterSesRestore && needsEmailVerification ? (
           <div className="auth-resend-box">
             <p className="auth-help-text">
               인증 메일을 받지 못했다면 이메일 주소를 확인한 뒤 다시 전송하세요.
@@ -957,34 +962,37 @@ function AuthPage({
           </div>
         ) : null}
 
-        {isLogin ? (
-          <div className="auth-oauth-area">
+        <div className="auth-oauth-area">
+          {enableEmailPasswordAuthAfterSesRestore ? (
             <div className="auth-divider">
               <span>또는</span>
             </div>
-            <a className="auth-google-button" href={getGoogleLoginUrl()} onClick={onGoogleLoginClick}>
-              <span aria-hidden="true">G</span>
-              Google로 로그인
-            </a>
+          ) : null}
+          <a className="auth-google-button" href={getGoogleLoginUrl()} onClick={onGoogleLoginClick}>
+            <span aria-hidden="true">G</span>
+            Google로 로그인
+          </a>
+        </div>
+
+        {/* SES 인증 복구 후 다시 노출할 로그인/회원가입 전환 버튼입니다. */}
+        {enableEmailPasswordAuthAfterSesRestore ? (
+          <div className="auth-switch-row">
+            <span>{isLogin ? '계정이 없으신가요?' : '이미 계정이 있으신가요?'}</span>
+            <button
+              type="button"
+              onClick={() => {
+                setError(null);
+                setMessage(null);
+                setNeedsEmailVerification(false);
+                setResendMessage(null);
+                setResendError(null);
+                onChangeView(isLogin ? 'signup' : 'login');
+              }}
+            >
+              {isLogin ? '회원가입' : '로그인'}
+            </button>
           </div>
         ) : null}
-
-        <div className="auth-switch-row">
-          <span>{isLogin ? '계정이 없으신가요?' : '이미 계정이 있으신가요?'}</span>
-          <button
-            type="button"
-            onClick={() => {
-              setError(null);
-              setMessage(null);
-              setNeedsEmailVerification(false);
-              setResendMessage(null);
-              setResendError(null);
-              onChangeView(isLogin ? 'signup' : 'login');
-            }}
-          >
-            {isLogin ? '회원가입' : '로그인'}
-          </button>
-        </div>
       </div>
     </section>
   );
