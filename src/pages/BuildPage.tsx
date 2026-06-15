@@ -29,6 +29,10 @@ import {
   type RelicRollEffect,
 } from '../data/relics';
 import { vessels, type Vessel } from '../data/vessels';
+import {
+  getRelicColorClass as getSharedRelicColorClass,
+  getRelicColorLabel as getSharedRelicColorLabel,
+} from '../utils/relicColor';
 import './BuildPage.css';
 
 type WritableBuildPostCategory = 'Class Builds' | 'Strategy' | 'Questions' | 'Free Board';
@@ -359,27 +363,12 @@ function getNightfarerIconUrl(nightfarer: Nightfarer) {
   return resolveNightAssetUrl(nightfarer.nameImageUrl);
 }
 
-function normalizeRelicColor(color: string | undefined) {
-  return (color ?? '').trim().toLowerCase();
-}
-
 function getRelicColorLabel(color: string | undefined) {
-  const labels: Record<string, string> = {
-    red: '빨강',
-    blue: '파랑',
-    yellow: '노랑',
-    green: '초록',
-    white: '자유',
-    builder: '제작',
-  };
-  const normalizedColor = normalizeRelicColor(color);
-
-  return labels[normalizedColor] ?? color ?? '-';
+  return getSharedRelicColorLabel(color);
 }
 
 function getRelicColorClass(color: string | undefined) {
-  const normalizedColor = normalizeRelicColor(color);
-  return normalizedColor ? `relic-color-${normalizedColor}` : '';
+  return getSharedRelicColorClass(color);
 }
 
 function splitPresetList(value: string | undefined) {

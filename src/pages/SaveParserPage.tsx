@@ -2,6 +2,7 @@ import { useState, type Dispatch, type DragEvent, type SetStateAction } from 're
 import ResponsiveSelect from '../components/ResponsiveSelect';
 import { relicEffectsKo, relicItemColorMap, relics, relicRollAppData } from '../data/relics';
 import type { RelicColor } from '../data/relics/types';
+import { getRelicBorderClass, getRelicColorClass } from '../utils/relicColor';
 import {
   parseNightreignSaveFile,
   type CharacterSlot,
@@ -247,9 +248,9 @@ function RelicResultCard({ relic }: { relic: ParsedRelic }) {
   const effectGroups = getRelicEffectGroups(relic);
 
   return (
-    <article className="option-card save-relic-card">
+    <article className={`option-card save-relic-card ${getRelicBorderClass(String(color))}`}>
       <div className="option-card-header">
-        <span className={`option-category relic-color-${String(color).toLowerCase()}`}>
+        <span className={`option-category ${getRelicColorClass(String(color))}`}>
           {getColorName(color)}
         </span>
       </div>

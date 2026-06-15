@@ -1597,14 +1597,85 @@
   color: var(--night-purple);
 }
 
-.option-category.relic-color-red,
-.option-category.relic-color-blue,
-.option-category.relic-color-yellow,
-.option-category.relic-color-green,
-.option-category.relic-color-builder {
-  border-color: var(--night-border);
-  background: var(--night-surface-3);
+.relic-color-white {
+  background: rgba(238, 246, 255, 0.14);
   color: var(--night-text);
+}
+
+.option-category.relic-color-red {
+  border-color: rgba(255, 155, 145, 0.48);
+  background: var(--night-red-bg);
+  color: var(--night-red);
+}
+
+.option-category.relic-color-blue {
+  border-color: rgba(120, 221, 255, 0.46);
+  background: var(--night-accent-bg);
+  color: var(--night-accent);
+}
+
+.option-category.relic-color-yellow {
+  border-color: rgba(234, 216, 160, 0.52);
+  background: rgba(214, 189, 120, 0.18);
+  color: var(--night-gold);
+}
+
+.option-category.relic-color-green {
+  border-color: rgba(158, 230, 189, 0.48);
+  background: var(--night-green-bg);
+  color: var(--night-green);
+}
+
+.option-category.relic-color-white {
+  border-color: rgba(238, 246, 255, 0.36);
+  background: rgba(238, 246, 255, 0.14);
+  color: var(--night-text);
+}
+
+.option-category.relic-color-builder {
+  border-color: rgba(185, 167, 255, 0.46);
+  background: var(--night-purple-bg);
+  color: var(--night-purple);
+}
+
+.option-card.relic-border-red,
+.relic-preset-choice.relic-border-red,
+.relic-preset-slot-button.relic-border-red,
+.relic-preset-summary-slot.relic-border-red {
+  border-color: rgba(255, 155, 145, 0.74);
+  box-shadow: inset 0 0 0 1px rgba(255, 155, 145, 0.18);
+}
+
+.option-card.relic-border-blue,
+.relic-preset-choice.relic-border-blue,
+.relic-preset-slot-button.relic-border-blue,
+.relic-preset-summary-slot.relic-border-blue {
+  border-color: rgba(120, 221, 255, 0.72);
+  box-shadow: inset 0 0 0 1px rgba(120, 221, 255, 0.16);
+}
+
+.option-card.relic-border-yellow,
+.relic-preset-choice.relic-border-yellow,
+.relic-preset-slot-button.relic-border-yellow,
+.relic-preset-summary-slot.relic-border-yellow {
+  border-color: rgba(234, 216, 160, 0.78);
+  box-shadow: inset 0 0 0 1px rgba(234, 216, 160, 0.18);
+}
+
+.option-card.relic-border-green,
+.relic-preset-choice.relic-border-green,
+.relic-preset-slot-button.relic-border-green,
+.relic-preset-summary-slot.relic-border-green {
+  border-color: rgba(158, 230, 189, 0.74);
+  box-shadow: inset 0 0 0 1px rgba(158, 230, 189, 0.16);
+}
+
+.option-card.relic-border-white,
+.relic-preset-choice.relic-border-white,
+.relic-preset-slot-button.relic-border-white,
+.relic-preset-summary-slot.relic-border-white {
+  border-color: rgba(238, 246, 255, 0.54);
+  box-shadow: inset 0 0 0 1px rgba(238, 246, 255, 0.12);
 }
 
 .option-header-icon {
@@ -2231,6 +2302,20 @@
 .relic-preset-slot-button strong {
   color: var(--night-text);
   font-size: 14px;
+}
+
+.relic-preset-slot-button .relic-preset-slot-color,
+.relic-preset-summary-top .relic-preset-summary-color,
+.relic-preset-candidates-heading .relic-preset-active-color {
+  width: max-content;
+  max-width: 100%;
+  min-height: 24px;
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.relic-preset-slot-button .relic-preset-slot-color {
+  justify-self: start;
 }
 
 .relic-preset-slot-button em {
@@ -3318,7 +3403,8 @@
   align-items: start;
 }
 
-.relic-builder-page select {
+.relic-builder-page select,
+.relic-builder-search-control input {
   width: 100%;
   min-height: 38px;
   padding: 0 10px;
@@ -3340,12 +3426,45 @@
   align-items: end;
 }
 
-.relic-builder-color-control {
+.relic-builder-color-control,
+.relic-builder-search-control {
   display: grid;
   gap: 6px;
   color: var(--night-text-soft);
   font-size: 12px;
   font-weight: 700;
+}
+
+.relic-builder-search-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+}
+
+.relic-builder-search-row button {
+  min-height: 38px;
+  padding: 0 11px;
+  border: 1px solid var(--night-border);
+  border-radius: 7px;
+  background: var(--night-surface-3);
+  color: var(--night-text-soft);
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.relic-builder-search-row button:hover {
+  border-color: var(--night-border-strong);
+  background: rgba(34, 53, 91, 0.9);
+  color: var(--night-text);
+}
+
+.relic-builder-search-hint {
+  color: var(--night-muted);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.35;
 }
 
 .relic-builder-reset {
@@ -3561,17 +3680,19 @@
 }
 
 .relic-preset-summary-slot.is-expandable {
+  padding: 8px;
+  border: 1px solid var(--night-border-soft);
+  border-radius: 8px;
   cursor: pointer;
 }
 
 .relic-preset-summary-slot.is-expandable:hover,
 .relic-preset-summary-slot.is-expanded {
-  border-radius: 8px;
   background: rgba(120, 221, 255, 0.06);
 }
 
 .relic-preset-summary-slot.is-expanded {
-  padding: 8px 8px 10px;
+  padding-bottom: 10px;
 }
 
 .relic-preset-summary-slot.is-expandable:focus-visible {

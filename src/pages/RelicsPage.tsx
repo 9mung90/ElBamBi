@@ -24,6 +24,12 @@ import { nightfarers } from '../data/nightfarers';
 import { vessels, type Vessel } from '../data/vessels';
 import ResponsiveSelect from '../components/ResponsiveSelect';
 import type { ParsedRelic, RelicScanResult } from '../utils/nightreignSaveParser';
+import {
+  getRelicBorderClass,
+  getRelicColorClass as getSharedRelicColorClass,
+  getRelicColorLabel as getSharedRelicColorLabel,
+  normalizeRelicColor as normalizeSharedRelicColor,
+} from '../utils/relicColor';
 
 type PresetColorMode = 'normal' | 'deep';
 type PresetSlotRelics = Array<string | null>;
@@ -207,26 +213,15 @@ function splitPresetList(value: string | undefined) {
 }
 
 function normalizeRelicColor(color: string | undefined) {
-  return (color ?? '').trim().toLowerCase();
+  return normalizeSharedRelicColor(color);
 }
 
 function getRelicColorLabel(color: string | undefined) {
-  const labels: Record<string, string> = {
-    red: '빨강',
-    blue: '파랑',
-    yellow: '노랑',
-    green: '초록',
-    white: '자유',
-    builder: '제작',
-  };
-  const normalizedColor = normalizeRelicColor(color);
-
-  return labels[normalizedColor] ?? color ?? '-';
+  return getSharedRelicColorLabel(color);
 }
 
 function getRelicColorClass(color: string | undefined) {
-  const normalizedColor = normalizeRelicColor(color);
-  return normalizedColor ? `relic-color-${normalizedColor}` : '';
+  return getSharedRelicColorClass(color);
 }
 
 function getVesselsForCharacter(characterName: string) {
@@ -553,7 +548,7 @@ function StoredRelicPresetChoice({
   return (
     <button
       type="button"
-      className={`relic-preset-choice${isSelected ? ' is-selected' : ''}`}
+      className={`relic-preset-choice ${getRelicBorderClass(relic.color)}${isSelected ? ' is-selected' : ''}`}
       disabled={isDisabled}
       aria-pressed={isSelected}
       onClick={() => onSelect(relic)}
@@ -934,12 +929,14 @@ function RelicPresetBuilder({
       <button
         key={`${getPresetSlotModeLabel(slotIndex)}-${slotLabel}`}
         type="button"
-        className={`relic-preset-slot-button${isActive ? ' is-active' : ''}${placedRelic ? ' has-relic' : ''}`}
+        className={`relic-preset-slot-button ${getRelicBorderClass(slotColor)}${isActive ? ' is-active' : ''}${placedRelic ? ' has-relic' : ''}`}
         aria-pressed={isActive}
         onClick={() => setActiveSlotIndex(slotIndex)}
       >
         <span>{slotLabel}</span>
-        <strong>{getRelicColorLabel(slotColor)}</strong>
+        <strong className={`relic-preset-slot-color option-category ${getRelicColorClass(slotColor)}`}>
+          {getRelicColorLabel(slotColor)}
+        </strong>
         <em>{placedRelic?.itemName || '비어 있음'}</em>
       </button>
     );
@@ -955,7 +952,7 @@ function RelicPresetBuilder({
     return (
       <li
         key={`${getPresetSlotModeLabel(slotIndex)}-${slotLabel}`}
-        className={`relic-preset-summary-slot${placedRelic ? ' is-expandable' : ''}${isExpanded ? ' is-expanded' : ''}`}
+        className={`relic-preset-summary-slot ${getRelicBorderClass(slotColor)}${placedRelic ? ' is-expandable' : ''}${isExpanded ? ' is-expanded' : ''}`}
         role={placedRelic ? 'button' : undefined}
         tabIndex={placedRelic ? 0 : undefined}
         aria-expanded={placedRelic ? isExpanded : undefined}
@@ -965,7 +962,9 @@ function RelicPresetBuilder({
         <span>{slotLabel}</span>
         <div>
           <div className="relic-preset-summary-top">
-            <strong>{getRelicColorLabel(slotColor)}</strong>
+            <strong className={`relic-preset-summary-color option-category ${getRelicColorClass(slotColor)}`}>
+              {getRelicColorLabel(slotColor)}
+            </strong>
             {placedRelic ? (
               <button
                 type="button"
@@ -1201,7 +1200,14 @@ function RelicPresetBuilder({
                   <span>
                     {getPresetSlotModeLabel(activeSlotIndex)} {getPresetSlotDisplayIndex(activeSlotIndex)}번 슬롯
                   </span>
-                  <strong>{getRelicColorLabel(activeSlotColor)} 세이브/제작 유물</strong>
+                  <strong>
+                    <span
+                      className={`relic-preset-active-color option-category ${getRelicColorClass(activeSlotColor)}`}
+                    >
+                      {getRelicColorLabel(activeSlotColor)}
+                    </span>{' '}
+                    세이브/제작 유물
+                  </strong>
                 </div>
                 <em>
                   {visibleCandidateRelics.length} / {activeSlotCandidateCount}
@@ -2348,7 +2354,7 @@ function RelicCard({ relic }: { relic: Relic }) {
       onKeyDown={handleKeyDown}
     >
       <div className="option-card-header">
-        <span className={`option-category relic-color-${relic.color.toLowerCase()}`}>
+        <span className={`option-category ${getRelicColorClass(relic.color)}`}>
           {getRelicColorLabel(relic.color)}
         </span>
       </div>

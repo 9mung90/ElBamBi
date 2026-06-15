@@ -228,8 +228,8 @@ function getModeLabel(mode: RelicRollMode) {
   const labels: Record<string, string> = {
     base_game_v102: '일반',
     deep_night_v102: '심도',
-    tfh_dlc_base: '버려진 공허',
-    tfh_dlc_deep: '버려진 공허, 심도',
+    tfh_dlc_base: '버려진 공허(DLC)',
+    tfh_dlc_deep: '버려진 공허(DLC), 심도',
   };
 
   return labels[mode.id] ?? mode.label;
@@ -300,6 +300,7 @@ function RelicBuilderPage({
   const [modeId, setModeId] = useState(modes[0]?.id ?? '');
   const [selectedKeys, setSelectedKeys] = useState<SlotSelection>(EMPTY_SELECTION);
   const [selectedColor, setSelectedColor] = useState<BuilderRelicColor>('Red');
+  const [effectSearchQuery, setEffectSearchQuery] = useState('');
   const [showInvalidOptions, setShowInvalidOptions] = useState(false);
   const [selectedDebuffKeys, setSelectedDebuffKeys] = useState<SlotSelection>(EMPTY_SELECTION);
   const [saveNotice, setSaveNotice] = useState<string | null>(null);
@@ -335,6 +336,7 @@ function RelicBuilderPage({
     [categoryOrder, selectedEffects],
   );
 
+  const activeEffectSearchQuery = effectSearchQuery.trim() ? effectSearchQuery : searchQuery;
   const isComplete = selectedKeys.every(Boolean);
   const resultReasons = selectedReasons.flat();
   const debuffTable = mode.debuffTable ? relicRollAppData.debuffTables[mode.debuffTable] : null;
@@ -466,7 +468,7 @@ function RelicBuilderPage({
         <section className="calc-panel relic-builder-controls" aria-label="유물 옵션 규칙 설정">
           <div className="calc-control-grid relic-builder-mode-grid">
             <label>
-              모드
+              유물 종류
               <ResponsiveSelect
                 value={mode.id}
                 ariaLabel="모드"
@@ -506,6 +508,33 @@ function RelicBuilderPage({
             />
           </label>
 
+          <label className="relic-builder-search-control">
+            효과 검색
+            <div className="relic-builder-search-row">
+              <input
+                type="search"
+                value={effectSearchQuery}
+                onChange={(event) => setEffectSearchQuery(event.target.value)}
+                placeholder="효과명, 설명, ID 검색"
+                aria-label="유물 효과 검색"
+              />
+              {effectSearchQuery ? (
+                <button
+                  type="button"
+                  onClick={() => setEffectSearchQuery('')}
+                  aria-label="유물 효과 검색어 지우기"
+                >
+                  지우기
+                </button>
+              ) : null}
+            </div>
+            {!effectSearchQuery.trim() && searchQuery.trim() ? (
+              <span className="relic-builder-search-hint">
+                통합 검색어 "{searchQuery}" 적용 중
+              </span>
+            ) : null}
+          </label>
+
           <label className="relic-builder-invalid-toggle">
             <input
               type="checkbox"
@@ -531,7 +560,7 @@ function RelicBuilderPage({
             const visibleEvaluations = slotEvaluations.filter(
               ({ effect, reasons }) =>
                 effect.key === selectedKeys[slotIndex] ||
-                ((showInvalidOptions || reasons.length === 0) && matchesSearch(effect, searchQuery)),
+                ((showInvalidOptions || reasons.length === 0) && matchesSearch(effect, activeEffectSearchQuery)),
             );
             const selectedEvaluation = slotEvaluations.find(
               ({ effect }) => effect.key === selectedKeys[slotIndex],
@@ -543,7 +572,7 @@ function RelicBuilderPage({
               debuffTable?.effects.filter(
                 (effect) =>
                   effect.key === selectedDebuffKeys[slotIndex] ||
-                  (!usedDebuffKeys.includes(effect.key) && matchesSearch(effect, searchQuery)),
+                  (!usedDebuffKeys.includes(effect.key) && matchesSearch(effect, activeEffectSearchQuery)),
               ) ?? [];
             const needsDebuff = canUseDebuffs && Boolean(selectedEffect?.cursed);
 
@@ -573,7 +602,7 @@ function RelicBuilderPage({
                   candidateCount={visibleEvaluations.length}
                   effect={selectedEffect}
                   reasons={selectedEvaluation?.reasons ?? selectedReasons[slotIndex]}
-                  searchQuery={searchQuery}
+                  searchQuery={activeEffectSearchQuery}
                 />
 
                 {needsDebuff ? (
@@ -605,7 +634,7 @@ function RelicBuilderPage({
                       candidateCount={visibleDebuffs.length}
                       effect={selectedDebuff}
                       reasons={[]}
-                      searchQuery={searchQuery}
+                      searchQuery={activeEffectSearchQuery}
                     />
                   </div>
                 ) : null}

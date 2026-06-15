@@ -6,6 +6,11 @@ import {
   type StoredRelic,
   type StoredRelicSourceFilter,
 } from '../api/storageApi';
+import {
+  getRelicBorderClass,
+  getRelicColorClass,
+  getRelicColorLabel as getNormalizedRelicColorLabel,
+} from '../utils/relicColor';
 
 const sourceFilters: Array<{ id: StoredRelicSourceFilter; label: string }> = [
   { id: 'all', label: '전체 유물' },
@@ -14,16 +19,7 @@ const sourceFilters: Array<{ id: StoredRelicSourceFilter; label: string }> = [
 ];
 
 function getRelicColorLabel(color: string | undefined) {
-  const labels: Record<string, string> = {
-    red: '빨강',
-    blue: '파랑',
-    yellow: '노랑',
-    green: '초록',
-    white: '자유',
-  };
-  const normalizedColor = (color ?? '').trim().toLowerCase();
-
-  return labels[normalizedColor] ?? color ?? '-';
+  return getNormalizedRelicColorLabel(color);
 }
 
 function getStoredRelicSourceLabel(source: StoredRelic['source']) {
@@ -72,9 +68,9 @@ function RelicStorageCard({
   const updatedAt = relic.updatedAt || relic.createdAt;
 
   return (
-    <article className="option-card stored-relic-card">
+    <article className={`option-card stored-relic-card ${getRelicBorderClass(relic.color)}`}>
       <div className="option-card-header">
-        <span className={`option-category relic-color-${relic.color.toLowerCase()}`}>
+        <span className={`option-category ${getRelicColorClass(relic.color)}`}>
           {getRelicColorLabel(relic.color)}
         </span>
         <span className="stored-relic-source">{getStoredRelicSourceLabel(relic.source)}</span>
