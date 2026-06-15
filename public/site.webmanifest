@@ -1,6 +1,6 @@
 {
-  "name": "ElBamBi",
-  "short_name": "ElBamBi",
+  "name": "엘밤 비",
+  "short_name": "엘밤 비",
   "description": "엘밤 비는 엘든링 밤의 통치자 캐릭터, 보스, 유물, 스킨, 지도 정보를 제공하는 비공식 팬 정보 및 커뮤니티 웹사이트입니다.",
   "start_url": "/",
   "display": "standalone",
