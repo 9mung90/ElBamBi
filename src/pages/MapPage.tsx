@@ -149,6 +149,11 @@ interface CandidateEntry {
   seed: SeedRow;
 }
 
+interface SlotPoiAssignment {
+  details: string[];
+  label?: string;
+}
+
 type PatternListKey =
   | 'churches'
   | 'sorcerers_rises'
@@ -229,7 +234,7 @@ const buildingBaseLabels: Record<string, string> = {
   gaol: '감옥',
   greatchurch: '대교회',
   mainencampment: '주둔지',
-  march: '행군',
+  march: '호소',
   medium_castle: '성',
   ruins: '폐허',
   small_castle: '소형 성',
@@ -701,8 +706,24 @@ function fieldBossMergeDetails(item: PatternPoint) {
   return poiDetails(item, 'field').filter((detail) => detail && detail !== boss);
 }
 
+function facilityMergeLabel(key: PatternListKey, item: PatternPoint) {
+  if (
+    key === 'churches' ||
+    key === 'sorcerers_rises' ||
+    key === 'spawn_points' ||
+    key === 'caravans' ||
+    key === 'townships'
+  ) {
+    return '';
+  }
+  const value = item.value ?? item.boss ?? item.event ?? '';
+  const translated = tr('overlay_poi_values', value);
+  const detail = detailSuffix(value);
+  return detail && detail !== translated ? detail : '';
+}
+
 function assignFacilityPoisToSlots(slots: SlotOverlay[], pattern: PatternRow | undefined) {
-  const bySlot = new Map<string, string[]>();
+  const bySlot = new Map<string, SlotPoiAssignment>();
   const assignedPoiKeys = new Set<string>();
   if (!pattern) {
     return { bySlot, assignedPoiKeys };
@@ -737,7 +758,11 @@ function assignFacilityPoisToSlots(slots: SlotOverlay[], pattern: PatternRow | u
     if (usedSlots.has(candidate.slot.itemId) || assignedPoiKeys.has(key)) {
       continue;
     }
-    bySlot.set(candidate.slot.itemId, facilityMergeDetails(candidate.key, candidate.item));
+    const label = facilityMergeLabel(candidate.key, candidate.item);
+    bySlot.set(candidate.slot.itemId, {
+      details: facilityMergeDetails(candidate.key, candidate.item),
+      ...(label ? { label } : {}),
+    });
     assignedPoiKeys.add(key);
     usedSlots.add(candidate.slot.itemId);
   }
@@ -746,7 +771,7 @@ function assignFacilityPoisToSlots(slots: SlotOverlay[], pattern: PatternRow | u
 }
 
 function assignFieldBossPoisToSlots(slots: SlotOverlay[], pattern: PatternRow | undefined) {
-  const bySlot = new Map<string, string[]>();
+  const bySlot = new Map<string, SlotPoiAssignment>();
   const assignedPoiKeys = new Set<string>();
   if (!pattern) {
     return { bySlot, assignedPoiKeys };
@@ -774,7 +799,10 @@ function assignFieldBossPoisToSlots(slots: SlotOverlay[], pattern: PatternRow | 
     if (usedSlots.has(candidate.slot.itemId) || assignedPoiKeys.has(key)) {
       continue;
     }
-    bySlot.set(candidate.slot.itemId, fieldBossMergeDetails(candidate.item));
+    bySlot.set(candidate.slot.itemId, {
+      details: fieldBossMergeDetails(candidate.item),
+      label: bossKo(candidate.item.boss),
+    });
     assignedPoiKeys.add(key);
     usedSlots.add(candidate.slot.itemId);
   }
@@ -908,13 +936,20 @@ const MapPage = () => {
 
   const slotOverlays = useMemo(
     () => {
-      const slots = baseSlotOverlays.map((slot) => ({
-        ...slot,
-        details: slotDetails(slot.rawValue, [
-          ...(facilityPoiAssignments.bySlot.get(slot.itemId) ?? []),
-          ...(fieldBossPoiAssignments.bySlot.get(slot.itemId) ?? []),
-        ]),
-      }));
+      const slots = baseSlotOverlays.map((slot) => {
+        const facilityAssignment = facilityPoiAssignments.bySlot.get(slot.itemId);
+        const fieldBossAssignment = fieldBossPoiAssignments.bySlot.get(slot.itemId);
+        const label = fieldBossAssignment?.label ?? facilityAssignment?.label ?? slot.label;
+
+        return {
+          ...slot,
+          label,
+          details: slotDetails(slot.rawValue, [
+            ...(facilityAssignment?.details ?? []),
+            ...(fieldBossAssignment?.details ?? []),
+          ]),
+        };
+      });
       return removeForsakenHollowsNight2OverlappingSlots(slots, currentMapType, currentPattern);
     },
     [baseSlotOverlays, currentMapType, currentPattern, facilityPoiAssignments, fieldBossPoiAssignments],
@@ -1005,7 +1040,7 @@ const MapPage = () => {
         item.poi_id,
         'evergaol',
         '감옥',
-        `봉인감옥: ${bossKo(item.boss)}`,
+        bossKo(item.boss),
         poiDetails(item, 'evergaol'),
         '',
         { isHotspot: true },
@@ -1493,7 +1528,7 @@ const MapPage = () => {
                     <button
                       key={marker.id}
                       type="button"
-                      className={`map-poi-marker is-${marker.kind}${marker.isHotspot ? ' is-hotspot' : ''}${activeItemId === marker.id ? ' is-active' : ''}`}
+                      className={`map-poi-marker is-${marker.kind}${marker.isHotspot ? ' is-hotspot' : ''}${showLabels && marker.isHotspot ? ' has-visible-label' : ''}${activeItemId === marker.id ? ' is-active' : ''}`}
                       style={{ left: `${marker.x}%`, top: `${marker.y}%` }}
                       title={marker.label}
                       aria-label={marker.label}
@@ -1504,7 +1539,7 @@ const MapPage = () => {
                       onBlur={() => setHoveredItemId(null)}
                     >
                       {marker.isHotspot ? null : <img src={marker.iconUrl} alt="" />}
-                      {showLabels && !marker.isHotspot ? <span className="map-marker-label">{marker.label}</span> : null}
+                      {showLabels ? <span className="map-marker-label">{marker.label}</span> : null}
                     </button>
                   ))
                 : null}

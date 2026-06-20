@@ -335,6 +335,10 @@
   opacity: 0;
 }
 
+.map-poi-marker.is-hotspot.has-visible-label {
+  opacity: 1;
+}
+
 .map-poi-marker.is-hotspot:focus-visible {
   opacity: 1;
   border: 1px solid rgba(120, 221, 255, 0.78);
@@ -367,9 +371,10 @@
 
 .map-marker-label {
   position: absolute;
-  left: calc(100% + 7px);
+  left: calc(100% + 3px);
   top: 50%;
-  max-width: 140px;
+  width: max-content;
+  max-width: 180px;
   padding: 4px 6px;
   border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 6px;
@@ -379,7 +384,7 @@
   line-height: 1.25;
   text-align: left;
   transform: translateY(-50%);
-  white-space: normal;
+  white-space: nowrap;
   word-break: keep-all;
   overflow-wrap: anywhere;
   pointer-events: none;
