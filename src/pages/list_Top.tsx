@@ -73,6 +73,17 @@ import vesselTopIcon from '../assets/images/top_icon/vessel.webp';
 import weaponTopIcon from '../assets/images/top_icon/weapone.webp';
 import logoImage from '../assets/images/top_icon/logo.png';
 import loginImage from '../assets/images/top_icon/login.webp';
+import {
+  authViewStorageKey,
+  emailVerifiedSignalStorageKey,
+  lastPageStorageKey,
+  mainRoutePath,
+  nicknameRoutePath,
+  officialWebsiteUrl,
+  playStoreUrl,
+  pullToRefreshThreshold,
+  verifyEmailRoutePath,
+} from './listTop/constants';
 import './list_Top.css';
 
 const categories: Category[] = [
@@ -124,15 +135,6 @@ type MyPageView = 'overview' | 'posts' | 'comments' | 'bookmarks' | 'relics' | '
 type AuthRole = 'USER' | 'ADMIN';
 const defaultApiBaseUrl = 'https://k9e297bszl.execute-api.ap-northeast-2.amazonaws.com';
 const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? defaultApiBaseUrl).replace(/\/$/, '');
-const lastPageStorageKey = 'nightreign:last-page';
-const authViewStorageKey = 'nightreign:auth-view';
-const emailVerifiedSignalStorageKey = 'nightreign:email-verified-at';
-const pullToRefreshThreshold = 90;
-const nicknameRoutePath = '/nick';
-const verifyEmailRoutePath = '/verify-email';
-const mainRoutePath = '/main';
-const officialWebsiteUrl = 'https://el-bam-bi.vercel.app/';
-const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.sr9.elbambi';
 const verifyingEmailTokens = new Map<string, Promise<unknown>>();
 
 type MyPageOverviewData = {
