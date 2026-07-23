@@ -56,6 +56,12 @@ import {
 } from '../api/authToken';
 import logoImage from '../assets/images/top_icon/logo.png';
 import loginImage from '../assets/images/top_icon/login.webp';
+import {
+  AuthRequestError,
+  LoginRequiredError,
+  type AuthRole,
+  type AuthView,
+} from './listTop/authTypes';
 import { categories } from './listTop/categoryConfig';
 import { categoryIconAssets } from './listTop/categoryIcons';
 import {
@@ -110,9 +116,7 @@ function toggleFilterValue<T>(values: T[], value: T) {
     : [...values, value];
 }
 
-type AuthView = 'login' | 'signup' | null;
 type MyPageView = 'overview' | 'posts' | 'comments' | 'bookmarks' | 'relics' | 'presets';
-type AuthRole = 'USER' | 'ADMIN';
 const defaultApiBaseUrl = 'https://k9e297bszl.execute-api.ap-northeast-2.amazonaws.com';
 const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? defaultApiBaseUrl).replace(/\/$/, '');
 const verifyingEmailTokens = new Map<string, Promise<unknown>>();
@@ -149,21 +153,6 @@ type MyPageMeResponse = {
   provider?: string;
   role?: string;
 };
-
-class LoginRequiredError extends Error {}
-
-class AuthRequestError extends Error {
-  code: string;
-  status: number;
-  payload: unknown;
-
-  constructor(status: number, message: string, code: string, payload: unknown) {
-    super(message);
-    this.status = status;
-    this.code = code;
-    this.payload = payload;
-  }
-}
 
 function getStoredPageId() {
   const storedId = getStoredValue(lastPageStorageKey);
