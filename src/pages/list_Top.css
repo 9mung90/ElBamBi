@@ -5330,3 +5330,61 @@
     height: 30px;
   }
 }
+
+.game-title-row .external-product-button {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  margin-left: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--night-text-soft);
+  cursor: pointer;
+}
+
+.game-title-row .external-product-button:hover,
+.game-title-row .external-product-button:focus-visible {
+  color: var(--night-accent-bright);
+}
+
+.game-title-row .external-product-button:focus-visible {
+  outline: 2px solid var(--night-accent-bright);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.game-title-row .external-product-button svg {
+  display: block;
+  width: 40px;
+  height: 40px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.game-title-row .external-product-button .external-product-play-mark {
+  fill: currentColor;
+  stroke: none;
+}
+
+.game-title-row .account-icon-button {
+  margin-left: -4px;
+  margin-right: 4px;
+}
+
+@media (max-width: 520px) {
+  .game-title-row .external-product-button {
+    width: 30px;
+    height: 30px;
+  }
+
+  .game-title-row .external-product-button svg {
+    width: 34px;
+    height: 34px;
+  }
+}

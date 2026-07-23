@@ -131,6 +131,8 @@ const pullToRefreshThreshold = 90;
 const nicknameRoutePath = '/nick';
 const verifyEmailRoutePath = '/verify-email';
 const mainRoutePath = '/main';
+const officialWebsiteUrl = 'https://el-bam-bi.vercel.app/';
+const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.sr9.elbambi';
 const verifyingEmailTokens = new Map<string, Promise<unknown>>();
 
 type MyPageOverviewData = {
@@ -1594,15 +1596,11 @@ function MyPage({
                 <dd>{profile.nickname}</dd>
               </div>
               <div>
-                <dt>계정</dt>
-                <dd>{profile.loginId}</dd>
-              </div>
-              <div>
                 <dt>이메일</dt>
                 <dd>{profile.email}</dd>
               </div>
               <div>
-                <dt>provider</dt>
+                <dt>로그인 방식</dt>
                 <dd>{profile.provider}</dd>
               </div>
             </dl>
@@ -2742,6 +2740,18 @@ function ListTop() {
   const overlayContent = renderOverlayContent();
   const isOverlayOpen = Boolean(overlayContent);
   const pageTrackTransform = `calc(${-selectedIndex * 100}% + ${pageDrag.offset}px)`;
+  const isNativeApp = Capacitor.isNativePlatform();
+  const externalProductUrl = isNativeApp ? officialWebsiteUrl : playStoreUrl;
+  const externalProductLabel = isNativeApp ? '엘밤 비 웹사이트 열기' : 'Google Play에서 엘밤 비 앱 보기';
+
+  const handleExternalProductClick = () => {
+    if (isNativeApp) {
+      void Browser.open({ url: externalProductUrl });
+      return;
+    }
+
+    window.open(externalProductUrl, '_blank', 'noopener,noreferrer');
+  };
 
   return (
     <main className="list-top-shell">
@@ -2751,6 +2761,26 @@ function ListTop() {
             <img className="game-title-logo-image" src={logoImage} alt="" />
           </div>
           <h1>엘밤 비</h1>
+          <button
+            type="button"
+            className="external-product-button"
+            aria-label={externalProductLabel}
+            title={externalProductLabel}
+            onClick={handleExternalProductClick}
+          >
+            {isNativeApp ? (
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="9" />
+                <path d="M3 12h18M12 3c2.4 2.5 3.7 5.6 3.7 9s-1.3 6.5-3.7 9M12 3c-2.4 2.5-3.7 5.6-3.7 9s1.3 6.5 3.7 9" />
+              </svg>
+            ) : (
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="5" y="2.5" width="14" height="19" rx="2.5" />
+                <path className="external-product-play-mark" d="m10 8 5.5 4-5.5 4Z" />
+                <path d="M10 18.5h4" />
+              </svg>
+            )}
+          </button>
           <button
             type="button"
             className={`account-icon-button${authView || isMyPageOpen ? ' is-active' : ''}`}

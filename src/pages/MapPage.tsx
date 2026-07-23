@@ -1,5 +1,7 @@
 import {
+  useCallback,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -261,7 +263,7 @@ const attributeLabels: Record<string, string> = {
 
 const mapTypeFallbackLabels: Record<string, string> = {
   Default: '기본',
-  'Forsaken Hollows': 'The Forsaken Hollows',
+  'Forsaken Hollows': '대공동',
 };
 
 const focusedFieldBossLocations: Record<string, string> = {
@@ -532,6 +534,11 @@ function focusedBossRows(pattern: PatternRow | undefined): DetailRow[] {
     }
   }
 
+  rows.push({
+    id: 'nightlord',
+    label: `밤의 왕: ${tr('nightlords', pattern.nightlord)}`,
+  });
+
   return rows;
 }
 
@@ -546,6 +553,18 @@ function touchDistance(touches: TouchEvent<HTMLDivElement>['touches']) {
   const first = touches[0];
   const second = touches[1];
   return Math.hypot(first.clientX - second.clientX, first.clientY - second.clientY);
+}
+
+function touchMidpoint(touches: TouchEvent<HTMLDivElement>['touches']) {
+  if (touches.length < 2) {
+    return null;
+  }
+  const first = touches[0];
+  const second = touches[1];
+  return {
+    clientX: (first.clientX + second.clientX) / 2,
+    clientY: (first.clientY + second.clientY) / 2,
+  };
 }
 
 function seedForPattern(nightlord: string, pattern: PatternRow) {
@@ -819,9 +838,24 @@ const MapPage = () => {
   const [hoveredItemId, setHoveredItemId] = useState<string | null>(null);
   const [showLabels, setShowLabels] = useState(false);
   const [showPoiMarkers, setShowPoiMarkers] = useState(true);
+  const [isMapFullscreen, setIsMapFullscreen] = useState(false);
+  const [fullscreenPanel, setFullscreenPanel] = useState<
+    'settings' | 'summary' | 'events' | 'bosses' | null
+  >(null);
   const [mapZoom, setMapZoom] = useState(1);
-  const pinchRef = useRef<{ distance: number; zoom: number } | null>(null);
-  const gestureStartZoomRef = useRef(1);
+  const mapZoomRef = useRef(1);
+  const pendingMapScrollRef = useRef<{
+    zoom: number;
+    left: number;
+    top: number;
+  } | null>(null);
+  const pinchRef = useRef<{
+    distance: number;
+    zoom: number;
+    contentX: number;
+    contentY: number;
+  } | null>(null);
+  const mapPageRef = useRef<HTMLElement | null>(null);
   const mapStagePanelRef = useRef<HTMLDivElement | null>(null);
   const mapViewportRef = useRef<HTMLDivElement | null>(null);
   const [mapFitSize, setMapFitSize] = useState<number | null>(null);
@@ -871,8 +905,17 @@ const MapPage = () => {
       const viewportHeight = visualViewport?.height ?? window.innerHeight;
       const panelWidth = panel.getBoundingClientRect().width;
       const panelInnerWidth = Math.max(240, panelWidth - 20);
-      const mobileViewportHeightLimit = viewportWidth <= 780 ? Math.max(260, viewportHeight - 160) : Number.POSITIVE_INFINITY;
-      const nextSize = Math.floor(Math.min(panelInnerWidth, viewportWidth - 24, mobileViewportHeightLimit));
+      const isMobileFullscreen = isMapFullscreen && viewportWidth <= 780;
+      const heightLimit = isMapFullscreen
+        ? Math.max(240, viewportHeight - (isMobileFullscreen ? 0 : 20))
+        : viewportWidth <= 780
+          ? Math.max(260, viewportHeight - 160)
+          : Number.POSITIVE_INFINITY;
+      const nextSize = Math.floor(
+        isMobileFullscreen
+          ? Math.max(viewportWidth, heightLimit)
+          : Math.min(panelInnerWidth, viewportWidth - 24, heightLimit),
+      );
 
       setMapFitSize((currentSize) => (currentSize === nextSize ? currentSize : nextSize));
     };
@@ -891,7 +934,7 @@ const MapPage = () => {
       window.visualViewport?.removeEventListener('resize', updateMapFitSize);
       window.visualViewport?.removeEventListener('scroll', updateMapFitSize);
     };
-  }, []);
+  }, [isMapFullscreen]);
 
   const baseSlotOverlays = useMemo<SlotOverlay[]>(() => {
     const coordinates = coordsByMap[currentMapType] ?? coordsByMap.Default ?? [];
@@ -1104,6 +1147,22 @@ const MapPage = () => {
     }
     return Array.from(values.values()).sort((left, right) => left.label.localeCompare(right.label));
   }, [baseCandidates, selectedSlot, selectedSlotValues]);
+
+  useEffect(() => {
+    if (!selectedSlot) return;
+
+    const closeSlotPickerOutside = (event: PointerEvent) => {
+      if (!(event.target instanceof Element)) return;
+      if (event.target.closest('.map-slot-picker-popover, .map-slot-marker')) return;
+
+      setActiveItemId((current) => current === selectedSlot.itemId ? null : current);
+      setHoveredItemId(null);
+    };
+
+    document.addEventListener('pointerdown', closeSlotPickerOutside);
+    return () => document.removeEventListener('pointerdown', closeSlotPickerOutside);
+  }, [selectedSlot]);
+
   const focusedItemId = hoveredItemId ?? activeItemId;
   const focusedSlot = slotOverlays.find((slot) => slot.itemId === focusedItemId);
   const focusedMarker = poiMarkers.find((marker) => marker.id === focusedItemId);
@@ -1139,7 +1198,6 @@ const MapPage = () => {
       : '';
   const selectedSlotCount = Object.keys(selectedSlotValues).length;
   const candidateRows = matchingCandidates;
-  const zoomPercent = Math.round(mapZoom * 100);
 
   const toggleActiveItem = (itemId: string) => {
   setActiveItemId((current) => (current === itemId ? null : itemId));
@@ -1155,7 +1213,7 @@ const MapPage = () => {
   const updateSlotValue = (slotId: string, value: string) => {
     setSelectedCandidateKey(null);
     setSelectedSlotValues((current) => ({ ...current, [slotId]: value }));
-    setActiveItemId(`slot-${slotId}`);
+    setActiveItemId(null);
     setHoveredItemId(null);
   };
   const clearSlotValue = (slotId: string) => {
@@ -1175,62 +1233,183 @@ const MapPage = () => {
     setHoveredItemId(null);
     setShowLabels(false);
     setShowPoiMarkers(true);
+    mapZoomRef.current = 1;
+    pendingMapScrollRef.current = { zoom: 1, left: 0, top: 0 };
     setMapZoom(1);
-    mapViewportRef.current?.scrollTo({ left: 0, top: 0 });
   };
-  const updateMapZoom = (nextZoom: number) => {
-    setMapZoom(clampZoom(nextZoom));
+
+  const toggleMapFullscreen = () => {
+    const nextFullscreen = !isMapFullscreen;
+    setIsMapFullscreen(nextFullscreen);
+    setFullscreenPanel(null);
+    mapZoomRef.current = 1;
+    pendingMapScrollRef.current = { zoom: 1, left: 0, top: 0 };
+    setMapZoom(1);
+
+    if (nextFullscreen) {
+      const page = mapPageRef.current;
+      if (page?.requestFullscreen) {
+        void page.requestFullscreen({ navigationUI: 'hide' }).catch(() => {
+          // CSS fullscreen remains active as a fallback when native fullscreen is unavailable.
+        });
+      }
+    } else if (document.fullscreenElement) {
+      void document.exitFullscreen().catch(() => {
+        // State and CSS have already left fullscreen.
+      });
+    }
   };
-  const nudgeMapZoom = (delta: number) => {
-    setMapZoom((currentZoom) => clampZoom(currentZoom + delta));
-  };
+
+  useEffect(() => {
+    const syncNativeFullscreenState = () => {
+      if (document.fullscreenElement === mapPageRef.current) return;
+
+      setIsMapFullscreen(false);
+      setFullscreenPanel(null);
+      mapZoomRef.current = 1;
+      pendingMapScrollRef.current = { zoom: 1, left: 0, top: 0 };
+      setMapZoom(1);
+    };
+
+    document.addEventListener('fullscreenchange', syncNativeFullscreenState);
+    return () => document.removeEventListener('fullscreenchange', syncNativeFullscreenState);
+  }, []);
+
+  useEffect(() => {
+    if (!isMapFullscreen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    const handleFullscreenKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return;
+      if (fullscreenPanel) {
+        setFullscreenPanel(null);
+        return;
+      }
+      mapZoomRef.current = 1;
+      pendingMapScrollRef.current = { zoom: 1, left: 0, top: 0 };
+      setMapZoom(1);
+      setIsMapFullscreen(false);
+    };
+
+    window.addEventListener('keydown', handleFullscreenKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', handleFullscreenKeyDown);
+    };
+  }, [fullscreenPanel, isMapFullscreen]);
+
+  const setMapZoomWithScroll = useCallback((nextZoom: number, left: number, top: number) => {
+    const viewport = mapViewportRef.current;
+    if (!viewport) return;
+
+    const clampedZoom = clampZoom(nextZoom);
+    const zoomChanged = clampedZoom !== mapZoomRef.current;
+    const hasPendingZoom = pendingMapScrollRef.current !== null;
+
+    if (zoomChanged || hasPendingZoom) {
+      pendingMapScrollRef.current = {
+        zoom: clampedZoom,
+        left,
+        top,
+      };
+    } else {
+      viewport.scrollLeft = left;
+      viewport.scrollTop = top;
+    }
+
+    if (zoomChanged) {
+      mapZoomRef.current = clampedZoom;
+      setMapZoom(clampedZoom);
+    }
+  }, []);
+
+  const zoomMapAtClientPoint = useCallback((nextZoom: number, clientX: number, clientY: number) => {
+    const viewport = mapViewportRef.current;
+    if (!viewport) return;
+
+    const currentZoom = mapZoomRef.current;
+    const clampedZoom = clampZoom(nextZoom);
+    const rect = viewport.getBoundingClientRect();
+    const localX = clientX - rect.left;
+    const localY = clientY - rect.top;
+    const pendingScroll = pendingMapScrollRef.current;
+    const currentLeft = pendingScroll?.zoom === currentZoom ? pendingScroll.left : viewport.scrollLeft;
+    const currentTop = pendingScroll?.zoom === currentZoom ? pendingScroll.top : viewport.scrollTop;
+    const contentX = (currentLeft + localX) / currentZoom;
+    const contentY = (currentTop + localY) / currentZoom;
+
+    setMapZoomWithScroll(
+      clampedZoom,
+      contentX * clampedZoom - localX,
+      contentY * clampedZoom - localY,
+    );
+  }, [setMapZoomWithScroll]);
+
+  useLayoutEffect(() => {
+    const viewport = mapViewportRef.current;
+    const pendingScroll = pendingMapScrollRef.current;
+    if (!viewport || !pendingScroll || pendingScroll.zoom !== mapZoom) return;
+
+    viewport.scrollLeft = pendingScroll.left;
+    viewport.scrollTop = pendingScroll.top;
+    pendingMapScrollRef.current = null;
+  }, [mapZoom]);
+
+  useLayoutEffect(() => {
+    const viewport = mapViewportRef.current;
+    if (!viewport || !isMapFullscreen || window.innerWidth > 780 || mapZoomRef.current !== 1) {
+      return;
+    }
+
+    viewport.scrollLeft = Math.max(0, (viewport.scrollWidth - viewport.clientWidth) / 2);
+    viewport.scrollTop = Math.max(0, (viewport.scrollHeight - viewport.clientHeight) / 2);
+  }, [isMapFullscreen, mapFitSize]);
 
   useEffect(() => {
     const viewport = mapViewportRef.current;
     if (!viewport) return;
 
-    const preventBrowserZoom = (event: Event) => {
-      event.preventDefault();
-    };
     const handleNativeWheel = (event: globalThis.WheelEvent) => {
-      if (!event.ctrlKey) return;
+      if (event.target instanceof Element && event.target.closest('.map-slot-picker-popover')) {
+        return;
+      }
       event.preventDefault();
-      setMapZoom((currentZoom) => clampZoom(currentZoom + (event.deltaY > 0 ? -0.15 : 0.15)));
+      if (event.deltaY === 0) return;
+
+      const deltaPixels = event.deltaMode === 1
+        ? event.deltaY * 16
+        : event.deltaMode === 2
+          ? event.deltaY * viewport.clientHeight
+          : event.deltaY;
+      const zoomFactor = Math.min(1.25, Math.max(0.8, Math.exp(-deltaPixels * 0.0015)));
+      zoomMapAtClientPoint(
+        mapZoomRef.current * zoomFactor,
+        event.clientX,
+        event.clientY,
+      );
     };
     const handleNativeTouchMove = (event: globalThis.TouchEvent) => {
       if (event.touches.length < 2) return;
       event.preventDefault();
     };
-    const handleNativeGestureStart = (event: Event) => {
-      event.preventDefault();
-      gestureStartZoomRef.current = mapZoom;
-    };
-    const handleNativeGestureChange = (event: Event) => {
-      event.preventDefault();
-      const scale = (event as Event & { scale?: number }).scale ?? 1;
-      setMapZoom(clampZoom(gestureStartZoomRef.current * scale));
-    };
 
     viewport.addEventListener('wheel', handleNativeWheel, { passive: false });
     viewport.addEventListener('touchmove', handleNativeTouchMove, { passive: false });
-    viewport.addEventListener('gesturestart', handleNativeGestureStart, { passive: false });
-    viewport.addEventListener('gesturechange', handleNativeGestureChange, { passive: false });
-    document.addEventListener('gesturestart', preventBrowserZoom, { passive: false });
-    document.addEventListener('gesturechange', preventBrowserZoom, { passive: false });
 
     return () => {
       viewport.removeEventListener('wheel', handleNativeWheel);
       viewport.removeEventListener('touchmove', handleNativeTouchMove);
-      viewport.removeEventListener('gesturestart', handleNativeGestureStart);
-      viewport.removeEventListener('gesturechange', handleNativeGestureChange);
-      document.removeEventListener('gesturestart', preventBrowserZoom);
-      document.removeEventListener('gesturechange', preventBrowserZoom);
     };
-  }, [mapZoom]);
+  }, [zoomMapAtClientPoint]);
 
   const startMapDrag = (clientX: number, clientY: number) => {
     const viewport = mapViewportRef.current;
-    if (!viewport || mapZoom <= 1) {
+    if (
+      !viewport
+      || (viewport.scrollWidth <= viewport.clientWidth && viewport.scrollHeight <= viewport.clientHeight)
+    ) {
       return;
     }
     mapDragRef.current = {
@@ -1284,9 +1463,25 @@ const MapPage = () => {
   };
   const handleMapTouchStart = (event: TouchEvent<HTMLDivElement>) => {
     const distance = touchDistance(event.touches);
-    if (distance !== null) {
+    const midpoint = touchMidpoint(event.touches);
+    if (distance !== null && midpoint) {
       endMapDrag();
-      pinchRef.current = { distance, zoom: mapZoom };
+      const viewport = mapViewportRef.current;
+      if (!viewport) return;
+
+      const zoom = mapZoomRef.current;
+      const rect = viewport.getBoundingClientRect();
+      const localX = midpoint.clientX - rect.left;
+      const localY = midpoint.clientY - rect.top;
+      const pendingScroll = pendingMapScrollRef.current;
+      const currentLeft = pendingScroll?.zoom === zoom ? pendingScroll.left : viewport.scrollLeft;
+      const currentTop = pendingScroll?.zoom === zoom ? pendingScroll.top : viewport.scrollTop;
+      pinchRef.current = {
+        distance,
+        zoom,
+        contentX: (currentLeft + localX) / zoom,
+        contentY: (currentTop + localY) / zoom,
+      };
       return;
     }
     const touch = event.touches[0];
@@ -1296,9 +1491,21 @@ const MapPage = () => {
   };
   const handleMapTouchMove = (event: TouchEvent<HTMLDivElement>) => {
     const distance = touchDistance(event.touches);
-    if (distance !== null && pinchRef.current) {
+    const midpoint = touchMidpoint(event.touches);
+    if (distance !== null && midpoint && pinchRef.current) {
       event.preventDefault();
-      updateMapZoom((pinchRef.current.zoom * distance) / pinchRef.current.distance);
+      const viewport = mapViewportRef.current;
+      if (!viewport) return;
+
+      const nextZoom = clampZoom((pinchRef.current.zoom * distance) / pinchRef.current.distance);
+      const rect = viewport.getBoundingClientRect();
+      const localX = midpoint.clientX - rect.left;
+      const localY = midpoint.clientY - rect.top;
+      setMapZoomWithScroll(
+        nextZoom,
+        pinchRef.current.contentX * nextZoom - localX,
+        pinchRef.current.contentY * nextZoom - localY,
+      );
       return;
     }
     const touch = event.touches[0];
@@ -1316,7 +1523,11 @@ const MapPage = () => {
   };
 
   return (
-    <section className="map-page" aria-label="Nightreign 맵">
+    <section
+      ref={mapPageRef}
+      className={`map-page${isMapFullscreen ? ' is-map-fullscreen' : ''}`}
+      aria-label="Nightreign 맵"
+    >
       <header className="map-page-heading">
         <div>
           <h2>맵 식별 도구</h2>
@@ -1330,7 +1541,13 @@ const MapPage = () => {
       </header>
 
       <div className="map-layout">
-        <aside className="map-control-panel">
+        <aside className={`map-control-panel${fullscreenPanel === 'settings' ? ' is-open' : ''}`}>
+          <div className="map-fullscreen-drawer-heading">
+            <strong>지도 설정</strong>
+            <button type="button" onClick={() => setFullscreenPanel(null)} aria-label="지도 설정 닫기">
+              ×
+            </button>
+          </div>
           <label>
             <span>밤의 왕</span>
             <ResponsiveSelect
@@ -1420,46 +1637,6 @@ const MapPage = () => {
             </div>
           </div>
 
-          {!currentPattern ? (
-            <section className="map-detail-card">
-              <h3>슬롯 선택</h3>
-
-    {selectedSlot ? (
-      <div className="map-slot-picker">
-        <div className="map-selected-detail">
-          <strong>{selectedSlot.rawValue ? selectedSlot.label : `슬롯 ${selectedSlot.id}`}</strong>
-          <span>가능한 요소 {activeSlotOptions.length}개</span>
-        </div>
-
-        {selectedSlot.rawValue ? (
-          <button
-            type="button"
-            className="map-clear-selection"
-            onClick={() => clearSlotValue(selectedSlot.id)}
-          >
-            이 슬롯 선택 해제
-          </button>
-        ) : null}
-
-        <div className="map-option-list">
-          {activeSlotOptions.map((option) => (
-            <button
-              key={option.value}
-              type="button"
-              className={selectedSlot.rawValue === option.value ? 'is-selected' : ''}
-              onClick={() => updateSlotValue(selectedSlot.id, option.value)}
-            >
-              <img src={option.iconUrl} alt="" />
-              <span>{option.label}</span>
-            </button>
-          ))}
-        </div>
-      </div>
-    ) : (
-      <p>맵 위의 슬롯을 선택하면 가능한 요소가 표시됩니다.</p>
-    )}
-  </section>
-) : null}
         </aside>
 
         <div
@@ -1467,20 +1644,56 @@ const MapPage = () => {
           className="map-stage-panel"
           style={mapFitSize ? ({ '--map-fit-size': `${mapFitSize}px` } as CSSProperties) : undefined}
         >
-          <div className="map-zoom-control" aria-label="지도 확대 조절">
-            <button type="button" onClick={() => nudgeMapZoom(0.25)} aria-label="지도 확대">
-              +
-            </button>
-            <button type="button" className="map-zoom-reset" onClick={() => updateMapZoom(1)}>
-              {zoomPercent}%
-            </button>
-            <button type="button" onClick={() => nudgeMapZoom(-0.25)} aria-label="지도 축소">
-              -
-            </button>
-          </div>
+          <button
+            type="button"
+            className="map-fullscreen-button"
+            onClick={toggleMapFullscreen}
+            aria-label={isMapFullscreen ? '지도 전체화면 종료' : '지도 전체화면'}
+          >
+            <span aria-hidden="true">{isMapFullscreen ? '×' : '⛶'}</span>
+            <small>{isMapFullscreen ? '나가기' : '전체화면'}</small>
+          </button>
+
+          {isMapFullscreen ? (
+            <nav className="map-fullscreen-nav" aria-label="전체화면 지도 메뉴">
+              <button
+                type="button"
+                className={fullscreenPanel === 'settings' ? 'is-active' : ''}
+                onClick={() => setFullscreenPanel((current) => current === 'settings' ? null : 'settings')}
+              >
+                설정
+              </button>
+              <button
+                type="button"
+                className={fullscreenPanel === 'summary' ? 'is-active' : ''}
+                onClick={() => setFullscreenPanel((current) => current === 'summary' ? null : 'summary')}
+              >
+                요약
+              </button>
+              {currentPattern ? (
+                <>
+                  <button
+                    type="button"
+                    className={fullscreenPanel === 'events' ? 'is-active' : ''}
+                    onClick={() => setFullscreenPanel((current) => current === 'events' ? null : 'events')}
+                  >
+                    특수<br />이벤트
+                  </button>
+                  <button
+                    type="button"
+                    className={fullscreenPanel === 'bosses' ? 'is-active' : ''}
+                    onClick={() => setFullscreenPanel((current) => current === 'bosses' ? null : 'bosses')}
+                  >
+                    주요<br />보스
+                  </button>
+                </>
+              ) : null}
+            </nav>
+          ) : null}
+
           <div
             ref={mapViewportRef}
-            className={`map-stage-viewport${mapZoom > 1 ? ' is-draggable' : ''}`}
+            className={`map-stage-viewport${mapZoom > 1 || isMapFullscreen ? ' is-draggable' : ''}`}
             data-no-page-swipe
             onMouseDown={handleMapMouseDown}
             onMouseMove={handleMapMouseMove}
@@ -1506,7 +1719,6 @@ const MapPage = () => {
                   type="button"
                   className={`map-slot-marker is-${slot.kind}${activeItemId === slot.itemId ? ' is-active' : ''}`}
                   style={{ left: `${slot.x}%`, top: `${slot.y}%` }}
-                  title={`슬롯 ${slot.id}: ${slot.label}`}
                   aria-label={`슬롯 ${slot.id}: ${slot.label}`}
                   onClick={() => toggleActiveItem(slot.itemId)}
                   onMouseEnter={() => setHoveredItemId(slot.itemId)}
@@ -1530,7 +1742,6 @@ const MapPage = () => {
                       type="button"
                       className={`map-poi-marker is-${marker.kind}${marker.isHotspot ? ' is-hotspot' : ''}${showLabels && marker.isHotspot ? ' has-visible-label' : ''}${activeItemId === marker.id ? ' is-active' : ''}`}
                       style={{ left: `${marker.x}%`, top: `${marker.y}%` }}
-                      title={marker.label}
                       aria-label={marker.label}
                       onClick={() => toggleActiveItem(marker.id)}
                       onMouseEnter={() => setHoveredItemId(marker.id)}
@@ -1543,7 +1754,59 @@ const MapPage = () => {
                     </button>
                   ))
                 : null}
-              {focusedMapItem ? (
+              {!currentPattern && selectedSlot ? (
+                <div
+                  className={`map-slot-picker-popover is-${selectedSlot.kind}${selectedSlot.x > 62 ? ' is-align-left' : ''}${selectedSlot.y < 26 ? ' is-align-top' : selectedSlot.y > 74 ? ' is-align-bottom' : ''}`}
+                  style={{ left: `${selectedSlot.x}%`, top: `${selectedSlot.y}%` }}
+                  onMouseDown={(event) => event.stopPropagation()}
+                  onTouchStart={(event) => event.stopPropagation()}
+                  onTouchMove={(event) => event.stopPropagation()}
+                >
+                  <div className="map-slot-picker-heading">
+                    <div className="map-selected-detail">
+                      <strong>슬롯 {selectedSlot.id}</strong>
+                      <span>
+                        {selectedSlot.rawValue
+                          ? `현재: ${selectedSlot.label}`
+                          : `가능한 요소 ${activeSlotOptions.length}개`}
+                      </span>
+                    </div>
+                    <button
+                      type="button"
+                      className="map-slot-picker-close"
+                      onClick={() => toggleActiveItem(selectedSlot.itemId)}
+                      aria-label={`슬롯 ${selectedSlot.id} 선택 목록 닫기`}
+                    >
+                      ×
+                    </button>
+                  </div>
+
+                  {selectedSlot.rawValue ? (
+                    <button
+                      type="button"
+                      className="map-clear-selection"
+                      onClick={() => clearSlotValue(selectedSlot.id)}
+                    >
+                      이 슬롯 선택 해제
+                    </button>
+                  ) : null}
+
+                  <div className="map-option-list">
+                    {activeSlotOptions.map((option) => (
+                      <button
+                        key={option.value}
+                        type="button"
+                        className={selectedSlot.rawValue === option.value ? 'is-selected' : ''}
+                        onClick={() => updateSlotValue(selectedSlot.id, option.value)}
+                      >
+                        <img src={option.iconUrl} alt="" />
+                        <span>{option.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+              {focusedMapItem && (!selectedSlot || focusedMapItem.id !== selectedSlot.itemId) ? (
                 <div
                   key={focusedMapItem.id}
                   className={`map-location-popover is-${focusedMapItem.kind}`}
@@ -1559,8 +1822,22 @@ const MapPage = () => {
           </div>
         </div>
 
-        <aside className="map-info-panel">
-          <section className="map-info-card">
+        <aside className={`map-info-panel${fullscreenPanel && fullscreenPanel !== 'settings' ? ' is-open' : ''}`}>
+          <div className="map-fullscreen-drawer-heading">
+            <strong>
+              {fullscreenPanel === 'events'
+                ? '특수 이벤트'
+                : fullscreenPanel === 'bosses'
+                  ? '주요 보스'
+                  : currentPattern
+                    ? '레이아웃 요약'
+                    : '시드 목록'}
+            </strong>
+            <button type="button" onClick={() => setFullscreenPanel(null)} aria-label="정보 패널 닫기">
+              ×
+            </button>
+          </div>
+          <section className={`map-info-card map-summary-card${fullscreenPanel !== 'summary' ? ' is-fullscreen-panel-hidden' : ''}`}>
             <h3>{currentPattern ? '레이아웃 요약' : '시드 목록'}</h3>
             {currentPattern ? (
               <dl className="map-summary-list">
@@ -1579,6 +1856,10 @@ const MapPage = () => {
                 <div>
                   <dt>2일차 밤 보스</dt>
                   <dd>{bossKo(currentPattern?.night2?.boss) || '-'}</dd>
+                </div>
+                <div>
+                  <dt>밤의 왕</dt>
+                  <dd>{tr('nightlords', currentPattern.nightlord)}</dd>
                 </div>
                 {extraNightBoss ? (
                   <div>
@@ -1609,7 +1890,7 @@ const MapPage = () => {
           </section>
 
           {currentPattern ? (
-            <section className="map-info-card">
+            <section className={`map-info-card map-events-card${fullscreenPanel !== 'events' ? ' is-fullscreen-panel-hidden' : ''}`}>
               <h3>특수 이벤트</h3>
               {specialEvents.length > 0 ? (
                 <ul className="map-detail-list">
@@ -1626,7 +1907,7 @@ const MapPage = () => {
           ) : null}
 
           {currentPattern ? (
-            <section className="map-info-card">
+            <section className={`map-info-card map-bosses-card${fullscreenPanel !== 'bosses' ? ' is-fullscreen-panel-hidden' : ''}`}>
               <h3>주요 보스</h3>
               <ul className="map-detail-list">
                 {mainBossRows.map((row) => (
