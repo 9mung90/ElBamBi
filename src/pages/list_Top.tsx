@@ -52,7 +52,6 @@ import {
   authUserIdStorageKey,
   clearAuthStorage,
   getUserIdFromAccessToken,
-  isAccessTokenExpired,
 } from '../api/authToken';
 import logoImage from '../assets/images/top_icon/logo.png';
 import loginImage from '../assets/images/top_icon/login.webp';
@@ -62,6 +61,11 @@ import {
   type AuthRole,
   type AuthView,
 } from './listTop/authTypes';
+import {
+  getStoredAccessToken,
+  getStoredAuthUserId,
+  getStoredAuthView,
+} from './listTop/authStorage';
 import { categories } from './listTop/categoryConfig';
 import { categoryIconAssets } from './listTop/categoryIcons';
 import {
@@ -165,25 +169,6 @@ function getStoredPageId() {
     return storedId;
   }
   return categories[0].id;
-}
-
-function getStoredAuthView(): AuthView {
-  const storedView = getStoredValue(authViewStorageKey);
-  return storedView === 'login' || storedView === 'signup' ? storedView : null;
-}
-
-function getStoredAuthUserId() {
-  return getUserIdFromAccessToken(getStoredAccessToken()) ?? getStoredValue(authUserIdStorageKey);
-}
-
-function getStoredAccessToken() {
-  const accessToken = getStoredValue(accessTokenStorageKey);
-  if (!accessToken) return null;
-  if (isAccessTokenExpired(accessToken)) {
-    clearAuthStorage();
-    return null;
-  }
-  return accessToken;
 }
 
 function resetPageScroll() {
