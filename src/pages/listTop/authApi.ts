@@ -1,9 +1,17 @@
+import {
+  accessTokenStorageKey,
+  authUserIdStorageKey,
+  getUserIdFromAccessToken,
+} from '../../api/authToken';
 import { apiBaseUrl } from './apiConfig';
 import { AuthRequestError } from './authTypes';
 import {
+  getAccessTokenFromPayload,
   getCodeFromPayload,
   getErrorMessageFromPayload,
+  getMessageFromPayload,
 } from './payloadUtils';
+import { setStoredValue } from './storageUtils';
 
 export async function readResponsePayload(response: Response) {
   const contentType = response.headers.get('content-type') ?? '';
@@ -41,4 +49,42 @@ export function postVerifyEmail(token: string) {
 
 export function postResendVerification(email: string) {
   return postPublicJson('/api/auth/resend-verification', { email });
+}
+
+export async function postAuthForm(
+  path: string,
+  data: Record<string, string>,
+  options: { storeAuth?: boolean } = {},
+): Promise<string> {
+  const body = new URLSearchParams(data);
+  const response = await fetch(`${apiBaseUrl}${path}`, {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/x-www-form-urlencoded;charset=UTF-8',
+    },
+    body,
+  });
+  const payload = await readResponsePayload(response);
+  const message = getMessageFromPayload(payload);
+  const code = getCodeFromPayload(payload);
+  const accessToken = getAccessTokenFromPayload(payload);
+  const userId = getUserIdFromAccessToken(accessToken);
+
+  if (!response.ok || code === 'EMAIL_NOT_VERIFIED') {
+    throw new AuthRequestError(
+      response.status,
+      getErrorMessageFromPayload(payload) || message || '요청을 처리하지 못했습니다.',
+      code,
+      payload,
+    );
+  }
+
+  if ((options.storeAuth ?? true) && accessToken) {
+    setStoredValue(accessTokenStorageKey, accessToken);
+  }
+  if ((options.storeAuth ?? true) && userId) {
+    setStoredValue(authUserIdStorageKey, userId);
+  }
+
+  return message || (typeof payload === 'string' ? payload : '');
 }
