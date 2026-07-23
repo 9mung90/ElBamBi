@@ -1186,11 +1186,13 @@
 }
 
 .catalog-gif-preview {
+  display: block;
   width: 100%;
-  max-height: 190px;
+  height: auto;
+  max-height: min(52vh, 420px);
   border-radius: 8px;
   background: var(--night-bg-deep);
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .motion-toggle-button {
@@ -4738,6 +4740,72 @@
 .save-parser-details pre {
   overflow: auto;
   white-space: pre-wrap;
+}
+
+@media (min-width: 1600px) {
+  .options-page {
+    width: 70vw;
+  }
+
+  .option-card-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .catalog-card-grid,
+  .boss-card-grid,
+  .character-card-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .options-page:has(#weapons-title) .option-card,
+  .options-page:has(#weapon-variants-title) .option-card {
+    gap: 12px;
+    min-height: 220px;
+    padding: 18px;
+    border-radius: 10px;
+  }
+
+  .options-page:has(#weapons-title) .weapon-card-main,
+  .options-page:has(#weapon-variants-title) .weapon-card-main {
+    grid-template-columns: 84px minmax(0, 1fr);
+    gap: 22px;
+  }
+
+  .options-page:has(#weapons-title) .weapon-image-frame,
+  .options-page:has(#weapons-title) .weapon-grade-frame,
+  .options-page:has(#weapons-title) .weapon-catalog-image,
+  .options-page:has(#weapon-variants-title) .weapon-image-frame,
+  .options-page:has(#weapon-variants-title) .weapon-grade-frame,
+  .options-page:has(#weapon-variants-title) .weapon-catalog-image {
+    width: 84px;
+    height: 84px;
+  }
+
+  .options-page:has(#weapons-title) .option-card h3,
+  .options-page:has(#weapon-variants-title) .option-card h3 {
+    font-size: 18px;
+  }
+
+  .options-page:has(#weapons-title) .option-card p,
+  .options-page:has(#weapon-variants-title) .option-card p {
+    font-size: 14px;
+  }
+
+  .options-page:has(#weapons-title) .option-category,
+  .options-page:has(#weapon-variants-title) .option-category {
+    min-height: 28px;
+    padding: 0 9px;
+    font-size: 13px;
+  }
+
+  .options-page:has(#weapons-title) .option-meta-row span,
+  .options-page:has(#weapon-variants-title) .option-meta-row span {
+    min-height: 26px;
+    padding: 0 8px;
+    font-size: 13px;
+  }
 }
 
 @media (max-width: 760px) {
