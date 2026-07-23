@@ -81,6 +81,15 @@ import {
   getRecord,
   getStringValue,
 } from './listTop/payloadUtils';
+import {
+  getProfileEmail,
+  getProfileLoginId,
+  getProfileNickname,
+  getProfileProvider,
+  isSocialLoginProfile,
+  isValidProfileNickname,
+  isValidProfilePassword,
+} from './listTop/profileUtils';
 import './list_Top.css';
 
 function toggleFilterValue<T>(values: T[], value: T) {
@@ -214,49 +223,12 @@ function formatMyPageDate(value: unknown) {
   }).format(date);
 }
 
-function getProfileEmail(profile: Record<string, unknown> | null) {
-  return getFirstString(profile, ['email', 'userEmail']);
-}
-
-function getProfileNickname(profile: Record<string, unknown> | null) {
-  return getFirstString(profile, ['nickname', 'nickName', 'userNickname']);
-}
-
-function getProfileLoginId(profile: Record<string, unknown> | null) {
-  return getFirstString(profile, ['loginId', 'username', 'userId', 'id']);
-}
-
-function getProfileProvider(profile: Record<string, unknown> | null) {
-  return getFirstString(profile, ['provider', 'providerName', 'oauthProvider', 'socialProvider'], 'local');
-}
-
 function normalizeAuthRole(role: unknown): AuthRole {
   return role === 'ADMIN' ? 'ADMIN' : 'USER';
 }
 
 function getProfileRole(profile: Record<string, unknown> | null): AuthRole {
   return normalizeAuthRole(profile?.role);
-}
-
-function isSocialLoginProfile(profile: Record<string, unknown> | null) {
-  const provider = getProfileProvider(profile).trim().toLowerCase();
-  const loginType = getFirstString(profile, ['loginType', 'accountType', 'type']).trim().toLowerCase();
-  const isSocial = profile?.socialLogin ?? profile?.isSocialLogin ?? profile?.oauthLogin;
-
-  return (
-    isSocial === true ||
-    loginType.includes('social') ||
-    loginType.includes('oauth') ||
-    Boolean(provider && provider !== 'local')
-  );
-}
-
-function isValidProfileNickname(nickname: string) {
-  return /^[A-Za-z0-9가-힣]{1,10}$/.test(nickname);
-}
-
-function isValidProfilePassword(password: string) {
-  return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,20}$/.test(password);
 }
 
 function getAccessTokenFromParams(params: URLSearchParams) {
