@@ -7,41 +7,167 @@ import {
 import {
   LoginRequiredError,
   normalizeAuthRole,
-  type AuthRole,
-} from './authTypes';
-import {
   requestMyPageApi,
+  type AuthRole,
   type MyPageUpdateResponse,
-} from './myPageApi';
-import {
-  formatMyPageDate,
-  formatMyPageSlotSummary,
-  getMyPageBookmarkPost,
-  getMyPageCommentPostLabel,
-  getMyPageItemDate,
-  getMyPagePostId,
-  getMyPagePostPreview,
-  getMyPagePostTitle,
-  getMyPagePresetTitle,
-  getMyPageRelicTitle,
-} from './myPageUtils';
-import {
-  getArrayFromPayload,
-  getFirstRecord,
-  getFirstString,
-  getNumberValue,
-  getRecord,
-  getStringValue,
-} from './payloadUtils';
-import {
-  getProfileEmail,
-  getProfileLoginId,
-  getProfileNickname,
-  getProfileProvider,
-  isSocialLoginProfile,
-  isValidProfileNickname,
-  isValidProfilePassword,
-} from './profileUtils';
+} from './listTopShared';
+
+function getRecord(value: unknown): Record<string, unknown> | null {
+  return value && typeof value === 'object' && !Array.isArray(value)
+    ? (value as Record<string, unknown>)
+    : null;
+}
+
+function getStringValue(value: unknown, fallback = '') {
+  if (typeof value === 'string') return value;
+  if (typeof value === 'number' && Number.isFinite(value)) return String(value);
+  return fallback;
+}
+
+function getNumberValue(value: unknown, fallback = 0) {
+  if (typeof value === 'number' && Number.isFinite(value)) return value;
+  if (typeof value === 'string') {
+    const parsed = Number(value);
+    if (Number.isFinite(parsed)) return parsed;
+  }
+  return fallback;
+}
+
+function getFirstString(record: Record<string, unknown> | null, keys: string[], fallback = '') {
+  if (!record) return fallback;
+  for (const key of keys) {
+    const value = getStringValue(record[key]);
+    if (value) return value;
+  }
+  return fallback;
+}
+
+function getFirstRecord(record: Record<string, unknown> | null, keys: string[]) {
+  if (!record) return null;
+  for (const key of keys) {
+    const value = getRecord(record[key]);
+    if (value) return value;
+  }
+  return null;
+}
+
+function getArrayFromPayload(payload: unknown, keys: string[]) {
+  if (Array.isArray(payload)) return payload.filter(getRecord);
+
+  const record = getRecord(payload);
+  if (!record) return [];
+
+  for (const key of keys) {
+    const value = record[key];
+    if (Array.isArray(value)) return value.filter(getRecord);
+
+    const nestedRecord = getRecord(value);
+    const nestedItems = nestedRecord?.items ?? nestedRecord?.content ?? nestedRecord?.data;
+    if (Array.isArray(nestedItems)) return nestedItems.filter(getRecord);
+  }
+
+  const fallbackItems = record.items ?? record.content ?? record.data;
+  return Array.isArray(fallbackItems) ? fallbackItems.filter(getRecord) : [];
+}
+
+function formatMyPageDate(value: unknown) {
+  const rawValue = getStringValue(value);
+  if (!rawValue) return '';
+
+  const date = new Date(rawValue);
+  if (Number.isNaN(date.getTime())) return rawValue;
+
+  return new Intl.DateTimeFormat('ko-KR', {
+    dateStyle: 'short',
+    timeStyle: 'short',
+  }).format(date);
+}
+
+function getMyPagePostId(item: Record<string, unknown>) {
+  return getFirstString(item, ['postId', 'communityPostId', 'id']);
+}
+
+function getMyPagePostTitle(item: Record<string, unknown>) {
+  return getFirstString(item, ['postTitle', 'title'], '제목 없음');
+}
+
+function getMyPagePostPreview(item: Record<string, unknown>) {
+  return getFirstString(item, ['contentText', 'content', 'commentText']);
+}
+
+function getMyPageBookmarkPost(item: Record<string, unknown>) {
+  return getRecord(item.post) ?? item;
+}
+
+function getMyPageCommentPostLabel(item: Record<string, unknown>) {
+  const postTitle = getFirstString(item, ['postTitle', 'title']);
+  if (postTitle) return postTitle;
+
+  const postId = getMyPagePostId(item);
+  return postId ? `postId: ${postId}` : '';
+}
+
+function getMyPageRelicTitle(item: Record<string, unknown>) {
+  return getFirstString(item, ['itemName', 'name', 'relicName', 'title'], '이름 없는 유물');
+}
+
+function getMyPagePresetTitle(item: Record<string, unknown>) {
+  return getFirstString(item, ['name', 'presetName', 'title'], '이름 없는 프리셋');
+}
+
+function getMyPageItemDate(item: Record<string, unknown>) {
+  return formatMyPageDate(item.createdAt ?? item.updatedAt);
+}
+
+function formatMyPageSlotSummary(slot: Record<string, unknown>) {
+  const slotIndex = getStringValue(slot.slotIndex, '-');
+  const relicRefType = getFirstString(slot, ['relicRefType'], 'slot');
+  const relicId = getFirstString(slot, ['relicId']);
+  const itemId = getStringValue(slot.itemId);
+  const effectIds = Array.isArray(slot.effectIds) ? slot.effectIds.filter(Boolean).join('/') : '';
+  const refText = relicId || itemId ? `${relicId || `item ${itemId}`}` : '';
+
+  return [`${slotIndex}`, relicRefType, refText, effectIds ? `effects ${effectIds}` : '']
+    .filter(Boolean)
+    .join(' · ');
+}
+
+function getProfileEmail(profile: Record<string, unknown> | null) {
+  return getFirstString(profile, ['email', 'userEmail']);
+}
+
+function getProfileNickname(profile: Record<string, unknown> | null) {
+  return getFirstString(profile, ['nickname', 'nickName', 'userNickname']);
+}
+
+function getProfileLoginId(profile: Record<string, unknown> | null) {
+  return getFirstString(profile, ['loginId', 'username', 'userId', 'id']);
+}
+
+function getProfileProvider(profile: Record<string, unknown> | null) {
+  return getFirstString(profile, ['provider', 'providerName', 'oauthProvider', 'socialProvider'], 'local');
+}
+
+function isSocialLoginProfile(profile: Record<string, unknown> | null) {
+  const provider = getProfileProvider(profile).trim().toLowerCase();
+  const loginType = getFirstString(profile, ['loginType', 'accountType', 'type']).trim().toLowerCase();
+  const isSocial = profile?.socialLogin ?? profile?.isSocialLogin ?? profile?.oauthLogin;
+
+  return (
+    isSocial === true ||
+    loginType.includes('social') ||
+    loginType.includes('oauth') ||
+    Boolean(provider && provider !== 'local')
+  );
+}
+
+function isValidProfileNickname(nickname: string) {
+  return /^[A-Za-z0-9가-힣]{1,10}$/.test(nickname);
+}
+
+function isValidProfilePassword(password: string) {
+  return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,20}$/.test(password);
+}
 
 type MyPageView = 'overview' | 'posts' | 'comments' | 'bookmarks' | 'relics' | 'presets';
 
@@ -308,8 +434,10 @@ function MyPage({
     Promise.all([
       requestMyPageApi<unknown>('/api/me'),
       requestMyPageApi<unknown>('/api/me/summary?limit=6'),
+      requestMyPageApi<unknown>('/api/me/relics?source=builder'),
+      requestMyPageApi<unknown>('/api/me/presets'),
     ])
-      .then(([mePayload, summaryPayload]) => {
+      .then(([mePayload, summaryPayload, relicsPayload, presetsPayload]) => {
         if (!isMounted) return;
 
         const summary = getRecord(summaryPayload);
@@ -323,8 +451,8 @@ function MyPage({
           posts: getArrayFromPayload(summaryPayload, ['posts', 'recentPosts', 'communityPosts', 'myPosts']),
           comments: getArrayFromPayload(summaryPayload, ['comments', 'recentComments', 'myComments']),
           bookmarks: getArrayFromPayload(summaryPayload, ['bookmarks', 'recentBookmarks', 'myBookmarks']),
-          relics: getArrayFromPayload(summaryPayload, ['relics', 'recentRelics', 'myRelics']),
-          presets: getArrayFromPayload(summaryPayload, ['presets', 'recentPresets', 'myPresets']),
+          relics: getArrayFromPayload(relicsPayload, ['relics', 'myRelics']).slice(0, 6),
+          presets: getArrayFromPayload(presetsPayload, ['presets', 'myPresets']).slice(0, 6),
         });
       })
       .catch((error) => {

@@ -54,48 +54,56 @@ import {
 } from '../api/authToken';
 import logoImage from '../assets/images/top_icon/logo.png';
 import loginImage from '../assets/images/top_icon/login.webp';
+import { categories, categoryIconAssets } from './listTop/categoryConfig';
 import {
   LoginRequiredError,
-  normalizeAuthRole,
-  type AuthRole,
-  type AuthView,
-} from './listTop/authTypes';
-import {
+  getAccessTokenFromLocationSearch,
+  getAccessTokenFromParams,
+  getGoogleLoginUrl,
   getStoredAccessToken,
   getStoredAuthUserId,
-  getStoredAuthView,
-} from './listTop/authStorage';
-import { apiBaseUrl } from './listTop/apiConfig';
-import { categories } from './listTop/categoryConfig';
-import { categoryIconAssets } from './listTop/categoryIcons';
-import {
-  authViewStorageKey,
-  lastPageStorageKey,
-  mainRoutePath,
-  nicknameRoutePath,
-  officialWebsiteUrl,
-  playStoreUrl,
-  pullToRefreshThreshold,
-  verifyEmailRoutePath,
-} from './listTop/constants';
-import {
-  requestMyPageApi,
-  type MyPageMeResponse,
-  type MyPageUpdateResponse,
-} from './listTop/myPageApi';
-import AuthPage from './listTop/AuthPage';
-import MyPage from './listTop/MyPage';
-import NicknamePage from './listTop/NicknamePage';
-import VerifyEmailPage from './listTop/VerifyEmailPage';
-import {
-  getMessageFromPayload,
-} from './listTop/payloadUtils';
-import {
   getStoredValue,
-  removeStoredValue,
+  normalizeAuthRole,
+  requestMyPageApi,
   setStoredValue,
-} from './listTop/storageUtils';
+  verifyEmailRoutePath,
+  type AuthRole,
+  type AuthView,
+  type MyPageUpdateResponse,
+} from './listTop/listTopShared';
+import LoginPage from './listTop/LoginPage';
+import MyPage from './listTop/MyPage';
 import './list_Top.css';
+
+const lastPageStorageKey = 'nightreign:last-page';
+const authViewStorageKey = 'nightreign:auth-view';
+const pullToRefreshThreshold = 90;
+const nicknameRoutePath = '/nick';
+const mainRoutePath = '/main';
+const officialWebsiteUrl = 'https://el-bam-bi.vercel.app/';
+const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.sr9.elbambi';
+
+type MyPageMeResponse = {
+  userId?: string;
+  loginId?: string;
+  email?: string;
+  nickname?: string;
+  provider?: string;
+  role?: string;
+};
+
+function getStoredAuthView(): AuthView {
+  const storedView = getStoredValue(authViewStorageKey);
+  return storedView === 'login' || storedView === 'signup' ? storedView : null;
+}
+
+function removeStoredValue(key: string) {
+  try {
+    localStorage.removeItem(key);
+  } catch {
+    // Ignore storage failures for the same reason as setStoredValue.
+  }
+}
 
 function toggleFilterValue<T>(values: T[], value: T) {
   return values.includes(value)
@@ -115,16 +123,6 @@ function resetPageScroll() {
   window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
   document.documentElement.scrollTop = 0;
   document.body.scrollTop = 0;
-}
-
-function getAccessTokenFromParams(params: URLSearchParams) {
-  const accessToken = params.get('accessToken') ?? params.get('access_token') ?? params.get('token');
-  return accessToken && accessToken.trim() ? accessToken : null;
-}
-
-function getAccessTokenFromLocationSearch() {
-  if (window.location.pathname === verifyEmailRoutePath) return null;
-  return getAccessTokenFromParams(new URLSearchParams(window.location.search));
 }
 
 function getNeedsNicknameFromParams(params: URLSearchParams) {
@@ -150,10 +148,6 @@ function hasOAuthRedirectParams() {
   return hasOAuthRedirectParamsInSearch(new URLSearchParams(window.location.search));
 }
 
-function getGoogleLoginUrl() {
-  return `${apiBaseUrl}/oauth2/authorization/google`;
-}
-
 function getAndroidGoogleLoginUrl() {
   const url = new URL(getGoogleLoginUrl());
   url.searchParams.set('redirectTarget', 'android');
@@ -166,35 +160,6 @@ function getOAuthErrorMessage(errorCode: string | null) {
   }
 
   return '구글 로그인에 실패했습니다. 다시 시도해 주세요.';
-}
-
-async function postNicknameForm(nickname: string, accessTokenOverride?: string | null): Promise<string> {
-  const body = new URLSearchParams({ nickname });
-  const headers = new Headers({
-    'content-type': 'application/x-www-form-urlencoded;charset=UTF-8',
-  });
-  const accessToken =
-    accessTokenOverride ?? getStoredAccessToken() ?? getAccessTokenFromLocationSearch();
-
-  if (accessToken) {
-    headers.set('authorization', `Bearer ${accessToken}`);
-  }
-
-  const response = await fetch(`${apiBaseUrl}/api/inputNick`, {
-    method: 'POST',
-    headers,
-    body,
-  });
-  const contentType = response.headers.get('content-type') ?? '';
-  const text = await response.text();
-  const payload = contentType.includes('application/json') && text ? JSON.parse(text) : text;
-  const message = getMessageFromPayload(payload) || (typeof payload === 'string' ? payload : '');
-
-  if (!response.ok) {
-    throw new Error(message || '닉네임 저장에 실패했습니다.');
-  }
-
-  return message || '닉네임이 저장되었습니다.';
 }
 
 function ListTop() {
@@ -975,14 +940,14 @@ function ListTop() {
   }, []);
 
   if (isVerifyEmailRoute) {
-    return <VerifyEmailPage onGoToLogin={openLoginPage} />;
+    return <LoginPage mode="verify-email" onGoToLogin={openLoginPage} />;
   }
 
   if (isNicknameRoute) {
     return (
-      <NicknamePage
+      <LoginPage
+        mode="nickname"
         accessToken={nicknameAccessToken}
-        postNicknameForm={postNicknameForm}
         onComplete={() => {
           setSelectedId('characters');
           setAuthView(null);
@@ -999,7 +964,8 @@ function ListTop() {
   const renderOverlayContent = (): ReactNode => {
     if (authView) {
       return (
-        <AuthPage
+        <LoginPage
+          mode="auth"
           initialError={authInitialError}
           view={authView}
           onChangeView={(nextView) => {
@@ -1013,7 +979,6 @@ function ListTop() {
             setAuthView(null);
             setIsMyPageOpen(false);
           }}
-          getGoogleLoginUrl={getGoogleLoginUrl}
         />
       );
     }

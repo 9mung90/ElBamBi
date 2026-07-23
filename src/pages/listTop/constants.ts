@@ -1,9 +1,0 @@
-export const lastPageStorageKey = 'nightreign:last-page';
-export const authViewStorageKey = 'nightreign:auth-view';
-export const emailVerifiedSignalStorageKey = 'nightreign:email-verified-at';
-export const pullToRefreshThreshold = 90;
-export const nicknameRoutePath = '/nick';
-export const verifyEmailRoutePath = '/verify-email';
-export const mainRoutePath = '/main';
-export const officialWebsiteUrl = 'https://el-bam-bi.vercel.app/';
-export const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.sr9.elbambi';
