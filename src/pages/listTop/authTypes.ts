@@ -2,6 +2,10 @@ export type AuthView = 'login' | 'signup' | null;
 
 export type AuthRole = 'USER' | 'ADMIN';
 
+export function normalizeAuthRole(role: unknown): AuthRole {
+  return role === 'ADMIN' ? 'ADMIN' : 'USER';
+}
+
 export class LoginRequiredError extends Error {}
 
 export class AuthRequestError extends Error {
