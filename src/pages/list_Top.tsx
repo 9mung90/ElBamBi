@@ -66,6 +66,7 @@ import {
   getStoredAuthUserId,
   getStoredAuthView,
 } from './listTop/authStorage';
+import { apiBaseUrl } from './listTop/apiConfig';
 import { categories } from './listTop/categoryConfig';
 import { categoryIconAssets } from './listTop/categoryIcons';
 import {
@@ -126,8 +127,6 @@ function toggleFilterValue<T>(values: T[], value: T) {
 }
 
 type MyPageView = 'overview' | 'posts' | 'comments' | 'bookmarks' | 'relics' | 'presets';
-const defaultApiBaseUrl = 'https://k9e297bszl.execute-api.ap-northeast-2.amazonaws.com';
-const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? defaultApiBaseUrl).replace(/\/$/, '');
 const verifyingEmailTokens = new Map<string, Promise<unknown>>();
 
 type MyPageOverviewData = {
