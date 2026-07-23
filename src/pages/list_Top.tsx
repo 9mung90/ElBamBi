@@ -70,6 +70,18 @@ import {
   verifyEmailRoutePath,
 } from './listTop/constants';
 import {
+  formatMyPageDate,
+  formatMyPageSlotSummary,
+  getMyPageBookmarkPost,
+  getMyPageCommentPostLabel,
+  getMyPageItemDate,
+  getMyPagePostId,
+  getMyPagePostPreview,
+  getMyPagePostTitle,
+  getMyPagePresetTitle,
+  getMyPageRelicTitle,
+} from './listTop/myPageUtils';
+import {
   getAccessTokenFromPayload,
   getArrayFromPayload,
   getCodeFromPayload,
@@ -208,19 +220,6 @@ function resetPageScroll() {
   window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
   document.documentElement.scrollTop = 0;
   document.body.scrollTop = 0;
-}
-
-function formatMyPageDate(value: unknown) {
-  const rawValue = getStringValue(value);
-  if (!rawValue) return '';
-
-  const date = new Date(rawValue);
-  if (Number.isNaN(date.getTime())) return rawValue;
-
-  return new Intl.DateTimeFormat('ko-KR', {
-    dateStyle: 'short',
-    timeStyle: 'short',
-  }).format(date);
 }
 
 function normalizeAuthRole(role: unknown): AuthRole {
@@ -851,55 +850,6 @@ function getMyPageProfileLabel(profile: Record<string, unknown> | null, authUser
     provider: getProfileProvider(profile),
     role: getProfileRole(profile),
   };
-}
-
-function getMyPagePostId(item: Record<string, unknown>) {
-  return getFirstString(item, ['postId', 'communityPostId', 'id']);
-}
-
-function getMyPagePostTitle(item: Record<string, unknown>) {
-  return getFirstString(item, ['postTitle', 'title'], '제목 없음');
-}
-
-function getMyPagePostPreview(item: Record<string, unknown>) {
-  return getFirstString(item, ['contentText', 'content', 'commentText']);
-}
-
-function getMyPageBookmarkPost(item: Record<string, unknown>) {
-  return getRecord(item.post) ?? item;
-}
-
-function getMyPageCommentPostLabel(item: Record<string, unknown>) {
-  const postTitle = getFirstString(item, ['postTitle', 'title']);
-  if (postTitle) return postTitle;
-
-  const postId = getMyPagePostId(item);
-  return postId ? `postId: ${postId}` : '';
-}
-
-function getMyPageRelicTitle(item: Record<string, unknown>) {
-  return getFirstString(item, ['itemName', 'name', 'relicName', 'title'], '이름 없는 유물');
-}
-
-function getMyPagePresetTitle(item: Record<string, unknown>) {
-  return getFirstString(item, ['name', 'presetName', 'title'], '이름 없는 프리셋');
-}
-
-function getMyPageItemDate(item: Record<string, unknown>) {
-  return formatMyPageDate(item.createdAt ?? item.updatedAt);
-}
-
-function formatMyPageSlotSummary(slot: Record<string, unknown>) {
-  const slotIndex = getStringValue(slot.slotIndex, '-');
-  const relicRefType = getFirstString(slot, ['relicRefType'], 'slot');
-  const relicId = getFirstString(slot, ['relicId']);
-  const itemId = getStringValue(slot.itemId);
-  const effectIds = Array.isArray(slot.effectIds) ? slot.effectIds.filter(Boolean).join('/') : '';
-  const refText = relicId || itemId ? `${relicId || `item ${itemId}`}` : '';
-
-  return [`${slotIndex}`, relicRefType, refText, effectIds ? `effects ${effectIds}` : '']
-    .filter(Boolean)
-    .join(' · ');
 }
 
 function MyPageSection({
