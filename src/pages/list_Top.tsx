@@ -69,6 +69,18 @@ import {
   pullToRefreshThreshold,
   verifyEmailRoutePath,
 } from './listTop/constants';
+import {
+  getAccessTokenFromPayload,
+  getArrayFromPayload,
+  getCodeFromPayload,
+  getErrorMessageFromPayload,
+  getFirstRecord,
+  getFirstString,
+  getMessageFromPayload,
+  getNumberValue,
+  getRecord,
+  getStringValue,
+} from './listTop/payloadUtils';
 import './list_Top.css';
 
 function toggleFilterValue<T>(values: T[], value: T) {
@@ -189,89 +201,6 @@ function resetPageScroll() {
   document.body.scrollTop = 0;
 }
 
-function getMessageFromPayload(payload: unknown) {
-  if (typeof payload === 'string') return payload;
-  if (payload && typeof payload === 'object' && 'message' in payload) {
-    const message = (payload as { message?: unknown }).message;
-    if (typeof message === 'string') return message;
-  }
-  return '';
-}
-
-function getErrorMessageFromPayload(payload: unknown) {
-  if (typeof payload === 'string') return payload;
-  if (payload && typeof payload === 'object') {
-    const record = payload as { message?: unknown; error?: unknown };
-    if (typeof record.message === 'string') return record.message;
-    if (typeof record.error === 'string') return record.error;
-  }
-  return '';
-}
-
-function getCodeFromPayload(payload: unknown) {
-  if (!payload || typeof payload !== 'object') return '';
-  const code = (payload as { code?: unknown }).code;
-  return typeof code === 'string' ? code : '';
-}
-
-function getRecord(value: unknown): Record<string, unknown> | null {
-  return value && typeof value === 'object' && !Array.isArray(value)
-    ? (value as Record<string, unknown>)
-    : null;
-}
-
-function getStringValue(value: unknown, fallback = '') {
-  if (typeof value === 'string') return value;
-  if (typeof value === 'number' && Number.isFinite(value)) return String(value);
-  return fallback;
-}
-
-function getNumberValue(value: unknown, fallback = 0) {
-  if (typeof value === 'number' && Number.isFinite(value)) return value;
-  if (typeof value === 'string') {
-    const parsed = Number(value);
-    if (Number.isFinite(parsed)) return parsed;
-  }
-  return fallback;
-}
-
-function getFirstString(record: Record<string, unknown> | null, keys: string[], fallback = '') {
-  if (!record) return fallback;
-  for (const key of keys) {
-    const value = getStringValue(record[key]);
-    if (value) return value;
-  }
-  return fallback;
-}
-
-function getFirstRecord(record: Record<string, unknown> | null, keys: string[]) {
-  if (!record) return null;
-  for (const key of keys) {
-    const value = getRecord(record[key]);
-    if (value) return value;
-  }
-  return null;
-}
-
-function getArrayFromPayload(payload: unknown, keys: string[]) {
-  if (Array.isArray(payload)) return payload.filter(getRecord);
-
-  const record = getRecord(payload);
-  if (!record) return [];
-
-  for (const key of keys) {
-    const value = record[key];
-    if (Array.isArray(value)) return value.filter(getRecord);
-
-    const nestedRecord = getRecord(value);
-    const nestedItems = nestedRecord?.items ?? nestedRecord?.content ?? nestedRecord?.data;
-    if (Array.isArray(nestedItems)) return nestedItems.filter(getRecord);
-  }
-
-  const fallbackItems = record.items ?? record.content ?? record.data;
-  return Array.isArray(fallbackItems) ? fallbackItems.filter(getRecord) : [];
-}
-
 function formatMyPageDate(value: unknown) {
   const rawValue = getStringValue(value);
   if (!rawValue) return '';
@@ -283,12 +212,6 @@ function formatMyPageDate(value: unknown) {
     dateStyle: 'short',
     timeStyle: 'short',
   }).format(date);
-}
-
-function getAccessTokenFromPayload(payload: unknown) {
-  if (!payload || typeof payload !== 'object') return null;
-  const token = (payload as { accessToken?: unknown }).accessToken;
-  return typeof token === 'string' && token ? token : null;
 }
 
 function getProfileEmail(profile: Record<string, unknown> | null) {
