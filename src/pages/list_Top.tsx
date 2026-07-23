@@ -108,6 +108,11 @@ import {
   isValidProfileNickname,
   isValidProfilePassword,
 } from './listTop/profileUtils';
+import {
+  getStoredValue,
+  removeStoredValue,
+  setStoredValue,
+} from './listTop/storageUtils';
 import './list_Top.css';
 
 function toggleFilterValue<T>(values: T[], value: T) {
@@ -171,14 +176,6 @@ function getStoredAuthUserId() {
   return getUserIdFromAccessToken(getStoredAccessToken()) ?? getStoredValue(authUserIdStorageKey);
 }
 
-function getStoredValue(key: string) {
-  try {
-    return localStorage.getItem(key);
-  } catch {
-    return null;
-  }
-}
-
 function getStoredAccessToken() {
   const accessToken = getStoredValue(accessTokenStorageKey);
   if (!accessToken) return null;
@@ -187,22 +184,6 @@ function getStoredAccessToken() {
     return null;
   }
   return accessToken;
-}
-
-function setStoredValue(key: string, value: string) {
-  try {
-    localStorage.setItem(key, value);
-  } catch {
-    // Storage can be blocked in some browser modes. Refresh still works with the in-memory state.
-  }
-}
-
-function removeStoredValue(key: string) {
-  try {
-    localStorage.removeItem(key);
-  } catch {
-    // Ignore storage failures for the same reason as setStoredValue.
-  }
 }
 
 function resetPageScroll() {
