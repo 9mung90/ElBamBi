@@ -44,7 +44,6 @@ import WeaponsPage, {
   weaponFilterOptions,
   type WeaponFilters,
 } from './WeaponsPage';
-import { getApiErrorMessage } from '../api/apiError';
 import {
   accessTokenStorageKey,
   authNicknameStorageKey,
@@ -90,12 +89,16 @@ import {
   getMyPagePresetTitle,
   getMyPageRelicTitle,
 } from './listTop/myPageUtils';
+import {
+  requestMyPageApi,
+  type MyPageMeResponse,
+  type MyPageUpdateResponse,
+} from './listTop/myPageApi';
 import AuthPage from './listTop/AuthPage';
 import NicknamePage from './listTop/NicknamePage';
 import VerifyEmailPage from './listTop/VerifyEmailPage';
 import {
   getArrayFromPayload,
-  getErrorMessageFromPayload,
   getFirstRecord,
   getFirstString,
   getMessageFromPayload,
@@ -140,24 +143,6 @@ type MyPageProfileForm = {
   currentPassword: string;
   newPassword: string;
   confirmNewPassword: string;
-};
-
-type MyPageUpdateResponse = {
-  accessToken?: string;
-  userId?: string;
-  loginId?: string;
-  nickname?: string;
-  role?: string;
-  expiresIn?: number;
-};
-
-type MyPageMeResponse = {
-  userId?: string;
-  loginId?: string;
-  email?: string;
-  nickname?: string;
-  provider?: string;
-  role?: string;
 };
 
 function getStoredPageId() {
@@ -260,50 +245,6 @@ async function postNicknameForm(nickname: string, accessTokenOverride?: string |
   }
 
   return message || '닉네임이 저장되었습니다.';
-}
-
-async function requestMyPageApi<T>(
-  path: string,
-  options: {
-    method?: 'GET' | 'PATCH' | 'DELETE';
-    form?: Record<string, string>;
-  } = {},
-): Promise<T> {
-  const accessToken = getStoredAccessToken();
-  if (!accessToken) {
-    throw new LoginRequiredError('Login required');
-  }
-
-  const headers = new Headers({
-    authorization: `Bearer ${accessToken}`,
-  });
-  const init: RequestInit = {
-    method: options.method ?? 'GET',
-    headers,
-  };
-
-  if (options.form !== undefined) {
-    headers.set('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
-    init.body = new URLSearchParams(options.form);
-  }
-
-  const response = await fetch(`${apiBaseUrl}${path}`, {
-    ...init,
-  });
-  const contentType = response.headers.get('content-type') ?? '';
-  const text = await response.text();
-  const payload = contentType.includes('application/json') && text ? JSON.parse(text) : text;
-
-  if (!response.ok) {
-    const message = getErrorMessageFromPayload(payload) || text;
-    if (response.status === 401) {
-      clearAuthStorage();
-      throw new LoginRequiredError('Login required');
-    }
-    throw new Error(getApiErrorMessage(response.status, message || `${response.status} ${response.statusText}`));
-  }
-
-  return payload as T;
 }
 
 function getMyPageProfileLabel(profile: Record<string, unknown> | null, authUserId: string | null) {
