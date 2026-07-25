@@ -1,4 +1,4 @@
-/* eslint-disable react-refresh/only-export-components */
+// 빌드 게시판에서 공통으로 사용하는 타입, 데이터 변환 함수, HTML 처리 함수, 프리셋 표시 컴포넌트 모음
 import { useEffect, useMemo, useState } from 'react';
 import { nightfarers, type Nightfarer } from '../../data/nightfarers';
 import {
@@ -21,22 +21,26 @@ import {
 } from '../../utils/relicColor';
 
 export type WritableBuildPostCategory = 'Class Builds' | 'Strategy' | 'Questions' | 'Free Board';
+// 이미지 파일 한번에 불러옴
 const nightAssetUrls = import.meta.glob('../../assets/images/night/**/*.webp', {
-  eager: true,
-  import: 'default',
-  query: '?url',
+  eager: true, // 미리 가져옴
+  import: 'default', // 이미지 모듈의 기본 URL만 가져옴
+  query: '?url', // 베포용 URL만 받음
 }) as Record<string, string>;
 
+// 소문자용
 const nightAssetUrlsByLower = new Map(
   Object.entries(nightAssetUrls).map(([path, url]) => [path.toLowerCase(), url]),
 );
 
-const relicItemColorById = new Map(relicItemColorMap.map((entry) => [entry.itemId, entry]));
-const relicEffectById = new Map(relicEffectsKo.map((effect) => [String(effect.id), effect]));
-const relicCatalogById = new Map(relics.map((relic) => [relic.id, relic]));
-const relicRollEffectById = new Map<string, RelicRollEffect>();
-const relicRollDebuffById = new Map<string, RelicRollEffect>();
+// 빠른 조회용
+const relicItemColorById = new Map(relicItemColorMap.map((entry) => [entry.itemId, entry])); // 색상
+const relicEffectById = new Map(relicEffectsKo.map((effect) => [String(effect.id), effect])); // 효과
+const relicCatalogById = new Map(relics.map((relic) => [relic.id, relic])); // 카탈로그
+const relicRollEffectById = new Map<string, RelicRollEffect>(); // 효과
+const relicRollDebuffById = new Map<string, RelicRollEffect>(); // 디옵
 
+// 효과를 나중에 id로 빠르게 찾게 map에 넣음
 for (const mode of Object.values(relicRollAppData.modes)) {
   for (const effect of mode.effects) {
     relicRollEffectById.set(String(effect.id), effect);
@@ -49,6 +53,7 @@ for (const debuffTable of Object.values(relicRollAppData.debuffTables)) {
   }
 }
 
+// 게시글 작성용 데이터
 export type BuildPostDraft = {
   title: string;
   category: WritableBuildPostCategory;
@@ -59,17 +64,20 @@ export type BuildPostDraft = {
 
 type PresetSlotRelics = Array<string | null>;
 
+// 게시글 안에 넣을 프리셋 데이터
 export type BuildPostPreset = {
   preset: RelicPreset;
   storedRelics: StoredRelic[];
 };
 
+// 게시글 안에 넣을 이미지 데이터
 export type BuildImage = {
   id: string;
   postId: string;
   imageUrl: string;
 };
 
+// 게시글 안 댓글 데이터
 export type BuildComment = {
   id: string;
   postId: string;
@@ -82,6 +90,7 @@ export type BuildComment = {
   deletedAt: string | null;
 };
 
+// 게시글 합+체
 export type BuildPost = {
   id: string;
   userId: string;
@@ -101,6 +110,7 @@ export type BuildPost = {
   images: BuildImage[];
 };
 
+// 게시글 맨 앞에 프리셋 데이터를 넣음
 const EMPTY_PRESET_SLOTS: PresetSlotRelics = [null, null, null, null, null, null];
 const EMPTY_EFFECT_ID = 0xffffffff;
 export const buildPostPresetMarkerPrefix = '[[NIGHTREIGN_BUILD_PRESET:';
@@ -112,6 +122,7 @@ export const writeCategories: WritableBuildPostCategory[] = [
   'Free Board',
 ];
 
+// 게시글 카테고리
 export const legacyCategoryLabels: Record<string, WritableBuildPostCategory> = {
   '빌드 공유': 'Class Builds',
   공략: 'Strategy',
@@ -134,6 +145,7 @@ const categoryDisplayLabels: Record<string, string> = {
   기타: '자유 게시판',
 };
 
+// 캐릭터 이미지(글 쓸 때 캐릭터 아이콘 보여주는거)
 function resolveNightAssetUrl(url: string) {
   if (!url.startsWith('/assets/images/night/')) return url;
 
@@ -145,6 +157,7 @@ export function getNightfarerIconUrl(nightfarer: Nightfarer) {
   return resolveNightAssetUrl(nightfarer.nameImageUrl);
 }
 
+// 유물 색상
 function getRelicColorLabel(color: string | undefined) {
   return getSharedRelicColorLabel(color);
 }
@@ -153,6 +166,7 @@ function getRelicColorClass(color: string | undefined) {
   return getSharedRelicColorClass(color);
 }
 
+// 현기 색상
 function splitPresetList(value: string | undefined) {
   if (!value) return [];
 
@@ -186,6 +200,7 @@ function getSavedPresetSlots(slots: RelicPresetSlotInput[]) {
   return EMPTY_PRESET_SLOTS.map((_, slotIndex) => slotsByIndex.get(slotIndex) ?? null);
 }
 
+// 유물 이름 및 색상 찾기
 function getRelicNameByItemId(itemId: number) {
   return relicItemColorById.get(itemId)?.name ?? relicCatalogById.get(itemId)?.name ?? `유물 ${itemId}`;
 }
@@ -198,10 +213,12 @@ function shouldIncludePresetDebuffs(slotIndex: number) {
   return slotIndex >= 3;
 }
 
+// 유물 옵션
 function isUsableEffectId(effectId: number) {
   return effectId !== EMPTY_EFFECT_ID && effectId !== -1;
 }
 
+// ID -> 옵션
 function toPresetRelicOption(effectId: number, slotIndex: number): StoredRelicOption | null {
   if (!isUsableEffectId(effectId)) return null;
 
@@ -219,6 +236,7 @@ function toPresetRelicOption(effectId: number, slotIndex: number): StoredRelicOp
   };
 }
 
+// 각 효과들을 하나의 유물로 묶음
 function getSavePresetSlotOptionGroups(effectIds: number[], includeDebuffs = true) {
   return [1, 2, 3]
     .map((slot) => {
@@ -233,7 +251,7 @@ function getSavePresetSlotOptionGroups(effectIds: number[], includeDebuffs = tru
     })
     .filter((group): group is NonNullable<typeof group> => Boolean(group));
 }
-
+// 각 유물 내의 버프옵과 디옵을 하나로 묶음
 function getStoredRelicOptionGroups(relic: StoredRelic, includeDebuffs = true) {
   return [1, 2, 3]
     .map((slot) => {
@@ -263,7 +281,7 @@ function getPresetSlotOptionGroups(slot: RelicPresetSlotInput, relicsById: Map<s
 
   return [];
 }
-
+// 프리셋 디코딩
 function decodeBuildPostPreset(value: string): BuildPostPreset | null {
   try {
     const parsed = JSON.parse(decodeURIComponent(atob(value))) as BuildPostPreset;
@@ -277,11 +295,13 @@ function decodeBuildPostPreset(value: string): BuildPostPreset | null {
   }
 }
 
+// 마커가 없으면 일반 문자열로 넣음
 export function getBuildPostContentParts(content: string) {
   if (!content.startsWith(buildPostPresetMarkerPrefix)) {
     return { preset: null as BuildPostPreset | null, content };
   }
 
+  // 있으면 어디서 끝나는지 찾고 문자열에서 프리셋 이름 부분만 가져옴
   const markerEndIndex = content.indexOf(buildPostPresetMarkerSuffix, buildPostPresetMarkerPrefix.length);
   if (markerEndIndex === -1) {
     return { preset: null as BuildPostPreset | null, content };
@@ -299,6 +319,7 @@ export function getBuildPostContentParts(content: string) {
   };
 }
 
+// HTML 특수문자를 안전한 문자열로 변환
 function escapeHtml(value: string) {
   return value
     .replace(/&/g, '&amp;')
@@ -308,6 +329,7 @@ function escapeHtml(value: string) {
     .replace(/'/g, '&#39;');
 }
 
+// 본문 이미지 개수 카운트
 export function getBuildContentImageCount(content: string) {
   if (typeof document === 'undefined') return 0;
 
@@ -316,6 +338,7 @@ export function getBuildContentImageCount(content: string) {
   return container.querySelectorAll('img').length;
 }
 
+// 게시글 HTML에서 이상한거 있으면 제거
 export function sanitizeBuildPostHtml(content: string) {
   if (typeof document === 'undefined') return escapeHtml(content);
 
@@ -349,6 +372,7 @@ export function sanitizeBuildPostHtml(content: string) {
       const src = image.getAttribute('src') ?? '';
       const isAllowedSrc = src.startsWith('data:image/') || src.startsWith('blob:') || src.startsWith('http://') || src.startsWith('https://');
 
+      // 이미지 URL도 검사
       if (!isAllowedSrc) {
         image.remove();
         return;
@@ -356,6 +380,7 @@ export function sanitizeBuildPostHtml(content: string) {
 
       Array.from(image.attributes).forEach((attribute) => {
         const name = attribute.name.toLowerCase();
+        // 이미지 속성 제한
         if (!['alt', 'class', 'src'].includes(name)) {
           image.removeAttribute(attribute.name);
         }
@@ -370,12 +395,14 @@ export function sanitizeBuildPostHtml(content: string) {
   return template.innerHTML.trim();
 }
 
+// 카테고리(게시글 분류) 표시
 export function getCategoryLabel(category: string) {
   const cleanCategory = category.trim();
   const normalizedCategory = legacyCategoryLabels[cleanCategory] ?? cleanCategory;
   return categoryDisplayLabels[normalizedCategory] ?? categoryDisplayLabels[cleanCategory] ?? (normalizedCategory || '캐릭터 빌드');
 }
 
+// 날짜
 export function formatDate(value: string) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return value || '-';
@@ -390,12 +417,14 @@ export function formatDate(value: string) {
   }).format(date);
 }
 
+// 작성자
 export function getAuthorLabel(userId: string, nickname = '') {
   const cleanNickname = nickname.trim();
   if (cleanNickname) return cleanNickname;
   return userId ? `사용자 #${userId}` : '알 수 없음';
 }
 
+// 현기의 슬롯 색상 표시
 function BuildPresetVesselPreview({ vessel }: { vessel: Vessel | undefined }) {
   const slotColors = getPresetVesselSlotColors(vessel);
 
@@ -413,6 +442,7 @@ function BuildPresetVesselPreview({ vessel }: { vessel: Vessel | undefined }) {
   );
 }
 
+// 프리셋의 유물 슬롯 한칸 표시
 function BuildPresetOptionList({
   optionGroups,
 }: {
@@ -495,6 +525,7 @@ function BuildPresetSlotSummary({
   );
 }
 
+// 프리셋 하나를 카드로 표현, 아이콘이나 이름 색상같은 정보 있음
 export function BuildPresetCard({
   hideRelicSource = false,
   onSelectPreset,
@@ -512,6 +543,7 @@ export function BuildPresetCard({
   const nightfarerIconUrl = nightfarer ? getNightfarerIconUrl(nightfarer) : undefined;
   const vessel = getPresetVessel(preset.vesselIndex);
 
+  // 특정 유물 클릭하면 특정 유물/ 프리셋 전체 부분 선택하면 프리셋 전체가 선택됨
   return (
     <article
       className={`option-card saved-preset-card build-preset-card${onSelectPreset ? ' is-selectable' : ''}`}
@@ -549,6 +581,7 @@ export function BuildPresetCard({
   );
 }
 
+// 선택한 프리셋 미리보기 및 삭제
 export function BuildPostPresetBlock({
   embeddedPreset,
   onRemove,
@@ -557,6 +590,7 @@ export function BuildPostPresetBlock({
   onRemove?: () => void;
 }) {
   const [activePresetSlotKey, setActivePresetSlotKey] = useState<string | null>(null);
+  // 저장된 유물 map 생성
   const relicsById = useMemo(
     () => new Map(embeddedPreset.storedRelics.map((relic) => [relic.relicId, relic])),
     [embeddedPreset.storedRelics],
@@ -612,6 +646,7 @@ export function BuildPostPresetBlock({
         relicsById={relicsById}
       />
 
+      {/* 프리셋 슬롯 상세 모달 */}
       {activePresetSlot ? (
         <div
           className="saved-preset-modal-overlay"

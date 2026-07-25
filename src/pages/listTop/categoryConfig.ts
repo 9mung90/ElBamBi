@@ -1,3 +1,5 @@
+// 카테고리 목록 및 아이콘
+
 import ashTopIcon from '../../assets/images/top_icon/ash.webp';
 import bossTopIcon from '../../assets/images/top_icon/boss.webp';
 import buildTopIcon from '../../assets/images/top_icon/imgi_6_152.webp';

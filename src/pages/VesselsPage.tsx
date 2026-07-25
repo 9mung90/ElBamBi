@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { vessels, type Vessel } from '../data/vessels';
 
+// 구분자로 이어진 목록 나누기
 function splitList(value: string) {
   return value
     .split('|')
@@ -8,6 +9,7 @@ function splitList(value: string) {
     .filter(Boolean);
 }
 
+// 색상 목록 한글로 나누기
 function splitColors(value: string) {
   return value
     .split('/')
@@ -15,10 +17,13 @@ function splitColors(value: string) {
     .filter(Boolean);
 }
 
+// 검색 함수
 function matchesVesselSearch(vessel: Vessel, query: string) {
   const normalizedQuery = query.trim().toLowerCase();
+  // 검색어가 없으면 전체 표시
   if (!normalizedQuery) return true;
 
+  // 이름과 캐릭터 및 색상에서 검색
   return [
     vessel.index,
     vessel.name,
@@ -31,6 +36,7 @@ function matchesVesselSearch(vessel: Vessel, query: string) {
     .some((value) => String(value).toLowerCase().includes(normalizedQuery));
 }
 
+// 유물 색상 슬롯
 function RelicColorSlots({
   label,
   colors,
@@ -43,6 +49,7 @@ function RelicColorSlots({
   const colorNames = splitColors(colors);
   const colorImages = splitList(imageUrls);
 
+  // 색상 이름과 이미지 순서 맞추기
   return (
     <div className="vessel-color-row">
       <span className="vessel-color-label">{label}</span>
@@ -66,11 +73,13 @@ function RelicColorSlots({
   );
 }
 
+// 그릇 카드
 function VesselCard({ vessel }: { vessel: Vessel }) {
   const vesselImages = splitList(vessel.nameImages);
   const characterImages = splitList(vessel.characterImages);
   const isDefault = vessel.isDefault.toLowerCase() === 'yes';
 
+  // 그릇과 캐릭터 및 슬롯 정보 표시
   return (
     <article className="option-card vessel-card">
       <div className="vessel-card-main">
@@ -105,7 +114,9 @@ function VesselCard({ vessel }: { vessel: Vessel }) {
   );
 }
 
+// 그릇 페이지 전체
 function VesselsPage({ searchQuery }: { searchQuery: string }) {
+  // 검색 조건에 맞는 그릇 목록
   const filteredVessels = useMemo(
     () => vessels.filter((vessel) => matchesVesselSearch(vessel, searchQuery)),
     [searchQuery],
@@ -122,6 +133,7 @@ function VesselsPage({ searchQuery }: { searchQuery: string }) {
         </span>
       </div>
 
+      {/* 그릇 카드 목록 */}
       <div className="option-card-grid">
         {filteredVessels.map((vessel) => (
           <VesselCard key={vessel.index} vessel={vessel} />

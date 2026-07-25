@@ -119,10 +119,12 @@ type AuthUserProfile = {
 
 type ApiBodyValue = string | number | null | undefined;
 
+// 게시판 기본 설정
 const defaultApiBaseUrl = 'https://k9e297bszl.execute-api.ap-northeast-2.amazonaws.com';
 const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? defaultApiBaseUrl).replace(/\/$/, '');
 const postsPerPage = 15;
 const maxCommunityPostRequestSize = 9 * 1024 * 1024;
+// 탭마다 보여줄 게시글 카테고리
 const boardTabs: {
   id: BoardTabId;
   label: string;
@@ -136,6 +138,7 @@ const boardTabs: {
   { id: 'free-board', label: '자유 게시판', categories: ['Free Board', 'free', '파티 모집', '기타'] },
 ];
 
+// 게시판 API 주소
 const communityApi = {
   posts: '/api/communityPosts',
   postsByUser: '/api/communityPostsByUser',
@@ -162,6 +165,7 @@ const communityApi = {
   addViewHistory: '/api/addPostViewHistory',
 };
 
+// API 오류
 class ApiRequestError extends Error {
   status: number;
 
@@ -175,6 +179,7 @@ function isApiRequestError(error: unknown): error is ApiRequestError {
   return error instanceof ApiRequestError;
 }
 
+// API 데이터 변환
 function getNumber(value: unknown, fallback = 0) {
   if (typeof value === 'number' && Number.isFinite(value)) return value;
   if (typeof value === 'string') {
@@ -204,6 +209,7 @@ function getAuthorNickname(value: {
   writer?: unknown;
   writerNickname?: unknown;
 }) {
+  // 응답에 바로 들어있는 닉네임 확인
   const directNickname =
     getString(value.authorNickname) ||
     getString(value.nickname) ||
@@ -213,6 +219,7 @@ function getAuthorNickname(value: {
 
   if (directNickname) return directNickname;
 
+  // 사용자 객체 안에 들어있는 닉네임 확인
   const user = getRecord(value.user);
   const author = getRecord(value.author);
   const writer = getRecord(value.writer);
@@ -238,11 +245,13 @@ function appendParams(params: URLSearchParams, values: Record<string, ApiBodyVal
   });
 }
 
+// 로그인 정보 가져오기
 function getAccessToken() {
   try {
     const accessToken = localStorage.getItem(accessTokenStorageKey);
     if (!accessToken) return null;
     if (isAccessTokenExpired(accessToken)) {
+      // 만료된 로그인 정보 정리
       clearAuthStorage();
       return null;
     }
@@ -266,6 +275,7 @@ function getAuthUserProfile(): AuthUserProfile | null {
   const storedNickname = getStoredValue(authNicknameStorageKey);
   const storedNicknameUserId = getStoredValue(authNicknameUserIdStorageKey);
 
+  // 토큰이 없으면 저장된 사용자 정보 사용
   if (!accessToken) {
     if (storedUserId && storedNickname && storedNicknameUserId === storedUserId) {
       return { nickname: storedNickname, userId: storedUserId };
@@ -275,6 +285,7 @@ function getAuthUserProfile(): AuthUserProfile | null {
   }
 
   const payload = getAccessTokenPayload(accessToken);
+  // 토큰 해석 실패 시 저장된 사용자 정보 사용
   if (!payload) {
     if (storedUserId && storedNickname && storedNicknameUserId === storedUserId) {
       return { nickname: storedNickname, userId: storedUserId };
@@ -309,6 +320,7 @@ function getAdminCommentPath(commentId: string) {
   return `${communityApi.adminComments}/${encodeURIComponent(commentId)}`;
 }
 
+// API 요청 함수
 async function requestApi<T>(
   path: string,
   options: {
@@ -322,6 +334,7 @@ async function requestApi<T>(
   const query = new URLSearchParams();
   if (options.query) appendParams(query, options.query);
 
+  // 요청 주소와 로그인 헤더 만들기
   const queryString = query.toString();
   const url = `${apiBaseUrl}${path}${queryString ? `?${queryString}` : ''}`;
   const headers = new Headers();
@@ -335,6 +348,7 @@ async function requestApi<T>(
     headers,
   };
 
+  // JSON 또는 폼 형식으로 요청 내용 만들기
   if (options.body) {
     if (options.bodyAsJson) {
       init.body = JSON.stringify(
@@ -353,6 +367,7 @@ async function requestApi<T>(
   const contentType = response.headers.get('content-type') ?? '';
   const text = await response.text();
 
+  // 인증 실패 시 저장된 로그인 정보 정리
   if (!response.ok) {
     if (response.status === 401) {
       clearAuthStorage();
@@ -376,6 +391,7 @@ async function requestOptionalList<T>(path: string, options: { includeAuth?: boo
   }
 }
 
+// 게시판 데이터 정리
 function normalizePost(post: CommunityPostResponse): BuildPost {
   return {
     id: getString(post.id),
@@ -400,6 +416,7 @@ function normalizePost(post: CommunityPostResponse): BuildPost {
 function normalizePostContent(post: CommunityPostResponse) {
   const content = getString(post.contentHtml, getString(post.content));
   const presetJson = getString(post.presetJson);
+  // 이미 프리셋이 들어있는 게시글은 그대로 사용
   if (!presetJson || content.startsWith(buildPostPresetMarkerPrefix)) return content;
 
   const preset = decodeBuildPostPresetJson(presetJson);
@@ -458,6 +475,7 @@ function groupByPostId<T extends { postId: string }>(items: T[]) {
   }, new Map());
 }
 
+// 게시판 데이터 합치기
 function buildPosts(
   rawPosts: CommunityPostResponse[],
   rawComments: CommentResponse[],
@@ -467,6 +485,7 @@ function buildPosts(
   rawMyLikes: PostRelationResponse[],
   rawMyBookmarks: PostRelationResponse[],
 ) {
+  // 댓글과 이미지를 게시글 번호별로 묶기
   const commentsByPostId = groupByPostId(
     rawComments.map(normalizeComment).filter((comment) => Boolean(comment.id) && Boolean(comment.postId)),
   );
@@ -475,6 +494,7 @@ function buildPosts(
       .map(normalizeImage)
       .filter((image): image is BuildImage => Boolean(image) && Boolean(image?.postId)),
   );
+  // 좋아요와 북마크 개수 및 내 상태 정리
   const likeCountByPostId = getPostCountMap(rawLikes);
   const bookmarkCountByPostId = getPostCountMap(rawBookmarks);
   const likedPostIds = getPostIdSet(rawMyLikes);
@@ -497,6 +517,7 @@ function buildPosts(
 function applyCurrentUserNickname(posts: BuildPost[], authUserProfile: AuthUserProfile | null) {
   if (!authUserProfile) return posts;
 
+  // 내 게시글과 댓글에 빠진 닉네임 채우기
   return posts.map((post) => ({
     ...post,
     authorNickname:
@@ -513,6 +534,7 @@ function applyCurrentUserNickname(posts: BuildPost[], authUserProfile: AuthUserP
   }));
 }
 
+// 프리셋 데이터 변환
 function encodeBuildPostPreset(preset: BuildPostPreset) {
   return `${buildPostPresetMarkerPrefix}${btoa(encodeURIComponent(JSON.stringify(preset)))}${buildPostPresetMarkerSuffix}`;
 }
@@ -520,6 +542,7 @@ function encodeBuildPostPreset(preset: BuildPostPreset) {
 function decodeBuildPostPresetJson(value: string): BuildPostPreset | null {
   try {
     const parsed = JSON.parse(value) as BuildPostPreset;
+    // 프리셋 필수 데이터 확인
     if (!parsed?.preset?.presetId || !Array.isArray(parsed.preset.slots)) return null;
     return {
       preset: parsed.preset,
@@ -530,6 +553,7 @@ function decodeBuildPostPresetJson(value: string): BuildPostPreset | null {
   }
 }
 
+// 게시글 내용과 이미지 처리
 function getBuildContentText(content: string) {
   if (typeof document === 'undefined') return content;
 
@@ -542,6 +566,7 @@ function getDataUrlSizeBytes(src: string) {
   const base64Match = src.match(/^data:[^;]+;base64,(.*)$/);
   if (!base64Match) return null;
 
+  // base64 길이와 패딩으로 실제 이미지 크기 계산
   const base64 = base64Match[1].replace(/\s/g, '');
   if (!base64) return 0;
 
@@ -577,6 +602,7 @@ function dataUrlToBlob(src: string) {
   const binary = window.atob(match[2].replace(/\s/g, ''));
   const bytes = new Uint8Array(binary.length);
 
+  // base64 문자열을 업로드할 파일 데이터로 변환
   for (let index = 0; index < binary.length; index += 1) {
     bytes[index] = binary.charCodeAt(index);
   }
@@ -590,6 +616,7 @@ function getBuildContentImages(content: string): BuildContentImagePayload[] {
   const container = document.createElement('div');
   container.innerHTML = content;
 
+  // 게시글 안의 모든 이미지 정보 가져오기
   return Array.from(container.querySelectorAll('img'))
     .map((image, index) => {
       const src = image.getAttribute('src') ?? '';
@@ -618,6 +645,7 @@ function composeBuildPostContent(draft: BuildPostDraft) {
   const cleanContent = sanitizeBuildPostHtml(draft.content);
   if (!draft.preset) return cleanContent;
 
+  // 프리셋과 작성 내용을 하나의 게시글 내용으로 합치기
   const presetContent = encodeBuildPostPreset(draft.preset);
   return cleanContent ? `${presetContent}\n${cleanContent}` : presetContent;
 }
@@ -632,6 +660,7 @@ function createBuildPostRequestBody(draft: BuildPostDraft, postContent: string, 
   const embeddedImages = getBuildContentImageMetadata(cleanContentHtml);
   const contentText = getBuildContentText(cleanContentHtml).trim();
 
+  // API에 보낼 게시글 데이터 만들기
   return {
     title: draft.title,
     content: contentText,
@@ -654,6 +683,7 @@ function getWritableCategory(category: string): WritableBuildPostCategory {
     : 'Free Board';
 }
 
+// 이미지 업로드 주소 발급
 async function presignBuildPostImageUpload({
   contentType,
   fileName,
@@ -689,6 +719,7 @@ async function presignBuildPostImageUpload({
   };
 }
 
+// S3 이미지 업로드
 async function uploadBuildPostImageToS3({
   contentType,
   file,
@@ -711,6 +742,7 @@ async function uploadBuildPostImageToS3({
   }
 }
 
+// 게시글 이미지 업로드
 async function uploadEmbeddedBuildImages(content: string, userId: string) {
   if (typeof document === 'undefined') return content;
 
@@ -720,6 +752,7 @@ async function uploadEmbeddedBuildImages(content: string, userId: string) {
     (image.getAttribute('src') ?? '').startsWith('data:image/'),
   );
 
+  // 본문 이미지를 차례로 업로드
   for (const [index, image] of images.entries()) {
     const src = image.getAttribute('src') ?? '';
     const contentType = getDataUrlContentType(src);
@@ -738,6 +771,7 @@ async function uploadEmbeddedBuildImages(content: string, userId: string) {
       file,
       uploadUrl,
     });
+    // 본문의 임시 이미지를 업로드된 주소로 교체
     image.setAttribute('src', publicUrl);
   }
 
@@ -752,8 +786,10 @@ function getRequestBodySize(body: Record<string, ApiBodyValue>) {
   return new TextEncoder().encode(jsonBody).length;
 }
 
+// 게시글 캐릭터 찾기
 function getPostNightfarer(post: BuildPost) {
   // TODO: Currently UI only. Connect this to the DB/API later.
+  // 제목과 내용에서 캐릭터 이름 확인
   const searchableText = [post.title, getSearchableBuildContent(post.content), post.category, getCategoryLabel(post.category)]
     .join(' ')
     .toLowerCase();
@@ -780,6 +816,7 @@ function matchesNightfarerFilter(post: BuildPost, selectedNightfarerIndex: numbe
 }
 
 function getPostScore(post: BuildPost) {
+  // 좋아요와 댓글에 가중치를 준 인기 점수
   return post.likeCount * 4 + post.comments.length * 2 + post.viewCount;
 }
 
@@ -792,10 +829,12 @@ function getPostTime(post: BuildPost) {
   return Number.isNaN(timestamp) ? 0 : timestamp;
 }
 
+// 검색 함수
 function matchesPostSearch(post: BuildPost, searchQuery: string) {
   const normalizedQuery = searchQuery.trim().toLowerCase();
   if (!normalizedQuery) return true;
 
+  // 제목과 내용 및 분류와 작성자에서 검색
   return [
     post.title,
     getSearchableBuildContent(post.content),
@@ -805,6 +844,7 @@ function matchesPostSearch(post: BuildPost, searchQuery: string) {
   ].some((value) => String(value).toLowerCase().includes(normalizedQuery));
 }
 
+// 게시판 탭 필터
 function matchesBoardTab(post: BuildPost, selectedTab: BoardTabId) {
   if (selectedTab === 'all') return true;
   if (selectedTab === 'popular') return isPopularPost(post);
@@ -816,12 +856,15 @@ function matchesBoardTab(post: BuildPost, selectedTab: BoardTabId) {
   return tab.categories.some((category) => category === post.category || category === label);
 }
 
+// 게시글 정렬
 function sortPosts(posts: BuildPost[], sortKey: SortKey) {
   return [...posts].sort((left, right) => {
+    // 인기순은 점수가 같으면 최신 글 우선
     if (sortKey === 'popular') {
       return getPostScore(right) - getPostScore(left) || getPostTime(right) - getPostTime(left);
     }
 
+    // 조회순은 조회수가 같으면 최신 글 우선
     if (sortKey === 'views') {
       return right.viewCount - left.viewCount || getPostTime(right) - getPostTime(left);
     }
@@ -844,6 +887,7 @@ function getAdminDeleteErrorMessage(error: unknown, fallback: string) {
   return fallback;
 }
 
+// 등록한 게시글 찾기
 async function findCreatedPostId(draft: CreatedPostLookupDraft) {
   const userPosts = await requestApi<CommunityPostResponse[]>(communityApi.postsByUser);
   const posts = Array.isArray(userPosts) ? userPosts.map(normalizePost) : [];
@@ -855,6 +899,7 @@ async function findCreatedPostId(draft: CreatedPostLookupDraft) {
   return matchedPost?.id ?? categoryNormalizedPost?.id ?? posts[0]?.id ?? null;
 }
 
+// 게시판 카테고리
 function BoardCategoryTabs({
   selectedTab,
   onSelectTab,
@@ -879,6 +924,7 @@ function BoardCategoryTabs({
   );
 }
 
+// 캐릭터 필터
 function BoardNightfarerFilter({
   selectedNightfarerIndex,
   onSelectNightfarer,
@@ -913,6 +959,7 @@ function BoardNightfarerFilter({
   );
 }
 
+// 게시판 목록 메뉴
 function BoardListToolbar({
   totalCount,
   isRefreshing,
@@ -932,6 +979,7 @@ function BoardListToolbar({
   );
 }
 
+// 게시글 목록
 function BoardPostList({
   isAdmin,
   posts,
@@ -1039,6 +1087,7 @@ function BoardPostList({
   );
 }
 
+// 페이지 이동
 function BoardPagination({
   currentPage,
   pageCount,
@@ -1049,6 +1098,7 @@ function BoardPagination({
   onPageChange: (page: number) => void;
 }) {
   const pages = Array.from({ length: pageCount }, (_, index) => index + 1).filter(
+    // 처음과 마지막 및 현재 페이지 주변만 표시
     (page) => page === 1 || page === pageCount || Math.abs(page - currentPage) <= 2,
   );
 
@@ -1088,6 +1138,7 @@ function BoardPagination({
   );
 }
 
+// 빌드 페이지 전체
 function BuildPage({
   authRole,
   authUserId,
@@ -1133,6 +1184,7 @@ function BuildPage({
     preset: null,
   });
 
+  // 게시판 데이터 불러오기
   async function loadCommunityData(focusPostId?: string | null) {
     const shouldShowInitialLoading = posts.length === 0;
     if (shouldShowInitialLoading) {
@@ -1142,6 +1194,7 @@ function BuildPage({
     }
 
     try {
+      // 게시글과 관련 데이터를 동시에 불러오기
       const [rawPosts, rawComments, rawImages, rawLikes, rawBookmarks, rawMyLikes, rawMyBookmarks] =
         await Promise.all([
           requestApi<CommunityPostResponse[]>(communityApi.posts, { includeAuth: false }),
@@ -1167,6 +1220,7 @@ function BuildPage({
       );
 
       setPosts(nextPosts);
+      // 요청한 글 또는 현재 글이 없으면 첫 글 선택
       setSelectedPostId((currentPostId) => {
         const targetId = focusPostId ?? currentPostId;
         if (targetId && nextPosts.some((post) => post.id === targetId)) return targetId;
@@ -1181,6 +1235,7 @@ function BuildPage({
     }
   }
 
+  // 게시판 처음 불러오기
   useEffect(() => {
     loadCommunityData(focusPostId);
     if (focusPostId) {
@@ -1189,16 +1244,19 @@ function BuildPage({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [focusPostId]);
 
+  // 검색 조건 변경 시 첫 페이지
   useEffect(() => {
     setCurrentPage(1);
   }, [searchQuery, selectedBoardTab, selectedNightfarerIndex, sortKey]);
 
+  // 캐릭터 필터 초기화
   useEffect(() => {
     if (selectedBoardTab !== 'class-builds') {
       setSelectedNightfarerIndex(null);
     }
   }, [selectedBoardTab]);
 
+  // 내부 뒤로가기
   useEffect(() => {
     if (!onInternalBackChange) return undefined;
 
@@ -1229,9 +1287,11 @@ function BuildPage({
     return () => onInternalBackChange(null);
   }, [boardMode, onInternalBackChange]);
 
+  // 게시글 필터 적용
   const visiblePosts = useMemo(
     () =>
       sortPosts(
+        // 선택한 탭과 캐릭터 및 검색어 조건 적용
         posts
           .filter((post) => matchesBoardTab(post, selectedBoardTab))
           .filter((post) => selectedBoardTab !== 'class-builds' || matchesNightfarerFilter(post, selectedNightfarerIndex))
@@ -1243,6 +1303,7 @@ function BuildPage({
 
   const pageCount = Math.max(1, Math.ceil(visiblePosts.length / postsPerPage));
 
+  // 페이지 범위 맞추기
   useEffect(() => {
     setCurrentPage((page) => Math.min(page, pageCount));
   }, [pageCount]);
@@ -1255,9 +1316,11 @@ function BuildPage({
   const authorLabel = authUserProfile?.nickname ?? (authUserId ? getAuthorLabel(authUserId) : '로그인 필요');
   const selectedBoardTabIndex = boardTabs.findIndex((tab) => tab.id === selectedBoardTab);
 
+  // 게시판 스와이프
   function isBoardSwipeTarget(target: EventTarget | null) {
     if (!(target instanceof HTMLElement)) return false;
     if (target.closest('.build-board-tabs')) return true;
+    // 입력과 버튼에서는 게시판 스와이프 막기
     return !target.closest(
       [
         'input',
@@ -1320,6 +1383,7 @@ function BuildPage({
     const deltaY = touch.clientY - start.y;
     const elapsed = Math.max(1, performance.now() - start.time);
     const velocity = Math.abs(deltaX) / elapsed;
+    // 충분히 멀리 또는 빠르게 움직인 경우만 탭 변경
     const shouldChangeTab = Math.abs(deltaY) <= 80 && (Math.abs(deltaX) >= 86 || velocity >= 0.45);
 
     if (!shouldChangeTab) return;
@@ -1330,6 +1394,7 @@ function BuildPage({
     setSelectedBoardTab(nextTab.id);
   }
 
+  // API 오류 안내
   function handleApiError(error: unknown, fallback: string, options: { admin?: boolean } = {}) {
     if (isApiRequestError(error) && error.status === 401) {
       onLoginRequired?.();
@@ -1337,6 +1402,7 @@ function BuildPage({
     setNotice(options.admin ? getAdminDeleteErrorMessage(error, fallback) : getErrorMessage(error, fallback));
   }
 
+  // 작성 내용 변경
   function updateDraft<K extends keyof BuildPostDraft>(key: K, value: BuildPostDraft[K]) {
     setDraft((currentDraft) => ({
       ...currentDraft,
@@ -1344,6 +1410,7 @@ function BuildPage({
     }));
   }
 
+  // 게시글 등록
   async function handleCreatePost(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const cleanDraft: BuildPostDraft = {
@@ -1355,6 +1422,7 @@ function BuildPage({
       image.src?.startsWith('data:image/'),
     );
 
+    // 제목과 내용 및 로그인 상태 확인
     if (!cleanDraft.title || (!cleanDraft.preset && isBuildContentEmpty(cleanDraft.content))) return;
 
     if (hasEmbeddedDataImages && !authUserId) {
@@ -1374,6 +1442,7 @@ function BuildPage({
     setIsSubmitting(true);
 
     try {
+      // 본문 이미지가 있으면 먼저 업로드
       if (hasEmbeddedDataImages && authUserId) {
         setNotice('이미지를 업로드하는 중입니다...');
         const uploadedContent = await uploadEmbeddedBuildImages(cleanDraft.content, authUserId);
@@ -1418,6 +1487,7 @@ function BuildPage({
     }
   }
 
+  // 게시글 수정
   async function handleEditPost(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const selected = selectedPost;
@@ -1432,6 +1502,7 @@ function BuildPage({
       image.src?.startsWith('data:image/'),
     );
 
+    // 입력 내용과 작성 권한 확인
     if (!cleanDraft.title || (!cleanDraft.preset && isBuildContentEmpty(cleanDraft.content))) {
       setNotice('제목과 내용을 입력해 주세요.');
       return;
@@ -1497,11 +1568,13 @@ function BuildPage({
     }
   }
 
+  // 게시글 상세 보기
   async function handleSelectPost(post: BuildPost) {
     setSelectedPostId(post.id);
     setBoardMode('detail');
 
     try {
+      // 상세 화면을 열면서 조회 기록 저장
       await requestApi<string>(communityApi.addViewHistory, {
         method: 'POST',
         body: {
@@ -1516,6 +1589,7 @@ function BuildPage({
     }
   }
 
+  // 좋아요 변경
   async function handleToggleLike(post: BuildPost) {
     try {
       await requestApi<string>(post.likedByMe ? communityApi.deleteLikeByPost : communityApi.addLike, {
@@ -1530,6 +1604,7 @@ function BuildPage({
     }
   }
 
+  // 북마크 변경
   async function handleToggleBookmark(post: BuildPost) {
     try {
       await requestApi<string>(post.bookmarkedByMe ? communityApi.deleteBookmarkByPost : communityApi.addBookmark, {
@@ -1544,6 +1619,7 @@ function BuildPage({
     }
   }
 
+  // 게시글 삭제
   async function handleDeletePost(post: BuildPost) {
     if (!window.confirm('이 빌드 글을 삭제할까요?')) return;
 
@@ -1563,6 +1639,7 @@ function BuildPage({
     }
   }
 
+  // 관리자 게시글 삭제
   async function handleAdminDeletePost(post: BuildPost) {
     if (!window.confirm('관리자 권한으로 이 게시글을 삭제하시겠습니까?')) return;
 
@@ -1581,6 +1658,7 @@ function BuildPage({
     }
   }
 
+  // 게시글 수정 시작
   function handleStartEditPost(post: BuildPost) {
     if (!isPostAuthor(post, authUserId)) {
       setNotice('이 글을 수정할 권한이 없습니다.');
@@ -1593,11 +1671,13 @@ function BuildPage({
     setBoardMode('edit');
   }
 
+  // 게시글 신고
   function handleReportPost(post: BuildPost) {
     // TODO: Currently UI only. Connect this to the DB/API later.
     setNotice(`신고 기능은 아직 연결되지 않았습니다. "${post.title}" 글은 신고되지 않았습니다.`);
   }
 
+  // 댓글 등록
   async function handleCreateComment(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const selected = selectedPost;
@@ -1624,6 +1704,7 @@ function BuildPage({
     }
   }
 
+  // 댓글 삭제
   async function handleDeleteComment(comment: BuildComment) {
     const selected = selectedPost;
     if (!selected || !window.confirm('이 댓글을 삭제할까요?')) return;
@@ -1642,6 +1723,7 @@ function BuildPage({
     }
   }
 
+  // 관리자 댓글 삭제
   async function handleAdminDeleteComment(comment: BuildComment) {
     if (!window.confirm('관리자 권한으로 이 댓글을 삭제하시겠습니까?')) return;
 
@@ -1661,6 +1743,7 @@ function BuildPage({
     }
   }
 
+  // 게시글 작성 페이지
   if (boardMode === 'write') {
     return (
       <BuildPostWritePage
@@ -1675,6 +1758,7 @@ function BuildPage({
     );
   }
 
+  // 게시글 수정 페이지
   if (boardMode === 'edit') {
     return (
       <BuildPostWritePage
@@ -1690,6 +1774,7 @@ function BuildPage({
     );
   }
 
+  // 게시글 상세 페이지
   if (boardMode === 'detail') {
     return (
       <section className="build-page" aria-labelledby="build-detail-page-title">
@@ -1730,6 +1815,7 @@ function BuildPage({
     );
   }
 
+  // 게시글 목록 페이지
   return (
     <section className="build-page" aria-label="빌드 공유">
       {notice ? <p className="build-notice">{notice}</p> : null}

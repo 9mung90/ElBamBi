@@ -37,6 +37,7 @@ export type WeaponFilters = {
   genres: string[];
 };
 
+// 공격 속성 한글 이름
 const damageLabels: Record<string, string> = {
   Phys: '물리',
   Magic: '마력',
@@ -45,6 +46,7 @@ const damageLabels: Record<string, string> = {
   Holy: '신성',
 };
 
+// 능력치 한글 이름
 const statLabels: Record<string, string> = {
   STR: '근력',
   DEX: '기량',
@@ -56,6 +58,7 @@ const statLabels: Record<string, string> = {
   END: '지구력',
 };
 
+// 상태 이상 한글 이름
 const statusLabels: Record<string, string> = {
   Poison: '독',
   Bloodloss: '출혈',
@@ -65,6 +68,7 @@ const statusLabels: Record<string, string> = {
   Madness: '발광',
 };
 
+// 무기 변질 아이콘
 const affinityIcons = [
   { prefix: '화염의 ', label: '화염', src: fireIcon },
   { prefix: '벼락의 ', label: '벼락', src: lightningIcon },
@@ -91,6 +95,7 @@ const nightAssetUrlsByLower = new Map(
 const nightfarerEquipmentImageByName = buildNightfarerEquipmentImageMap();
 const nightfarerDefaultEquipmentImages = buildNightfarerDefaultEquipmentImages();
 
+// 숨김 무기 제외
 const visibleRelicWeapons = relicWeapons.filter(
   (weapon) => isCatalogItemVisibleByName(weapon) && isCatalogItemVisibleByName(getWeaponCatalogItem(weapon.name)),
 );
@@ -104,10 +109,12 @@ const weaponGroupIdAliases = new Map(
   ].map(([alias, groupId]) => [normalizeWeaponCatalogName(String(alias)), Number(groupId)]),
 );
 
+// 무기 번호에서 무기군 번호 찾기
 function getWeaponGroupId(weapon: RelicWeapon) {
   return Math.floor(weapon.id / 10000) * 10000;
 }
 
+// 무기 이름으로 무기군 찾기
 export function getWeaponGroupIdByName(weaponName: string) {
   const normalizedWeaponName = normalizeWeaponCatalogName(weaponName);
   const aliasGroupId = weaponGroupIdAliases.get(normalizedWeaponName);
@@ -131,6 +138,7 @@ export function getWeaponGroupIdByName(weaponName: string) {
   );
 }
 
+// 기본 무기와 파생 무기 묶기
 function buildWeaponGroups(weapons: RelicWeapon[]): WeaponGroup[] {
   const groupedWeapons = new Map<number, RelicWeapon[]>();
 
@@ -157,6 +165,7 @@ function buildWeaponGroups(weapons: RelicWeapon[]): WeaponGroup[] {
     .sort((left, right) => left.representative.id - right.representative.id);
 }
 
+// 수치 목록을 표시 문구로 변환
 function formatRecordValues(
   values: Record<string, number | number[]> | undefined,
   labels: Record<string, string>,
@@ -170,8 +179,10 @@ function formatRecordValues(
   });
 }
 
+// 검색 함수
 function matchesWeaponSearch(weapon: RelicWeapon, query: string) {
   const normalizedQuery = query.trim().toLowerCase();
+  // 검색어가 없으면 전체 표시
   if (!normalizedQuery) return true;
 
   const damage = formatRecordValues(weapon.baseDamage, damageLabels);
@@ -194,6 +205,7 @@ function matchesWeaponSearch(weapon: RelicWeapon, query: string) {
     .some((value) => String(value).toLowerCase().includes(normalizedQuery));
 }
 
+// 선택한 필터와 무기 비교
 function matchesWeaponFilters(weapon: RelicWeapon, filters: WeaponFilters) {
   const requiredLevel = weapon.requiredLevel ?? 0;
   const catalogItem = getWeaponCatalogItem(weapon.name);
@@ -208,6 +220,7 @@ function matchesWeaponFilters(weapon: RelicWeapon, filters: WeaponFilters) {
   return matchesLevel && matchesType && matchesGenre;
 }
 
+// 무기군 안에서 검색과 필터 확인
 function matchesWeaponGroupSearch(group: WeaponGroup, query: string, filters: WeaponFilters) {
   const normalizedQuery = query.trim();
 
@@ -216,15 +229,18 @@ function matchesWeaponGroupSearch(group: WeaponGroup, query: string, filters: We
   );
 }
 
+// 무기 이름에 맞는 변질 아이콘
 function getWeaponAffinityIcon(weaponName: string) {
   return affinityIcons.find((icon) => weaponName.startsWith(icon.prefix)) ?? null;
 }
 
+// 변질 이름을 뺀 기본 무기 이름
 function getBaseWeaponName(weaponName: string) {
   const prefix = affinityPrefixes.find((currentPrefix) => weaponName.startsWith(currentPrefix));
   return prefix ? weaponName.slice(prefix.length) : weaponName;
 }
 
+// 이어진 이미지 주소 나누기
 function splitImageUrls(urls: string) {
   return urls
     .split('|')
@@ -232,6 +248,7 @@ function splitImageUrls(urls: string) {
     .filter(Boolean);
 }
 
+// 캐릭터 장비 이미지 경로 변환
 function resolveNightAssetUrl(url: string) {
   if (!url.startsWith('/assets/images/night/')) return url;
 
@@ -239,14 +256,17 @@ function resolveNightAssetUrl(url: string) {
   return nightAssetUrls[assetPath] ?? nightAssetUrlsByLower.get(assetPath.toLowerCase()) ?? url;
 }
 
+// 무기 이름 비교용 정리
 function normalizeWeaponCatalogName(weaponName: string) {
   return weaponName.replace(/(?:\s|[^\p{L}\p{N}])+$/gu, '').trim();
 }
 
+// 필터 이름 표기 맞추기
 function normalizeWeaponFilterText(value: string) {
   return value === '소형무기' ? '소형 무기' : value;
 }
 
+// 캐릭터 기본 장비 이미지 목록
 function buildNightfarerEquipmentImageMap() {
   const equipmentImageByName = new Map<string, string>();
 
@@ -267,6 +287,7 @@ function buildNightfarerEquipmentImageMap() {
   return equipmentImageByName;
 }
 
+// 캐릭터별 첫 장비 이미지 목록
 function buildNightfarerDefaultEquipmentImages() {
   return nightfarers
     .map((nightfarer) => {
@@ -280,6 +301,7 @@ function buildNightfarerDefaultEquipmentImages() {
     .filter((entry) => entry.imageUrl);
 }
 
+// 무기 이름에 맞는 도감 정보
 function getWeaponCatalogItem(weaponName: string): WeaponCatalogItem | undefined {
   const baseWeaponName = getBaseWeaponName(weaponName);
   const normalizedWeaponName = normalizeWeaponCatalogName(weaponName);
@@ -293,6 +315,7 @@ function getWeaponCatalogItem(weaponName: string): WeaponCatalogItem | undefined
   );
 }
 
+// 무기 이름에 맞는 이미지
 function getWeaponImageUrl(weaponName: string) {
   const baseWeaponName = getBaseWeaponName(weaponName);
   const normalizedWeaponName = normalizeWeaponCatalogName(weaponName);
@@ -318,6 +341,7 @@ function getWeaponImageUrl(weaponName: string) {
   );
 }
 
+// 무기 데이터에서 필터 목록 만들기
 function buildWeaponFilterOptions(weapons: RelicWeapon[]) {
   const levels = [...new Set(weapons.map((weapon) => weapon.requiredLevel ?? 0))].sort(
     (left, right) => left - right,
@@ -357,6 +381,7 @@ function buildWeaponFilterOptions(weapons: RelicWeapon[]) {
   };
 }
 
+// 빈 무기 필터 만들기
 export function createEmptyWeaponFilters(): WeaponFilters {
   return {
     levels: [],
@@ -365,6 +390,7 @@ export function createEmptyWeaponFilters(): WeaponFilters {
   };
 }
 
+// 요구 레벨에 맞는 등급 테두리
 function getWeaponGradeFrameUrl(requiredLevel: number) {
   if (requiredLevel === 10) return gradeFrame3;
   if (requiredLevel === 7) return gradeFrame2;
@@ -372,6 +398,7 @@ function getWeaponGradeFrameUrl(requiredLevel: number) {
   return gradeFrame0;
 }
 
+// 무기 카드
 function WeaponCard({
   weapon,
   showAffinityIcon = false,
@@ -428,6 +455,7 @@ function WeaponCard({
     </>
   );
 
+  // 파생 무기가 있으면 선택 버튼 사용
   if (onClick) {
     return (
       <button
@@ -445,6 +473,7 @@ function WeaponCard({
   return <article className="option-card">{content}</article>;
 }
 
+// 무기 페이지 전체
 function WeaponsPage({
   searchQuery,
   filters,
@@ -459,11 +488,13 @@ function WeaponsPage({
     [selectedGroupId],
   );
 
+  // 검색과 필터 조건에 맞는 무기군
   const filteredGroups = useMemo(
     () => weaponGroups.filter((group) => matchesWeaponGroupSearch(group, searchQuery, filters)),
     [searchQuery, filters],
   );
 
+  // 선택한 무기군의 파생 무기
   const filteredVariants = useMemo(() => {
     if (!selectedGroup) return [];
     return selectedGroup.variants.filter(
@@ -471,6 +502,7 @@ function WeaponsPage({
     );
   }, [searchQuery, selectedGroup, filters]);
 
+  // 캐릭터 장비에서 이동한 무기 카드 강조
   useEffect(() => {
     if (!focusedGroupId || selectedGroup) return;
 
@@ -483,6 +515,7 @@ function WeaponsPage({
     return () => window.clearTimeout(timeoutId);
   }, [focusedGroupId, selectedGroup, filteredGroups]);
 
+  // 파생 무기 페이지
   if (selectedGroup) {
     return (
       <section className="options-page" aria-labelledby="weapon-variants-title">
@@ -519,6 +552,7 @@ function WeaponsPage({
     );
   }
 
+  // 기본 무기 목록 페이지
   return (
     <section className="options-page" aria-labelledby="weapons-title">
       <div className="options-page-heading">
@@ -530,6 +564,7 @@ function WeaponsPage({
         </span>
       </div>
 
+      {/* 대표 무기 카드 목록 */}
       <div className="option-card-grid">
         {filteredGroups.map((group) => (
           <WeaponCard

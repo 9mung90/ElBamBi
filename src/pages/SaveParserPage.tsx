@@ -10,9 +10,11 @@ import {
   type RelicScanResult,
 } from '../utils/nightreignSaveParser';
 
+// 캐릭터 슬롯과 지원 파일 형식
 const characterSlots = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] as const;
 const supportedSaveExtensions = ['.sl2', '.co2', '.dat'];
 
+// 유물 번호로 이름과 색상 찾기
 const relicLookup = new Map(
   relicItemColorMap.map((relic) => [
     relic.itemId,
@@ -31,6 +33,7 @@ for (const relic of relics) {
   });
 }
 
+// 효과 번호로 옵션 정보 찾기
 const effectLookup = new Map(
   relicEffectsKo.map((effect) => [
     Number(effect.id),
@@ -43,6 +46,7 @@ const effectLookup = new Map(
   ]),
 );
 
+// 깊은 밤 디버프 정보 모으기
 const debuffLookup = new Map<string, { name: string; desc: string }>();
 for (const debuffTable of Object.values(relicRollAppData.debuffTables)) {
   for (const debuffEffect of debuffTable.effects) {
@@ -55,12 +59,16 @@ for (const debuffTable of Object.values(relicRollAppData.debuffTables)) {
 
 const debuffEffectIds = new Set(debuffLookup.keys());
 const emptyEffectId = 0xffffffff;
+
+// 유물 색상 한글 이름
 const relicColorNameMap: Record<RelicColor, string> = {
   Red: '빨강',
   Blue: '파랑',
   Yellow: '노랑',
   Green: '초록',
 };
+
+// 유물 이름에 붙는 색상 표현
 const relicColorAdjectiveMap: Record<RelicColor, string> = {
   Red: '불타는',
   Blue: '촉촉한',
@@ -96,21 +104,25 @@ type SaveRelicStats = {
   debuffRelicCount: number;
 };
 
+// 파일 크기 표시
 function formatBytes(value: number) {
   if (value < 1024) return `${value} B`;
   if (value < 1024 * 1024) return `${(value / 1024).toFixed(1)} KB`;
   return `${(value / 1024 / 1024).toFixed(1)} MB`;
 }
 
+// 지원하는 세이브 파일 확인
 function isSupportedSaveFile(file: File) {
   const lowerName = file.name.toLowerCase();
   return supportedSaveExtensions.some((extension) => lowerName.endsWith(extension));
 }
 
+// 지원하지 않는 파일 안내
 function getUnsupportedFileMessage(file: File) {
   return `${file.name}은 지원하지 않는 파일 형식입니다. .sl2, .co2, .dat 파일을 업로드해 주세요.`;
 }
 
+// 유물 이름 한글 표현 맞추기
 function normalizeRelicName(name: string, color: RelicColor) {
   const colorAdjective = relicColorAdjectiveMap[color];
   let normalizedName = name.replace(relicNameColorWordPattern, colorAdjective);
@@ -122,24 +134,29 @@ function normalizeRelicName(name: string, color: RelicColor) {
   return normalizedName.replace(/\bScene\b/g, '풍경');
 }
 
+// 분석한 유물 이름 찾기
 function getRelicName(relic: ParsedRelic) {
   const color = getRelicColor(relic);
   const name = relicLookup.get(relic.itemId)?.name ?? `알 수 없는 유물 ${relic.itemId}`;
   return normalizeRelicName(name, color);
 }
 
+// 분석한 유물 색상 찾기
 function getRelicColor(relic: ParsedRelic): RelicColor {
   return relicLookup.get(relic.itemId)?.color ?? relic.color;
 }
 
+// 색상 한글 이름 찾기
 function getColorName(color: RelicColor): string {
   return relicColorNameMap[color] || color;
 }
 
+// 비어있지 않은 효과 번호 확인
 function isUsableEffectId(effectId: number) {
   return effectId !== emptyEffectId && effectId !== -1;
 }
 
+// 효과 번호를 표시 정보로 변환
 function getEffectDisplay(effectId: number): EffectDisplay {
   const isDebuff = debuffEffectIds.has(String(effectId));
   const effect = effectLookup.get(effectId);
@@ -162,6 +179,7 @@ function getEffectDisplay(effectId: number): EffectDisplay {
   };
 }
 
+// 유물의 버프와 디버프 묶기
 function getRelicEffectGroups(relic: ParsedRelic): RelicEffectGroup[] {
   const buffIds = [relic.raw.effect1Id, relic.raw.effect2Id, relic.raw.effect3Id];
   const debuffIds = [relic.raw.effect4Id, relic.raw.effect5Id, relic.raw.effect6Id];
@@ -197,6 +215,7 @@ function getRelicEffectGroups(relic: ParsedRelic): RelicEffectGroup[] {
   });
 }
 
+// 분석한 유물 통계 계산
 function getSaveRelicStats(parsedRelics: ParsedRelic[]): SaveRelicStats {
   const colorCounts: Record<RelicColor, number> = {
     Red: 0,
@@ -243,6 +262,7 @@ function getSaveRelicStats(parsedRelics: ParsedRelic[]): SaveRelicStats {
   };
 }
 
+// 분석 결과 유물 카드
 function RelicResultCard({ relic }: { relic: ParsedRelic }) {
   const color = getRelicColor(relic);
   const effectGroups = getRelicEffectGroups(relic);
@@ -302,6 +322,7 @@ type SaveParserPageProps = {
   clearCache: () => void;
 };
 
+// 세이브 분석 페이지 전체
 function SaveParserPage({
   characterSlot,
   setCharacterSlot,
@@ -319,7 +340,9 @@ function SaveParserPage({
   const [isDragOver, setIsDragOver] = useState(false);
   const saveStats = result ? getSaveRelicStats(result.relics) : null;
 
+  // 세이브 파일 분석
   async function parseFile(file: File, slot: CharacterSlot) {
+    // 파일 형식 먼저 확인
     if (!isSupportedSaveFile(file)) {
       setSelectedFile(null);
       setResult(null);
@@ -336,6 +359,7 @@ function SaveParserPage({
     setIsParsing(true);
 
     try {
+      // 선택한 캐릭터 슬롯의 유물 읽기
       const parsed = await parseNightreignSaveFile(
         file,
         slot,
@@ -355,11 +379,13 @@ function SaveParserPage({
     }
   }
 
+  // 선택한 파일 바로 분석
   function handleFileUpload(file: File | undefined) {
     if (!file) return;
     void parseFile(file, characterSlot);
   }
 
+  // 파일 드래그 상태 표시
   function handleUploadDrag(event: DragEvent<HTMLLabelElement>) {
     event.preventDefault();
     event.stopPropagation();
@@ -371,6 +397,7 @@ function SaveParserPage({
     }
   }
 
+  // 끌어온 파일 분석
   function handleUploadDrop(event: DragEvent<HTMLLabelElement>) {
     handleUploadDrag(event);
     handleFileUpload(event.dataTransfer.files[0]);
@@ -385,6 +412,7 @@ function SaveParserPage({
         <span className="option-count">{result ? `${result.relics.length} relics` : 'ready'}</span>
       </div>
 
+      {/* 파일과 캐릭터 슬롯 선택 */}
       <div className="save-parser-layout">
         <div className="calc-panel save-parser-controls">
           <label>
@@ -455,6 +483,7 @@ function SaveParserPage({
           {error ? <p className="save-parser-error">{error}</p> : null}
         </div>
 
+        {/* 유물 분석 통계 */}
         <div className="calc-panel save-parser-summary">
           <h3>분석 결과</h3>
           {isParsing ? <p className="muted-text">분석 중...</p> : null}
@@ -508,6 +537,7 @@ function SaveParserPage({
         </div>
       </div>
 
+      {/* 분석한 유물 카드 목록 */}
       {result ? (
         <div className="option-card-grid save-relic-grid">
           {result.relics.map((relic) => (

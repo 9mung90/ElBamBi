@@ -57,6 +57,7 @@ type PresetComparisonRow = {
   differenceText: string;
 };
 
+// 프리셋 기본 설정
 const ALL_CHARACTER_NAME = '전체 캐릭터';
 const EMPTY_PRESET_SLOTS: PresetSlotRelics = [null, null, null, null, null, null];
 const PRESET_SLOT_LABELS = ['1', '2', '3'];
@@ -69,6 +70,7 @@ const PRESET_COLOR_MODE_OPTIONS: Array<{ value: PresetColorMode; label: string }
 
 void PRESET_COLOR_MODE_OPTIONS;
 
+// 유물과 효과 번호별 데이터
 const relicItemColorById = new Map(relicItemColorMap.map((entry) => [entry.itemId, entry]));
 const relicEffectById = new Map(relicEffectsKo.map((effect) => [String(effect.id), effect]));
 const relicCatalogById = new Map(relics.map((relic) => [relic.id, relic]));
@@ -87,6 +89,7 @@ for (const debuffTable of Object.values(relicRollAppData.debuffTables)) {
   }
 }
 
+// 유물과 캐릭터 및 그릇 이미지 가져오기
 const relicAssetUrls = import.meta.glob('../assets/images/relics/**/*.webp', {
   eager: true,
   import: 'default',
@@ -109,6 +112,7 @@ const vesselAssetUrlsByLower = new Map(
   Object.entries(vesselAssetUrls).map(([path, url]) => [path.toLowerCase(), url]),
 );
 
+// 유물 이미지 경로 변환
 function resolveRelicImageUrl(imageUrl: string | undefined) {
   if (!imageUrl) return undefined;
   if (!imageUrl.startsWith('/src/assets/images/relics/')) return imageUrl;
@@ -117,6 +121,7 @@ function resolveRelicImageUrl(imageUrl: string | undefined) {
   return relicAssetUrls[assetPath] ?? imageUrl;
 }
 
+// 캐릭터 이미지 경로 변환
 function resolveNightAssetUrl(imageUrl: string | undefined) {
   if (!imageUrl) return undefined;
   if (!imageUrl.startsWith('/assets/images/night/')) return imageUrl;
@@ -125,6 +130,7 @@ function resolveNightAssetUrl(imageUrl: string | undefined) {
   return nightAssetUrls[assetPath] ?? nightAssetUrlsByLower.get(assetPath.toLowerCase()) ?? imageUrl;
 }
 
+// 그릇 이미지 경로 변환
 function resolveVesselImageUrl(imageUrl: string | undefined) {
   if (!imageUrl) return undefined;
   if (!imageUrl.startsWith('/src/assets/images/Vessels/')) return imageUrl;
@@ -137,10 +143,12 @@ function resolveVesselImageUrl(imageUrl: string | undefined) {
   );
 }
 
+// 캐릭터 아이콘 찾기
 function getNightfarerIconUrl(nightfarer: { nameImageUrl: string }) {
   return resolveNightAssetUrl(nightfarer.nameImageUrl);
 }
 
+// 그릇 대표 이미지 찾기
 function getVesselImageUrl(vessel: Vessel) {
   const imageUrl = vessel.nameImages
     .split('|')
@@ -150,6 +158,7 @@ function getVesselImageUrl(vessel: Vessel) {
   return resolveVesselImageUrl(imageUrl);
 }
 
+// 유물 효과 번호 목록
 function getRelicEffects(relic: Relic) {
   const mappedRelic = relic.id >= 2000 ? relicItemColorById.get(relic.id) : undefined;
   if (mappedRelic?.effects?.length) return mappedRelic.effects;
@@ -166,6 +175,7 @@ function getRelicEffects(relic: Relic) {
   }
 }
 
+// 유물 효과 상세 정보
 function getRelicEffectDetails(relic: Relic): RelicEffect[] {
   if (relic.id < 2000) return [];
 
@@ -174,8 +184,10 @@ function getRelicEffectDetails(relic: Relic): RelicEffect[] {
     .filter((effect): effect is RelicEffect => Boolean(effect));
 }
 
+// 유물 검색 함수
 function matchesRelicSearch(relic: Relic, query: string) {
   const normalizedQuery = query.trim().toLowerCase();
+  // 검색어가 없으면 전체 표시
   if (!normalizedQuery) return true;
 
   return [
@@ -199,10 +211,12 @@ function matchesRelicSearch(relic: Relic, query: string) {
     .some((value) => String(value).toLowerCase().includes(normalizedQuery));
 }
 
+// 빈 프리셋 슬롯 만들기
 function createEmptyPresetSlots(): PresetSlotRelics {
   return [...EMPTY_PRESET_SLOTS] as PresetSlotRelics;
 }
 
+// 구분자로 이어진 프리셋 목록 나누기
 function splitPresetList(value: string | undefined) {
   if (!value) return [];
 
@@ -212,6 +226,7 @@ function splitPresetList(value: string | undefined) {
     .filter(Boolean);
 }
 
+// 유물 색상 표기 맞추기
 function normalizeRelicColor(color: string | undefined) {
   return normalizeSharedRelicColor(color);
 }
@@ -224,12 +239,14 @@ function getRelicColorClass(color: string | undefined) {
   return getSharedRelicColorClass(color);
 }
 
+// 캐릭터에 맞는 그릇 목록
 function getVesselsForCharacter(characterName: string) {
   return vessels.filter(
     (vessel) => vessel.character === characterName || vessel.character === ALL_CHARACTER_NAME,
   );
 }
 
+// 캐릭터 기본 그릇 찾기
 function getDefaultVesselIndex(characterName: string) {
   const characterVessels = getVesselsForCharacter(characterName);
   return (
@@ -239,29 +256,35 @@ function getDefaultVesselIndex(characterName: string) {
   );
 }
 
+// 그릇의 일반 또는 깊은 밤 슬롯 색상
 function getVesselColors(vessel: Vessel | undefined, colorMode: PresetColorMode) {
   if (!vessel) return [];
 
   return splitPresetList(colorMode === 'deep' ? vessel.deepRelicColors : vessel.relicColors);
 }
 
+// 프리셋 전체 슬롯 색상
 function getPresetVesselSlotColors(vessel: Vessel | undefined) {
   return [...getVesselColors(vessel, 'normal'), ...getVesselColors(vessel, 'deep')];
 }
 
+// 프리셋 슬롯 모드 이름
 function getPresetSlotModeLabel(slotIndex: number) {
   return slotIndex < 3 ? '일반' : '깊은 밤';
 }
 
+// 화면에 표시할 슬롯 번호
 function getPresetSlotDisplayIndex(slotIndex: number) {
   return (slotIndex % 3) + 1;
 }
 
+// 깊은 밤 유물 확인
 function isDeepNightPresetRelic(relic: StoredRelic) {
   const modeId = relic.modeId.toLowerCase();
   return modeId.includes('deep') || modeId.includes('dn') || Boolean(relic.debuffs?.length);
 }
 
+// 유물을 선택한 슬롯에 넣을 수 있는지 확인
 function canRelicFitSlot(relic: StoredRelic, slotColor: string | undefined, slotIndex?: number) {
   const normalizedSlotColor = normalizeRelicColor(slotColor);
   if (!normalizedSlotColor) return false;
@@ -273,6 +296,7 @@ function canRelicFitSlot(relic: StoredRelic, slotColor: string | undefined, slot
   return normalizeRelicColor(relic.color) === normalizedSlotColor;
 }
 
+// 그릇 변경 후 맞지 않는 슬롯 정리
 function sanitizePresetSlots(
   currentSlots: PresetSlotRelics,
   nextSlotColors: string[],
@@ -288,6 +312,7 @@ function sanitizePresetSlots(
   }) as PresetSlotRelics;
 }
 
+// 보유 목록에서 사라진 유물 제거
 function removeMissingPresetRelics(
   currentSlots: PresetSlotRelics,
   nextOwnedRelics: StoredRelic[],
@@ -299,6 +324,7 @@ function removeMissingPresetRelics(
   ) as PresetSlotRelics;
 }
 
+// 보유 유물 검색 함수
 function matchesStoredRelicPresetSearch(relic: StoredRelic, searchQuery: string) {
   const normalizedQuery = searchQuery.trim().toLowerCase();
   if (!normalizedQuery) return true;
@@ -326,10 +352,12 @@ function matchesStoredRelicPresetSearch(relic: StoredRelic, searchQuery: string)
     .some((value) => String(value).toLowerCase().includes(normalizedQuery));
 }
 
+// 비어있지 않은 효과 번호 확인
 function isUsableEffectId(effectId: number) {
   return effectId !== EMPTY_EFFECT_ID && effectId !== -1;
 }
 
+// 세이브 캐시 유물 이름
 function getCachedSaveRelicName(relic: ParsedRelic) {
   return (
     relicItemColorById.get(relic.itemId)?.name ??
@@ -338,6 +366,7 @@ function getCachedSaveRelicName(relic: ParsedRelic) {
   );
 }
 
+// 세이브 캐시 유물 색상
 function getCachedSaveRelicColor(relic: ParsedRelic) {
   return (
     relicItemColorById.get(relic.itemId)?.color ??
@@ -346,14 +375,17 @@ function getCachedSaveRelicColor(relic: ParsedRelic) {
   );
 }
 
+// 유물 번호로 이름 찾기
 function getRelicNameByItemId(itemId: number) {
   return relicItemColorById.get(itemId)?.name ?? relicCatalogById.get(itemId)?.name ?? `유물 ${itemId}`;
 }
 
+// 유물 번호로 색상 찾기
 function getRelicColorByItemId(itemId: number) {
   return relicItemColorById.get(itemId)?.color ?? relicCatalogById.get(itemId)?.color ?? '';
 }
 
+// 세이브 효과를 보유 유물 옵션으로 변환
 function toCachedSaveRelicOption(effectId: number, slotIndex: number): StoredRelicOption | null {
   if (!isUsableEffectId(effectId)) return null;
 
@@ -371,6 +403,7 @@ function toCachedSaveRelicOption(effectId: number, slotIndex: number): StoredRel
   };
 }
 
+// 세이브 분석 캐시의 유물 가져오기
 function getCachedSaveRelics() {
   try {
     const cachedResult = localStorage.getItem(SAVE_PARSER_CACHE_KEY);
@@ -420,6 +453,7 @@ function getCachedSaveRelics() {
   }
 }
 
+// 서버와 세이브 캐시 유물 합치기
 function mergePresetRelics(storedRelics: StoredRelic[], cachedSaveRelics: StoredRelic[]) {
   const relicsById = new Map<string, StoredRelic>();
 
@@ -430,6 +464,7 @@ function mergePresetRelics(storedRelics: StoredRelic[], cachedSaveRelics: Stored
   return [...relicsById.values()];
 }
 
+// 퀘스트 유물 확인
 function isQuestRelicItem(itemId: number) {
   const itemColorEntry = relicItemColorById.get(itemId);
   const catalogEntry = relicCatalogById.get(itemId);
@@ -441,12 +476,14 @@ function isQuestRelicItem(itemId: number) {
   return typeText.includes('quest') || typeText.includes('퀘스트');
 }
 
+// 저장 유물 이미지 찾기
 function getStoredRelicImageUrl(relic: StoredRelic) {
   if (!isQuestRelicItem(relic.itemId)) return undefined;
 
   return resolveRelicImageUrl(relicCatalogById.get(relic.itemId)?.image);
 }
 
+// 저장 유물의 옵션과 디버프 묶기
 function getStoredRelicOptionGroups(relic: StoredRelic, includeDebuffs = true) {
   return [1, 2, 3]
     .map((slot) => {
@@ -466,6 +503,7 @@ function getStoredRelicOptionGroups(relic: StoredRelic, includeDebuffs = true) {
     .filter((group): group is NonNullable<typeof group> => Boolean(group));
 }
 
+// 세이브 프리셋 효과를 옵션과 디버프로 묶기
 function getSavePresetSlotOptionGroups(effectIds: number[], includeDebuffs = true) {
   return [1, 2, 3]
     .map((slot) => {
@@ -485,14 +523,17 @@ function getSavePresetSlotOptionGroups(effectIds: number[], includeDebuffs = tru
     .filter((group): group is NonNullable<typeof group> => Boolean(group));
 }
 
+// 세이브 캐시에서 온 유물 확인
 function isCachedSaveRelic(relic: StoredRelic) {
   return relic.relicId.startsWith('save-cache-');
 }
 
+// 깊은 밤 슬롯의 디버프 포함 여부
 function shouldIncludePresetDebuffs(slotIndex: number) {
   return slotIndex >= 3;
 }
 
+// 프리셋에 저장할 유물 효과 번호
 function getPresetRelicEffectIds(relic: StoredRelic, includeDebuffs: boolean) {
   const buffEffectIds = [1, 2, 3].map(
     (slot) => relic.options.find((option) => option.slot === slot)?.effectId ?? EMPTY_EFFECT_ID,
@@ -506,6 +547,7 @@ function getPresetRelicEffectIds(relic: StoredRelic, includeDebuffs: boolean) {
   return [...buffEffectIds, ...debuffEffectIds];
 }
 
+// 보유 유물을 프리셋 슬롯 데이터로 변환
 function toPresetSlotInput(relic: StoredRelic, slotIndex: number): RelicPresetSlotInput {
   if (isCachedSaveRelic(relic)) {
     return {
@@ -523,10 +565,12 @@ function toPresetSlotInput(relic: StoredRelic, slotIndex: number): RelicPresetSl
   };
 }
 
+// 보유 유물 출처 이름
 function getStoredRelicSourceLabel(source: StoredRelic['source']) {
   return source === 'builder' ? '제작' : '세이브';
 }
 
+// 프리셋에 넣을 유물 선택 카드
 function StoredRelicPresetChoice({
   disabledReason,
   includeDebuffs,
@@ -592,6 +636,7 @@ function StoredRelicPresetChoice({
   );
 }
 
+// 프리셋 캐릭터 선택 버튼
 function PresetCharacterChoice({
   isSelected,
   name,
@@ -616,6 +661,7 @@ function PresetCharacterChoice({
   );
 }
 
+// 프리셋 그릇 선택 버튼
 function PresetVesselChoice({
   isSelected,
   onSelect,
@@ -652,6 +698,7 @@ function PresetVesselChoice({
   );
 }
 
+// 유물 프리셋 제작 화면
 function RelicPresetBuilder({
   authUserId,
   searchQuery,
@@ -677,6 +724,7 @@ function RelicPresetBuilder({
   const [isLoadingOwnedRelics, setIsLoadingOwnedRelics] = useState(false);
   const [ownedRelicNotice, setOwnedRelicNotice] = useState<string | null>(null);
 
+  // 캐릭터에 맞는 그릇과 슬롯 색상
   const availableVessels = useMemo(
     () => getVesselsForCharacter(selectedCharacter),
     [selectedCharacter],
@@ -704,6 +752,8 @@ function RelicPresetBuilder({
     [normalSlotColors, deepSlotColors],
   );
   const activeSlotColor = activeSlotIndex === null ? undefined : slotColors[activeSlotIndex];
+
+  // 프리셋 슬롯에 놓인 유물
   const selectedRelics = useMemo(
     () =>
       placedRelicIds.map((relicId) =>
@@ -715,6 +765,8 @@ function RelicPresetBuilder({
   const activeSlotCandidateCount = activeSlotColor
     ? ownedRelics.filter((relic) => canRelicFitSlot(relic, activeSlotColor, activeSlotIndex ?? undefined)).length
     : 0;
+
+  // 현재 슬롯에 넣을 수 있는 보유 유물
   const visibleCandidateRelics = useMemo(
     () =>
       activeSlotIndex !== null && activeSlotColor
@@ -729,6 +781,7 @@ function RelicPresetBuilder({
     [activeSlotColor, activeSlotIndex, ownedRelics, placedRelicIds, searchQuery],
   );
 
+  // 서버와 세이브 캐시에서 보유 유물 불러오기
   useEffect(() => {
     let isCurrentRequest = true;
 
@@ -783,6 +836,7 @@ function RelicPresetBuilder({
     };
   }, [authUserId, storageRefreshKey]);
 
+  // 현재 슬롯의 유물 선택
   function handleSelectRelic(relic: StoredRelic) {
     if (activeSlotIndex === null) return;
     if (!canRelicFitSlot(relic, activeSlotColor, activeSlotIndex)) return;
@@ -808,6 +862,7 @@ function RelicPresetBuilder({
     setActiveSlotIndex(null);
   }
 
+  // 프리셋 슬롯 비우기
   function handleClearSlot(slotIndex: number) {
     setPlacedRelicIds((currentSlots) => {
       const nextSlots = [...currentSlots] as PresetSlotRelics;
@@ -819,6 +874,7 @@ function RelicPresetBuilder({
     );
   }
 
+  // 프리셋 요약 슬롯 펼치기
   function toggleSummarySlot(slotIndex: number) {
     if (!selectedRelics[slotIndex]) return;
     setExpandedSummarySlotIndexes((currentIndexes) =>
@@ -828,12 +884,14 @@ function RelicPresetBuilder({
     );
   }
 
+  // 키보드로 요약 슬롯 펼치기
   function handleSummarySlotKeyDown(event: KeyboardEvent<HTMLLIElement>, slotIndex: number) {
     if (event.key !== 'Enter' && event.key !== ' ') return;
     event.preventDefault();
     toggleSummarySlot(slotIndex);
   }
 
+  // 프리셋 캐릭터 변경
   function handleSelectCharacter(characterName: string) {
     const nextVesselIndex = getDefaultVesselIndex(characterName);
     const nextVessel = getVesselsForCharacter(characterName).find(
@@ -850,6 +908,7 @@ function RelicPresetBuilder({
     );
   }
 
+  // 프리셋 그릇 변경
   function handleSelectVessel(nextVessel: Vessel) {
     const nextSlotColors = getPresetVesselSlotColors(nextVessel);
 
@@ -861,6 +920,7 @@ function RelicPresetBuilder({
     );
   }
 
+  // 완성한 프리셋 저장
   async function handleSavePreset() {
     const trimmedName = presetName.trim();
     setPresetSaveNotice(null);
@@ -920,6 +980,7 @@ function RelicPresetBuilder({
     }
   }
 
+  // 그릇의 유물 슬롯 버튼
   function renderPresetSlotButton(slotLabel: string, slotIndex: number) {
     const slotColor = slotColors[slotIndex];
     const placedRelic = selectedRelics[slotIndex];
@@ -942,6 +1003,7 @@ function RelicPresetBuilder({
     );
   }
 
+  // 선택한 유물 요약 슬롯
   function renderSummarySlotItem(slotLabel: string, slotIndex: number) {
     const slotColor = slotColors[slotIndex];
     const placedRelic = selectedRelics[slotIndex];
@@ -1024,6 +1086,7 @@ function RelicPresetBuilder({
       </div>
 
       <div className="relic-preset-layout">
+        {/* 캐릭터와 그릇 및 프리셋 이름 설정 */}
         <section className="calc-panel relic-preset-controls" aria-label="프리셋 설정">
           <div className="calc-control-grid relic-preset-control-grid">
             <div className="relic-preset-current-character">
@@ -1152,6 +1215,7 @@ function RelicPresetBuilder({
           </div>
         </section>
 
+        {/* 일반과 깊은 밤 유물 슬롯 */}
         <div className="relic-preset-main">
           <div className="relic-preset-slot-groups" aria-label="유물 프리셋 슬롯">
             <section className="relic-preset-slot-section">
@@ -1251,6 +1315,7 @@ function RelicPresetBuilder({
             </section>
           ) : null}
 
+          {/* 완성한 프리셋 요약 */}
           <section className="calc-panel relic-preset-summary" aria-label="프리셋 결과">
             <div className="relic-builder-result-heading">
               <h3>배치 결과</h3>
@@ -1354,20 +1419,24 @@ function RelicPresetBuilder({
   );
 }
 
+// 저장 프리셋의 그릇 찾기
 function getPresetVessel(vesselIndex: number) {
   return vessels.find((vessel) => vessel.index === vesselIndex);
 }
 
+// 저장 프리셋의 캐릭터 찾기
 function getPresetNightfarer(characterName: string) {
   return nightfarers.find((nightfarer) => nightfarer.name === characterName);
 }
 
+// 저장 프리셋 슬롯을 순서대로 정리
 function getSavedPresetSlots(slots: RelicPresetSlotInput[]) {
   const slotsByIndex = new Map(slots.map((slot) => [slot.slotIndex, slot]));
 
   return EMPTY_PRESET_SLOTS.map((_, slotIndex) => slotsByIndex.get(slotIndex) ?? null);
 }
 
+// 저장 프리셋 그릇 미리보기
 function SavedPresetVesselPreview({ vessel }: { vessel: Vessel | undefined }) {
   const slotColors = getPresetVesselSlotColors(vessel);
 
@@ -1385,6 +1454,7 @@ function SavedPresetVesselPreview({ vessel }: { vessel: Vessel | undefined }) {
   );
 }
 
+// 프리셋 슬롯의 옵션과 디버프 묶기
 function getPresetSlotOptionGroups(slot: RelicPresetSlotInput, relicsById: Map<string, StoredRelic>) {
   const storedRelic = slot.relicRefType === 'stored' ? relicsById.get(slot.relicId) : undefined;
   const includeDebuffs = shouldIncludePresetDebuffs(slot.slotIndex);
@@ -1400,11 +1470,13 @@ function getPresetSlotOptionGroups(slot: RelicPresetSlotInput, relicsById: Map<s
   return [];
 }
 
+// 비교 문구에서 숫자 찾기
 function getComparisonValueMatch(text: string) {
   const matches = [...text.matchAll(/([+-]?\d+(?:\.\d+)?)\s*(%)?/g)];
   return matches[matches.length - 1] ?? null;
 }
 
+// 비교할 옵션의 기본 이름 정리
 function cleanComparisonBaseName(value: string) {
   return value
     .replace(/\s+/g, ' ')
@@ -1412,6 +1484,7 @@ function cleanComparisonBaseName(value: string) {
     .trim();
 }
 
+// 프리셋 효과를 비교용 데이터로 변환
 function getComparablePresetEffect(
   effect: StoredRelicOption,
   slotIndex: number,
@@ -1441,6 +1514,7 @@ function getComparablePresetEffect(
   };
 }
 
+// 비교할 효과 이름을 같은 키로 정리
 function getComparisonKey(name: string) {
   return name
     .toLowerCase()
@@ -1450,10 +1524,12 @@ function getComparisonKey(name: string) {
     .trim();
 }
 
+// 비교 수치 표시
 function formatComparisonNumber(value: number) {
   return Number.isInteger(value) ? String(value) : String(Number(value.toFixed(2)));
 }
 
+// 두 프리셋 효과 차이 문구
 function getComparisonDifferenceText(
   presetA: ComparablePresetEffect | null,
   presetB: ComparablePresetEffect | null,
@@ -1477,6 +1553,7 @@ function getComparisonDifferenceText(
   return delta > 0 ? `오른쪽 프리셋이 ${amount} 높음` : `왼쪽 프리셋이 ${amount} 높음`;
 }
 
+// 프리셋의 일반 효과와 디버프 모으기
 function collectPresetComparableEffects(
   preset: RelicPreset,
   relicsById: Map<string, StoredRelic>,
@@ -1499,6 +1576,7 @@ function collectPresetComparableEffects(
   return { normalOptions, debuffs };
 }
 
+// 두 프리셋 효과 비교 행 만들기
 function buildComparisonRows(
   presetAEffects: ComparablePresetEffect[],
   presetBEffects: ComparablePresetEffect[],
@@ -1544,6 +1622,7 @@ function buildComparisonRows(
   });
 }
 
+// 두 프리셋 전체 비교
 function comparePresets(
   presetA: RelicPreset,
   presetB: RelicPreset,
@@ -1558,10 +1637,12 @@ function comparePresets(
   };
 }
 
+// 프리셋 비교 선택 이름
 function getPresetCompareLabel(preset: RelicPreset) {
   return `${preset.name} · ${preset.characterName}`;
 }
 
+// 프리셋 비교 머리글
 function PresetComparePresetHeader({
   label,
   preset,
@@ -1585,6 +1666,7 @@ function PresetComparePresetHeader({
   );
 }
 
+// 비교할 효과 수치 표시
 function PresetCompareEffectValue({ effect }: { effect: ComparablePresetEffect }) {
   return (
     <div className="preset-compare-value">
@@ -1594,6 +1676,7 @@ function PresetCompareEffectValue({ effect }: { effect: ComparablePresetEffect }
   );
 }
 
+// 비교 프리셋의 특정 슬롯 찾기
 function getPresetCompareSlot(
   preset: RelicPreset | null,
   slotIndex: number,
@@ -1601,6 +1684,7 @@ function getPresetCompareSlot(
   return preset ? getSavedPresetSlots(preset.slots)[slotIndex] : null;
 }
 
+// 옵션 슬롯 번호에 맞는 그룹 찾기
 function getPresetCompareGroup(
   optionGroups: ReturnType<typeof getPresetSlotOptionGroups>,
   optionSlot: number,
@@ -1608,6 +1692,7 @@ function getPresetCompareGroup(
   return optionGroups.find((group) => group.slot === optionSlot) ?? null;
 }
 
+// 프리셋 비교 옵션 한 칸
 function PresetCompareOptionCell({
   isDebuff = false,
   option,
@@ -1639,6 +1724,7 @@ function PresetCompareOptionCell({
   );
 }
 
+// 같은 슬롯의 두 유물 비교
 function PresetCompareRelicSlotPair({
   leftSlot,
   relicsById,
@@ -1687,6 +1773,7 @@ function PresetCompareRelicSlotPair({
   );
 }
 
+// 일반 또는 깊은 밤 슬롯 비교 구역
 function PresetCompareRelicSlotSection({
   leftPreset,
   relicsById,
@@ -1718,6 +1805,7 @@ function PresetCompareRelicSlotSection({
   );
 }
 
+// 두 프리셋의 공통 효과 비교
 function PresetCompareCommonRows({
   emptyText,
   rows,
@@ -1765,6 +1853,7 @@ function PresetCompareCommonRows({
   );
 }
 
+// 저장 프리셋 비교 화면
 function PresetCompareSection({
   authUserId,
   storageRefreshKey,
@@ -1790,6 +1879,8 @@ function PresetCompareSection({
     () => presets.find((preset) => preset.presetId === selectedPresetBId) ?? null,
     [presets, selectedPresetBId],
   );
+
+  // 선택한 두 프리셋 비교 결과
   const comparison = useMemo(
     () =>
       selectedPresetA && selectedPresetB
@@ -1798,6 +1889,7 @@ function PresetCompareSection({
     [relicsById, selectedPresetA, selectedPresetB],
   );
 
+  // 비교할 프리셋과 보유 유물 불러오기
   useEffect(() => {
     let isCurrentRequest = true;
 
@@ -1838,6 +1930,7 @@ function PresetCompareSection({
     };
   }, [authUserId, storageRefreshKey]);
 
+  // 삭제된 프리셋 비교 선택 정리
   useEffect(() => {
     if (selectedPresetAId && !presets.some((preset) => preset.presetId === selectedPresetAId)) {
       setSelectedPresetAId('');
@@ -1847,6 +1940,7 @@ function PresetCompareSection({
     }
   }, [presets, selectedPresetAId, selectedPresetBId]);
 
+  // 프리셋 비교 결과 화면
   return (
     <section className="calc-panel preset-compare-section" aria-labelledby="preset-compare-title">
       <div className="relic-builder-result-heading">
@@ -1861,6 +1955,7 @@ function PresetCompareSection({
       {compareNotice ? <p className="storage-notice">{compareNotice}</p> : null}
       {isLoadingCompareData ? <p className="muted-text">저장된 프리셋을 불러오는 중...</p> : null}
 
+      {/* 비교할 왼쪽과 오른쪽 프리셋 선택 */}
       <div className="preset-compare-selectors">
         <label>
           <span>왼쪽 프리셋</span>
@@ -1917,6 +2012,7 @@ function PresetCompareSection({
         <p className="muted-text">비교할 프리셋 2개를 선택하세요.</p>
       ) : null}
 
+      {/* 유물 슬롯과 공통 옵션 비교 */}
       {comparison ? (
         <div className="preset-compare-results">
           <div className="preset-compare-sides">
@@ -1967,6 +2063,7 @@ function PresetCompareSection({
   );
 }
 
+// 프리셋 옵션 목록
 function RelicPresetOptionList({
   optionGroups,
 }: {
@@ -1998,6 +2095,7 @@ function RelicPresetOptionList({
   );
 }
 
+// 저장 프리셋의 빈 슬롯 요약
 function SavedPresetSlotSummary({
   isPopoverOpen,
   onTogglePopover,
@@ -2025,6 +2123,7 @@ function SavedPresetSlotSummary({
   );
 }
 
+// 저장 프리셋 유물 슬롯 요약
 function RelicPresetSlotSummary({
   isPopoverOpen = false,
   onTogglePopover,
@@ -2121,6 +2220,7 @@ function RelicPresetSlotSummary({
   );
 }
 
+// 저장한 유물 프리셋 목록
 function SavedRelicPresetsView({
   authUserId,
   storageRefreshKey,
@@ -2156,6 +2256,7 @@ function SavedRelicPresetsView({
     [activePresetSlot, relicsById],
   );
 
+  // 저장 프리셋 다시 불러오기
   function refreshPresets() {
     setActivePresetSlotKey(null);
 
@@ -2183,6 +2284,7 @@ function SavedRelicPresetsView({
       .finally(() => setIsLoadingPresets(false));
   }
 
+  // 저장 프리셋 삭제
   async function handleDeletePreset(preset: RelicPreset) {
     if (!authUserId || deletingPresetId) return;
     if (!window.confirm(`${preset.name || '이 프리셋'}을 삭제할까요?`)) return;
@@ -2206,10 +2308,12 @@ function SavedRelicPresetsView({
     }
   }
 
+  // 로그인 사용자 프리셋 불러오기
   useEffect(() => {
     refreshPresets();
   }, [authUserId, storageRefreshKey]);
 
+  // 열린 슬롯이 사라지면 닫기
   useEffect(() => {
     if (!activePresetSlotKey) return undefined;
 
@@ -2328,16 +2432,21 @@ function SavedRelicPresetsView({
   );
 }
 
+// 유물 도감 카드
 function RelicCard({ relic }: { relic: Relic }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const effects = getRelicEffects(relic);
   const effectDetails = getRelicEffectDetails(relic);
   const hasEffectDetails = effectDetails.length > 0;
   const relicImageUrl = resolveRelicImageUrl(relic.image);
+
+  // 유물 카드 펼치기
   const toggleExpanded = () => {
     if (!hasEffectDetails) return;
     setIsExpanded((current) => !current);
   };
+
+  // 키보드로 유물 카드 펼치기
   const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
     if (!hasEffectDetails || (event.key !== 'Enter' && event.key !== ' ')) return;
     event.preventDefault();
@@ -2399,6 +2508,7 @@ function RelicCard({ relic }: { relic: Relic }) {
   );
 }
 
+// 유물 페이지 전체
 function RelicsPage({
   searchQuery,
   authUserId,
@@ -2412,6 +2522,8 @@ function RelicsPage({
 }) {
   const [activeMode, setActiveMode] = useState<RelicPageMode>('catalog');
   const [collectionMode, setCollectionMode] = useState<RelicCollectionMode>('catalog');
+
+  // 검색 조건에 맞는 유물 도감
   const filteredRelics = useMemo(
     () => relics.filter((relic) => matchesRelicSearch(relic, searchQuery)),
     [searchQuery],
@@ -2421,18 +2533,21 @@ function RelicsPage({
   const isSavedPresetsOpen = activeMode === 'saved';
   const isPresetCompareOpen = activeMode === 'compare';
 
+  // 로그아웃하면 보호 화면 닫기
   useEffect(() => {
     if (!authUserId && activeMode !== 'catalog') {
       setActiveMode('catalog');
     }
   }, [activeMode, authUserId]);
 
+  // 로그아웃하면 제작 유물 목록 닫기
   useEffect(() => {
     if (!authUserId && collectionMode === 'crafted') {
       setCollectionMode('catalog');
     }
   }, [authUserId, collectionMode]);
 
+  // 로그인이 필요한 유물 화면 열기
   function toggleProtectedMode(nextMode: ProtectedRelicPageMode) {
     setActiveMode((currentMode) => {
       if (currentMode === nextMode) return 'catalog';
@@ -2446,6 +2561,7 @@ function RelicsPage({
     });
   }
 
+  // 유물 도감과 제작 유물 전환
   function selectCollectionMode(nextMode: RelicCollectionMode) {
     setActiveMode('catalog');
 
@@ -2457,6 +2573,7 @@ function RelicsPage({
     setCollectionMode(nextMode);
   }
 
+  // 선택한 유물 화면 표시
   return (
     <section className="options-page" aria-labelledby="relics-title">
       <div className="options-page-heading">
@@ -2512,6 +2629,7 @@ function RelicsPage({
         </div>
       </div>
 
+      {/* 프리셋과 유물 목록 화면 전환 */}
       {activeMode === 'builder' ? (
         <RelicPresetBuilder
           authUserId={authUserId}

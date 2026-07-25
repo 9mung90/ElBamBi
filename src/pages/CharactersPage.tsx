@@ -8,6 +8,7 @@ type CharactersPageProps = {
   onSelectWeapon?: (weaponGroupId: number) => void;
 };
 
+// 캐릭터 이미지 가져오기
 const nightAssetUrls = import.meta.glob('../assets/images/night/**/*.webp', {
   eager: true,
   import: 'default',
@@ -18,12 +19,14 @@ const nightAssetUrlsByLower = new Map(
   Object.entries(nightAssetUrls).map(([path, url]) => [path.toLowerCase(), url]),
 );
 
+// 스킨 이미지 가져오기
 const skinAssetUrls = import.meta.glob('../assets/images/skins/**/*.webp', {
   eager: true,
   import: 'default',
   query: '?url',
 }) as Record<string, string>;
 
+// 공통 스킨 이름
 const commonSkinNames: Record<number, string> = {
   0: '기본',
   1: '여명',
@@ -31,6 +34,7 @@ const commonSkinNames: Record<number, string> = {
   3: '추억',
 };
 
+// 캐릭터별 스킨 이름
 const characterSkinNames: Record<number, Record<number, string>> = {
   0: {
     4: '심연을 걷는 자',
@@ -74,10 +78,12 @@ const characterSkinNames: Record<number, Record<number, string>> = {
   },
 };
 
+// 스킨 이름 찾기
 function getSkinName(nightfarerIndex: number, skinIndex: number) {
   return commonSkinNames[skinIndex] ?? characterSkinNames[nightfarerIndex]?.[skinIndex] ?? '임시';
 }
 
+// 캐릭터 이미지 경로 변환
 function resolveNightAssetUrl(url: string) {
   if (!url.startsWith('/assets/images/night/')) return url;
 
@@ -85,6 +91,7 @@ function resolveNightAssetUrl(url: string) {
   return nightAssetUrls[assetPath] ?? nightAssetUrlsByLower.get(assetPath.toLowerCase()) ?? url;
 }
 
+// 캐릭터 스킨 목록
 function getSkinEntries(nightfarerIndex: number) {
   return Object.entries(skinAssetUrls)
     .map(([path, imageUrl]) => {
@@ -105,6 +112,7 @@ function getSkinEntries(nightfarerIndex: number) {
     .sort((left, right) => left.index - right.index);
 }
 
+// 이미지 주소 나누기
 function splitUrls(urls: string) {
   return urls
     .split('|')
@@ -113,6 +121,7 @@ function splitUrls(urls: string) {
     .map(resolveNightAssetUrl);
 }
 
+// 스킬 목록
 function getSkillEntries(nightfarer: Nightfarer) {
   const names = [nightfarer.skills, nightfarer.skill1, nightfarer.skill2, nightfarer.skill3].filter(
     Boolean,
@@ -132,6 +141,7 @@ function getSkillEntries(nightfarer: Nightfarer) {
   }));
 }
 
+// 장비 목록
 function getEquipmentEntries(nightfarer: Nightfarer) {
   const names = [nightfarer.equipment, nightfarer.equipment1, nightfarer.equipment2].filter(
     Boolean,
@@ -144,6 +154,7 @@ function getEquipmentEntries(nightfarer: Nightfarer) {
   }));
 }
 
+// 검색 함수
 function matchesCharacterSearch(nightfarer: Nightfarer, query: string) {
   const normalizedQuery = query.trim().toLowerCase();
   if (!normalizedQuery) return true;
@@ -167,10 +178,12 @@ function matchesCharacterSearch(nightfarer: Nightfarer, query: string) {
     .some((value) => String(value).toLowerCase().includes(normalizedQuery));
 }
 
+// 모바일 화면 확인
 function isMobileCharacterCardLayout() {
   return window.matchMedia('(max-width: 760px)').matches;
 }
 
+// 캐릭터 페이지 전체
 function CharactersPage({ searchQuery, onSelectWeapon }: CharactersPageProps) {
   const [selectedNightfarerIndex, setSelectedNightfarerIndex] = useState<number | null>(null);
   const [expandedNightfarerIndex, setExpandedNightfarerIndex] = useState<number | null>(null);
@@ -192,6 +205,7 @@ function CharactersPage({ searchQuery, onSelectWeapon }: CharactersPageProps) {
     [selectedNightfarer],
   );
 
+  // 전체 화면 스킨 닫기
   useEffect(() => {
     if (!fullscreenSkin) return undefined;
 
@@ -211,6 +225,7 @@ function CharactersPage({ searchQuery, onSelectWeapon }: CharactersPageProps) {
     };
   }, [fullscreenSkin]);
 
+  // 카드 키보드 조작
   function handleCharacterCardKeyDown(event: KeyboardEvent<HTMLElement>, nightfarerIndex: number) {
     if (event.target !== event.currentTarget) return;
     if (event.key !== 'Enter' && event.key !== ' ') return;
@@ -225,6 +240,7 @@ function CharactersPage({ searchQuery, onSelectWeapon }: CharactersPageProps) {
     setSelectedNightfarerIndex(nightfarerIndex);
   }
 
+  // 스킨 페이지
   if (selectedNightfarer) {
     return (
       <section className="options-page" aria-labelledby="character-skins-title">
@@ -287,6 +303,7 @@ function CharactersPage({ searchQuery, onSelectWeapon }: CharactersPageProps) {
     );
   }
 
+  // 캐릭터 페이지
   return (
     <section className="options-page" aria-labelledby="characters-title">
       <div className="options-page-heading">
@@ -301,6 +318,7 @@ function CharactersPage({ searchQuery, onSelectWeapon }: CharactersPageProps) {
           const equipment = getEquipmentEntries(nightfarer);
           const isExpanded = expandedNightfarerIndex === nightfarer.index;
 
+          // 캐릭터 카드
           return (
             <article
               className={`character-card character-card-button${isExpanded ? ' is-expanded' : ''}`}
@@ -309,6 +327,7 @@ function CharactersPage({ searchQuery, onSelectWeapon }: CharactersPageProps) {
               tabIndex={0}
               aria-expanded={isExpanded}
               onClick={() => {
+                // 모바일 카드 전체 펼침
                 if (isMobileCharacterCardLayout()) {
                   setExpandedNightfarerIndex((currentIndex) =>
                     currentIndex === nightfarer.index ? null : nightfarer.index,
@@ -366,6 +385,7 @@ function CharactersPage({ searchQuery, onSelectWeapon }: CharactersPageProps) {
                           className="equipment-pill equipment-pill-button"
                           key={item.name}
                           onClick={(event) => {
+                            // 장비 클릭 시 무기 페이지 이동
                             event.stopPropagation();
                             onSelectWeapon(weaponGroupId);
                           }}
@@ -386,6 +406,7 @@ function CharactersPage({ searchQuery, onSelectWeapon }: CharactersPageProps) {
                   type="button"
                   className="character-skin-button"
                   onClick={(event) => {
+                    // 스킨 페이지로 이동
                     event.stopPropagation();
                     setSelectedNightfarerIndex(nightfarer.index);
                   }}

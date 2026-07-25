@@ -20,6 +20,7 @@ export type OptionFilters = {
   stackable: boolean[];
 };
 
+// 옵션 분류 한글 이름
 export const optionCategoryLabels: Record<string, string> = {
   Utility: '유틸리티',
   Offensive: '공격',
@@ -33,25 +34,31 @@ export const optionCategoryLabels: Record<string, string> = {
   'Armament Skills': '무기 기술',
 };
 
+// 옵션 종류 한글 이름
 export const optionTypeLabels: Record<string, string> = {
   relic: '유물 옵션',
   weapon: '무기 옵션',
   talisman: '탈리스만 옵션',
 };
 
+// 중첩 여부 한글 이름
 export const optionStackableLabels: Record<string, string> = {
   true: '중첩 가능',
   false: '중첩 불가',
 };
 
+// 획득할 수 없는 옵션 제외
 const obtainableRelicEffects = relicEffectsKo.filter((option) => !option.unobtainable);
 
+// 필터에 표시할 선택 목록
 export const optionFilterOptions = buildOptionFilterOptions(obtainableRelicEffects);
 
+// 옵션 데이터에서 필터 목록 만들기
 function buildOptionFilterOptions(options: RelicEffect[]) {
   const categories: string[] = [];
   const types: string[] = [];
 
+  // 중복되지 않는 분류와 종류 모으기
   options.forEach((option) => {
     if (option.category && !categories.includes(option.category)) categories.push(option.category);
     if (option.type && !types.includes(option.type)) types.push(option.type);
@@ -64,6 +71,7 @@ function buildOptionFilterOptions(options: RelicEffect[]) {
   };
 }
 
+// 빈 옵션 필터 만들기
 export function createEmptyOptionFilters(): OptionFilters {
   return {
     categories: [],
@@ -72,17 +80,22 @@ export function createEmptyOptionFilters(): OptionFilters {
   };
 }
 
+// 검색 함수
 function matchesOptionSearch(option: RelicEffect, query: string) {
   const normalizedQuery = query.trim().toLowerCase();
+  // 검색어가 없으면 전체 표시
   if (!normalizedQuery) return true;
 
+  // 번호와 이름 및 분류와 설명에서 검색
   return [option.id, option.name, option.category, option.type, option.desc]
     .filter(Boolean)
     .some((value) => String(value).toLowerCase().includes(normalizedQuery));
 }
 
+// 선택한 필터와 옵션 비교
 function matchesOptionFilters(option: RelicEffect, filters: OptionFilters) {
   const stackable = Boolean(option.stackable);
+  // 선택하지 않은 필터는 전체 허용
   const matchesCategory =
     filters.categories.length === 0 || Boolean(option.category && filters.categories.includes(option.category));
   const matchesType = filters.types.length === 0 || filters.types.includes(option.type);
@@ -92,17 +105,21 @@ function matchesOptionFilters(option: RelicEffect, filters: OptionFilters) {
   return matchesCategory && matchesType && matchesStackable;
 }
 
+// 아이콘을 찾기 위한 옵션 문구
 function getOptionText(option: RelicEffect) {
   return [option.name, option.desc, option.category].filter(Boolean).join(' ');
 }
 
+// 옵션 내용에 맞는 아이콘 찾기
 function getOptionHeaderIcon(option: RelicEffect) {
   const text = getOptionText(option);
 
+  // HP 상태 이상 아이콘
   if (option.category === 'Impairment' && text.includes('HP')) {
     return { src: hpImpairmentIcon, alt: 'HP 상태 이상' };
   }
 
+  // 캐릭터 스킬과 어빌리티 아이콘
   if (option.category === 'Character Specific' && text.includes('스킬')) {
     return { src: characterSkillIcon, alt: '캐릭터 스킬' };
   }
@@ -114,6 +131,7 @@ function getOptionHeaderIcon(option: RelicEffect) {
     return { src: characterActiveIcon, alt: '캐릭터 어빌리티' };
   }
 
+  // 옵션 문구의 주요 단어에 맞는 아이콘
   if (text.includes('HP')) return { src: hpIcon, alt: 'HP' };
   if (text.includes('FP')) return { src: fpIcon, alt: 'FP' };
   if (text.includes('룬')) return { src: luneIcon, alt: '룬' };
@@ -127,6 +145,8 @@ function getOptionHeaderIcon(option: RelicEffect) {
     return { src: itemIcon, alt: '아이템' };
   }
   if (text.includes('걷기')) return { src: walkIcon, alt: '걷기' };
+
+  // 원거리 무기 관련 아이콘
   if (
     ['활', '화살', '볼트', '대궁', '석궁', '발리스타'].some((keyword) =>
       text.includes(keyword),
@@ -134,6 +154,8 @@ function getOptionHeaderIcon(option: RelicEffect) {
   ) {
     return { src: bowIcon, alt: '원거리' };
   }
+
+  // 전투 기술과 공격력 아이콘
   if (option.category === 'Armament Skills' || text.includes('전투 기술')) {
     return { src: ashIcon, alt: '전투 기술' };
   }
@@ -141,10 +163,13 @@ function getOptionHeaderIcon(option: RelicEffect) {
     return { src: attackIcon, alt: '공격력' };
   }
 
+  // 맞는 항목이 없으면 기본 아이템 아이콘
   return { src: itemIcon, alt: '아이템' };
 }
 
+// 옵션 카드
 function OptionCard({ option }: { option: RelicEffect }) {
+  // 분류 이름과 아이콘 준비
   const category = option.category ?? '기타';
   const categoryLabel = optionCategoryLabels[category] ?? category;
   const headerIcon = getOptionHeaderIcon(option);
@@ -165,7 +190,9 @@ function OptionCard({ option }: { option: RelicEffect }) {
   );
 }
 
+// 옵션 페이지 전체
 function OptionsPage({ searchQuery, filters }: { searchQuery: string; filters: OptionFilters }) {
+  // 검색과 필터 조건에 맞는 옵션 목록
   const filteredOptions = useMemo(
     () =>
       obtainableRelicEffects.filter(
@@ -185,6 +212,7 @@ function OptionsPage({ searchQuery, filters }: { searchQuery: string; filters: O
         </span>
       </div>
 
+      {/* 옵션 카드 목록 */}
       <div className="option-card-grid">
         {filteredOptions.map((option) => (
           <OptionCard key={`${option.type}-${option.id}`} option={option} />

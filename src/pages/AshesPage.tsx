@@ -1,8 +1,11 @@
 import { useMemo, useState, type KeyboardEvent } from 'react';
 import { ashes, type AshOfWar } from '../data/ashes';
 
+// DLC 전회 제외
 const visibleAshes = ashes.filter((ash) => !Object.values(ash).some((value) => String(value).includes('◇')));
 
+
+// 검색 함수
 function matchesAshSearch(ash: AshOfWar, query: string) {
   const normalizedQuery = query.trim().toLowerCase();
   if (!normalizedQuery) return true;
@@ -12,6 +15,8 @@ function matchesAshSearch(ash: AshOfWar, query: string) {
     .some((value) => String(value).toLowerCase().includes(normalizedQuery));
 }
 
+
+// 전회 카드
 function AshCard({ ash }: { ash: AshOfWar }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isMotionVisible, setIsMotionVisible] = useState(false);
@@ -27,6 +32,7 @@ function AshCard({ ash }: { ash: AshOfWar }) {
     toggleExpanded();
   };
 
+  // 카드 전체 펼침
   return (
     <article
       className={`catalog-card ash-card is-expandable${isExpanded ? ' is-expanded' : ''}`}
@@ -66,6 +72,7 @@ function AshCard({ ash }: { ash: AshOfWar }) {
   );
 }
 
+// 전회 페이지 전체
 function AshesPage({
   searchQuery,
   ashProperty,

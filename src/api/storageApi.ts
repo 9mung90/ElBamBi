@@ -1,3 +1,6 @@
+// 유물 저장소 및 유물 프리셋 관련 서버 API
+
+
 import { getApiErrorMessage } from './apiError';
 import { accessTokenStorageKey, clearAuthStorage, isAccessTokenExpired } from './authToken';
 
@@ -6,6 +9,7 @@ const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? defaultApiBaseUrl).repl
 
 type ApiBodyValue = string | number | boolean | null | undefined;
 
+//유물 타입 정의 (세이브파일껀지 제작꺼인지)
 export type StoredRelicSource = 'save' | 'builder';
 export type StoredRelicSourceFilter = StoredRelicSource | 'all';
 
@@ -19,6 +23,7 @@ export type StoredRelicOption = {
 
 export type StoredRelicDebuff = StoredRelicOption;
 
+// 유물 전체 데이터
 export type StoredRelic = {
   relicId: string;
   userId: string;
@@ -36,8 +41,9 @@ export type StoredRelic = {
   updatedAt: string;
 };
 
+// 일반/심도
 export type RelicPresetColorMode = 'normal' | 'deep';
-
+// 프리셋에 넣는 유물 종류
 export type RelicPresetSlotInput =
   | {
       slotIndex: number;
@@ -50,7 +56,7 @@ export type RelicPresetSlotInput =
       itemId: number;
       effectIds: number[];
     };
-
+// 서버 전달 프리셋 데이터
 export type RelicPresetInput = {
   presetId?: string;
   userId: string;
@@ -60,13 +66,13 @@ export type RelicPresetInput = {
   colorMode: RelicPresetColorMode;
   slots: RelicPresetSlotInput[];
 };
-
+//생성,수정 시간 추가
 export type RelicPreset = RelicPresetInput & {
   presetId: string;
   createdAt: string;
   updatedAt: string;
 };
-
+// 서버 전달 제작 유물 데이터
 export type BuilderRelicInput = {
   userId: string;
   slotIndex: number;
@@ -78,7 +84,7 @@ export type BuilderRelicInput = {
   options: StoredRelicOption[];
   debuffs: StoredRelicDebuff[];
 };
-
+//에러
 export class ApiRequestError extends Error {
   status: number;
   path: string;
@@ -91,11 +97,12 @@ export class ApiRequestError extends Error {
     this.payload = payload;
   }
 }
-
+// API 요청 에러인지 확인
 export function isApiRequestError(error: unknown): error is ApiRequestError {
   return error instanceof ApiRequestError;
 }
 
+// 로그인 토큰 가져오기
 function getAccessToken() {
   try {
     const accessToken = localStorage.getItem(accessTokenStorageKey);
@@ -109,14 +116,14 @@ function getAccessToken() {
     return null;
   }
 }
-
+// 객체 -> URL 파라미터
 function appendParams(params: URLSearchParams, values: Record<string, ApiBodyValue>) {
   Object.entries(values).forEach(([key, value]) => {
     if (value === null || value === undefined || value === '') return;
     params.append(key, String(value));
   });
 }
-
+// 서버 응답에서 오류 메세지 추출
 function getMessageFromPayload(payload: unknown) {
   if (typeof payload === 'string') return payload;
   if (payload && typeof payload === 'object') {
@@ -126,7 +133,7 @@ function getMessageFromPayload(payload: unknown) {
   }
   return '';
 }
-
+// 서버 응답 본문 읽고 반환
 async function parseResponsePayload(response: Response) {
   const contentType = response.headers.get('content-type') ?? '';
   const text = await response.text();
@@ -141,6 +148,7 @@ async function parseResponsePayload(response: Response) {
   return text;
 }
 
+// 서버에 요청 보내고 응답 처리 
 async function requestStorageApi<T>(
   path: string,
   options: {
@@ -194,7 +202,7 @@ async function requestStorageApi<T>(
 
   return payload as T;
 }
-
+// 에러
 export function getStorageErrorMessage(error: unknown, fallback: string) {
   if (isApiRequestError(error)) {
     return getApiErrorMessage(error.status, error.message || fallback);
@@ -202,7 +210,7 @@ export function getStorageErrorMessage(error: unknown, fallback: string) {
   if (error instanceof Error) return error.message || fallback;
   return fallback;
 }
-
+// 저장 유물 조회
 export function listRelics(userId: string, source: StoredRelicSourceFilter = 'all') {
   return requestStorageApi<StoredRelic[]>('/api/mi/relics', {
     query: {
@@ -211,34 +219,34 @@ export function listRelics(userId: string, source: StoredRelicSourceFilter = 'al
     },
   });
 }
-
+// 제작 유물 저장
 export function createBuilderRelic(input: BuilderRelicInput) {
   return requestStorageApi<StoredRelic>('/api/mi/relics', {
     method: 'POST',
     json: input,
   });
 }
-
+// 프리셋 저장
 export function saveRelicPreset(input: RelicPresetInput) {
   return requestStorageApi<RelicPreset>('/api/mi/presets', {
     method: 'POST',
     json: input,
   });
 }
-
+// 프리셋 목록 조회
 export function listRelicPresets(userId: string) {
   return requestStorageApi<RelicPreset[]>('/api/mi/presets', {
     query: { userId },
   });
 }
-
+// 프리셋 삭제
 export function deleteRelicPreset(userId: string, presetId: string) {
   return requestStorageApi<string>('/api/mi/deletePreset', {
     method: 'POST',
     query: { userId, presetId },
   });
 }
-
+// 유물 삭제
 export function deleteRelic(userId: string, relicId: string) {
   return requestStorageApi<string>('/api/mi/deleteRelic', {
     method: 'POST',

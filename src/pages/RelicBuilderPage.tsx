@@ -15,6 +15,7 @@ type CandidateEvaluation = {
   reasons: string[];
 };
 
+// 빈 옵션 슬롯과 기본 설정
 const EMPTY_SELECTION: SlotSelection = ['', '', ''];
 const SLOT_LABELS = ['A', 'B', 'C'];
 const LOGIN_REQUIRED_MESSAGE = '로그인을 해주시길 바랍니다.';
@@ -32,18 +33,22 @@ const BUILDER_RELIC_COLOR_LABELS: Record<BuilderRelicColor, string> = {
   Green: '초록',
 };
 
+// 제작 유물 이름 만들기
 function getBuilderRelicName(color: BuilderRelicColor) {
   return `제작 유물(${BUILDER_RELIC_COLOR_LABELS[color]})`;
 }
 
+// 효과 한글 이름
 function getEffectName(effect: RelicRollEffect) {
   return effect.effect_kor || effect.effect;
 }
 
+// 효과 한글 설명
 function getEffectDetail(effect: RelicRollEffect) {
   return effect.effect_detail_kor || '';
 }
 
+// 선택한 효과를 저장용 데이터로 변환
 function toStoredRelicEffect(effect: RelicRollEffect | null, slotIndex: number) {
   const effectId = Number(effect?.id);
 
@@ -56,11 +61,13 @@ function toStoredRelicEffect(effect: RelicRollEffect | null, slotIndex: number) 
   };
 }
 
+// 효과 분류 순서 찾기
 function getCategoryRank(effect: RelicRollEffect, categoryOrder: number[]) {
   const rank = categoryOrder.indexOf(effect.cat);
   return rank === -1 ? categoryOrder.length : rank;
 }
 
+// 효과 정렬 순서 비교
 function compareEffects(
   left: RelicRollEffect,
   right: RelicRollEffect,
@@ -75,6 +82,7 @@ function compareEffects(
   return Number(left.id) - Number(right.id);
 }
 
+// 같은 효과와 그룹 충돌 확인
 function hasEffectConflict(left: RelicRollEffect, right: RelicRollEffect) {
   return (
     left.key === right.key ||
@@ -83,6 +91,7 @@ function hasEffectConflict(left: RelicRollEffect, right: RelicRollEffect) {
   );
 }
 
+// 선택한 효과와 충돌하는 이유
 function getConflictReasons(
   candidate: RelicRollEffect,
   selectedEffect: RelicRollEffect,
@@ -106,15 +115,18 @@ function getConflictReasons(
   return reasons;
 }
 
+// 효과 키로 데이터 찾기
 function getEffectByKey(mode: RelicRollMode) {
   return new Map(mode.effects.map((effect) => [effect.key, effect]));
 }
 
+// 현재 슬롯의 선택 효과 목록
 function getSelectedEffects(mode: RelicRollMode, selectedKeys: SlotSelection) {
   const effectsByKey = getEffectByKey(mode);
   return selectedKeys.map((key) => (key ? effectsByKey.get(key) ?? null : null));
 }
 
+// 슬롯에 넣을 수 있는 효과 확인
 function isCandidateAllowedForSlot(
   candidate: RelicRollEffect,
   slotIndex: number,
@@ -133,6 +145,7 @@ function isCandidateAllowedForSlot(
   });
 }
 
+// 효과를 넣을 수 없는 이유
 function getCandidateReasonsForSlot(
   candidate: RelicRollEffect,
   slotIndex: number,
@@ -162,6 +175,7 @@ function getCandidateReasonsForSlot(
   return [...new Set(reasons)];
 }
 
+// 남은 슬롯까지 완성 가능한지 확인
 function canCompleteSelection(
   mode: RelicRollMode,
   selectedKeys: SlotSelection,
@@ -184,6 +198,7 @@ function canCompleteSelection(
   });
 }
 
+// 슬롯별 가능한 효과 판정
 function getSlotEvaluations(
   mode: RelicRollMode,
   selectedKeys: SlotSelection,
@@ -208,10 +223,13 @@ function getSlotEvaluations(
   });
 }
 
+// 효과 검색 함수
 function matchesSearch(effect: RelicRollEffect, searchQuery: string) {
   const normalizedQuery = searchQuery.trim().toLowerCase();
+  // 검색어가 없으면 전체 표시
   if (!normalizedQuery) return true;
 
+  // 효과명과 설명 및 내부 정보에서 검색
   return [
     effect.effect_kor,
     effect.effect_detail_kor,
@@ -224,6 +242,7 @@ function matchesSearch(effect: RelicRollEffect, searchQuery: string) {
   ].some((value) => String(value).toLowerCase().includes(normalizedQuery));
 }
 
+// 유물 제작 모드 한글 이름
 function getModeLabel(mode: RelicRollMode) {
   const labels: Record<string, string> = {
     base_game_v102: '일반',
@@ -235,6 +254,7 @@ function getModeLabel(mode: RelicRollMode) {
   return labels[mode.id] ?? mode.label;
 }
 
+// 디버프 표 한글 이름
 function getDebuffTableLabel(label: string) {
   const labels: Record<string, string> = {
     'Base / Deep of the Night debuffs': '심도 디버프',
@@ -244,6 +264,7 @@ function getDebuffTableLabel(label: string) {
   return labels[label] ?? label;
 }
 
+// 선택한 유물 효과 표시
 function RelicEffectOption({
   candidateCount,
   effect,
@@ -287,6 +308,7 @@ function RelicEffectOption({
   );
 }
 
+// 유물 옵션 제작 페이지 전체
 function RelicBuilderPage({
   searchQuery,
   authUserId,
@@ -306,6 +328,7 @@ function RelicBuilderPage({
   const [saveNotice, setSaveNotice] = useState<string | null>(null);
   const [isSavingRelic, setIsSavingRelic] = useState(false);
 
+  // 선택한 제작 모드
   const mode = useMemo(
     () => modes.find((candidateMode) => candidateMode.id === modeId) ?? modes[0],
     [modeId, modes],
@@ -313,11 +336,13 @@ function RelicBuilderPage({
 
   const categoryOrder = relicRollAppData.validationRulesInferred.recommendedCategorySortOrder;
 
+  // 현재 선택한 효과
   const selectedEffects = useMemo(
     () => getSelectedEffects(mode, selectedKeys),
     [mode, selectedKeys],
   );
 
+  // 모든 슬롯의 효과 후보 판정
   const allSlotEvaluations = useMemo(
     () =>
       selectedKeys.map((_, slotIndex) =>
@@ -326,6 +351,7 @@ function RelicBuilderPage({
     [categoryOrder, mode, selectedKeys],
   );
 
+  // 현재 선택이 불가능한 이유
   const selectedReasons = useMemo(
     () =>
       selectedEffects.map((effect, slotIndex) =>
@@ -376,6 +402,7 @@ function RelicBuilderPage({
   const isCompleteWithDebuff = isComplete && missingDebuffIndexes.length === 0;
   const isValidComplete = isCompleteWithDebuff && resultReasons.length === 0 && debuffReasons.length === 0;
 
+  // 슬롯 효과 변경
   function updateSlot(slotIndex: number, effectKey: string) {
     setSelectedKeys((currentSelection) => {
       const nextSelection = [...currentSelection] as SlotSelection;
@@ -389,10 +416,12 @@ function RelicBuilderPage({
     });
   }
 
+  // 저장할 일반 효과 목록
   function getBuilderRelicOptions(): StoredRelicOption[] {
     return selectedEffects.map((effect, index) => toStoredRelicEffect(effect, index));
   }
 
+  // 저장할 디버프 목록
   function getBuilderRelicDebuffs(): StoredRelicDebuff[] {
     if (!canUseDebuffs) return [];
 
@@ -401,9 +430,11 @@ function RelicBuilderPage({
     );
   }
 
+  // 제작한 유물 저장
   async function handleSaveRelic() {
     setSaveNotice(null);
 
+    // 로그인과 옵션 선택 확인
     if (!authUserId) {
       window.alert(LOGIN_REQUIRED_MESSAGE);
       return;
@@ -465,6 +496,7 @@ function RelicBuilderPage({
       </div>
 
       <div className="relic-builder-layout">
+        {/* 제작 모드와 색상 및 검색 설정 */}
         <section className="calc-panel relic-builder-controls" aria-label="유물 옵션 규칙 설정">
           <div className="calc-control-grid relic-builder-mode-grid">
             <label>
@@ -552,6 +584,7 @@ function RelicBuilderPage({
           ) : null}
         </section>
 
+        {/* 세 개의 유물 효과 슬롯 */}
         <div className="relic-builder-slots">
           {SLOT_LABELS.map((slotLabel, slotIndex) => {
             const selectedEffect = selectedEffects[slotIndex];
@@ -643,6 +676,7 @@ function RelicBuilderPage({
           })}
         </div>
 
+        {/* 선택한 조합 판정 결과 */}
         <section className="calc-panel relic-builder-result" aria-label="선택된 유물 옵션 결과">
           <div className="relic-builder-result-heading">
             <h3>결과</h3>
@@ -706,6 +740,8 @@ function RelicBuilderPage({
             )}
           </div>
         </section>
+
+        {/* 제작 유물 저장 */}
         <div className="relic-builder-save-actions">
           <button type="button" className="relic-builder-save-button" disabled={isSavingRelic} onClick={handleSaveRelic}>
             {isSavingRelic ? 'Saving...' : '유물 저장'}

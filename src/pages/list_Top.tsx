@@ -75,6 +75,7 @@ import LoginPage from './listTop/LoginPage';
 import MyPage from './listTop/MyPage';
 import './list_Top.css';
 
+// 공통 저장 키와 화면 경로
 const lastPageStorageKey = 'nightreign:last-page';
 const authViewStorageKey = 'nightreign:auth-view';
 const pullToRefreshThreshold = 90;
@@ -92,11 +93,13 @@ type MyPageMeResponse = {
   role?: string;
 };
 
+// 저장된 로그인 화면 가져오기
 function getStoredAuthView(): AuthView {
   const storedView = getStoredValue(authViewStorageKey);
   return storedView === 'login' || storedView === 'signup' ? storedView : null;
 }
 
+// 저장된 값 지우기
 function removeStoredValue(key: string) {
   try {
     localStorage.removeItem(key);
@@ -105,12 +108,14 @@ function removeStoredValue(key: string) {
   }
 }
 
+// 선택형 필터 값 추가 및 제거
 function toggleFilterValue<T>(values: T[], value: T) {
   return values.includes(value)
     ? values.filter((currentValue) => currentValue !== value)
     : [...values, value];
 }
 
+// 마지막으로 본 페이지 가져오기
 function getStoredPageId() {
   const storedId = getStoredValue(lastPageStorageKey);
   if (storedId && categories.some((category) => category.id === storedId)) {
@@ -119,12 +124,14 @@ function getStoredPageId() {
   return categories[0].id;
 }
 
+// 페이지 스크롤 맨 위로 이동
 function resetPageScroll() {
   window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
   document.documentElement.scrollTop = 0;
   document.body.scrollTop = 0;
 }
 
+// 닉네임 설정 필요 여부 확인
 function getNeedsNicknameFromParams(params: URLSearchParams) {
   return params.get('needsNickname') === 'true';
 }
@@ -133,6 +140,7 @@ function getNeedsNicknameFromLocationSearch() {
   return getNeedsNicknameFromParams(new URLSearchParams(window.location.search));
 }
 
+// 로그인 이동 결과 확인
 function hasOAuthRedirectParamsInSearch(params: URLSearchParams) {
   return (
     params.has('oauthError') ||
@@ -148,12 +156,14 @@ function hasOAuthRedirectParams() {
   return hasOAuthRedirectParamsInSearch(new URLSearchParams(window.location.search));
 }
 
+// 안드로이드 구글 로그인 주소
 function getAndroidGoogleLoginUrl() {
   const url = new URL(getGoogleLoginUrl());
   url.searchParams.set('redirectTarget', 'android');
   return url.toString();
 }
 
+// 구글 로그인 오류 문구
 function getOAuthErrorMessage(errorCode: string | null) {
   if (errorCode === 'google_email_already_exists') {
     return '이미 사용하신 이메일 주소 입니다';
@@ -162,7 +172,9 @@ function getOAuthErrorMessage(errorCode: string | null) {
   return '구글 로그인에 실패했습니다. 다시 시도해 주세요.';
 }
 
+// 상단 메뉴와 전체 페이지
 function ListTop() {
+  // 페이지와 로그인 상태
   const [selectedId, setSelectedId] = useState(getStoredPageId);
   const [authView, setAuthView] = useState<AuthView>(getStoredAuthView);
   const [authUserId, setAuthUserId] = useState<string | null>(getStoredAuthUserId);
@@ -180,6 +192,8 @@ function ListTop() {
   );
   const [nicknameAccessToken, setNicknameAccessToken] = useState(() => getAccessTokenFromLocationSearch());
   const [relicStorageRefreshKey, setRelicStorageRefreshKey] = useState(0);
+
+  // 검색과 필터 상태
   const [searchQuery, setSearchQuery] = useState('');
   const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false);
   const [weaponFilters, setWeaponFilters] = useState<WeaponFilters>(() => createEmptyWeaponFilters());
@@ -190,6 +204,8 @@ function ListTop() {
   const [selectedWeaponGroupId, setSelectedWeaponGroupId] = useState<number | null>(null);
   const [focusedWeaponGroupId, setFocusedWeaponGroupId] = useState<number | null>(null);
   const [ashProperty, setAshProperty] = useState<string | null>(null);
+
+  // 탭과 뒤로가기 및 스와이프 상태
   const categoryTabsRef = useRef<HTMLElement | null>(null);
   const nativeBackButtonHandlerRef = useRef<(canGoBack: boolean) => void>(() => {});
   const buildInternalBackHandlerRef = useRef<(() => boolean) | null>(null);
@@ -223,11 +239,13 @@ function ListTop() {
 
   const CACHE_KEY = 'nightreign_save_parser_result';
 
+  // 선택한 페이지 저장 및 스크롤 초기화
   useEffect(() => {
     setStoredValue(lastPageStorageKey, selectedId);
     resetPageScroll();
   }, [selectedId]);
 
+  // 열어둔 로그인 화면 저장
   useEffect(() => {
     if (authView) {
       setStoredValue(authViewStorageKey, authView);
@@ -236,6 +254,7 @@ function ListTop() {
     removeStoredValue(authViewStorageKey);
   }, [authView]);
 
+  // 토큰과 로그인 사용자 맞추기
   useEffect(() => {
     const tokenUserId = getUserIdFromAccessToken(getStoredAccessToken());
     if (tokenUserId && tokenUserId !== authUserId) {
@@ -247,6 +266,7 @@ function ListTop() {
     }
   }, [authUserId]);
 
+  // 로그인 사용자 번호 저장
   useEffect(() => {
     if (authUserId) {
       setStoredValue(authUserIdStorageKey, authUserId);
@@ -255,6 +275,7 @@ function ListTop() {
     removeStoredValue(authUserIdStorageKey);
   }, [authUserId]);
 
+  // 로그인 사용자 정보와 권한 불러오기
   useEffect(() => {
     if (!getStoredAccessToken()) {
       setAuthRole('USER');
@@ -263,6 +284,7 @@ function ListTop() {
 
     let isMounted = true;
 
+    // 서버의 최신 사용자 정보 확인
     requestMyPageApi<MyPageMeResponse>('/api/me')
       .then((me) => {
         if (!isMounted) return;
@@ -293,6 +315,7 @@ function ListTop() {
     };
   }, [authUserId]);
 
+  // 브라우저 주소 이동 감지
   useEffect(() => {
     const handlePopState = () => {
       setIsNicknameRoute(window.location.pathname === nicknameRoutePath);
@@ -307,6 +330,7 @@ function ListTop() {
     };
   }, []);
 
+  // 구글 로그인 이동 결과 처리
   const handleOAuthRedirectParams = useCallback(
     (params: URLSearchParams, currentPath = mainRoutePath) => {
       if (!hasOAuthRedirectParamsInSearch(params)) {
@@ -319,6 +343,7 @@ function ListTop() {
       const accessToken = getAccessTokenFromParams(params);
       const needsNickname = getNeedsNicknameFromParams(params);
 
+      // 로그인 오류 시 로그인 화면 표시
       if (oauthError) {
         setAuthInitialError(getOAuthErrorMessage(oauthError));
         setAuthView('login');
@@ -326,6 +351,7 @@ function ListTop() {
         return { handled: true, success: false, route: routeAfterError };
       }
 
+      // 전달받은 토큰과 사용자 번호 저장
       if (accessToken) {
         setStoredValue(accessTokenStorageKey, accessToken);
         setNicknameAccessToken(accessToken);
@@ -337,6 +363,7 @@ function ListTop() {
         }
       }
 
+      // 닉네임이 없으면 닉네임 설정 화면 표시
       if (needsNickname || currentPath === nicknameRoutePath) {
         setAuthView(null);
         setIsMyPageOpen(false);
@@ -347,6 +374,7 @@ function ListTop() {
         return { handled: true, success: true, route: nicknameRoutePath };
       }
 
+      // 로그인 완료 후 캐릭터 페이지로 이동
       setSelectedId('characters');
       setAuthView(null);
       setIsMyPageOpen(false);
@@ -360,6 +388,7 @@ function ListTop() {
     [],
   );
 
+  // 웹 구글 로그인 결과 적용
   useEffect(() => {
     if (!hasOAuthRedirectParams()) return;
 
@@ -372,12 +401,14 @@ function ListTop() {
     }
   }, [handleOAuthRedirectParams]);
 
+  // 앱 구글 로그인 딥링크 처리
   useEffect(() => {
     if (!Capacitor.isNativePlatform()) return undefined;
 
     let removeListener: (() => Promise<void>) | null = null;
     let isMounted = true;
 
+    // 앱으로 돌아온 주소에서 로그인 정보 확인
     const handleAppUrlOpen = (url: string) => {
       let params: URLSearchParams;
       try {
@@ -417,6 +448,7 @@ function ListTop() {
     };
   }, [handleOAuthRedirectParams]);
 
+  // 안드로이드 구글 로그인 브라우저 열기
   const handleGoogleLoginClick = useCallback((event: MouseEvent<HTMLAnchorElement>) => {
     if (!Capacitor.isNativePlatform() || Capacitor.getPlatform() !== 'android') return;
 
@@ -424,6 +456,7 @@ function ListTop() {
     void Browser.open({ url: getAndroidGoogleLoginUrl() });
   }, []);
 
+  // 모바일 아래로 당겨서 새로고침
   useEffect(() => {
     if (!window.matchMedia('(pointer: coarse)').matches && navigator.maxTouchPoints <= 0) {
       return undefined;
@@ -432,6 +465,7 @@ function ListTop() {
     let startY: number | null = null;
     let shouldRefresh = false;
 
+    // 입력 중에는 새로고침 동작 막기
     const isFormTarget = (target: EventTarget | null) => {
       if (!(target instanceof HTMLElement)) {
         return false;
@@ -506,6 +540,7 @@ function ListTop() {
     }
   }, []);
 
+  // 저장된 세이브 분석 결과 지우기
   const clearSaveParserCache = () => {
     setSaveParserResult(null);
     setSelectedFile(null);
@@ -518,6 +553,7 @@ function ListTop() {
     }
   };
 
+  // 선택한 카테고리 순서 찾기
   const selectedIndex = useMemo(() => {
     const index = categories.findIndex((category) => category.id === selectedId);
     return index >= 0 ? index : 0;
@@ -525,6 +561,7 @@ function ListTop() {
 
   const selectedCategory = categories[selectedIndex] ?? categories[0];
 
+  // 방문한 페이지 목록 저장
   useEffect(() => {
     const selectedCategoryId = selectedCategory.id;
     setVisitedCategoryIds((currentIds) => {
@@ -535,12 +572,15 @@ function ListTop() {
     });
   }, [selectedCategory.id]);
 
+  // 선택한 상단 탭을 가운데로 이동
   useEffect(() => {
     const currentTab = categoryTabsRef.current?.querySelector<HTMLElement>(
       `[data-category-id="${selectedId}"]`,
     );
     currentTab?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
   }, [selectedId]);
+
+  // 필터와 정렬 사용 여부
   const hasActiveWeaponFilters =
     weaponFilters.levels.length > 0 ||
     weaponFilters.types.length > 0 ||
@@ -561,6 +601,7 @@ function ListTop() {
     selectedId === 'spells' ||
     selectedId === 'builds';
 
+  // 무기 필터 변경
   const updateWeaponLevelFilter = (level: number) => {
     setWeaponFilters((currentFilters) => ({
       ...currentFilters,
@@ -575,6 +616,7 @@ function ListTop() {
     }));
   };
 
+  // 옵션 필터 변경
   const updateOptionTextFilter = (key: 'categories' | 'types', value: string) => {
     setOptionFilters((currentFilters) => ({
       ...currentFilters,
@@ -589,6 +631,7 @@ function ListTop() {
     }));
   };
 
+  // 보스 필터 변경
   const updateBossTypeFilter = (value: string) => {
     setBossFilters((currentFilters) => ({
       ...currentFilters,
@@ -596,6 +639,7 @@ function ListTop() {
     }));
   };
 
+  // 마술과 기도 필터 변경
   const updateSpellFilter = (value: string) => {
     setSpellFilters((currentFilters) => ({
       spell: currentFilters.spell === value ? null : value,
@@ -610,11 +654,13 @@ function ListTop() {
     }));
   };
 
+  // 로그인과 마이페이지 닫기
   const closeOverlayPages = () => {
     setAuthView(null);
     setIsMyPageOpen(false);
   };
 
+  // 카테고리 페이지 선택
   const selectCategory = (categoryId: string) => {
     if (categoryId !== selectedId) {
       resetPageScroll();
@@ -634,15 +680,18 @@ function ListTop() {
     setFocusedWeaponGroupId(null);
   };
 
+  // 순서로 카테고리 페이지 선택
   const selectCategoryByIndex = (index: number) => {
     const category = categories[Math.max(0, Math.min(categories.length - 1, index))];
     if (!category || category.id === selectedCategory.id) return;
     selectCategory(category.id);
   };
 
+  // 페이지 스와이프 가능 영역 확인
   const isPageSwipeTarget = (target: EventTarget | null) => {
     if (!(target instanceof HTMLElement)) return false;
     const allowedInteractiveSwipeTarget = target.closest('[data-page-swipe-allowed]');
+    // 입력과 팝업 및 조작 요소에서는 스와이프 막기
     const blockedSelectors = [
       'input',
       'textarea',
@@ -664,6 +713,7 @@ function ListTop() {
     }
 
     let element: HTMLElement | null = target;
+    // 가로 스크롤 영역에서는 페이지 스와이프 막기
     while (element) {
       const style = window.getComputedStyle(element);
       const canScrollHorizontally =
@@ -676,6 +726,7 @@ function ListTop() {
     return true;
   };
 
+  // 페이지 스와이프 시작
   const handlePageSwipeStart = (event: ReactTouchEvent<HTMLDivElement>) => {
     if (
       event.touches.length !== 1 ||
@@ -699,6 +750,7 @@ function ListTop() {
     setPageDrag({ offset: 0, isDragging: true, targetIndex: null });
   };
 
+  // 페이지 스와이프 이동
   const handlePageSwipeMove = (event: ReactTouchEvent<HTMLDivElement>) => {
     const start = pageSwipeStartRef.current;
     if (!start || start.index !== selectedIndex || event.touches.length !== 1) return;
@@ -709,6 +761,7 @@ function ListTop() {
     const absX = Math.abs(deltaX);
     const absY = Math.abs(deltaY);
 
+    // 가로와 세로 움직임 구분
     if (!start.axis) {
       if (absX < 10 && absY < 10) return;
       start.axis = absX > absY * 1.18 ? 'horizontal' : 'vertical';
@@ -722,6 +775,7 @@ function ListTop() {
 
     const targetIndex = deltaX < 0 ? Math.min(categories.length - 1, start.index + 1) : Math.max(0, start.index - 1);
     const targetCategory = categories[targetIndex];
+    // 첫 페이지와 마지막 페이지 바깥은 짧게만 이동
     if (!targetCategory || targetIndex === start.index) {
       setPageDrag({ offset: deltaX * 0.18, isDragging: true, targetIndex: null });
       return;
@@ -733,6 +787,7 @@ function ListTop() {
     setPageDrag({ offset, isDragging: true, targetIndex });
   };
 
+  // 페이지 스와이프 종료
   const handlePageSwipeEnd = (event: ReactTouchEvent<HTMLDivElement>) => {
     const start = pageSwipeStartRef.current;
     pageSwipeStartRef.current = null;
@@ -754,6 +809,7 @@ function ListTop() {
     const fallbackTargetIndex =
       deltaX < 0 ? Math.min(categories.length - 1, start.index + 1) : Math.max(0, start.index - 1);
     const targetIndex = pageDrag.targetIndex ?? (fallbackTargetIndex !== start.index ? fallbackTargetIndex : null);
+    // 충분히 멀리 또는 빠르게 움직인 경우만 페이지 변경
     const shouldCommitSwipe =
       targetIndex !== null &&
       start.axis === 'horizontal' &&
@@ -773,6 +829,7 @@ function ListTop() {
     }
   };
 
+  // 스와이프 직후 잘못된 클릭 막기
   const handlePageClickCapture = (event: MouseEvent<HTMLDivElement>) => {
     if (!suppressNextPageClickRef.current) return;
 
@@ -781,18 +838,21 @@ function ListTop() {
     event.stopPropagation();
   };
 
+  // 로그인 상태 초기화
   const clearAuthState = () => {
     clearAuthStorage();
     setAuthUserId(null);
     setAuthRole('USER');
   };
 
+  // 로그아웃
   const handleLogout = () => {
     clearAuthState();
     setIsMyPageOpen(false);
     setAuthView('login');
   };
 
+  // 마이페이지에서 바뀐 로그인 정보 적용
   const handleAuthUpdated = (response: MyPageUpdateResponse) => {
     if (response.accessToken) {
       setStoredValue(accessTokenStorageKey, response.accessToken);
@@ -817,6 +877,7 @@ function ListTop() {
     }
   };
 
+  // 회원 탈퇴 후 첫 화면으로 이동
   const handleAccountDeleted = () => {
     clearAuthState();
     setIsMyPageOpen(false);
@@ -827,12 +888,14 @@ function ListTop() {
     setStoredValue(lastPageStorageKey, 'characters');
   };
 
+  // 로그인이 필요한 경우 로그인 화면 표시
   const handleLoginRequired = () => {
     clearAuthState();
     setIsMyPageOpen(false);
     setAuthView('login');
   };
 
+  // 로그인 화면 열기
   const openLoginPage = () => {
     setIsVerifyEmailRoute(false);
     setIsNicknameRoute(false);
@@ -843,6 +906,7 @@ function ListTop() {
     window.history.replaceState(null, '', mainRoutePath);
   };
 
+  // 마이페이지 게시글 열기
   const handleOpenMyPagePost = (postId: string) => {
     setBuildFocusPostId(postId);
     setSelectedId('builds');
@@ -851,10 +915,12 @@ function ListTop() {
     setIsFilterPanelOpen(false);
   };
 
+  // 빌드 페이지 내부 뒤로가기 저장
   const handleBuildInternalBackChange = useCallback((handler: (() => boolean) | null) => {
     buildInternalBackHandlerRef.current = handler;
   }, []);
 
+  // 안드로이드 뒤로가기 순서
   nativeBackButtonHandlerRef.current = (canGoBack) => {
     if (isNicknameRoute || isVerifyEmailRoute) {
       setIsNicknameRoute(false);
@@ -917,6 +983,7 @@ function ListTop() {
     void App.minimizeApp();
   };
 
+  // 안드로이드 뒤로가기 감지
   useEffect(() => {
     if (!Capacitor.isNativePlatform() || Capacitor.getPlatform() !== 'android') return undefined;
 
@@ -939,10 +1006,12 @@ function ListTop() {
     };
   }, []);
 
+  // 이메일 인증 페이지
   if (isVerifyEmailRoute) {
     return <LoginPage mode="verify-email" onGoToLogin={openLoginPage} />;
   }
 
+  // 닉네임 설정 페이지
   if (isNicknameRoute) {
     return (
       <LoginPage
@@ -961,6 +1030,7 @@ function ListTop() {
     );
   }
 
+  // 로그인과 마이페이지 화면
   const renderOverlayContent = (): ReactNode => {
     if (authView) {
       return (
@@ -999,6 +1069,7 @@ function ListTop() {
     return null;
   };
 
+  // 선택한 카테고리 화면
   const renderPageContent = (categoryId: string): ReactNode => {
     if (categoryId === 'characters') {
       return (
@@ -1102,6 +1173,7 @@ function ListTop() {
     );
   };
 
+  // 현재 화면 이동과 외부 링크 정보
   const overlayContent = renderOverlayContent();
   const isOverlayOpen = Boolean(overlayContent);
   const pageTrackTransform = `calc(${-selectedIndex * 100}% + ${pageDrag.offset}px)`;
@@ -1109,6 +1181,7 @@ function ListTop() {
   const externalProductUrl = isNativeApp ? officialWebsiteUrl : playStoreUrl;
   const externalProductLabel = isNativeApp ? '엘밤 비 웹사이트 열기' : 'Google Play에서 엘밤 비 앱 보기';
 
+  // 앱에서는 웹사이트 웹에서는 스토어 열기
   const handleExternalProductClick = () => {
     if (isNativeApp) {
       void Browser.open({ url: externalProductUrl });
@@ -1118,8 +1191,10 @@ function ListTop() {
     window.open(externalProductUrl, '_blank', 'noopener,noreferrer');
   };
 
+  // 상단 메뉴와 페이지 화면
   return (
     <main className="list-top-shell">
+      {/* 로고와 계정 메뉴 */}
       <header className="list-top-header">
         <div className="game-title-row">
           <div className="game-title-icon" aria-hidden="true">
@@ -1167,6 +1242,7 @@ function ListTop() {
           </button>
         </div>
 
+        {/* 통합 검색과 필터 버튼 */}
         <div className="search-row">
           <span className="search-icon" aria-hidden="true" />
           <input
@@ -1190,6 +1266,7 @@ function ListTop() {
           </button>
         </div>
 
+        {/* 무기 필터 */}
         {selectedId === 'weapons' && isFilterPanelOpen ? (
           <section className="filter-panel" aria-label="무기 필터">
             <div className="filter-panel-heading">
@@ -1254,6 +1331,7 @@ function ListTop() {
           </section>
         ) : null}
 
+        {/* 전회 필터 */}
         {selectedId === 'ashes' && isFilterPanelOpen ? (
           <section className="filter-panel" aria-label="Ash filters">
             <div className="filter-panel-heading">
@@ -1288,6 +1366,7 @@ function ListTop() {
           </section>
         ) : null}
 
+        {/* 마술과 기도 필터 */}
         {selectedId === 'spells' && isFilterPanelOpen ? (
           <section className="filter-panel" aria-label="Spell filters">
             <div className="filter-panel-heading">
@@ -1338,6 +1417,7 @@ function ListTop() {
           </section>
         ) : null}
 
+        {/* 옵션 필터 */}
         {selectedId === 'options' && isFilterPanelOpen ? (
           <section className="filter-panel" aria-label="Option filters">
             <div className="filter-panel-heading">
@@ -1402,6 +1482,7 @@ function ListTop() {
           </section>
         ) : null}
 
+        {/* 보스 필터 */}
         {selectedId === 'bosses' && isFilterPanelOpen ? (
           <section className="filter-panel" aria-label="Boss filters">
             <div className="filter-panel-heading">
@@ -1434,6 +1515,7 @@ function ListTop() {
           </section>
         ) : null}
 
+        {/* 빌드 정렬 */}
         {selectedId === 'builds' && isFilterPanelOpen ? (
           <section className="filter-panel" aria-label="빌드 정렬">
             <div className="filter-panel-heading">
@@ -1470,6 +1552,7 @@ function ListTop() {
           </section>
         ) : null}
 
+        {/* 카테고리 탭 목록 */}
         <nav ref={categoryTabsRef} className="category-tabs" aria-label="아이템 카테고리">
           {categories.map((category) => {
             const isSelected = category.id === selectedId;
@@ -1498,6 +1581,7 @@ function ListTop() {
         </nav>
       </header>
 
+      {/* 로그인 또는 마이페이지 화면 */}
       {isOverlayOpen ? (
         <div className="page-view-viewport">
           <div className="page-view-track">
@@ -1505,6 +1589,7 @@ function ListTop() {
           </div>
         </div>
       ) : (
+        /* 카테고리 페이지 스와이프 화면 */
         <div
           className={`page-view-viewport${pageDrag.isDragging ? ' is-dragging' : ''}`}
           onClickCapture={handlePageClickCapture}
@@ -1526,6 +1611,7 @@ function ListTop() {
               const shouldMount =
                 isActive || visitedCategoryIds.has(category.id) || pageDrag.targetIndex === index;
 
+              // 현재 페이지와 방문한 페이지만 불러오기
               return (
                 <section
                   key={category.id}

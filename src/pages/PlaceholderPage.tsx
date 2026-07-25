@@ -5,7 +5,9 @@ type PlaceholderPageProps = {
   searchQuery: string;
 };
 
+// 준비 중인 카테고리 페이지
 function PlaceholderPage({ category, searchQuery }: PlaceholderPageProps) {
+  // 검색어가 있으면 현재 검색 내용 표시
   return (
     <section className="list-page-panel" aria-labelledby={`${category.id}-title`}>
       <div className="list-page-icon" aria-hidden="true">

@@ -1,3 +1,5 @@
+// PC랑 모바일 버튼 다르게 보여줌
+
 import { useId, useState } from 'react';
 import { createPortal } from 'react-dom';
 

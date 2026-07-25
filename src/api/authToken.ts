@@ -1,8 +1,12 @@
+// JWT 토큰 관련
+
+// 키 이름
 export const accessTokenStorageKey = 'accessToken';
 export const authUserIdStorageKey = 'nightreign:auth-user-id';
 export const authNicknameStorageKey = 'nightreign:auth-nickname';
 export const authNicknameUserIdStorageKey = 'nightreign:auth-nickname-user-id';
 
+// payload 디코딩
 function decodeJwtPayload(token: string): Record<string, unknown> | null {
   const parts = token.split('.');
   if (parts.length < 2 || !parts[1]) return null;
@@ -25,11 +29,12 @@ function decodeJwtPayload(token: string): Record<string, unknown> | null {
   }
 }
 
+// 유효한 토큰의 payload 가져옴
 export function getAccessTokenPayload(token: string | null | undefined): Record<string, unknown> | null {
   if (!token || isAccessTokenExpired(token)) return null;
   return decodeJwtPayload(token);
 }
-
+// 토큰 만료 검사
 export function isAccessTokenExpired(token: string | null | undefined): boolean {
   if (!token) return true;
 
@@ -49,7 +54,7 @@ export function isAccessTokenExpired(token: string | null | undefined): boolean 
   if (!Number.isFinite(expSeconds)) return true;
   return expSeconds * 1000 <= Date.now();
 }
-
+// payload에서 사용자 꺼냄
 export function getUserIdFromAccessToken(token: string | null | undefined): string | null {
   if (!token || isAccessTokenExpired(token)) return null;
 
@@ -60,13 +65,14 @@ export function getUserIdFromAccessToken(token: string | null | undefined): stri
   return null;
 }
 
+// 인증 정보 삭제
 export function clearAuthStorage(): void {
   try {
     localStorage.removeItem(accessTokenStorageKey);
     localStorage.removeItem(authUserIdStorageKey);
     localStorage.removeItem(authNicknameStorageKey);
     localStorage.removeItem(authNicknameUserIdStorageKey);
-  } catch {
-    // Ignore storage failures; callers still update in-memory auth state.
+  } catch (error) {
+    console.warn('[auth] Failed to clear auth storage', error);
   }
 }

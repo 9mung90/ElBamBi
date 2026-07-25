@@ -1,3 +1,6 @@
+// 로그인, 회원가입 Google Oauth등 처리
+// 현재 회원가입 기능은 SES 인증 후 다시 기능 복원 예정
+
 import {
   useEffect,
   useState,
@@ -22,6 +25,7 @@ import {
   type AuthView,
 } from './listTopShared';
 
+// 에러
 class AuthRequestError extends Error {
   code: string;
   status: number;
@@ -35,6 +39,7 @@ class AuthRequestError extends Error {
   }
 }
 
+// 이메일 인증 완료 신호키, 한 탭에서 성공하면 다른 탭에 알려줌
 const emailVerifiedSignalStorageKey = 'nightreign:email-verified-at';
 
 function getMessageFromPayload(payload: unknown) {
@@ -46,18 +51,21 @@ function getMessageFromPayload(payload: unknown) {
   return '';
 }
 
+// 오류 코드
 function getCodeFromPayload(payload: unknown) {
   if (!payload || typeof payload !== 'object') return '';
   const code = (payload as { code?: unknown }).code;
   return typeof code === 'string' ? code : '';
 }
 
+// 엑세스 토큰 가져옴
 function getAccessTokenFromPayload(payload: unknown) {
   if (!payload || typeof payload !== 'object') return null;
   const token = (payload as { accessToken?: unknown }).accessToken;
   return typeof token === 'string' && token ? token : null;
 }
 
+// 응답 본문 읽음
 async function readResponsePayload(response: Response) {
   const contentType = response.headers.get('content-type') ?? '';
   const text = await response.text();
@@ -65,6 +73,7 @@ async function readResponsePayload(response: Response) {
   return contentType.includes('application/json') ? JSON.parse(text) : text;
 }
 
+// 로그인 없어도 호출 가능한 API(이메일 인증용)
 async function postPublicJson(path: string, data: Record<string, string>): Promise<unknown> {
   const response = await fetch(`${apiBaseUrl}${path}`, {
     method: 'POST',
@@ -88,14 +97,17 @@ async function postPublicJson(path: string, data: Record<string, string>): Promi
   return payload;
 }
 
+// 이메일 링크에 있는 인증 토큰 서버에 전달
 function postVerifyEmail(token: string) {
   return postPublicJson('/api/auth/verify-email', { token });
 }
 
+// 인증메일 재전송
 function postResendVerification(email: string) {
   return postPublicJson('/api/auth/resend-verification', { email });
 }
 
+// 폼 데이터 생성
 async function postAuthForm(
   path: string,
   data: Record<string, string>,

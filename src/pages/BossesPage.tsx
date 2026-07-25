@@ -2,6 +2,7 @@ import { useMemo, useState, type KeyboardEvent } from 'react';
 import { bosses, type Boss } from '../data/bosses';
 import { formatBossType, type BossFilters } from './bossFilters';
 
+// 영어 -> 한글
 const tokenLabels: Record<string, string> = {
   Bloodloss: '출혈',
   Fire: '화염',
@@ -22,6 +23,7 @@ const tokenLabels: Record<string, string> = {
   Strike: '타격',
 };
 
+// 상태 이상 내성 목록
 const resistanceNames = new Set([
   'Poison',
   'Scarlet Rot',
@@ -31,10 +33,12 @@ const resistanceNames = new Set([
   'Madness',
 ]);
 
+// 토큰에 한글 있으면 한글 반환
 function labelToken(token: string) {
   return tokenLabels[token] ?? token;
 }
 
+// 이름과 수치를 한 줄로 묶기
 function formatPairs(tokens: string[]) {
   if (!tokens.length) return [];
   if (tokens.length === 1) return [labelToken(tokens[0])];
@@ -48,6 +52,7 @@ function formatPairs(tokens: string[]) {
   return pairs;
 }
 
+// 키랑 밸류 묶어서 보여줌
 function formatResistances(tokens: string[]) {
   const entries: string[] = [];
 
@@ -71,10 +76,14 @@ function formatResistances(tokens: string[]) {
   return entries;
 }
 
+// 검색 함수
 function matchesBossSearch(boss: Boss, query: string) {
   const normalizedQuery = query.trim().toLowerCase();
+
+  // 검색어가 없으면 전체 표시
   if (!normalizedQuery) return true;
 
+  // 이름과 종류 및 능력치와 내성에서 검색
   return [
     boss.name,
     boss.bossType,
@@ -95,10 +104,12 @@ function matchesBossSearch(boss: Boss, query: string) {
     .some((value) => String(value).toLowerCase().includes(normalizedQuery));
 }
 
+// 보스 종류 필터
 function matchesBossFilters(boss: Boss, filters: BossFilters) {
   return filters.types.length === 0 || filters.types.includes(boss.bossType);
 }
 
+// 보스 상세 정보 목록
 function BossChipList({
   title,
   values,
@@ -122,12 +133,16 @@ function BossChipList({
   );
 }
 
+// 보스 카드
 function BossCard({ boss }: { boss: Boss }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const weakAgainst = formatPairs(boss.weakAgainst);
   const strongAgainst = formatPairs(boss.strongAgainst);
   const resistances = formatResistances(boss.resistances);
+  // 보스 카드 펼치기
   const toggleExpanded = () => setIsExpanded((current) => !current);
+
+  // 키보드로 보스 카드 펼치기
   const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
     if (event.key !== 'Enter' && event.key !== ' ') return;
     event.preventDefault();
@@ -180,7 +195,9 @@ function BossCard({ boss }: { boss: Boss }) {
   );
 }
 
+// 보스 페이지 전체
 function BossesPage({ searchQuery, filters }: { searchQuery: string; filters: BossFilters }) {
+  // 검색과 필터 조건에 맞는 보스 목록
   const filteredBosses = useMemo(
     () => bosses.filter((boss) => matchesBossSearch(boss, searchQuery) && matchesBossFilters(boss, filters)),
     [filters, searchQuery],
@@ -197,6 +214,7 @@ function BossesPage({ searchQuery, filters }: { searchQuery: string; filters: Bo
         </span>
       </div>
 
+      {/* 보스 카드 목록 */}
       <div className="boss-card-grid">
         {filteredBosses.map((boss, index) => (
           <BossCard key={`${boss.ids.bossId}-${boss.ids.instance ?? index}`} boss={boss} />

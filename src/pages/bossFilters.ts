@@ -1,3 +1,4 @@
+// 어떤 보스 타입인지 필터
 import { bosses } from '../data/bosses';
 
 export type BossFilters = {

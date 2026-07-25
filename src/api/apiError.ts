@@ -1,3 +1,4 @@
+// 오류 메세지
 export function getApiErrorMessage(status: number, fallback?: string): string {
   if (status === 401) return '로그인이 필요합니다.';
   if (status === 403) return '권한이 없습니다.';

@@ -7,12 +7,16 @@ import wendingGraceImage from '../assets/images/items/grace.webp';
 import { consumables, items, type ConsumableItem, type EtcItem } from '../data/items';
 import { isCatalogItemVisibleByName } from './catalogVisibility';
 
+// DLC 아이템 제외
 const visibleConsumables = consumables.filter((item) => isCatalogItemVisibleByName(item));
 
+// 검색 함수
 function matchesItemSearch(item: ConsumableItem, query: string) {
   const normalizedQuery = query.trim().toLowerCase();
+  // 검색어가 없으면 전체 표시
   if (!normalizedQuery) return true;
 
+  // 이름과 설명 및 분류와 제작 정보에서 검색
   return [
     item.id,
     item.name,
@@ -31,13 +35,17 @@ function matchesItemSearch(item: ConsumableItem, query: string) {
     .some((value) => String(value).toLowerCase().includes(normalizedQuery));
 }
 
+// 아이템 이미지 찾기
 function getConsumableImage(item: ConsumableItem, imageLookup: Map<string, EtcItem>) {
+  // 은총은 별도 이미지 사용
   if (item.name === 'Wending Grace') return wendingGraceImage;
   if (item.image) return item.image;
 
+  // 이미지가 없으면 한글 이름으로 다시 찾기
   return item.name_kor ? imageLookup.get(item.name_kor)?.img : undefined;
 }
 
+// 희귀도 테두리 찾기
 function getItemGradeFrameUrl(rarity: string) {
   if (rarity === 'legendary' || rarity === 'unique') return gradeFrame3;
   if (rarity === 'rare') return gradeFrame2;
@@ -45,9 +53,11 @@ function getItemGradeFrameUrl(rarity: string) {
   return gradeFrame0;
 }
 
+// 아이템 카드
 function ItemCard({ item, imageLookup }: { item: ConsumableItem; imageLookup: Map<string, EtcItem> }) {
   const image = getConsumableImage(item, imageLookup);
   const gradeFrame = getItemGradeFrameUrl(item.rarity);
+  // 한글 이름과 설명 우선 표시
   const title = item.name_kor || item.name;
   const description = item.description_kor || item.description;
 
@@ -73,12 +83,15 @@ function ItemCard({ item, imageLookup }: { item: ConsumableItem; imageLookup: Ma
   );
 }
 
+// 아이템 페이지 전체
 function ItemsPage({ searchQuery }: { searchQuery: string }) {
+  // 한글 이름으로 이미지를 찾기 위한 목록
   const imageLookup = useMemo(
     () => new Map(items.map((item) => [item.title, item] as const)),
     [],
   );
 
+  // 검색 조건에 맞는 아이템 목록
   const filteredItems = useMemo(
     () => visibleConsumables.filter((item) => matchesItemSearch(item, searchQuery)),
     [searchQuery],
@@ -95,6 +108,7 @@ function ItemsPage({ searchQuery }: { searchQuery: string }) {
         </span>
       </div>
 
+      {/* 아이템 카드 목록 */}
       <div className="catalog-card-grid">
         {filteredItems.map((item) => (
           <ItemCard key={item.id} item={item} imageLookup={imageLookup} />

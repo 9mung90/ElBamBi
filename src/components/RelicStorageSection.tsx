@@ -1,4 +1,8 @@
+// 제작 유물 검색,필터링,삭제
+
 import { useEffect, useMemo, useState } from 'react';
+
+// 유물 관련 정보 가져옴
 import {
   deleteRelic,
   getStorageErrorMessage,
@@ -18,6 +22,7 @@ const sourceFilters: Array<{ id: StoredRelicSourceFilter; label: string }> = [
   { id: 'builder', label: '제작 유물' },
 ];
 
+// 색상 이름
 function getRelicColorLabel(color: string | undefined) {
   return getNormalizedRelicColorLabel(color);
 }
@@ -26,6 +31,7 @@ function getStoredRelicSourceLabel(source: StoredRelic['source']) {
   return source === 'builder' ? '제작' : '세이브';
 }
 
+// 날짜
 function formatStorageDate(value: string) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return value || '-';
@@ -39,6 +45,7 @@ function formatStorageDate(value: string) {
   }).format(date);
 }
 
+// 검색
 function matchesRelicStorageSearch(relic: StoredRelic, searchQuery: string) {
   const normalizedQuery = searchQuery.trim().toLowerCase();
   if (!normalizedQuery) return true;
@@ -56,6 +63,8 @@ function matchesRelicStorageSearch(relic: StoredRelic, searchQuery: string) {
     .some((value) => String(value).toLowerCase().includes(normalizedQuery));
 }
 
+// 유물 한개를 카드로 보여줌
+// 수정날짜, 카드 색상, 유물이름같은 카드 정보들임
 function RelicStorageCard({
   relic,
   isDeleting,
@@ -132,6 +141,7 @@ function RelicStorageCard({
   );
 }
 
+// 유물 보관함 전체
 function RelicStorageSection({
   authUserId,
   searchQuery = '',
@@ -185,6 +195,7 @@ function RelicStorageSection({
     }
   }
 
+  // 사용자,필터,새로고침이 바뀌면 리로딩
   useEffect(() => {
     void loadRelicStorage();
     // eslint-disable-next-line react-hooks/exhaustive-deps

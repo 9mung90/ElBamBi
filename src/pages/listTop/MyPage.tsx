@@ -1,3 +1,5 @@
+// MyPage 전체
+
 import {
   useEffect,
   useState,
@@ -5,13 +7,14 @@ import {
   type ReactNode,
 } from 'react';
 import {
-  LoginRequiredError,
-  normalizeAuthRole,
-  requestMyPageApi,
+  LoginRequiredError, // 오류 구분
+  normalizeAuthRole, // 권한
+  requestMyPageApi, // jwt 넣어 마이페이지 api 호출
   type AuthRole,
   type MyPageUpdateResponse,
 } from './listTopShared';
 
+// get 종류 = 서버에서 온걸 안전하게 읽음
 function getRecord(value: unknown): Record<string, unknown> | null {
   return value && typeof value === 'object' && !Array.isArray(value)
     ? (value as Record<string, unknown>)
@@ -32,7 +35,7 @@ function getNumberValue(value: unknown, fallback = 0) {
   }
   return fallback;
 }
-
+// 여러 이름중 첫번째 값 찾음(서버 응답 다르게 올 때 용도)
 function getFirstString(record: Record<string, unknown> | null, keys: string[], fallback = '') {
   if (!record) return fallback;
   for (const key of keys) {
@@ -51,6 +54,7 @@ function getFirstRecord(record: Record<string, unknown> | null, keys: string[]) 
   return null;
 }
 
+// 배열 데이터 꺼냄
 function getArrayFromPayload(payload: unknown, keys: string[]) {
   if (Array.isArray(payload)) return payload.filter(getRecord);
 
@@ -70,6 +74,7 @@ function getArrayFromPayload(payload: unknown, keys: string[]) {
   return Array.isArray(fallbackItems) ? fallbackItems.filter(getRecord) : [];
 }
 
+// 날짜 표시
 function formatMyPageDate(value: unknown) {
   const rawValue = getStringValue(value);
   if (!rawValue) return '';
@@ -83,9 +88,11 @@ function formatMyPageDate(value: unknown) {
   }).format(date);
 }
 
+// 게시글 ID나 제목 유물 등등 추출 코드
 function getMyPagePostId(item: Record<string, unknown>) {
   return getFirstString(item, ['postId', 'communityPostId', 'id']);
 }
+
 
 function getMyPagePostTitle(item: Record<string, unknown>) {
   return getFirstString(item, ['postTitle', 'title'], '제목 없음');
@@ -148,6 +155,8 @@ function getProfileProvider(profile: Record<string, unknown> | null) {
   return getFirstString(profile, ['provider', 'providerName', 'oauthProvider', 'socialProvider'], 'local');
 }
 
+
+// Oauth와 일반 로그인 구분
 function isSocialLoginProfile(profile: Record<string, unknown> | null) {
   const provider = getProfileProvider(profile).trim().toLowerCase();
   const loginType = getFirstString(profile, ['loginType', 'accountType', 'type']).trim().toLowerCase();
@@ -161,6 +170,8 @@ function isSocialLoginProfile(profile: Record<string, unknown> | null) {
   );
 }
 
+
+// 닉네임 입력 검증 코드
 function isValidProfileNickname(nickname: string) {
   return /^[A-Za-z0-9가-힣]{1,10}$/.test(nickname);
 }
@@ -169,6 +180,7 @@ function isValidProfilePassword(password: string) {
   return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,20}$/.test(password);
 }
 
+// 마이페이지의 화면들
 type MyPageView = 'overview' | 'posts' | 'comments' | 'bookmarks' | 'relics' | 'presets';
 
 type MyPageOverviewData = {
@@ -200,6 +212,7 @@ function getMyPageProfileLabel(profile: Record<string, unknown> | null, authUser
   };
 }
 
+// my page 섹션 관련 코드들
 function MyPageSection({
   title,
   emptyMessage,
@@ -472,6 +485,8 @@ function MyPage({
     };
   }, [onLoginRequired, view]);
 
+
+  // 더보기 화면 API 요청
   useEffect(() => {
     if (view === 'overview') return;
 
@@ -516,6 +531,7 @@ function MyPage({
     };
   }, [onLoginRequired, view]);
 
+  // 프로필 데이터 바뀌면 폼 초기화
   useEffect(() => {
     const profile = overviewData?.profile ?? null;
     setProfileForm((currentForm) => ({
@@ -533,13 +549,14 @@ function MyPage({
   const isSocialLogin = isSocialLoginProfile(profileRecord);
   const profile = getMyPageProfileLabel(profileRecord, authUserId);
 
+  // 닉 변경
   function updateProfileForm(field: keyof MyPageProfileForm, value: string) {
     setProfileForm((currentForm) => ({
       ...currentForm,
       [field]: value,
     }));
   }
-
+  // 저장 및 검증코드
   async function handleSaveProfile(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setProfileMessage(null);
@@ -627,6 +644,7 @@ function MyPage({
     }
   }
 
+  // 계정 삭제
   async function handleDeleteAccount(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setDeleteMessage(null);
@@ -636,6 +654,7 @@ function MyPage({
       return;
     }
 
+    // 비번 검증
     if (!isSocialLogin && !deleteCurrentPassword) {
       setDeleteMessage('현재 비밀번호를 입력해 주세요.');
       return;
@@ -665,6 +684,7 @@ function MyPage({
     }
   }
 
+  // 디테일 페이지 기본 값
   const detailTitle: Record<MyPageView, string> = {
     overview: '마이페이지',
     posts: '내가 쓴 글',

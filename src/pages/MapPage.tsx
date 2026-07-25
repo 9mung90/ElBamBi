@@ -34,12 +34,14 @@ import shiftingEarthLabels from '../data/mapReader/locales/ko/shifting_earth_lab
 import ResponsiveSelect from '../components/ResponsiveSelect';
 import './MapPage.css';
 
+// 지도 배경 이미지 가져오기
 const mapImages = import.meta.glob('../assets/images/mapReader/mapTypes/*.webp', {
   eager: true,
   import: 'default',
   query: '?url',
 }) as Record<string, string>;
 
+// 건물과 장소 아이콘 가져오기
 const buildingIcons = import.meta.glob('../assets/images/mapReader/buildingIcons/*.webp', {
   eager: true,
   import: 'default',
@@ -172,6 +174,7 @@ type PatternListKey =
   | 'townships'
   | 'spawn_points';
 
+// 밤의 왕별 지도 패턴
 const patternsByNightlord: Record<string, PatternRow[]> = {
   Adel: adelPatterns as PatternRow[],
   Caligo: caligoPatterns as PatternRow[],
@@ -185,6 +188,7 @@ const patternsByNightlord: Record<string, PatternRow[]> = {
   Straghess: straghessPatterns as PatternRow[],
 };
 
+// 한글 번역 목록
 const localeDomains: Record<LocaleDomainName, LocaleMap> = {
   boss_castle: bossCastleLabels as LocaleMap,
   boss_evergaol: bossEvergaolLabels as LocaleMap,
@@ -196,6 +200,7 @@ const localeDomains: Record<LocaleDomainName, LocaleMap> = {
   shifting_earth_labels: shiftingEarthLabels as LocaleMap,
 };
 
+// 밤의 왕 표시 순서
 const nightlordOrder = [
   'Gladius',
   'Adel',
@@ -211,6 +216,7 @@ const nightlordOrder = [
 
 const allNightlordsKey = '???';
 
+// 슬롯에 붙는 속성 이름
 const slotAttributeSuffixes = [
   'frostbite',
   'lightning',
@@ -226,6 +232,7 @@ const slotAttributeSuffixes = [
   'sleep',
 ];
 
+// 건물 기본 이름
 const buildingBaseLabels: Record<string, string> = {
   blacksmith_town: '대장간 마을',
   caravan: '소규모 캠프',
@@ -246,6 +253,7 @@ const buildingBaseLabels: Record<string, string> = {
   township: '마을',
 };
 
+// 슬롯 속성 한글 이름
 const attributeLabels: Record<string, string> = {
   bleed: '출혈',
   blight: '즉사',
@@ -261,6 +269,7 @@ const attributeLabels: Record<string, string> = {
   sleep: '수면',
 };
 
+// 번역이 없는 맵 타입 이름
 const mapTypeFallbackLabels: Record<string, string> = {
   Default: '기본',
   'Forsaken Hollows': '대공동',
@@ -271,9 +280,11 @@ const focusedFieldBossLocations: Record<string, string> = {
   'Castle Basement': '성 지하실',
 };
 
+// 가까운 슬롯과 지도 위치를 합칠 거리
 const facilityPoiMergeDistance = 3.6;
 const fieldBossPoiMergeDistance = 0.25;
 
+// 지도 시설별 마커 정보
 const facilityMarkerGroups: Array<{
   key: PatternListKey;
   kind: PoiMarker['kind'];
@@ -291,6 +302,7 @@ const facilityMarkerGroups: Array<{
   { key: 'spawn_points', kind: 'facility', shortLabel: '출격', iconKey: 'spawn' },
 ];
 
+// 보스 이름을 찾을 번역 목록
 const bossDomains: LocaleDomainName[] = [
   'boss_castle',
   'boss_field',
@@ -298,6 +310,7 @@ const bossDomains: LocaleDomainName[] = [
   'boss_night',
 ];
 
+// 지도 원본 데이터 정리
 const seeds = seedData as SeedRow[];
 const coordsByMap = coordsData as Record<string, CoordinatePoint[]>;
 const mapBackgrounds = mapBackgroundData as Record<string, string>;
@@ -305,6 +318,7 @@ const poiById = new Map<number, [number, number]>(
   (poiData as PoiCoordinate[]).map((poi) => [Number(poi.id), poi.uv]),
 );
 
+// 한글 번역 찾기
 function tr(domain: LocaleDomainName, value: string | number | null | undefined) {
   if (value === null || value === undefined || value === '') {
     return '';
@@ -313,6 +327,7 @@ function tr(domain: LocaleDomainName, value: string | number | null | undefined)
   return localeDomains[domain][text] ?? text;
 }
 
+// 보스 한글 이름 찾기
 function bossKo(value: string | null | undefined) {
   if (!value) {
     return '';
@@ -326,6 +341,7 @@ function bossKo(value: string | null | undefined) {
   return value;
 }
 
+// 등록된 보스 이름 확인
 function isKnownBossName(value: string | null | undefined) {
   if (!value) {
     return false;
@@ -333,6 +349,7 @@ function isKnownBossName(value: string | null | undefined) {
   return bossDomains.some((domain) => Boolean(localeDomains[domain][value]));
 }
 
+// 슬롯 이름에서 속성 부분 제거
 function slotBase(value: string | null | undefined) {
   if (!value) {
     return '';
@@ -346,6 +363,7 @@ function slotBase(value: string | null | undefined) {
   return value;
 }
 
+// 슬롯 속성 이름 찾기
 function slotAttribute(value: string) {
   for (const suffix of slotAttributeSuffixes) {
     const token = `_${suffix}`;
@@ -356,6 +374,7 @@ function slotAttribute(value: string) {
   return '';
 }
 
+// 지도 슬롯에 표시할 이름
 function slotLabel(value: string) {
   if (isKnownBossName(value)) {
     return bossKo(value);
@@ -366,12 +385,14 @@ function slotLabel(value: string) {
   return attribute ? `${baseLabel} - ${attribute}` : baseLabel;
 }
 
+// 번역 문구에서 세부 설명 분리
 function detailSuffix(value: string) {
   const translated = tr('overlay_poi_values', value);
   const parts = translated.split(' - ');
   return parts.length > 1 ? parts.slice(1).join(' - ') : translated;
 }
 
+// 지도 슬롯 상세 설명
 function slotDetails(value: string, mergedDetails: string[] = []) {
   if (isKnownBossName(value) && mergedDetails.length > 0) {
     return [bossKo(value), ...mergedDetails];
@@ -401,6 +422,7 @@ function slotDetails(value: string, mergedDetails: string[] = []) {
   return details;
 }
 
+// 지도 위치 상세 설명
 function poiDetails(item: PatternPoint, kind: PoiMarker['kind']) {
   const value = item.value ?? item.boss ?? item.event ?? '';
   const eventLabel = item.k_event ?? tr('events_labels', item.event);
@@ -432,6 +454,7 @@ function poiDetails(item: PatternPoint, kind: PoiMarker['kind']) {
   return details.filter(Boolean);
 }
 
+// 레이아웃 번호 표시 형식
 function formatLayoutNumber(value: string | number) {
   const numeric = Number(value);
   if (!Number.isFinite(numeric)) {
@@ -440,6 +463,7 @@ function formatLayoutNumber(value: string | number) {
   return String(numeric).padStart(numeric >= 1000 ? 4 : 3, '0');
 }
 
+// 시드 번호 표시 형식
 function formatSeedNumber(value: string | number) {
   const numeric = Number(value);
   if (!Number.isFinite(numeric)) {
@@ -448,6 +472,7 @@ function formatSeedNumber(value: string | number) {
   return String(numeric);
 }
 
+// 영원한 밤 레이아웃 확인
 function isEverdarkLayout(nightlord: string, layoutNumber: string | number) {
   if (nightlord === 'Harmonia' || nightlord === 'Straghess') {
     return false;
@@ -455,6 +480,7 @@ function isEverdarkLayout(nightlord: string, layoutNumber: string | number) {
   return Number(layoutNumber) >= 1000;
 }
 
+// 맵 타입 한글 이름
 function mapTypeLabel(mapType: string) {
   const translated = tr('shifting_earth_labels', mapType);
   if (translated !== mapType) {
@@ -463,17 +489,20 @@ function mapTypeLabel(mapType: string) {
   return mapTypeFallbackLabels[mapType] ?? mapType;
 }
 
+// 파일 이름으로 이미지 찾기
 function assetByFileName(assets: Record<string, string>, fileName: string) {
   const match = Object.entries(assets).find(([path]) => path.endsWith(`/${fileName}`));
   return match?.[1] ?? null;
 }
 
+// 맵 타입에 맞는 배경 이미지
 function mapImageUrl(mapType: string) {
   const relPath = mapBackgrounds[mapType] ?? `${mapType}.webp`;
   const fileName = relPath.split('/').pop() ?? relPath;
   return assetByFileName(mapImages, fileName);
 }
 
+// 슬롯 값에 맞는 아이콘
 function iconUrlForSlot(value: string) {
   const exact = assetByFileName(buildingIcons, `${value}.webp`);
   if (exact) {
@@ -486,10 +515,12 @@ function iconUrlForSlot(value: string) {
   return assetByFileName(buildingIcons, `${base}.webp`);
 }
 
+// 공통 아이콘 찾기
 function iconUrlForKey(key: string) {
   return assetByFileName(buildingIcons, `${key}.webp`) ?? assetByFileName(buildingIcons, 'empty.webp') ?? '';
 }
 
+// 성 종류에 맞는 아이콘
 function iconUrlForCastleKey(key: PatternListKey) {
   if (key === 'small_castle') {
     return iconUrlForKey('small_castle');
@@ -497,6 +528,7 @@ function iconUrlForCastleKey(key: PatternListKey) {
   return iconUrlForKey('medium_castle');
 }
 
+// 지도 위치 번호를 퍼센트 좌표로 변환
 function poiPosition(poiId: number | null | undefined) {
   if (poiId === null || poiId === undefined) {
     return null;
@@ -508,6 +540,7 @@ function poiPosition(poiId: number | null | undefined) {
   return { x: uv[0] * 100, y: uv[1] * 100 };
 }
 
+// 주요 보스 요약 목록
 function focusedBossRows(pattern: PatternRow | undefined): DetailRow[] {
   if (!pattern) {
     return [];
@@ -542,10 +575,12 @@ function focusedBossRows(pattern: PatternRow | undefined): DetailRow[] {
   return rows;
 }
 
+// 지도 확대 범위 제한
 function clampZoom(value: number) {
   return Math.min(2.5, Math.max(1, value));
 }
 
+// 두 손가락 사이 거리
 function touchDistance(touches: TouchEvent<HTMLDivElement>['touches']) {
   if (touches.length < 2) {
     return null;
@@ -555,6 +590,7 @@ function touchDistance(touches: TouchEvent<HTMLDivElement>['touches']) {
   return Math.hypot(first.clientX - second.clientX, first.clientY - second.clientY);
 }
 
+// 두 손가락의 가운데 위치
 function touchMidpoint(touches: TouchEvent<HTMLDivElement>['touches']) {
   if (touches.length < 2) {
     return null;
@@ -567,6 +603,7 @@ function touchMidpoint(touches: TouchEvent<HTMLDivElement>['touches']) {
   };
 }
 
+// 패턴에 맞는 시드 찾기
 function seedForPattern(nightlord: string, pattern: PatternRow) {
   return seeds.find(
     (seed) =>
@@ -575,6 +612,7 @@ function seedForPattern(nightlord: string, pattern: PatternRow) {
   );
 }
 
+// 밤의 왕에 맞는 맵 타입 목록
 function mapTypesForNightlord(nightlord: string) {
   if (nightlord === allNightlordsKey) {
     const mapTypes = Array.from(
@@ -593,6 +631,7 @@ function mapTypesForNightlord(nightlord: string) {
   return mapTypes.sort((left, right) => mapTypeLabel(left).localeCompare(mapTypeLabel(right)));
 }
 
+// 밤의 왕과 맵 타입에 맞는 후보 목록
 function candidateEntries(nightlord: string, mapType: string): CandidateEntry[] {
   if (nightlord === allNightlordsKey) {
     return Object.entries(patternsByNightlord).flatMap(([patternNightlord, patterns]) =>
@@ -615,10 +654,12 @@ function candidateEntries(nightlord: string, mapType: string): CandidateEntry[] 
   });
 }
 
+// 지도 후보 고유 번호
 function candidateKey(candidate: CandidateEntry) {
   return `${candidate.seed.nightlord}-${candidate.seed.seed_id}`;
 }
 
+// 선택한 슬롯과 일치하는 시드 확인
 function matchesSlotSelections(seed: SeedRow, selections: Record<string, string>, exceptSlotId?: string) {
   return Object.entries(selections).every(([slotId, value]) => {
     if (slotId === exceptSlotId) {
@@ -628,6 +669,7 @@ function matchesSlotSelections(seed: SeedRow, selections: Record<string, string>
   });
 }
 
+// 슬롯 종류 확인
 function slotKind(value: string): SlotOverlay['kind'] {
   if (isKnownBossName(value)) {
     return 'boss';
@@ -635,6 +677,7 @@ function slotKind(value: string): SlotOverlay['kind'] {
   return slotBase(value) === 'spawn' ? 'spawn' : 'facility';
 }
 
+// 값이 정해진 지도 슬롯 만들기
 function createSlotOverlay(slotId: string, point: CoordinatePoint, value: string): SlotOverlay {
   const kind = slotKind(value);
   return {
@@ -650,6 +693,7 @@ function createSlotOverlay(slotId: string, point: CoordinatePoint, value: string
   };
 }
 
+// 아직 선택하지 않은 지도 슬롯 만들기
 function createUnknownSlotOverlay(slotId: string, point: CoordinatePoint, value = ''): SlotOverlay {
   if (value) {
     return createSlotOverlay(slotId, point, value);
@@ -667,10 +711,12 @@ function createUnknownSlotOverlay(slotId: string, point: CoordinatePoint, value 
   };
 }
 
+// 시설 위치 고유 번호
 function facilityPoiKey(key: PatternListKey, item: PatternPoint) {
   return `${key}-${item.poi_id ?? 'none'}-${item.value ?? item.boss ?? item.event ?? ''}`;
 }
 
+// 대공동 밤 보스와 겹치는 슬롯 제외
 function removeForsakenHollowsNight2OverlappingSlots(
   slots: SlotOverlay[],
   mapType: string,
@@ -688,6 +734,7 @@ function removeForsakenHollowsNight2OverlappingSlots(
   return slots.filter((slot) => Math.hypot(slot.x - night2Position.x, slot.y - night2Position.y) >= 0.2);
 }
 
+// 시설과 연결할 수 있는 슬롯 종류
 function slotBasesForFacility(key: PatternListKey) {
   const bases: Partial<Record<PatternListKey, string[]>> = {
     churches: ['church', 'church_spawn'],
@@ -703,6 +750,7 @@ function slotBasesForFacility(key: PatternListKey) {
   return bases[key] ?? [];
 }
 
+// 시설과 합칠 상세 설명
 function facilityMergeDetails(key: PatternListKey, item: PatternPoint) {
   const value = item.value ?? item.boss ?? item.event ?? '';
   if (key === 'sorcerers_rises') {
@@ -720,11 +768,13 @@ function facilityMergeDetails(key: PatternListKey, item: PatternPoint) {
   return [`보스: ${detailSuffix(value)}`];
 }
 
+// 필드 보스와 합칠 상세 설명
 function fieldBossMergeDetails(item: PatternPoint) {
   const boss = bossKo(item.boss);
   return poiDetails(item, 'field').filter((detail) => detail && detail !== boss);
 }
 
+// 시설과 합칠 표시 이름
 function facilityMergeLabel(key: PatternListKey, item: PatternPoint) {
   if (
     key === 'churches' ||
@@ -741,6 +791,7 @@ function facilityMergeLabel(key: PatternListKey, item: PatternPoint) {
   return detail && detail !== translated ? detail : '';
 }
 
+// 가까운 시설 위치를 슬롯에 합치기
 function assignFacilityPoisToSlots(slots: SlotOverlay[], pattern: PatternRow | undefined) {
   const bySlot = new Map<string, SlotPoiAssignment>();
   const assignedPoiKeys = new Set<string>();
@@ -748,6 +799,7 @@ function assignFacilityPoisToSlots(slots: SlotOverlay[], pattern: PatternRow | u
     return { bySlot, assignedPoiKeys };
   }
 
+  // 같은 종류의 슬롯과 시설 사이 거리 계산
   const candidates = facilityMarkerGroups.flatMap((group) => {
     const compatibleBases = slotBasesForFacility(group.key);
     if (compatibleBases.length === 0) {
@@ -771,6 +823,7 @@ function assignFacilityPoisToSlots(slots: SlotOverlay[], pattern: PatternRow | u
     .filter((candidate) => candidate.distance <= facilityPoiMergeDistance)
     .sort((left, right) => left.distance - right.distance);
 
+  // 가까운 항목부터 하나씩 연결
   const usedSlots = new Set<string>();
   for (const candidate of candidates) {
     const key = facilityPoiKey(candidate.key, candidate.item);
@@ -789,6 +842,7 @@ function assignFacilityPoisToSlots(slots: SlotOverlay[], pattern: PatternRow | u
   return { bySlot, assignedPoiKeys };
 }
 
+// 가까운 필드 보스를 슬롯에 합치기
 function assignFieldBossPoisToSlots(slots: SlotOverlay[], pattern: PatternRow | undefined) {
   const bySlot = new Map<string, SlotPoiAssignment>();
   const assignedPoiKeys = new Set<string>();
@@ -796,6 +850,7 @@ function assignFieldBossPoisToSlots(slots: SlotOverlay[], pattern: PatternRow | 
     return { bySlot, assignedPoiKeys };
   }
 
+  // 같은 보스 슬롯과 필드 보스 사이 거리 계산
   const candidates = (pattern.field_bosses ?? []).flatMap((item) => {
     const position = poiPosition(item.poi_id);
     if (!position || !item.boss) {
@@ -829,7 +884,9 @@ function assignFieldBossPoisToSlots(slots: SlotOverlay[], pattern: PatternRow | 
   return { bySlot, assignedPoiKeys };
 }
 
+// 지도 페이지 전체
 const MapPage = () => {
+  // 지도 선택과 표시 상태
   const [selectedNightlord, setSelectedNightlord] = useState('Gladius');
   const [selectedMapType, setSelectedMapType] = useState('Default');
   const [selectedSlotValues, setSelectedSlotValues] = useState<Record<string, string>>({});
@@ -842,6 +899,8 @@ const MapPage = () => {
   const [fullscreenPanel, setFullscreenPanel] = useState<
     'settings' | 'summary' | 'events' | 'bosses' | null
   >(null);
+
+  // 지도 확대와 이동 상태
   const [mapZoom, setMapZoom] = useState(1);
   const mapZoomRef = useRef(1);
   const pendingMapScrollRef = useRef<{
@@ -868,6 +927,7 @@ const MapPage = () => {
   } | null>(null);
   const suppressMapClickRef = useRef(false);
 
+  // 밤의 왕과 맵 타입 선택 목록
   const nightlordOptions = useMemo(
     () => [allNightlordsKey, ...nightlordOrder.filter((nightlord) => patternsByNightlord[nightlord])],
     [],
@@ -877,6 +937,8 @@ const MapPage = () => {
   const currentMapType = mapTypeOptions.includes(selectedMapType)
     ? selectedMapType
     : (mapTypeOptions[0] ?? 'Default');
+
+  // 현재 조건에 맞는 시드 후보
   const baseCandidates = useMemo(
     () => candidateEntries(selectedNightlord, currentMapType),
     [currentMapType, selectedNightlord],
@@ -889,12 +951,15 @@ const MapPage = () => {
     () => matchingCandidates.find((candidate) => candidateKey(candidate) === selectedCandidateKey) ?? null,
     [matchingCandidates, selectedCandidateKey],
   );
+
+  // 후보가 하나면 완성된 지도 사용
   const solvedCandidate = selectedCandidate ?? (matchingCandidates.length === 1 ? matchingCandidates[0] : null);
   const currentPattern = solvedCandidate?.pattern;
   const currentSeed = solvedCandidate?.seed;
   const currentLayoutNumber = currentPattern?.layout_number ?? '';
   const backgroundUrl = mapImageUrl(currentMapType);
 
+  // 화면 크기에 맞는 지도 크기 계산
   useEffect(() => {
     const panel = mapStagePanelRef.current;
     if (!panel) return;
@@ -936,6 +1001,7 @@ const MapPage = () => {
     };
   }, [isMapFullscreen]);
 
+  // 현재 지도에 표시할 기본 슬롯
   const baseSlotOverlays = useMemo<SlotOverlay[]>(() => {
     const coordinates = coordsByMap[currentMapType] ?? coordsByMap.Default ?? [];
     const overlays: SlotOverlay[] = [];
@@ -947,6 +1013,7 @@ const MapPage = () => {
       }
       const slotId = rawId.length === 1 ? rawId.padStart(2, '0') : rawId;
 
+      // 완성된 지도는 시드의 슬롯 값 사용
       if (currentSeed) {
         const rawValue = currentSeed.slots[slotId];
         if (!rawValue) {
@@ -956,6 +1023,7 @@ const MapPage = () => {
         continue;
       }
 
+      // 식별 중인 지도는 선택 가능한 빈 슬롯 표시
       const selectedValue = selectedSlotValues[slotId] ?? '';
       const canHaveValue = baseCandidates.some((candidate) => Boolean(candidate.seed.slots[slotId]));
       if (!selectedValue && !canHaveValue) {
@@ -967,16 +1035,19 @@ const MapPage = () => {
     return overlays;
   }, [baseCandidates, currentMapType, currentSeed, selectedSlotValues]);
 
+  // 슬롯에 합칠 시설 정보
   const facilityPoiAssignments = useMemo(
     () => assignFacilityPoisToSlots(baseSlotOverlays, currentPattern),
     [baseSlotOverlays, currentPattern],
   );
 
+  // 슬롯에 합칠 필드 보스 정보
   const fieldBossPoiAssignments = useMemo(
     () => assignFieldBossPoisToSlots(baseSlotOverlays, currentPattern),
     [baseSlotOverlays, currentPattern],
   );
 
+  // 최종 지도 슬롯 목록
   const slotOverlays = useMemo(
     () => {
       const slots = baseSlotOverlays.map((slot) => {
@@ -998,12 +1069,14 @@ const MapPage = () => {
     [baseSlotOverlays, currentMapType, currentPattern, facilityPoiAssignments, fieldBossPoiAssignments],
   );
 
+  // 보스와 이벤트 및 시설 마커 목록
   const poiMarkers = useMemo<PoiMarker[]>(() => {
     if (!currentPattern) {
       return [];
     }
 
     const markers: PoiMarker[] = [];
+    // 위치가 있는 마커만 목록에 추가
     const addMarker = (
       id: string,
       poiId: number | null | undefined,
@@ -1125,6 +1198,7 @@ const MapPage = () => {
     return markers;
   }, [currentPattern, facilityPoiAssignments, fieldBossPoiAssignments]);
 
+  // 선택한 슬롯에서 가능한 값 목록
   const selectedSlot = slotOverlays.find((slot) => slot.itemId === activeItemId);
   const activeSlotOptions = useMemo(() => {
     if (!selectedSlot) {
@@ -1148,6 +1222,7 @@ const MapPage = () => {
     return Array.from(values.values()).sort((left, right) => left.label.localeCompare(right.label));
   }, [baseCandidates, selectedSlot, selectedSlotValues]);
 
+  // 슬롯 선택창 바깥 클릭 시 닫기
   useEffect(() => {
     if (!selectedSlot) return;
 
@@ -1163,6 +1238,7 @@ const MapPage = () => {
     return () => document.removeEventListener('pointerdown', closeSlotPickerOutside);
   }, [selectedSlot]);
 
+  // 마우스와 키보드로 가리킨 지도 정보
   const focusedItemId = hoveredItemId ?? activeItemId;
   const focusedSlot = slotOverlays.find((slot) => slot.itemId === focusedItemId);
   const focusedMarker = poiMarkers.find((marker) => marker.id === focusedItemId);
@@ -1199,23 +1275,28 @@ const MapPage = () => {
   const selectedSlotCount = Object.keys(selectedSlotValues).length;
   const candidateRows = matchingCandidates;
 
+  // 지도 항목 선택 및 해제
   const toggleActiveItem = (itemId: string) => {
   setActiveItemId((current) => (current === itemId ? null : itemId));
   setHoveredItemId(null);
   };
 
+  // 시드 후보 직접 선택
   const selectCandidate = (candidate: CandidateEntry) => {
     setSelectedCandidateKey(candidateKey(candidate));
     setActiveItemId(null);
     setHoveredItemId(null);
   };
 
+  // 슬롯 값 선택
   const updateSlotValue = (slotId: string, value: string) => {
     setSelectedCandidateKey(null);
     setSelectedSlotValues((current) => ({ ...current, [slotId]: value }));
     setActiveItemId(null);
     setHoveredItemId(null);
   };
+
+  // 슬롯 값 선택 해제
   const clearSlotValue = (slotId: string) => {
     setSelectedCandidateKey(null);
     setSelectedSlotValues((current) => {
@@ -1224,6 +1305,8 @@ const MapPage = () => {
       return next;
     });
   };
+
+  // 지도 식별 조건 초기화
   const resetMapReader = () => {
     setSelectedNightlord('Gladius');
     setSelectedMapType('Default');
@@ -1238,6 +1321,7 @@ const MapPage = () => {
     setMapZoom(1);
   };
 
+  // 지도 전체화면 변경
   const toggleMapFullscreen = () => {
     const nextFullscreen = !isMapFullscreen;
     setIsMapFullscreen(nextFullscreen);
@@ -1260,6 +1344,7 @@ const MapPage = () => {
     }
   };
 
+  // 브라우저 전체화면 상태 맞추기
   useEffect(() => {
     const syncNativeFullscreenState = () => {
       if (document.fullscreenElement === mapPageRef.current) return;
@@ -1275,6 +1360,7 @@ const MapPage = () => {
     return () => document.removeEventListener('fullscreenchange', syncNativeFullscreenState);
   }, []);
 
+  // 전체화면 스크롤과 ESC 키 처리
   useEffect(() => {
     if (!isMapFullscreen) return;
 
@@ -1300,6 +1386,7 @@ const MapPage = () => {
     };
   }, [fullscreenPanel, isMapFullscreen]);
 
+  // 확대 배율과 지도 스크롤 함께 변경
   const setMapZoomWithScroll = useCallback((nextZoom: number, left: number, top: number) => {
     const viewport = mapViewportRef.current;
     if (!viewport) return;
@@ -1325,6 +1412,7 @@ const MapPage = () => {
     }
   }, []);
 
+  // 마우스 위치를 중심으로 지도 확대
   const zoomMapAtClientPoint = useCallback((nextZoom: number, clientX: number, clientY: number) => {
     const viewport = mapViewportRef.current;
     if (!viewport) return;
@@ -1347,6 +1435,7 @@ const MapPage = () => {
     );
   }, [setMapZoomWithScroll]);
 
+  // 확대 후 저장해 둔 스크롤 위치 적용
   useLayoutEffect(() => {
     const viewport = mapViewportRef.current;
     const pendingScroll = pendingMapScrollRef.current;
@@ -1357,6 +1446,7 @@ const MapPage = () => {
     pendingMapScrollRef.current = null;
   }, [mapZoom]);
 
+  // 모바일 전체화면 지도 가운데 맞추기
   useLayoutEffect(() => {
     const viewport = mapViewportRef.current;
     if (!viewport || !isMapFullscreen || window.innerWidth > 780 || mapZoomRef.current !== 1) {
@@ -1367,6 +1457,7 @@ const MapPage = () => {
     viewport.scrollTop = Math.max(0, (viewport.scrollHeight - viewport.clientHeight) / 2);
   }, [isMapFullscreen, mapFitSize]);
 
+  // 마우스 휠 확대와 브라우저 기본 확대 막기
   useEffect(() => {
     const viewport = mapViewportRef.current;
     if (!viewport) return;
@@ -1404,6 +1495,7 @@ const MapPage = () => {
     };
   }, [zoomMapAtClientPoint]);
 
+  // 지도 끌기 시작
   const startMapDrag = (clientX: number, clientY: number) => {
     const viewport = mapViewportRef.current;
     if (
@@ -1420,6 +1512,8 @@ const MapPage = () => {
       moved: false,
     };
   };
+
+  // 지도 끌어서 이동
   const moveMapDrag = (clientX: number, clientY: number) => {
     const drag = mapDragRef.current;
     const viewport = mapViewportRef.current;
@@ -1436,6 +1530,8 @@ const MapPage = () => {
     viewport.scrollTop = drag.scrollTop - deltaY;
     return true;
   };
+
+  // 지도 끌기 종료
   const endMapDrag = () => {
     mapDragRef.current = null;
   };
@@ -1453,6 +1549,8 @@ const MapPage = () => {
   const handleMapMouseUp = () => {
     endMapDrag();
   };
+
+  // 지도 이동 직후 잘못된 클릭 막기
   const handleMapClickCapture = (event: MouseEvent<HTMLDivElement>) => {
     if (!suppressMapClickRef.current) {
       return;
@@ -1461,6 +1559,8 @@ const MapPage = () => {
     event.stopPropagation();
     suppressMapClickRef.current = false;
   };
+
+  // 한 손가락 이동과 두 손가락 확대 시작
   const handleMapTouchStart = (event: TouchEvent<HTMLDivElement>) => {
     const distance = touchDistance(event.touches);
     const midpoint = touchMidpoint(event.touches);
@@ -1489,6 +1589,8 @@ const MapPage = () => {
       startMapDrag(touch.clientX, touch.clientY);
     }
   };
+
+  // 두 손가락 간격에 맞춰 확대
   const handleMapTouchMove = (event: TouchEvent<HTMLDivElement>) => {
     const distance = touchDistance(event.touches);
     const midpoint = touchMidpoint(event.touches);
@@ -1513,6 +1615,8 @@ const MapPage = () => {
       event.preventDefault();
     }
   };
+
+  // 터치 확대와 이동 종료
   const handleMapTouchEnd = (event: TouchEvent<HTMLDivElement>) => {
     if (event.touches.length < 2) {
       pinchRef.current = null;
@@ -1522,12 +1626,14 @@ const MapPage = () => {
     }
   };
 
+  // 지도 설정과 식별 결과 화면
   return (
     <section
       ref={mapPageRef}
       className={`map-page${isMapFullscreen ? ' is-map-fullscreen' : ''}`}
       aria-label="Nightreign 맵"
     >
+      {/* 현재 지도 요약 */}
       <header className="map-page-heading">
         <div>
           <h2>맵 식별 도구</h2>
@@ -1541,6 +1647,7 @@ const MapPage = () => {
       </header>
 
       <div className="map-layout">
+        {/* 밤의 왕과 맵 타입 설정 */}
         <aside className={`map-control-panel${fullscreenPanel === 'settings' ? ' is-open' : ''}`}>
           <div className="map-fullscreen-drawer-heading">
             <strong>지도 설정</strong>
@@ -1639,6 +1746,7 @@ const MapPage = () => {
 
         </aside>
 
+        {/* 지도 화면 */}
         <div
           ref={mapStagePanelRef}
           className="map-stage-panel"
@@ -1654,6 +1762,7 @@ const MapPage = () => {
             <small>{isMapFullscreen ? '나가기' : '전체화면'}</small>
           </button>
 
+          {/* 전체화면 메뉴 */}
           {isMapFullscreen ? (
             <nav className="map-fullscreen-nav" aria-label="전체화면 지도 메뉴">
               <button
@@ -1705,6 +1814,7 @@ const MapPage = () => {
             onTouchEnd={handleMapTouchEnd}
             onTouchCancel={handleMapTouchEnd}
           >
+            {/* 지도 배경과 마커 */}
             <div
               className="map-stage"
               style={{
@@ -1713,6 +1823,7 @@ const MapPage = () => {
               } as CSSProperties}
             >
               <div className="map-stage-shade" aria-hidden="true" />
+              {/* 식별 슬롯 마커 */}
               {slotOverlays.map((slot) => (
                 <button
                   key={slot.itemId}
@@ -1735,6 +1846,7 @@ const MapPage = () => {
                 </button>
               ))}
 
+              {/* 보스와 이벤트 및 시설 마커 */}
               {showPoiMarkers
                 ? poiMarkers.map((marker) => (
                     <button
@@ -1754,6 +1866,8 @@ const MapPage = () => {
                     </button>
                   ))
                 : null}
+
+              {/* 선택한 슬롯의 가능한 요소 */}
               {!currentPattern && selectedSlot ? (
                 <div
                   className={`map-slot-picker-popover is-${selectedSlot.kind}${selectedSlot.x > 62 ? ' is-align-left' : ''}${selectedSlot.y < 26 ? ' is-align-top' : selectedSlot.y > 74 ? ' is-align-bottom' : ''}`}
@@ -1806,6 +1920,8 @@ const MapPage = () => {
                   </div>
                 </div>
               ) : null}
+
+              {/* 가리킨 지도 항목 설명 */}
               {focusedMapItem && (!selectedSlot || focusedMapItem.id !== selectedSlot.itemId) ? (
                 <div
                   key={focusedMapItem.id}
@@ -1822,6 +1938,7 @@ const MapPage = () => {
           </div>
         </div>
 
+        {/* 시드와 레이아웃 정보 */}
         <aside className={`map-info-panel${fullscreenPanel && fullscreenPanel !== 'settings' ? ' is-open' : ''}`}>
           <div className="map-fullscreen-drawer-heading">
             <strong>
@@ -1837,6 +1954,8 @@ const MapPage = () => {
               ×
             </button>
           </div>
+
+          {/* 완성 지도 요약 또는 시드 후보 */}
           <section className={`map-info-card map-summary-card${fullscreenPanel !== 'summary' ? ' is-fullscreen-panel-hidden' : ''}`}>
             <h3>{currentPattern ? '레이아웃 요약' : '시드 목록'}</h3>
             {currentPattern ? (
@@ -1889,6 +2008,7 @@ const MapPage = () => {
             )}
           </section>
 
+          {/* 특수 이벤트 목록 */}
           {currentPattern ? (
             <section className={`map-info-card map-events-card${fullscreenPanel !== 'events' ? ' is-fullscreen-panel-hidden' : ''}`}>
               <h3>특수 이벤트</h3>
@@ -1906,6 +2026,7 @@ const MapPage = () => {
             </section>
           ) : null}
 
+          {/* 주요 보스 목록 */}
           {currentPattern ? (
             <section className={`map-info-card map-bosses-card${fullscreenPanel !== 'bosses' ? ' is-fullscreen-panel-hidden' : ''}`}>
               <h3>주요 보스</h3>

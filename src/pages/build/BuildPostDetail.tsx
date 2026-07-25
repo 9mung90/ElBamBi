@@ -1,3 +1,5 @@
+// 게시글 상세 페이지
+
 import { useMemo, type FormEvent } from 'react';
 import {
   BuildPostPresetBlock,
@@ -10,17 +12,22 @@ import {
   type BuildPost,
 } from './buildShared';
 
+
+
+// 답글용 ID 찾기
 function getCommentById(comments: BuildComment[], commentId: string | null) {
   if (!commentId) return null;
   return comments.find((comment) => comment.id === commentId) ?? null;
 }
 
+// 답글이면 원본 ID 찾아옴
 function getReplyMention(comment: BuildComment, comments: BuildComment[]) {
   const parentComment = getCommentById(comments, comment.parentCommentId);
   if (!parentComment) return '';
   return `@${getAuthorLabel(parentComment.userId, parentComment.authorNickname)}`;
 }
 
+// 본문 출력(HTML은 구별 및 태그 제거)
 function BuildPostContent({ content }: { content: string }) {
   const hasHtml = /<\/?[a-z][\s\S]*>/i.test(content);
   const sanitizedContent = useMemo(() => (hasHtml ? sanitizeBuildPostHtml(content) : content), [content, hasHtml]);
@@ -34,6 +41,7 @@ function BuildPostContent({ content }: { content: string }) {
   return <div className="build-detail-content" dangerouslySetInnerHTML={{ __html: sanitizedContent }} />;
 }
 
+// 게시글 데이터
 export default function BuildPostDetail({
   canEdit,
   isAdmin,
@@ -69,7 +77,9 @@ export default function BuildPostDetail({
   onEditPost: (post: BuildPost) => void;
   onReportPost: (post: BuildPost) => void;
 }) {
+  // buildshared에서 가져온 함수로 내용과 프리셋 구분함
   const contentParts = useMemo(() => getBuildPostContentParts(post.content), [post.content]);
+  // 답글 대상 찾기
   const replyTargetComment = getCommentById(post.comments, commentParentId);
 
   return (
@@ -111,18 +121,19 @@ export default function BuildPostDetail({
           ) : null}
         </div>
       </div>
-
       {post.images.length ? (
+        // 이미지 첨부
         <div className="build-image-grid">
           {post.images.map((image) => (
             <img key={`${image.id}-${image.imageUrl}`} src={image.imageUrl} alt={`${post.title} 이미지`} />
           ))}
         </div>
       ) : null}
-
+      {/* 프리셋이 있으면 프리셋 출력 */}
       {contentParts.preset ? <BuildPostPresetBlock embeddedPreset={contentParts.preset} /> : null}
       <BuildPostContent content={contentParts.content} />
 
+      {/* 댓글 */}
       <section className="build-comments" aria-label="댓글">
         <div className="build-comments-heading">
           <strong>댓글 {post.comments.length}</strong>

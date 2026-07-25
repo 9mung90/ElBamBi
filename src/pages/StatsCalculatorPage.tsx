@@ -26,6 +26,7 @@ type CombatSummaryRow = {
   count: number;
 };
 
+// 계산에 사용하는 능력치와 공격 속성
 const statKeys: StatKey[] = ['STR', 'DEX', 'INT', 'FAI', 'ARC', 'VIG', 'MND', 'END'];
 const attackStats: StatKey[] = ['STR', 'DEX', 'INT', 'FAI', 'ARC'];
 const damageKeys: DamageKey[] = ['Phys', 'Magic', 'Fire', 'Lightning', 'Holy'];
@@ -36,6 +37,7 @@ const resourceBarMaxValues: Record<ResourceKey, number> = {
 };
 const maxSelectedEffectCount = 25;
 
+// 능력치 한글 이름
 const statLabels: Record<StatKey, string> = {
   STR: '근력',
   DEX: '기량',
@@ -47,6 +49,7 @@ const statLabels: Record<StatKey, string> = {
   END: '지구력',
 };
 
+// 공격 속성 한글 이름
 const damageLabels: Record<DamageKey, string> = {
   Phys: '물리',
   Magic: '마력',
@@ -56,6 +59,7 @@ const damageLabels: Record<DamageKey, string> = {
 };
 const elementalDamageLabels = ['마력', '화염', '벼락', '신성'];
 
+// 상태 이상 한글 이름
 const statusLabels: Record<string, string> = {
   Poison: '독',
   ScarletRot: '부패',
@@ -66,6 +70,7 @@ const statusLabels: Record<string, string> = {
   DeathBlight: '죽음',
 };
 
+// 설명에서 능력치를 찾을 한글 표현
 const koreanStatWords: Array<[RegExp, StatKey]> = [
   [/근력/g, 'STR'],
   [/기량/g, 'DEX'],
@@ -77,6 +82,7 @@ const koreanStatWords: Array<[RegExp, StatKey]> = [
   [/지구력/g, 'END'],
 ];
 
+// 설명만으로 계산하기 어려운 고정 능력치
 const fixedEffectStatOffsets: Record<string, Partial<StatMap>> = {
   '7000000': { VIG: 1 },
   '7000001': { VIG: 2 },
@@ -109,6 +115,7 @@ const fixedEffectStatOffsets: Record<string, Partial<StatMap>> = {
   '6830400': { VIG: -3, ARC: -3 },
 };
 
+// 빈 능력치 값
 const emptyStats = (): StatMap => ({
   STR: 0,
   DEX: 0,
@@ -120,26 +127,31 @@ const emptyStats = (): StatMap => ({
   END: 0,
 });
 
+// 빈 자원 보정 값
 const emptyResources = (): ResourceAdjustment => ({
   HP: { flat: 0, percent: 0 },
   FP: { flat: 0, percent: 0 },
   Stamina: { flat: 0, percent: 0 },
 });
 
+// 캐릭터 표시 이름 찾기
 function getCharacterDisplay(character: string) {
   const index = characterNames.indexOf(character);
   return nightfarers[index]?.name ?? character;
 }
 
+// 캐릭터 데이터 찾기
 function getNightfarer(character: string): Nightfarer | undefined {
   const index = characterNames.indexOf(character);
   return nightfarers[index];
 }
 
+// 캐릭터와 레벨에 맞는 능력치
 function getStats(character: string, level: number) {
   return characterStats.find((entry) => entry.character === character && entry.level === level);
 }
 
+// 캐릭터 능력치를 계산용 형식으로 변환
 function statMapFromStats(stats: CharacterStats): StatMap {
   return {
     STR: stats.STR,
@@ -153,6 +165,7 @@ function statMapFromStats(stats: CharacterStats): StatMap {
   };
 }
 
+// 능력치에서 HP와 FP 및 스태미나 계산
 function resourceFromStats(stats: StatMap): Record<ResourceKey, number> {
   return {
     HP: 80 + stats.VIG * 20,
@@ -161,12 +174,14 @@ function resourceFromStats(stats: StatMap): Record<ResourceKey, number> {
   };
 }
 
+// 문구에서 마지막 숫자 찾기
 function parseLastNumber(value: string) {
   const matches = value.match(/\d+(?:\.\d+)?/g);
   if (!matches?.length) return 0;
   return Number(matches[matches.length - 1]);
 }
 
+// 설명에서 자원 증감 수치 더하기
 function addResourceFromDescription(
   adjustment: ResourceAdjustment,
   text: string,
@@ -189,6 +204,7 @@ function addResourceFromDescription(
   for (const match of text.matchAll(downFlatPattern)) adjustment[resource].flat -= Number(match[1]);
 }
 
+// 유물 효과의 능력치 보정 계산
 function getEffectAdjustment(effect: RelicEffect) {
   const stats = emptyStats();
   const resources = emptyResources();
@@ -222,6 +238,7 @@ function getEffectAdjustment(effect: RelicEffect) {
   return { stats, resources };
 }
 
+// 여러 유물 효과 보정 합치기
 function mergeEffectAdjustments(effects: RelicEffect[]) {
   const stats = emptyStats();
   const resources = emptyResources();
@@ -238,10 +255,12 @@ function mergeEffectAdjustments(effects: RelicEffect[]) {
   return { stats, resources };
 }
 
+// 기본 자원에 고정값과 비율 적용
 function applyResourceAdjustment(baseValue: number, adjustment: ResourceAdjustment[ResourceKey]) {
   return Math.max(1, Math.trunc(baseValue * (1 + adjustment.percent / 100) + adjustment.flat));
 }
 
+// 무기 공격력 계산
 function calculateWeaponAttack(weapon: RelicWeapon, stats: StatMap, twoHanding: boolean) {
   const breakdown: Partial<Record<DamageKey, number>> = {};
   let total = 0;
@@ -265,6 +284,7 @@ function calculateWeaponAttack(weapon: RelicWeapon, stats: StatMap, twoHanding: 
   return { breakdown, total };
 }
 
+// 무기 상태 이상 수치 계산
 function calculateStatus(weapon: RelicWeapon, stats: StatMap) {
   const status: Record<string, number> = {};
 
@@ -277,6 +297,7 @@ function calculateStatus(weapon: RelicWeapon, stats: StatMap) {
   return status;
 }
 
+// 캐릭터 대표 무기 찾기
 function getRepresentativeWeapons(character: string) {
   const nightfarer = getNightfarer(character);
   const names = [nightfarer?.equipment, nightfarer?.equipment1, nightfarer?.equipment2]
@@ -286,20 +307,24 @@ function getRepresentativeWeapons(character: string) {
   return relicWeapons.filter((weapon) => names.includes(weapon.name));
 }
 
+// 유물 효과 검색용 문구
 function getEffectSearchText(effect: RelicEffect) {
   return `${effect.name} ${effect.desc ?? ''} ${effect.category ?? ''}`.toLowerCase();
 }
 
+// 퍼센트 표시
 function formatPercent(value: number) {
   const rounded = Math.round(value * 10) / 10;
   return Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(1);
 }
 
+// 배율 표시
 function formatMultiplier(value: number) {
   const rounded = Math.round(value * 1000) / 1000;
   return Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(3).replace(/0+$/g, '').replace(/\.$/g, '');
 }
 
+// 같은 옵션 중첩을 확인할 그룹
 function getEffectStackGroup(effect: RelicEffect) {
   return effect.name
     .replace(/\+\d+$/g, '')
@@ -307,14 +332,17 @@ function getEffectStackGroup(effect: RelicEffect) {
     .trim();
 }
 
+// 같은 옵션 중첩 불가 여부
 function isSameOptionStackBlocked(effect: RelicEffect) {
   return effect.stackable === false || /같은 효과끼리는 중첩되지 않습니다/.test(effect.desc ?? '');
 }
 
+// 설명에서 퍼센트 수치 목록 추출
 function extractPercentRates(value: string) {
   return [...value.matchAll(/(\d+(?:\.\d+)?)\s*%/g)].map((match) => Number(match[1]));
 }
 
+// 공격과 경감 대상 이름 정리
 function normalizeCombatTargets(rawTarget: string, metric: CombatMetric) {
   const cleaned = rawTarget
     .replace(/\[[^\]]+\]/g, ' ')
@@ -375,6 +403,7 @@ function normalizeCombatTargets(rawTarget: string, metric: CombatMetric) {
   return [`${known ?? cleaned} ${suffix}`];
 }
 
+// 유물 설명에서 공격과 경감 보정 찾기
 function parseCombatModifiers(effect: RelicEffect): CombatModifier[] {
   const text = `${effect.name}. ${effect.desc ?? ''}`;
   const modifiers: CombatModifier[] = [];
@@ -440,14 +469,17 @@ function parseCombatModifiers(effect: RelicEffect): CombatModifier[] {
   return modifiers;
 }
 
+// 단계가 있는 효과 수치 개수
 function getCombatModifierValueCount(effect: RelicEffect) {
   return Math.max(1, ...parseCombatModifiers(effect).map((modifier) => modifier.rates.length));
 }
 
+// 선택한 단계의 보정 수치
 function getModifierRate(modifier: CombatModifier, valueIndex: number) {
   return modifier.rates[Math.min(valueIndex, modifier.rates.length - 1)] ?? 0;
 }
 
+// 선택한 효과의 전투 보정 요약
 function getEffectImpactSummary(effect: RelicEffect, valueIndex: number) {
   const parts = parseCombatModifiers(effect).map((modifier) => {
     const rate = getModifierRate(modifier, valueIndex);
@@ -458,6 +490,7 @@ function getEffectImpactSummary(effect: RelicEffect, valueIndex: number) {
   return parts.join(' · ');
 }
 
+// 선택한 모든 공격과 경감 보정 합치기
 function mergeCombatSummary(selectedEffects: Array<{ effect: RelicEffect; valueIndex: number }>) {
   const attack = new Map<string, { factor: number; count: number }>();
   const reduction = new Map<string, { damageTakenFactor: number; count: number }>();
@@ -503,6 +536,7 @@ function mergeCombatSummary(selectedEffects: Array<{ effect: RelicEffect; valueI
   };
 }
 
+// 공격 속성에 맞는 유물 배율
 function getWeaponDamageAttackFactor(summaryRows: CombatSummaryRow[], damageKey: DamageKey) {
   const damageTarget = `${damageLabels[damageKey]} 공격력`;
   return summaryRows.reduce((factor, row) => {
@@ -514,6 +548,7 @@ function getWeaponDamageAttackFactor(summaryRows: CombatSummaryRow[], damageKey:
   }, 1);
 }
 
+// 무기 공격력에 유물 효과 적용
 function applyAttackSummaryToWeapon(
   attack: ReturnType<typeof calculateWeaponAttack>,
   attackRows: CombatSummaryRow[],
@@ -533,6 +568,7 @@ function applyAttackSummaryToWeapon(
   return { breakdown, total };
 }
 
+// HP와 FP 및 스태미나 막대
 function StatusBar({
   label,
   maxValue,
@@ -570,6 +606,7 @@ function StatusBar({
   );
 }
 
+// 스탯 계산기 페이지 전체
 function StatsCalculatorPage({ searchQuery }: { searchQuery: string }) {
   const [selectedCharacter, setSelectedCharacter] = useState(characterNames[0]);
   const [selectedLevel, setSelectedLevel] = useState(1);
@@ -587,6 +624,7 @@ function StatsCalculatorPage({ searchQuery }: { searchQuery: string }) {
   const baseStatsEntry = getStats(selectedCharacter, selectedLevel) ?? characterStats[0];
   const baseStats = statMapFromStats(baseStatsEntry);
 
+  // 선택한 유물 효과 데이터
   const selectedEffects = useMemo(
     () =>
       selectedEffectEntries
@@ -611,6 +649,7 @@ function StatsCalculatorPage({ searchQuery }: { searchQuery: string }) {
     [],
   );
 
+  // 기본과 유물 및 수동 능력치 합산
   const finalStats = useMemo(() => {
     const next = emptyStats();
     for (const key of statKeys) {
@@ -628,6 +667,7 @@ function StatsCalculatorPage({ searchQuery }: { searchQuery: string }) {
     Stamina: applyResourceAdjustment(finalResources.Stamina, effectAdjustment.resources.Stamina),
   };
 
+  // 검색 조건에 맞는 공격과 경감 효과
   const effectMatches = useMemo(() => {
     const normalized = effectQuery.trim().toLowerCase();
     if (!normalized) return combatOptionEffects;
@@ -636,6 +676,7 @@ function StatsCalculatorPage({ searchQuery }: { searchQuery: string }) {
       .filter((effect) => getEffectSearchText(effect).includes(normalized));
   }, [combatOptionEffects, effectQuery]);
 
+  // 캐릭터 대표 무기 또는 검색 결과
   const weapons = useMemo(() => {
     const normalized = (weaponQuery || searchQuery).trim().toLowerCase();
     if (!normalized) return getRepresentativeWeapons(selectedCharacter);
@@ -645,6 +686,7 @@ function StatsCalculatorPage({ searchQuery }: { searchQuery: string }) {
       .slice(0, 40);
   }, [selectedCharacter, weaponQuery, searchQuery]);
 
+  // 무기별 기본과 최종 공격력
   const weaponRows = weapons.map((weapon) => {
     const baseAttack = calculateWeaponAttack(weapon, baseStats, twoHanding);
     const statAttack = calculateWeaponAttack(weapon, finalStats, twoHanding);
@@ -657,6 +699,7 @@ function StatsCalculatorPage({ searchQuery }: { searchQuery: string }) {
     };
   });
 
+  // 유물 효과 추가
   const addEffect = (effect: RelicEffect) => {
     setSelectedEffectEntries((current) => {
       if (current.length >= maxSelectedEffectCount) return current;
@@ -668,16 +711,19 @@ function StatsCalculatorPage({ searchQuery }: { searchQuery: string }) {
     });
   };
 
+  // 유물 효과 제거
   const removeEffect = (entryId: number) => {
     setSelectedEffectEntries((current) => current.filter((entry) => entry.entryId !== entryId));
   };
 
+  // 단계형 유물 효과 수치 변경
   const updateEffectValue = (entryId: number, valueIndex: number) => {
     setSelectedEffectEntries((current) =>
       current.map((entry) => (entry.entryId === entryId ? { ...entry, valueIndex } : entry)),
     );
   };
 
+  // 더 선택할 수 없는 이유
   const getDisabledReason = (effect: RelicEffect) => {
     void getEffectStackGroup(effect);
     void isSameOptionStackBlocked(effect);
@@ -693,6 +739,7 @@ function StatsCalculatorPage({ searchQuery }: { searchQuery: string }) {
         </div>
       </div>
 
+      {/* 캐릭터와 레벨 및 능력치 설정 */}
       <div className="calc-layout">
         <aside className="calc-panel">
           <div className="calc-control-grid">
@@ -818,6 +865,7 @@ function StatsCalculatorPage({ searchQuery }: { searchQuery: string }) {
         </aside>
 
         <div className="calc-main">
+          {/* 공격과 경감 유물 옵션 */}
           <section className="calc-panel">
             <div className="calc-section-heading">
               <h3>공격/경감 옵션</h3>
@@ -829,6 +877,7 @@ function StatsCalculatorPage({ searchQuery }: { searchQuery: string }) {
               />
             </div>
 
+            {/* 적용된 공격과 경감 결과 */}
             <div className="calc-combat-summary">
               <div>
                 <strong>공격력</strong>
@@ -860,6 +909,7 @@ function StatsCalculatorPage({ searchQuery }: { searchQuery: string }) {
               </div>
             </div>
 
+            {/* 현재 선택한 유물 효과 */}
             <div className="calc-active-effects">
               {selectedEffects.length ? (
                 selectedEffects.map(({ entryId, effect, valueIndex }) => {
@@ -892,6 +942,7 @@ function StatsCalculatorPage({ searchQuery }: { searchQuery: string }) {
               )}
             </div>
 
+            {/* 추가할 수 있는 유물 효과 */}
             <div className="calc-effect-results">
               {effectMatches.map((effect) => {
                 const disabledReason = getDisabledReason(effect);
@@ -912,6 +963,7 @@ function StatsCalculatorPage({ searchQuery }: { searchQuery: string }) {
             </div>
           </section>
 
+          {/* 무기별 최종 공격력 */}
           <section className="calc-panel">
             <div className="calc-section-heading">
               <h3>무기 공격력</h3>

@@ -1,3 +1,4 @@
+// 게시판에서 글쓰기 및 수정 페이지
 import { useEffect, useMemo, useRef, useState, type ChangeEvent, type FormEvent } from 'react';
 import { nightfarers } from '../../data/nightfarers';
 import {
@@ -20,6 +21,7 @@ import {
   type WritableBuildPostCategory,
 } from './buildShared';
 
+// 이미지 제한, 장수/용량/형식
 const maxBuildContentImageCount = 10;
 const maxBuildContentImageSize = 20 * 1024 * 1024;
 const allowedBuildImageTypes = new Set([
@@ -30,7 +32,10 @@ const allowedBuildImageTypes = new Set([
   'image/png',
   'image/webp',
 ]);
+
+// 저장된 유물을 찾아서 하나의 저장된 프리셋으로 묶음(유물 id를 6개를 줘서 프리셋 하나 만드는 형식임)
 function createBuildPostPreset(preset: RelicPreset, relicsById: Map<string, StoredRelic>): BuildPostPreset {
+  // 유물 id 찾기
   const storedRelicIds = preset.slots
     .filter((slot): slot is Extract<RelicPresetSlotInput, { relicRefType: 'stored' }> => slot.relicRefType === 'stored')
     .map((slot) => slot.relicId);
@@ -43,6 +48,7 @@ function createBuildPostPreset(preset: RelicPreset, relicsById: Map<string, Stor
   };
 }
 
+// 프리셋 넣기
 function BuildPresetInsertSection({
   authUserId,
   onSelectPreset,
@@ -50,11 +56,11 @@ function BuildPresetInsertSection({
   authUserId: string | null;
   onSelectPreset: (preset: BuildPostPreset) => void;
 }) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [presets, setPresets] = useState<RelicPreset[]>([]);
-  const [storedRelics, setStoredRelics] = useState<StoredRelic[]>([]);
-  const [isLoadingPresets, setIsLoadingPresets] = useState(false);
-  const [presetNotice, setPresetNotice] = useState<string | null>(null);
+  const [isOpen, setIsOpen] = useState(false); // 프리셋 열려있음?
+  const [presets, setPresets] = useState<RelicPreset[]>([]); // 서버에서 받은 프리셋
+  const [storedRelics, setStoredRelics] = useState<StoredRelic[]>([]); // 서버에서 받은 유물
+  const [isLoadingPresets, setIsLoadingPresets] = useState(false); // 프리셋 불러오는 중
+  const [presetNotice, setPresetNotice] = useState<string | null>(null); // 프리셋 불러오기 실패 메시지
   const relicsById = useMemo(
     () => new Map(storedRelics.map((relic) => [relic.relicId, relic])),
     [storedRelics],
@@ -123,6 +129,7 @@ function BuildPresetInsertSection({
           ) : null}
           {presets.length ? (
             <div className="saved-preset-grid build-preset-grid">
+              {/* 프리셋 카드 출력*/}
               {presets.map((preset) => (
                 <BuildPresetCard
                   key={preset.presetId}
@@ -143,7 +150,7 @@ function BuildPresetInsertSection({
     </section>
   );
 }
-
+{/* 게시글 본문 HTML로 작정 및 이미지 삽입 */}
 function BuildRichContentEditor({
   value,
   onChange,
@@ -162,6 +169,7 @@ function BuildRichContentEditor({
     editor.innerHTML = value;
   }, [value]);
 
+  // 커서 위치 저장
   function saveSelection() {
     const editor = editorRef.current;
     const selection = window.getSelection();
@@ -172,13 +180,13 @@ function BuildRichContentEditor({
       lastSelectionRef.current = range.cloneRange();
     }
   }
-
+  // 편집기 내용 전달
   function syncEditorContent() {
     const editor = editorRef.current;
     if (!editor) return;
     onChange(editor.innerHTML);
   }
-
+  // 커서 복원
   function restoreSelection() {
     const editor = editorRef.current;
     if (!editor) return;
@@ -197,7 +205,7 @@ function BuildRichContentEditor({
     range.collapse(false);
     selection?.addRange(range);
   }
-
+  // 이미지 삽입
   function insertImage(dataUrl: string, file: File) {
     const editor = editorRef.current;
     if (!editor) return;
@@ -213,6 +221,7 @@ function BuildRichContentEditor({
     wrapper.className = 'build-content-image-block';
     wrapper.appendChild(image);
 
+    // 이미지 뒤에 글 쓸 수 있게 해줌
     const spacer = document.createElement('div');
     spacer.appendChild(document.createElement('br'));
 
@@ -234,6 +243,7 @@ function BuildRichContentEditor({
     syncEditorContent();
   }
 
+  // 이미지 파일 읽음
   function readImageFile(file: File) {
     return new Promise<string>((resolve, reject) => {
       const reader = new FileReader();
@@ -246,6 +256,7 @@ function BuildRichContentEditor({
     });
   }
 
+  // 이미지 검증(파일 수나 형식 용량)
   async function handleImageFiles(event: ChangeEvent<HTMLInputElement>) {
     const files = Array.from(event.target.files ?? []);
     event.target.value = '';
@@ -280,6 +291,7 @@ function BuildRichContentEditor({
       acceptedFiles.push(file);
     }
 
+    // 허용되면 삽입
     try {
       for (const file of acceptedFiles) {
         const dataUrl = await readImageFile(file);
@@ -331,6 +343,7 @@ function BuildRichContentEditor({
   );
 }
 
+// 게시글 작성 및 수정 페이지
 export default function BuildPostWritePage({
   authorLabel,
   authUserId,
