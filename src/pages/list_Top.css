@@ -3961,6 +3961,65 @@
   background: rgba(2, 5, 12, 0.68);
 }
 
+.save-complete-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(2, 5, 12, 0.72);
+  backdrop-filter: blur(3px);
+}
+
+.save-complete-modal {
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+  width: min(360px, 100%);
+  padding: 28px 24px 22px;
+  border: 1px solid rgba(143, 174, 230, 0.38);
+  border-radius: 12px;
+  background: rgba(10, 16, 31, 0.98);
+  color: var(--night-text);
+  text-align: center;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.62);
+}
+
+.save-complete-modal-icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: 1px solid rgba(120, 221, 255, 0.5);
+  border-radius: 50%;
+  background: rgba(120, 221, 255, 0.12);
+  color: #78ddff;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.save-complete-modal strong {
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+.save-complete-modal button {
+  min-width: 112px;
+  padding: 10px 20px;
+  border: 1px solid rgba(120, 221, 255, 0.45);
+  border-radius: 8px;
+  background: rgba(120, 221, 255, 0.14);
+  color: var(--night-text);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+}
+
+.save-complete-modal button:hover {
+  background: rgba(120, 221, 255, 0.23);
+}
+
 .saved-preset-modal {
   position: relative;
   display: grid;

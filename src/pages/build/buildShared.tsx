@@ -491,6 +491,7 @@ function BuildPresetSlotSummary({
     return <li className="saved-preset-slot is-empty" aria-label={`empty slot ${slotIndex + 1}`} />;
   }
 
+  // 저장된 유물이 삭제됐다면 Undefined 처리
   const storedRelic = slot.relicRefType === 'stored' ? relicsById.get(slot.relicId) : undefined;
   const relicName =
     slot.relicRefType === 'stored'

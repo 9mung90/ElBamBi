@@ -23,6 +23,7 @@ import {
 import { nightfarers } from '../data/nightfarers';
 import { vessels, type Vessel } from '../data/vessels';
 import ResponsiveSelect from '../components/ResponsiveSelect';
+import SaveCompleteModal from '../components/SaveCompleteModal';
 import type { ParsedRelic, RelicScanResult } from '../utils/nightreignSaveParser';
 import {
   getRelicBorderClass,
@@ -718,6 +719,7 @@ function RelicPresetBuilder({
   const [presetName, setPresetName] = useState('');
   const [isSavingPreset, setIsSavingPreset] = useState(false);
   const [presetSaveNotice, setPresetSaveNotice] = useState<string | null>(null);
+  const [isPresetSaveCompleteOpen, setIsPresetSaveCompleteOpen] = useState(false);
   const [expandedSummarySlotIndexes, setExpandedSummarySlotIndexes] = useState<number[]>([]);
   const [placedRelicIds, setPlacedRelicIds] = useState<PresetSlotRelics>(createEmptyPresetSlots);
   const [ownedRelics, setOwnedRelics] = useState<StoredRelic[]>([]);
@@ -968,7 +970,8 @@ function RelicPresetBuilder({
     try {
       const savedPreset = await saveRelicPreset(payload);
       console.info('[RelicsPage] Preset saved response', savedPreset);
-      setPresetSaveNotice('프리셋 저장 완료.');
+      setPresetSaveNotice(null);
+      setIsPresetSaveCompleteOpen(true);
     } catch (error) {
       console.error('[RelicsPage] Failed to save preset', {
         payload,
@@ -1415,6 +1418,12 @@ function RelicPresetBuilder({
           </section>
         </div>
       </div>
+      {isPresetSaveCompleteOpen ? (
+        <SaveCompleteModal
+          message="프리셋이 저장되었습니다."
+          onClose={() => setIsPresetSaveCompleteOpen(false)}
+        />
+      ) : null}
     </section>
   );
 }
@@ -1490,7 +1499,7 @@ function getComparablePresetEffect(
   slotIndex: number,
 ): ComparablePresetEffect {
   const name = effect.name.trim();
-  const detail = effect.detail.trim();
+  const detail = effect.detail?.trim() ?? '';
   const nameMatch = getComparisonValueMatch(name);
   const detailMatch = getComparisonValueMatch(detail);
   const valueMatch = nameMatch ?? detailMatch;

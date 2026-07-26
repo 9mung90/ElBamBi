@@ -6,6 +6,7 @@ import {
   type StoredRelicOption,
 } from '../api/storageApi';
 import ResponsiveSelect from '../components/ResponsiveSelect';
+import SaveCompleteModal from '../components/SaveCompleteModal';
 import { relicRollAppData, type RelicRollEffect, type RelicRollMode } from '../data/relics';
 
 type SlotSelection = [string, string, string];
@@ -326,6 +327,7 @@ function RelicBuilderPage({
   const [showInvalidOptions, setShowInvalidOptions] = useState(false);
   const [selectedDebuffKeys, setSelectedDebuffKeys] = useState<SlotSelection>(EMPTY_SELECTION);
   const [saveNotice, setSaveNotice] = useState<string | null>(null);
+  const [isSaveCompleteOpen, setIsSaveCompleteOpen] = useState(false);
   const [isSavingRelic, setIsSavingRelic] = useState(false);
 
   // 선택한 제작 모드
@@ -471,7 +473,8 @@ function RelicBuilderPage({
     try {
       const savedRelic = await createBuilderRelic(payload);
       console.info('[RelicBuilder] Relic saved response', savedRelic);
-      setSaveNotice('Relic saved.');
+      setSaveNotice(null);
+      setIsSaveCompleteOpen(true);
       onRelicsChanged();
     } catch (error) {
       console.error('[RelicBuilder] Failed to save relic', {
@@ -749,6 +752,12 @@ function RelicBuilderPage({
           {saveNotice ? <p className="relic-builder-save-notice">{saveNotice}</p> : null}
         </div>
       </div>
+      {isSaveCompleteOpen ? (
+        <SaveCompleteModal
+          message="유물이 저장되었습니다."
+          onClose={() => setIsSaveCompleteOpen(false)}
+        />
+      ) : null}
     </section>
   );
 }
